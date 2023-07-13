@@ -1,0 +1,37 @@
+name: Deploy SINIM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build SINIM
+        run: npm run build
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            New-Item -Path 'E:\Plataformas WEB\SINIM' -ItemType Directory -Force
+            $session = New-PSSession -ComputerName $env:host -Credential (New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:username, $env:password)
+            Copy-Item -Path "${{ github.workspace }}/out/*" -Destination 'E:\Plataformas WEB\SINIM' -ToSession $session
+            Remove-PSSession -Session $session
