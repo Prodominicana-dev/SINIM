@@ -16,7 +16,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: "16"
 
       - name: Install dependencies
         run: npm ci
@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            New-Item -Path 'E:\Plataformas WEB\SINIM' -ItemType Directory -Force
+            New-Item -Path 'E:\PLATAFORMAS WEB\SINIM' -ItemType Directory -Force
             $session = New-PSSession -ComputerName $env:host -Credential (New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:username, $env:password)
-            Copy-Item -Path "${{ github.workspace }}/out/*" -Destination 'E:\Plataformas WEB\SINIM' -ToSession $session
+            Copy-Item -Path "${{ github.workspace }}/out/*" -Destination 'E:\PLATAFORMAS WEB\SINIM' -ToSession $session
             Remove-PSSession -Session $session
