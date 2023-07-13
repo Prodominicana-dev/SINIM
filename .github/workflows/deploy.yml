@@ -25,7 +25,7 @@ jobs:
         run: npm run build
 
       - name: Deploy to server
-        uses: appleboy/ssh-action@master
+        uses: webssh/action@v0.1.4
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
