@@ -1,0 +1,17 @@
+{
+  "tools": [
+    {
+      "title": "Sinim",
+      "description": "El Sistema Nacional de Inteligencia de Mercados de la Dirección de Inteligencia de Mercados de ProDominicana, es un conjunto de subsistemas de alertas, oportunidades, amenazas y obstaculos que pueda enfrentar el comercio exterior y la atraccién de inversion extranjera directa (IED) de la Republica Dominicana.",
+      "color": "#062381",
+      "fromColorPercentaje": "45%",
+      "fromColor": "[#062381]",
+      "viaColor": "[#2997F2]/50",
+      "toColor": "[#1AD25D]",
+      "background": "/videos/world.mp4",
+      "logo": "/images/sinim.png",
+      "root": "/",
+      "visible": false
+    }
+  ]
+}
