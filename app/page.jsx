@@ -11,16 +11,13 @@ import { tools } from "@/public/config.json";
 
 export default function Home() {
   const [tool, setTool] = useState(tools[0]);
-  console.log(tool.viaColor);
-
-  const desc =
-    "El Sistema Nacional de Inteligencia de Mercados de la Dirección de Inteligencia de Mercados de ProDominicana, es un conjunto de subsistemas de alertas, oportunidades, amenazas y obstaculos que pueda enfrentar el comercio exterior y la atraccién de inversion extranjera directa (IED) de la Republica Dominicana.";
+  console.log(tool.logo);
 
   return (
     <main className="min-h-screen h-screen relative">
       <Background
         video={tool.background}
-        color={`bg-gradient-to-br from-${tool.fromColorPercentaje} from-${tool.fromColor} via-${tool.viaColor} to-${tool.toColor}`}
+        color={`bg-gradient-to-${tool["gradient-pos"]} from-${tool.fromColorPercentaje} from-${tool.fromColor} via-${tool.viaColor} to-${tool.toColor}`}
       />
 
       <nav className="absolute w-full md:p-12 p-5 flex md:items-center md:justify-between  bg-transparent">
@@ -51,53 +48,23 @@ export default function Home() {
         </div>
       </nav>
 
-      <InfoTool logo={`sinim`} description={desc} />
-      {/* <div className="flex h-full md:h-5/6 md:p-5 ml-0 md:justify-start justify-center items-center md:absolute">
-        <div className="flex flex-col space-y-6 mx-10 ">
-          <Image
-            src={"/images/logo/sinim.png"}
-            width={200}
-            height={200}
-            draggable={false}
-            alt=""
-          ></Image>
-          <p className="md:w-[32rem] md:text-sm text-xs md:block hidden">
-            <TypeWriterEffect
-              startDelay={100}
-              cursorColor="white"
-              text={desc}
-              typeSpeed={20}
-            />
-          </p>
-          <Link href="/" className="md:block hidden">
-            <div className="w-28 text-center text-sm bg-white text-black rounded-full px-5 py-1 duration-500">
-              Ver mas
-            </div>
-          </Link>
-        </div>
-      </div> */}
+      <InfoTool
+        logo={tool.logo}
+        description={tool.description}
+        link={tool.root}
+      />
+
       <div className="h-screen flex justify-center items-end">
         <div className="flex md:flex-row flex-col w-full md:h-40 h-full md:space-x-5 m-10 md:space-y-0 space-y-10 overflow-y-auto">
-          <Card
-            title={"DATA MARKET"}
-            image={`/svg/datamarketicon.svg`}
-            color={`bg-gradient-to-b from-green-500 to-sky-600`}
-          />
-          <Card
-            title={"SIED"}
-            image={`/svg/siedicon.svg`}
-            color={`bg-gradient-to-b from-pink-600 to-violet-800`}
-          />
-          <Card
-            title={"SAIM"}
-            image={`/svg/saimicon.svg`}
-            color={`bg-gradient-to-b from-sky-500 to-purple-700`}
-          />
-          <Card
-            title={"RAMI"}
-            image={`/svg/ramiicon.svg`}
-            color={`bg-gradient-to-b from-yellow-400 to-red-500`}
-          />
+          {tools.map((tool) =>
+            tool.visible ? (
+              <Card
+                title={tool.title}
+                image={tool.icon}
+                color={`bg-gradient-to-b from-${tool.fromColor} to-${tool.toColor}`}
+              />
+            ) : null
+          )}
         </div>
       </div>
     </main>
