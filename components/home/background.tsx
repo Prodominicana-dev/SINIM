@@ -1,3 +1,4 @@
+"use client";
 export default function Background({ color, video }: any) {
   return (
     <div className="absolute inset-0 z-[-1]">

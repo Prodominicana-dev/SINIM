@@ -7,17 +7,23 @@ import Card from "@/components/home/card";
 import Background from "@/components/home/background";
 import InfoTool from "@/components/home/infoTool";
 import { useState } from "react";
-import { tools } from "@/public/config.json";
 
 export default function Home() {
+  const config = require("@/public/config.json");
+  const tools = config.tools;
   const [tool, setTool] = useState(tools[0]);
-  console.log(tool.logo);
 
+  const changeTool = (t) => {
+    setTool(t);
+    console.log(tool);
+  };
+
+  console.log(tool);
   return (
     <main className="min-h-screen h-screen relative">
       <Background
         video={tool.background}
-        color={`bg-gradient-to-${tool["gradient-pos"]} from-${tool.fromColorPercentaje} from-${tool.fromColor} via-${tool.viaColor} to-${tool.toColor}`}
+        color={`bg-gradient-to-${tool.gradientPos} from-${tool.fromColorPercentaje} from-${tool.fromColor} via-${tool.viaColor} to-${tool.toColor}`}
       />
 
       <nav className="absolute w-full md:p-12 p-5 flex md:items-center md:justify-between  bg-transparent">
@@ -30,6 +36,9 @@ export default function Home() {
                 alt=""
                 draggable={false}
                 src="/images/logo/prodominicana.png"
+                onClick={() => {
+                  setTool(tools[0]);
+                }}
               />
             </Link>
           </div>
@@ -56,12 +65,15 @@ export default function Home() {
 
       <div className="h-screen flex justify-center items-end">
         <div className="flex md:flex-row flex-col w-full md:h-40 h-full md:space-x-5 m-10 md:space-y-0 space-y-10 overflow-y-auto">
-          {tools.map((tool) =>
+          {tools.map((tool, index) =>
             tool.visible ? (
               <Card
                 title={tool.title}
                 image={tool.icon}
                 color={`bg-gradient-to-b from-${tool.fromColor} to-${tool.toColor}`}
+                key={index}
+                tool={tool}
+                changeT={changeTool}
               />
             ) : null
           )}
