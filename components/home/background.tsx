@@ -1,5 +1,6 @@
 "use client";
 export default function Background({ color, video }: any) {
+  console.log(color, video);
   return (
     <div className="absolute inset-0 z-[-1]">
       <video autoPlay loop muted className="w-full h-screen fixed object-cover">

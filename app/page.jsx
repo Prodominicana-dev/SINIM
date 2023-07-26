@@ -7,11 +7,81 @@ import Card from "@/components/home/card";
 import Background from "@/components/home/background";
 import InfoTool from "@/components/home/infoTool";
 import { useState } from "react";
+import config from "@/public/config.json";
 
 export default function Home() {
-  const config = require("@/public/config.json");
-  const tools = config.tools;
-  const [tool, setTool] = useState(tools[0]);
+  const sinim = {
+    title: "SINIM",
+    description:
+      "El Sistema Nacional de Inteligencia de Mercados de la Dirección de Inteligencia de Mercados de ProDominicana, es un conjunto de subsistemas de alertas, oportunidades, amenazas y obstaculos que pueda enfrentar el comercio exterior y la atraccién de inversion extranjera directa (IED) de la Republica Dominicana.",
+    color:
+      "bg-gradient-to-br from-45% from-[#062381] via-[#2997F2]/50 to-[#1AD25D]",
+    background: "/videos/datamarket.mp4",
+    logo: "/images/logo/sinim.png",
+    root: "/",
+  };
+
+  const tools = [
+    {
+      title: "DATA MARKET",
+      description:
+        "Analice estadísicas en materia de exportación e inversión en el pais.",
+      color: "bg-gradient-to-tr from-green-500 from-[30%] to-sky-600/80",
+      fromColor: "green-500",
+      toColor: "sky-600",
+      background: "/videos/datamarket.mp4",
+      icon: "/svg/datamarketicon.svg",
+      logo: "/images/logo/datamarket.svg",
+      root: "/",
+      gradientPos: "br",
+      visible: true,
+    },
+    {
+      title: "SIED",
+      description:
+        "Analice oportunidades, tendencias, normativas y amenazas del contexto global de inversión.",
+      color: "bg-gradient-to-b from-pink-600 to-violet-800/80",
+      fromColor: "pink-600",
+      toColor: "violet-800",
+      background: "/videos/world.mp4",
+      icon: "/svg/siedicon.svg",
+      logo: "/images/logo/sied.svg",
+      root: "/",
+      gradientPos: "br",
+      visible: true,
+    },
+    {
+      title: "SAIM",
+      description:
+        "Consulte oportunidades, amenazas, obstáculos y actualizaciones de interés para el sector exportador.",
+      color: "bg-gradient-to-b from-sky-500 to-purple-700/80",
+      fromColor: "sky-500",
+      toColor: "purple-700",
+      background: "/videos/world.mp4",
+      icon: "/svg/saimicon.svg",
+      logo: "/images/logo/saim.svg",
+      root: "/",
+      gradientPos: "br",
+      visible: true,
+    },
+    {
+      title: "RAMI",
+      description:
+        "Consulte medidas, requisitos y regulaciones para las mercancías exportadas desde República Dominicana.",
+      color: "bg-gradient-to-b from-yellow-400 to-red-500/80",
+      fromColor: "yellow-400",
+      toColor: "red-500",
+      background: "/videos/world.mp4",
+      icon: "/svg/ramiicon.svg",
+      logo: "/images/logo/rami.svg",
+      root: "/",
+      gradientPos: "br",
+      visible: true,
+    },
+  ];
+
+  //const tools = config.tools;
+  const [tool, setTool] = useState(sinim);
 
   const changeTool = (t) => {
     setTool(t);
@@ -21,26 +91,25 @@ export default function Home() {
   console.log(tool);
   return (
     <main className="min-h-screen h-screen relative">
-      <Background
-        video={tool.background}
-        color={`bg-gradient-to-${tool.gradientPos} from-${tool.fromColorPercentaje} from-${tool.fromColor} via-${tool.viaColor} to-${tool.toColor}`}
-      />
+      <Background video={tool.background} color={tool.color} />
 
-      <nav className="absolute w-full md:p-12 p-5 flex md:items-center md:justify-between  bg-transparent">
+      <nav className="absolute w-full md:p-12 p-5 flex md:items-center md:justify-between  bg-transparent z-10">
         <div className="flex md:justify-between justify-start items-center w-full">
           <div className="flex items-center">
-            <Link href="/" className="flex mx-2 md:w-full w-32">
+            <button
+              onClick={() => {
+                setTool(sinim);
+              }}
+              className="flex mx-2 md:w-full w-32"
+            >
               <Image
                 width={150}
                 height={150}
                 alt=""
                 draggable={false}
                 src="/images/logo/prodominicana.png"
-                onClick={() => {
-                  setTool(tools[0]);
-                }}
               />
-            </Link>
+            </button>
           </div>
           <div className="flex items-center space-x-5">
             <Link href="/" className="md:block hidden">
