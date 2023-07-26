@@ -3,10 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Card from "@/components/home/card";
-
 import Background from "@/components/home/background";
 import InfoTool from "@/components/home/infoTool";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import config from "@/public/config.json";
 
 export default function Home() {
@@ -16,7 +15,7 @@ export default function Home() {
       "El Sistema Nacional de Inteligencia de Mercados de la Dirección de Inteligencia de Mercados de ProDominicana, es un conjunto de subsistemas de alertas, oportunidades, amenazas y obstaculos que pueda enfrentar el comercio exterior y la atraccién de inversion extranjera directa (IED) de la Republica Dominicana.",
     color:
       "bg-gradient-to-br from-45% from-[#062381] via-[#2997F2]/50 to-[#1AD25D]",
-    background: "/videos/datamarket.mp4",
+    background: "/videos/charts.mp4",
     logo: "/images/logo/sinim.png",
     root: "/",
   };
@@ -27,6 +26,7 @@ export default function Home() {
       description:
         "Analice estadísicas en materia de exportación e inversión en el pais.",
       color: "bg-gradient-to-tr from-green-500 from-[30%] to-sky-600/80",
+      boxColor: "bg-gradient-to-b from-green-500 to-sky-600",
       fromColor: "green-500",
       toColor: "sky-600",
       background: "/videos/datamarket.mp4",
@@ -40,10 +40,11 @@ export default function Home() {
       title: "SIED",
       description:
         "Analice oportunidades, tendencias, normativas y amenazas del contexto global de inversión.",
-      color: "bg-gradient-to-b from-pink-600 to-violet-800/80",
+      color: "bg-gradient-to-tr from-[40%] from-pink-600 to-violet-800/60",
+      boxColor: "bg-gradient-to-b from-pink-600 to-violet-800",
       fromColor: "pink-600",
       toColor: "violet-800",
-      background: "/videos/world.mp4",
+      background: "/videos/graph.mp4",
       icon: "/svg/siedicon.svg",
       logo: "/images/logo/sied.svg",
       root: "/",
@@ -54,10 +55,11 @@ export default function Home() {
       title: "SAIM",
       description:
         "Consulte oportunidades, amenazas, obstáculos y actualizaciones de interés para el sector exportador.",
-      color: "bg-gradient-to-b from-sky-500 to-purple-700/80",
+      color: "bg-gradient-to-tr from-[40%] from-sky-500 to-purple-700/60",
+      boxColor: "bg-gradient-to-b from-sky-500 to-purple-700",
       fromColor: "sky-500",
       toColor: "purple-700",
-      background: "/videos/world.mp4",
+      background: "/videos/rami.mp4",
       icon: "/svg/saimicon.svg",
       logo: "/images/logo/saim.svg",
       root: "/",
@@ -68,10 +70,11 @@ export default function Home() {
       title: "RAMI",
       description:
         "Consulte medidas, requisitos y regulaciones para las mercancías exportadas desde República Dominicana.",
-      color: "bg-gradient-to-b from-yellow-400 to-red-500/80",
+      color: "bg-gradient-to-tr from-[30%] from-orange-500 to-yellow-400/60",
+      boxColor: "bg-gradient-to-b from-yellow-400 to-orange-500",
       fromColor: "yellow-400",
       toColor: "red-500",
-      background: "/videos/world.mp4",
+      background: "/videos/connection.mp4",
       icon: "/svg/ramiicon.svg",
       logo: "/images/logo/rami.svg",
       root: "/",
@@ -139,7 +142,7 @@ export default function Home() {
               <Card
                 title={tool.title}
                 image={tool.icon}
-                color={`bg-gradient-to-b from-${tool.fromColor} to-${tool.toColor}`}
+                color={tool.boxColor}
                 key={index}
                 tool={tool}
                 changeT={changeTool}
