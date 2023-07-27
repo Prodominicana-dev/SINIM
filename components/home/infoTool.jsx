@@ -16,23 +16,23 @@ export default function InfoTool({ description, logo, link }) {
     }, 100);
   }, [description]);
   return (
-    <div className="flex h-full md:h-5/6 md:p-5 ml-0 md:justify-start justify-center items-center md:absolute">
-      <div className="flex flex-col space-y-6 mx-10 w-3/6">
+    <div className="flex h-full lg:h-full sm:h-3/6 sm:p-5 ml-0 justify-start items-center lg:absolute sm:mt-8 lg:mt-0">
+      <div className="flex flex-col space-y-6 mx-10 w-full sm:w-3/6">
         <Image
           src={logo}
           width={600}
           height={600}
           draggable={false}
           alt=""
-          className="w-full h-2/6"
+          className="w-full "
         ></Image>
-        <p className="md:w-[32rem] md:text-sm text-xs md:block hidden h-2/6">
+        <p className="md:w-[32rem] sm:text-sm text-xs block">
           {/* Si showDescription es verdadero, muestra el componente TypeWriterEffect */}
           {showDescription && (
             <TypeWriterEffect text={description} typeSpeed={20} />
           )}
         </p>
-        <Link href={link} className="md:block hidden h-2/6">
+        <Link href={link} className="block">
           <div className="w-28 text-center text-sm bg-white text-black rounded-full px-5 py-1 duration-500">
             Ver mas
           </div>
