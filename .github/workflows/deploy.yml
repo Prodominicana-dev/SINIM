@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -25,7 +25,11 @@ jobs:
         run: npm run build
 
       - name: Transfer files to remote server
-        run: |
-          $session = New-PSSession -ComputerName $env:SERVER_IP -Credential (New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:SERVER_USERNAME, (ConvertTo-SecureString -String $env:SERVER_PASSWORD -AsPlainText -Force))
-          Copy-Item -Path "${{ github.workspace }}/out/*" -Destination 'E:\PLATAFORMAS WEB\SINIM' -ToSession $session
-          Remove-PSSession -Session $session
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }} # Set this secret in your GitHub repository settings
+          username: ${{ secrets.SERVER_USERNAME }} # Set this secret in your GitHub repository settings
+          password: ${{ secrets.SERVER_PASSWORD }} # Set this secret in your GitHub repository settings
+          source: "${{ github.workspace }}/out/*"
+          target: "/var/www/SINIM" # Replace with the appropriate target directory on your server
+
