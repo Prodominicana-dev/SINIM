@@ -32,7 +32,7 @@ jobs:
       - name: Create VPN credentials file
         run: |
           echo "randy.frias" > vpn-credentials
-          echo "EXAM123" >> vpn-credentials
+          echo "Kevin14080100." >> vpn-credentials
 
       - name: Connect to VPN
         run: sudo openvpn --config vpn-config.ovpn --auth-user-pass vpn-credentials --daemon
