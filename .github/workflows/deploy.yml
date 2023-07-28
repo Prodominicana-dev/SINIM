@@ -24,12 +24,15 @@ jobs:
       - name: Build SINIM
         run: npm run build
 
+      - name: Package files for transfer
+      run: tar -czvf /tmp/my_files.tar.gz -C "${{ github.workspace }}/out" .
+
       - name: Transfer files to remote server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SERVER_IP }} # Set this secret in your GitHub repository settings
           username: ${{ secrets.SERVER_USERNAME }} # Set this secret in your GitHub repository settings
           password: ${{ secrets.SERVER_PASSWORD }} # Set this secret in your GitHub repository settings
-          source: "${{ github.workspace }}/out/*"
+          source: /tmp/my_files.tar.gz
           target: "/var/www/SINIM" # Replace with the appropriate target directory on your server
 
