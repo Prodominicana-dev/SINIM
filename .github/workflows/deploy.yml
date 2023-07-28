@@ -25,7 +25,7 @@ jobs:
         run: npm run build
 
       - name: Package files for transfer
-      run: tar -czvf /tmp/my_files.tar.gz -C "${{ github.workspace }}/out" .
+        run: tar -czvf /tmp/my_files.tar.gz -C "${{ github.workspace }}/out"
 
       - name: Transfer files to remote server
         uses: appleboy/ssh-action@master
@@ -33,6 +33,6 @@ jobs:
           host: ${{ secrets.SERVER_IP }} # Set this secret in your GitHub repository settings
           username: ${{ secrets.SERVER_USERNAME }} # Set this secret in your GitHub repository settings
           password: ${{ secrets.SERVER_PASSWORD }} # Set this secret in your GitHub repository settings
-          source: /tmp/my_files.tar.gz
+          source: "/tmp/my_files.tar.gz"
           target: "/var/www/SINIM" # Replace with the appropriate target directory on your server
 
