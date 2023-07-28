@@ -88,10 +88,8 @@ export default function Home() {
 
   const changeTool = (t) => {
     setTool(t);
-    console.log(tool);
   };
 
-  console.log(tool);
   return (
     <main className="relative ">
       <Background video={tool.background} color={tool.color} />
