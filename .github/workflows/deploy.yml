@@ -24,14 +24,11 @@ jobs:
       - name: Build SINIM
         run: npm run build
 
-        # New step for Ping server
-      - name: Ping server
-        run: ping -c 5 190.167.210.22:5555
-
       - name: Transfer files to remote server
         uses: appleboy/scp-action@master
         with:
-          host: "190.167.210.22:5555" # Set this secret in your GitHub repository settings
+          host: "190.167.210.22" # Set this secret in your GitHub repository settings
+          port: 5555 # Set this secret in your GitHub repository settings
           username: "randyfrias" # Set this secret in your GitHub repository settings
           password: "Kevin14080100." # Set this secret in your GitHub repository settings
           source: "${{ github.workspace }}/.next/"
