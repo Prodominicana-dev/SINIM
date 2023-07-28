@@ -21,7 +21,6 @@ jobs:
           password: Kevin14080100.
           script: |
             # Comandos a ejecutar en el servidor remoto
-            pkill -9 -f "node.*3000"
             cd /var/www/SINIM
             git pull
             npm install
