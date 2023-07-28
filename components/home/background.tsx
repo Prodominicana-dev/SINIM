@@ -7,8 +7,6 @@ export default function Background({ color, video }: any) {
   useEffect(() => {
     setCurrentVideo(video);
   }, [video]);
-
-  console.log(color, currentVideo);
   return (
     <div className="absolute inset-0 z-[-1]">
       <video
