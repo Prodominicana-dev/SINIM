@@ -21,7 +21,7 @@ jobs:
           password: Kevin14080100.
           script: |
             # Comandos a ejecutar en el servidor remoto
-            ssh randyfrias@$190.167.210.22'kill $(lsof -t -i:3000)' || true
+            ssh randyfrias@$190.167.210.22:5555 'kill $(lsof -t -i:3000)' || true
             cd /var/www/SINIM
             git pull
             npm install
