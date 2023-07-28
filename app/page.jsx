@@ -22,7 +22,7 @@ export default function Home() {
 
   const tools = [
     {
-      title: "DATA MARKETTTTTTTTTTT",
+      title: "DATA MARKET",
       description:
         "Analice estadísicas en materia de exportación e inversión en el pais.",
       color: "bg-gradient-to-tr from-green-500 from-[30%] to-sky-600/80",
