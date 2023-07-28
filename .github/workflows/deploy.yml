@@ -24,17 +24,35 @@ jobs:
       - name: Build SINIM
         run: npm run build
 
-      # New step for Ping server
+      - name: Install OpenVPN client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openvpn
+
+      - name: Create VPN credentials file
+        run: |
+          echo "randy.frias" > vpn-credentials
+          echo "EXAM123" >> vpn-credentials
+
+      - name: Connect to VPN
+        run: sudo openvpn --config vpn-config.ovpn --auth-user-pass vpn-credentials --daemon
+
+      - name: Wait for VPN to connect
+        run: sleep 10
+
       - name: Ping server
         run: ping -c 5 192.168.0.81
 
       - name: Transfer files to remote server
         uses: appleboy/scp-action@master
         with:
-          host: "192.168.0.81" # Set this secret in your GitHub repository settings
-          username: "randyfrias" # Set this secret in your GitHub repository settings
-          password: "Kevin14080100." # Set this secret in your GitHub repository settings
+          host: "192.168.0.81"
+          username: "randyfrias"
+          password: "Kevin14080100."
           source: "${{ github.workspace }}/.next/"
-          target: "/var/www/SINIM" # Replace with the appropriate target directory on your server
+          target: "/var/www/SINIM"
         env:
           INPUT_TIMEOUT: 180
+
+      - name: Disconnect from VPN
+        run: sudo killall openvpn
