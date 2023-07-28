@@ -91,11 +91,11 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen h-screen relative">
+    <main className="relative ">
       <Background video={tool.background} color={tool.color} />
 
-      <nav className="absolute w-full md:p-12 p-5 flex md:items-center md:justify-between  bg-transparent z-10">
-        <div className="flex md:justify-between justify-start items-center w-full">
+      <nav className="lg:absolute w-full sm:p-12 p-8  flex md:items-center md:justify-between  bg-transparent z-10">
+        <div className="flex sm:justify-between justify-center items-center w-full">
           <div className="flex items-center">
             <button
               onClick={() => {
@@ -112,7 +112,7 @@ export default function Home() {
               />
             </button>
           </div>
-          <div className="flex items-center space-x-5">
+          <div className="hidden sm:flex items-center space-x-5">
             <Link href="/" className="md:block hidden">
               <div className="w-28 text-center text-lg rounded-full border-2 border-white px-5 py-2 hover:shadow-button duration-500">
                 Log in
@@ -133,21 +133,19 @@ export default function Home() {
         link={tool.root}
       />
 
-      <div className="h-screen flex justify-center items-end">
-        <div className="flex md:flex-row flex-col w-full md:h-40 h-full md:space-x-5 m-10 md:space-y-0 space-y-10 overflow-y-auto">
-          {tools.map((tool, index) =>
-            tool.visible ? (
-              <Card
-                title={tool.title}
-                image={tool.icon}
-                color={tool.boxColor}
-                key={index}
-                tool={tool}
-                changeT={changeTool}
-              />
-            ) : null
-          )}
-        </div>
+      <div className="lg:h-screen flex sm:flex-row sm:flex-wrap lg:flex-nowrap flex-col w-full justify-center items-center lg:items-end sm:mt-8 lg:mt-0">
+        {tools.map((tool, index) =>
+          tool.visible ? (
+            <Card
+              title={tool.title}
+              image={tool.icon}
+              color={tool.boxColor}
+              key={index}
+              tool={tool}
+              changeT={changeTool}
+            />
+          ) : null
+        )}
       </div>
     </main>
   );
