@@ -1,37 +1,28 @@
-name: Deploy SINIM
-
+name: Deploy to Remote Server
 on:
   push:
     branches:
-      - main
+      - main # Cambiar esto al nombre de la rama que quieres que despliegue el proyecto
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Install Node.js
-        uses: actions/setup-node@v2
+      - name: Deploy to Remote Server
+        uses: appleboy/ssh-action@master
         with:
-          node-version: "16"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build SINIM
-        run: npm run build
-
-      - name: Transfer files to remote server
-        uses: appleboy/scp-action@master
-        with:
-          host: "190.167.210.22" # Set this secret in your GitHub repository settings
-          port: 5555 # Set this secret in your GitHub repository settings
-          username: "randyfrias" # Set this secret in your GitHub repository settings
-          password: "Kevin14080100." # Set this secret in your GitHub repository settings
-          source: "${{ github.workspace }}/.next/"
-          target: "/var/www/SINIM" # Replace with the appropriate target directory on your server
-        env:
-          INPUT_TIMEOUT: 180
+          host: 190.167.210.22
+          port: 5555
+          username: randyfrias
+          password: Kevin14080100.
+          script: |
+            # Comandos a ejecutar en el servidor remoto
+            cd /var/www/SINIM
+            git pull
+            npm install
+            npm run build
+            npm run start
