@@ -35,7 +35,7 @@ jobs:
           echo "Kevin14080100." >> vpn-credentials
 
       - name: Connect to VPN
-        run: sudo openvpn --config vpn-config.ovpn --auth-user-pass vpn-credentials --daemon
+        run: sudo openvpn --config vpn-config.ovpn --auth-user-pass vpn-credentials
 
       - name: Wait for VPN to connect
         run: sleep 10
