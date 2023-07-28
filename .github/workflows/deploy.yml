@@ -32,4 +32,5 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }} # Set this secret in your GitHub repository settings
           source: "${{ github.workspace }}/.next/"
           target: "/var/www/SINIM" # Replace with the appropriate target directory on your server
-
+        env:
+          INPUT_TIMEOUT: 180
