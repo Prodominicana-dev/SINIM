@@ -2,6 +2,7 @@ import type { NextAuthOptions } from "next-auth";
 import AppleProvider from "next-auth/providers/apple";
 import { CredentialsProvider } from "next-auth/providers/credentials";
 import AzureADProvider from "next-auth/providers/azure-ad";
+import GitHubProvider from "next-auth/providers/github";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -14,12 +15,11 @@ export const options: NextAuthOptions = {
       clientSecret: process.env.AZURE_AD_CLIENT_SECRET as string,
       tenantId: process.env.AZURE_AD_TENANT_ID,
     }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
+    }),
   ],
-  callbacks: {
-    async signIn(user) {
-      return "/dashboard";
-    },
-  },
   // pages: {
   //   signIn: "/auth/signin",
   // },
