@@ -8,7 +8,7 @@ export default function page() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect("/api/auth/signin?callbackurl=/dashboard");
+      redirect("/api/auth/signin?callbackurl=/signin");
     },
   });
 
