@@ -3,7 +3,7 @@ import React from "react";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-export default async function page() {
+export default async function Page() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
