@@ -2,9 +2,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Card from "@/components/home/card";
-import Background from "@/components/home/background";
-import InfoTool from "@/components/home/infoTool";
+import Card from "@/src/components/home/card";
+import Background from "@/src/components/home/background";
+import InfoTool from "@/src/components/home/infoTool";
 import { useEffect, useState } from "react";
 import config from "@/public/config.json";
 
@@ -113,12 +113,12 @@ export default function Home() {
             </button>
           </div>
           <div className="hidden sm:flex items-center space-x-5">
-            <Link href="/auth/login" className="md:block hidden">
+            <Link href="/auth/signin" className="md:block hidden">
               <div className="w-28 text-center text-lg rounded-full border-2 border-white px-5 py-2 hover:shadow-button duration-500">
                 Log in
               </div>
             </Link>
-            <Link href="/auth/register" className="md:block hidden">
+            <Link href="/auth/signup" className="md:block hidden">
               <div className="w-28 text-center text-lg rounded-full border-2 border-white px-5 py-2 hover:shadow-button duration-500">
                 Sign in
               </div>
