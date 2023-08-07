@@ -9,7 +9,7 @@ export default function Home() {
       {status === "loading" ? (
         <p>Cargando...</p>
       ) : session ? (
-        <div>{session.user?.name}</div>
+        <div>{session.user?.email}</div>
       ) : (
         <h1 className="text-5xl">NO SE PUEDE MIO</h1>
       )}
