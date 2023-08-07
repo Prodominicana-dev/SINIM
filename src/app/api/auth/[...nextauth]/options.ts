@@ -16,11 +16,11 @@ export const options: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn() {
+    async signIn(user) {
       return "/dashboard";
     },
   },
-  pages: {
-    signIn: "/auth/signin",
-  },
+  // pages: {
+  //   signIn: "/auth/signin",
+  // },
 };
