@@ -30,6 +30,8 @@ export default function Page() {
   //   };
   // }, []);
 
+  const loginHandler = async () => {};
+
   return (
     <>
       <form onSubmit={loginHandler}>

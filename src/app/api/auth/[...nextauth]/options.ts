@@ -9,6 +9,12 @@ export const options: NextAuthOptions = {
     AppleProvider({
       clientId: process.env.APPLE_ID as string,
       clientSecret: process.env.APPLE_SECRET as string,
+      client: {
+        teamId: process.env.APPLE_TEAM_ID,
+        redirect_uris: [
+          "https://nextauthjs--sinim.netlify.app/api/auth/callback/apple",
+        ],
+      },
     }),
     AzureADProvider({
       clientId: process.env.AZURE_AD_CLIENT_ID as string,
@@ -20,17 +26,7 @@ export const options: NextAuthOptions = {
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
   ],
-  cookies: {
-    pkceCodeVerifier: {
-      name: "next-auth.pkce.code_verifier",
-      options: {
-        httpOnly: true,
-        sameSite: "none",
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-      },
-    },
-  },
+
   // pages: {
   //   signIn: "/auth/signin",
   // },
