@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="flex justify-center items-center bg-blue-600 h-screen">
       {status === "loading" ? (
-        <p>Cargando...</p>
+        <p>Cargando..</p>
       ) : session ? (
         <div>{session.user?.name}</div>
       ) : (
