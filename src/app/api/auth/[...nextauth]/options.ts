@@ -9,12 +9,6 @@ export const options: NextAuthOptions = {
     AppleProvider({
       clientId: process.env.APPLE_ID as string,
       clientSecret: process.env.APPLE_SECRET as string,
-      client: {
-        teamId: process.env.APPLE_TEAM_ID,
-        redirect_uris: [
-          "https://nextauthjs--sinim.netlify.app/api/auth/callback/apple",
-        ],
-      },
     }),
     AzureADProvider({
       clientId: process.env.AZURE_AD_CLIENT_ID as string,
