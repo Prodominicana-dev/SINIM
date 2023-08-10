@@ -2,9 +2,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Card from "@/components/home/card";
-import Background from "@/components/home/background";
-import InfoTool from "@/components/home/infoTool";
+import Card from "@/src/components/home/card";
+import Background from "@/src/components/home/background";
+import InfoTool from "@/src/components/home/infoTool";
 import { useEffect, useState } from "react";
 import config from "@/public/config.json";
 

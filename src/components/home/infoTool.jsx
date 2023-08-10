@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import TypeWriterEffect from "@/components/typewriter/typewritereffect";
+import TypeWriterEffect from "@/src/components/typewriter/typewritereffect";
 import { useState, useEffect } from "react";
 
 export default function InfoTool({ description, logo, link }) {
