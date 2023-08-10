@@ -2,6 +2,7 @@
 import React, { use } from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Background from "@/src/components/home/background";
 
 export default function Page() {
   const handleSubmit = (e) => {
@@ -22,53 +23,72 @@ export default function Page() {
   };
   return (
     <>
-      <h1>Formulario</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Nombre</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            required
-            className="text-black"
-          />
+      <section className="w-full h-screen">
+        <Background
+          video={"/videos/rami.mp4"}
+          color={"bg-gradient-to-l from-[50%] from-blue-700 to-sky-500/60"}
+        />
+        <div className="w-6/12 h-full ml-auto bg-white/10 flex justify-center items-center">
+          <div
+            id="formulario"
+            className="w-11/12 h-full flex flex-col bg-red-300 p-10 space-y-8"
+          >
+            <h1 className="font-bold text-5xl text-white">Regístrate</h1>
+            <form className="flex flex-col space-y-8">
+              <div className="w-full h-12 flex space-x-8 justify-between">
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  className="w-5/12 border-2 bg-transparent rounded-xl p-5 text-white placeholder-white"
+                  placeholder="Nombre"
+                />
+                <input
+                  type="text"
+                  name="lastname"
+                  id="lastname"
+                  className="w-5/12 border-2 bg-transparent rounded-xl p-5 text-white placeholder-white"
+                  placeholder="Apellido"
+                />
+              </div>
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="w-full h-12 border-2 bg-transparent rounded-xl p-5 text-white placeholder-white"
+                  placeholder="Correo electrónico"
+                />
+              </div>
+              <div className="w-full h-12 flex space-x-8 justify-between">
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  className="w-3/12 border-2 bg-transparent rounded-xl p-5 text-white placeholder-white"
+                  placeholder="Nombre"
+                />
+                <input
+                  type="text"
+                  name="lastname"
+                  id="lastname"
+                  className="w-9/12 border-2 bg-transparent rounded-xl p-5 text-white placeholder-white"
+                  placeholder="Apellido"
+                />
+              </div>
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="w-full h-12 border-2 bg-transparent rounded-xl p-5 text-white placeholder-white"
+                  placeholder="Correo electrónico"
+                />
+              </div>
+            </form>
+          </div>
         </div>
-        <div>
-          <label htmlFor="lastname">Apellido</label>
-          <input
-            type="text"
-            name="lastname"
-            id="lastname"
-            required
-            className="text-black"
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Correo electrónico</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            required
-            className="text-black"
-          />
-        </div>
-        <div>
-          <label htmlFor="pwd">Pwd</label>
-          <input
-            type="password"
-            name="pwd"
-            id="pwd"
-            required
-            className="text-black"
-          />
-        </div>
-
-        <button type="submit" className={` w-32 h-16 bg-red-200 text-black`}>
-          Enviar
-        </button>
-      </form>
+      </section>
     </>
   );
 }
