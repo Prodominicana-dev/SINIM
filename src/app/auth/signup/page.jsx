@@ -3,6 +3,7 @@ import React, { use } from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Background from "@/src/components/home/background";
+import { Input } from "@material-tailwind/react";
 
 export default function Page() {
   const handleSubmit = (e) => {
@@ -36,18 +37,12 @@ export default function Page() {
             <h1 className="font-bold text-5xl text-white">Regístrate</h1>
             <form className="flex flex-col space-y-8">
               <div className="w-full h-12 flex space-x-8 justify-between">
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  className="w-5/12 border-2 bg-transparent rounded-xl p-5 text-white placeholder-white"
-                  placeholder="Nombre"
-                />
+                <Input></Input>
                 <input
                   type="text"
                   name="lastname"
                   id="lastname"
-                  className="w-5/12 border-2 bg-transparent rounded-xl p-5 text-white placeholder-white"
+                  className="w-72 border-2 bg-transparent rounded-xl p-5 text-white placeholder-white"
                   placeholder="Apellido"
                 />
               </div>
