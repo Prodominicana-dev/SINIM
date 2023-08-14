@@ -113,14 +113,10 @@ export default function Home() {
             </button>
           </div>
           <div className="hidden sm:flex items-center space-x-5">
-            <Link href="/auth/login" className="md:block hidden">
+        
+            <Link href="/dashboard" className="md:block hidden">
               <div className="w-28 text-center text-lg rounded-full border-2 border-white px-5 py-2 hover:shadow-button duration-500">
-                Log in
-              </div>
-            </Link>
-            <Link href="/auth/register" className="md:block hidden">
-              <div className="w-28 text-center text-lg rounded-full border-2 border-white px-5 py-2 hover:shadow-button duration-500">
-                Sign in
+                Acceder
               </div>
             </Link>
           </div>
