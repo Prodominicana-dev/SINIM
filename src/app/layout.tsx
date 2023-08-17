@@ -19,9 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <UserProvider>
-    <html lang="es">
-      <body>{children}</body>
-    </html>
+      <html lang="es">
+        <body>{children}</body>
+      </html>
     </UserProvider>
     
   );
