@@ -1,4 +1,5 @@
 const withMT = require("@material-tailwind/react/utils/withMT");
+const colors = require("tailwindcss/colors");
 
 module.exports = withMT({
   content: [
@@ -27,6 +28,9 @@ module.exports = withMT({
     },
     fontFamily: {
       custom: ["SAWoodlandHills", "normal"],
+    },
+    colors: {
+      ...colors,
     },
   },
   plugins: [],
