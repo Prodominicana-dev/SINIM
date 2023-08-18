@@ -25,7 +25,7 @@ export default function Home() {
     {
       title: "DATA MARKET",
       description:
-        "Analice estadísicas en materia de exportación e inversión en el pais.",
+        "¡Desbloquea el potencial con Datamarket! Tu socio en la toma de decisiones empresariales. Descubre oportunidades, explora proyecciones estratégicas, mantente actualizado con las tendencias de consumo y analiza estadísticas valiosas de comercio internacional e inversión extranjera directa.",
       color: "bg-gradient-to-tr from-green-500 from-[30%] to-sky-600/80",
       boxColor: "bg-gradient-to-b from-green-500 to-sky-600",
       fromColor: "green-500",
@@ -40,7 +40,7 @@ export default function Home() {
     {
       title: "SIED",
       description:
-        "Analice oportunidades, tendencias, normativas y amenazas del contexto global de inversión.",
+        "¡Conquista el mundo de las inversiones! Nuestro Sistema de Inteligencia de Inversión Extranjera Directa (SIED) te brinda la ventaja competitiva que necesitas. Descubre oportunidades globales, anticipa tendencias y navega por las regulaciones con facilidad para lograr inversiones exitosas.",
       color: "bg-gradient-to-tr from-[40%] from-pink-600 to-violet-800/60",
       boxColor: "bg-gradient-to-b from-pink-600 to-violet-800",
       fromColor: "pink-600",
@@ -55,7 +55,7 @@ export default function Home() {
     {
       title: "SAIM",
       description:
-        "Consulte oportunidades, amenazas, obstáculos y actualizaciones de interés para el sector exportador.",
+        "¡Domina el comercio global! Nuestro Sistema de Alertas de Inteligencia de Mercados (SAIM) te mantiene adelante en la competencia, brindándote datos cruciales sobre oportunidades emergentes y obstáculos a evitar. Impulsa tus exportaciones de manera más inteligente.",
       color: "bg-gradient-to-tr from-[40%] from-sky-500 to-purple-700/60",
       boxColor: "bg-gradient-to-b from-sky-500 to-purple-700",
       fromColor: "sky-500",
@@ -70,7 +70,7 @@ export default function Home() {
     {
       title: "RAMI",
       description:
-        "Consulte medidas, requisitos y regulaciones para las mercancías exportadas desde República Dominicana.",
+        "¡Haz que tus exportaciones despeguen! Nuestra plataforma te lleva de la mano a través de los laberintos de regulaciones y requisitos internacionales. Accede a los mercados globales con confianza y desata el potencial oculto de tus productos desde República Dominicana.",
       color: "bg-gradient-to-tr from-[30%] from-orange-500 to-yellow-400/60",
       boxColor: "bg-gradient-to-b from-yellow-400 to-orange-500",
       fromColor: "yellow-400",
@@ -115,7 +115,6 @@ export default function Home() {
             </button>
           </div>
           <div className="hidden sm:flex items-center space-x-5">
-        
             <Link href="/dashboard" className="md:block hidden">
               <div className="w-28 text-center text-lg rounded-full border-2 border-white px-5 py-2 hover:shadow-button duration-500">
                 Acceder
