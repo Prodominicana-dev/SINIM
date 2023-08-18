@@ -2,11 +2,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Card from "@/components/home/card";
-import Background from "@/components/home/background";
-import InfoTool from "@/components/home/infoTool";
+import Card from "@/src/components/home/card";
+import Background from "@/src/components/home/background";
+import InfoTool from "@/src/components/home/infoTool";
 import { useEffect, useState } from "react";
 import config from "@/public/config.json";
+import AccessToken from "../components/token/getAccessToken";
 
 export default function Home() {
   const sinim = {
@@ -92,6 +93,7 @@ export default function Home() {
 
   return (
     <main className="relative ">
+      
       <Background video={tool.background} color={tool.color} />
 
       <nav className="lg:absolute w-full sm:p-12 p-8  flex md:items-center md:justify-between  bg-transparent z-10">
@@ -113,14 +115,10 @@ export default function Home() {
             </button>
           </div>
           <div className="hidden sm:flex items-center space-x-5">
-            <Link href="/auth/login" className="md:block hidden">
+        
+            <Link href="/dashboard" className="md:block hidden">
               <div className="w-28 text-center text-lg rounded-full border-2 border-white px-5 py-2 hover:shadow-button duration-500">
-                Log in
-              </div>
-            </Link>
-            <Link href="/auth/register" className="md:block hidden">
-              <div className="w-28 text-center text-lg rounded-full border-2 border-white px-5 py-2 hover:shadow-button duration-500">
-                Sign in
+                Acceder
               </div>
             </Link>
           </div>
