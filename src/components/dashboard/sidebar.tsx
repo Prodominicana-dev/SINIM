@@ -23,7 +23,7 @@ export function Sidebar() {
   };
 
   return (
-    <Card className="h-[calc(100vh-2rem)] max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 m-5">
+    <Card className="h-full w-full  p-4 shadow-xl shadow-blue-gray-900/5 rounded-none bg-navy">
       <div className="mb-2 p-4">
         <Typography variant="h5" color="blue-gray">
           SINIM
