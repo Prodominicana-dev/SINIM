@@ -14,7 +14,7 @@ export default function RootLayout({
   return (
     <div className="bg-white h-screen w-full">
       <div className="flex flex-row w-full h-full">
-        <div className="flex items-end h-full w-32 hover:w-72 duration-700">
+        <div className="flex items-end h-full ">
           <Sidebar />
         </div>
         <div className="w-full h-full">

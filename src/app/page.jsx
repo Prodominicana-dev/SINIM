@@ -123,6 +123,7 @@ export default function Home() {
       </nav>
 
       <InfoTool
+        title={tool.title}
         logo={tool.logo}
         description={tool.description}
         link={tool.root}

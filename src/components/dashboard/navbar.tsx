@@ -21,46 +21,6 @@ export function NavbarDashboard() {
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Pages
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Account
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Blocks
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Docs
-        </a>
-      </Typography>
       <UserProfile />
     </ul>
   );
@@ -71,7 +31,8 @@ export function NavbarDashboard() {
         color="transparent"
         className="mx-auto  w-full py-2 px-4 lg:px-8 lg:py-4 bg-opacity-100 m-5 "
       >
-        <div className="container mx-2 flex items-center justify-end text-blue-gray-900">
+        <div className="container mx-2 flex items-center justify-between text-blue-gray-900">
+          <Typography className="mr-4 py-1.5 font-medium">SINIM</Typography>
           <div className="hidden lg:block">{navList}</div>
           <IconButton
             variant="text"

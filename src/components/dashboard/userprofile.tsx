@@ -38,7 +38,7 @@ export default function UserProfile() {
 
   if (!user)
     return (
-      <Button>
+      <Button className="bg-navy">
         <Link href={"api/auth/login"}>Inicia sesion</Link>
       </Button>
     );

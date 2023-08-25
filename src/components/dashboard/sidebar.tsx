@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+// @ts-ignore
+import React, { useEffect, useRef } from "react";
 import {
   Card,
   Typography,
@@ -14,20 +15,31 @@ import {
 } from "@material-tailwind/react";
 import { PresentationChartBarIcon } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { useHover } from "usehooks-ts";
+import Image from "next/image";
 
 export function Sidebar() {
   const [open, setOpen] = React.useState(0);
+  const hoverRef = useRef(null);
+  const isHover = useHover(hoverRef);
 
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
   };
 
+  useEffect(() => {
+    if (!isHover) {
+      setOpen(0);
+    }
+  });
+
   return (
-    <Card className="h-full w-full  p-4 shadow-xl shadow-blue-gray-900/5 rounded-none bg-navy">
+    <div
+      ref={hoverRef}
+      className="h-full p-4 bg-navy w-28 hover:w-72 duration-700 group"
+    >
       <div className="mb-2 p-4">
-        <Typography variant="h5" color="blue-gray">
-          SINIM
-        </Typography>
+        <div>SINIM</div>
       </div>
       <List>
         <Accordion
@@ -35,7 +47,7 @@ export function Sidebar() {
           icon={
             <ChevronDownIcon
               strokeWidth={2.5}
-              className={`mx-auto h-4 w-4 transition-transform ${
+              className={`mx-auto h-4 w-4 transition-transform opacity-0 group-hover:opacity-100 text-white ${
                 open === 1 ? "rotate-180" : ""
               }`}
             />
@@ -47,9 +59,20 @@ export function Sidebar() {
               className="border-b-0 p-3"
             >
               <ListItemPrefix>
-                <PresentationChartBarIcon className="h-5 w-5" />
+                <Image
+                  src={"/images/logo/datamarket.svg"}
+                  width={600}
+                  height={600}
+                  draggable={false}
+                  alt=""
+                  className="h-10 w-10 text-white group-hover:h-7 group-hover:w-7 duration-700"
+                />
+                {/* <PresentationChartBarIcon className="h-8 w-8 text-white group-hover:h-5 group-hover:w-5 duration-700" /> */}
               </ListItemPrefix>
-              <Typography color="blue-gray" className="mr-auto font-normal">
+              <Typography
+                color="white"
+                className="mr-auto font-normal opacity-0 group-hover:opacity-100 duration-300"
+              >
                 Datamarket
               </Typography>
             </AccordionHeader>
@@ -77,7 +100,61 @@ export function Sidebar() {
             </List>
           </AccordionBody>
         </Accordion>
+        <ListItem>
+          <ListItemPrefix>
+            <Image
+              src={"/images/logo/rami.svg"}
+              width={600}
+              height={600}
+              draggable={false}
+              alt=""
+              className="h-10 w-10 text-white group-hover:h-7 group-hover:w-7 duration-700"
+            />
+          </ListItemPrefix>
+          <Typography
+            color="white"
+            className="mr-auto font-normal opacity-0 group-hover:opacity-100 duration-300"
+          >
+            RAMI
+          </Typography>
+        </ListItem>
+        <ListItem>
+          <ListItemPrefix>
+            <Image
+              src={"/images/logo/saim.svg"}
+              width={600}
+              height={600}
+              draggable={false}
+              alt=""
+              className="h-10 w-10 text-white group-hover:h-7 group-hover:w-7 duration-700"
+            />
+          </ListItemPrefix>
+          <Typography
+            color="white"
+            className="mr-auto font-normal opacity-0 group-hover:opacity-100 duration-300"
+          >
+            SAIM
+          </Typography>
+        </ListItem>
+        <ListItem>
+          <ListItemPrefix>
+            <Image
+              src={"/images/logo/sied.svg"}
+              width={600}
+              height={600}
+              draggable={false}
+              alt=""
+              className="h-10 w-10 text-white group-hover:h-7 group-hover:w-7 duration-700"
+            />
+          </ListItemPrefix>
+          <Typography
+            color="white"
+            className="mr-auto font-normal opacity-0 group-hover:opacity-100 duration-300"
+          >
+            SIED
+          </Typography>
+        </ListItem>
       </List>
-    </Card>
+    </div>
   );
 }
