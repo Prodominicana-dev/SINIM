@@ -12,15 +12,13 @@ export default function RootLayout({
   const { user, error, isLoading } = useUser();
   if (isLoading) return <Loading />;
   return (
-    <div className="bg-white h-screen w-full">
-      <div className="flex flex-row w-full h-full">
-        <div className="flex items-end h-full ">
-          <Sidebar />
-        </div>
-        <div className="w-full h-full">
-          <NavbarDashboard />
-          <div className="flex items-center justify-center">{children}</div>
-        </div>
+    <div className="bg-white h-screen w-full flex">
+      <div className="hidden lg:flex items-end h-full">
+        <Sidebar />
+      </div>
+      <div className="w-full h-full overflow-y-auto">
+        <NavbarDashboard />
+        {children}
       </div>
     </div>
   );
