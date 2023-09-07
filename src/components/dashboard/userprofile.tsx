@@ -39,7 +39,7 @@ export default function UserProfile() {
   if (!user)
     return (
       <Button className="bg-navy">
-        <Link href={"api/auth/login"}>Inicia sesion</Link>
+        <Link href={"/api/auth/login"}>Inicia sesion</Link>
       </Button>
     );
 
@@ -51,13 +51,7 @@ export default function UserProfile() {
           color="blue-gray"
           className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
         >
-          <Avatar
-            variant="circular"
-            size="sm"
-            alt="tania andrew"
-            className="border border-gray-900 p-0.5"
-            src={user.picture as string}
-          />
+          <Avatar variant="circular" size="sm" src={user.picture as string} />
           <Typography className="capitalize">{user.name}</Typography>
           <ChevronDownIcon
             strokeWidth={2.5}

@@ -8,9 +8,13 @@ import {
   CardFooter,
   Button,
 } from "@material-tailwind/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import React from "react";
+import SaimCard from "../../../components/saim/card";
+import getData from "@/src/services/saim/getData";
 
-export default function Page() {
+export default async function Page() {
+  const data = await getData();
   const saimFilters = [
     {
       name: "Oportunidades",
@@ -39,7 +43,7 @@ export default function Page() {
   ];
   return (
     <div className="w-full h-full">
-      <div className="relative w-full h-[40%]">
+      <div className="relative w-full sm:h-4/6">
         <div className="absolute inset-0 z-0">
           <video
             autoPlay
@@ -51,8 +55,8 @@ export default function Page() {
           ></video>
         </div>
         <div className="absolute inset-0 bg-black opacity-60 border-0"></div>
-        <div className="relative flex flex-col items-center justify-center">
-          <div className="inline-flex space-x-10 py-10">
+        <div className="relative h-full flex flex-col items-center justify-center">
+          <div className="inline-flex space-x-10 my-10">
             <div className="bg-white text-black font-bold rounded-full p-4 cursor-pointer">
               <a href="">Oportunidades</a>
             </div>
@@ -66,100 +70,27 @@ export default function Page() {
               <a href="">Obstaculos</a>
             </div>
           </div>
-          <div className="w-3/12 text-center text-white text-2xl font-bold">
+          <div className="sm:w-6/12 lg:w-4/12 text-center text-white text-3xl font-bold">
             Descubra Nuevas Oportunidades de Negocio
           </div>
-          <div className="w-4/12 my-4 text-center text-normal">
+          <div className="sm:w-6/12 lg:w-4/12 mt-4 text-center text-normal">
             Explore oportunidades emergentes, tendencias y nichos de mercado que
             pueden impulsar su crecimiento empresarial.
           </div>
+          <div className="flex flex-row bg-white p-3 w-4/12 rounded-full my-10">
+            <MagnifyingGlassIcon className="w-5 mx-2 text-gray-500" />
+            <input
+              placeholder="Producto o código arancelario..."
+              className="w-10/12 text-blue-500 outline-none"
+            />
+          </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-8">
-        <Card className="mt-6 w-full">
-          <CardHeader color="blue-gray" className="relative h-46x">
-            <img
-              src="https://fruittoday.com/wp-content/uploads/2022/02/conservar-aguacate-correctamente.jpg"
-              alt="card-image"
-            />
-          </CardHeader>
-          <CardBody>
-            <Typography>Oportunidad</Typography>
-            <Typography variant="h5" color="blue-gray" className="mb-2">
-              Nuevo Mercado de aguacate en Puerto Rico
-            </Typography>
-          </CardBody>
-        </Card>
-        <Card className="mt-6 w-full">
-          <CardHeader color="blue-gray" className="relative h-46x">
-            <img
-              src="https://fruittoday.com/wp-content/uploads/2022/02/conservar-aguacate-correctamente.jpg"
-              alt="card-image"
-            />
-          </CardHeader>
-          <CardBody>
-            <Typography>Oportunidad</Typography>
-            <Typography variant="h5" color="blue-gray" className="mb-2">
-              Nuevo Mercado de aguacate en Puerto Rico
-            </Typography>
-          </CardBody>
-        </Card>
-        <Card className="mt-6 w-full">
-          <CardHeader color="blue-gray" className="relative h-46x">
-            <img
-              src="https://fruittoday.com/wp-content/uploads/2022/02/conservar-aguacate-correctamente.jpg"
-              alt="card-image"
-            />
-          </CardHeader>
-          <CardBody>
-            <Typography>Oportunidad</Typography>
-            <Typography variant="h5" color="blue-gray" className="mb-2">
-              Nuevo Mercado de aguacate en Puerto Rico
-            </Typography>
-          </CardBody>
-        </Card>
-        <Card className="mt-6 w-full">
-          <CardHeader color="blue-gray" className="relative h-46x">
-            <img
-              src="https://fruittoday.com/wp-content/uploads/2022/02/conservar-aguacate-correctamente.jpg"
-              alt="card-image"
-            />
-          </CardHeader>
-          <CardBody>
-            <Typography>Oportunidad</Typography>
-            <Typography variant="h5" color="blue-gray" className="mb-2">
-              Nuevo Mercado de aguacate en Puerto Rico
-            </Typography>
-          </CardBody>
-        </Card>
-        <Card className="mt-6 w-full">
-          <CardHeader color="blue-gray" className="relative h-46x">
-            <img
-              src="https://fruittoday.com/wp-content/uploads/2022/02/conservar-aguacate-correctamente.jpg"
-              alt="card-image"
-            />
-          </CardHeader>
-          <CardBody>
-            <Typography>Oportunidad</Typography>
-            <Typography variant="h5" color="blue-gray" className="mb-2">
-              Nuevo Mercado de aguacate en Puerto Rico
-            </Typography>
-          </CardBody>
-        </Card>
-        <Card className="mt-6 w-full">
-          <CardHeader color="blue-gray" className="relative h-46x">
-            <img
-              src="https://fruittoday.com/wp-content/uploads/2022/02/conservar-aguacate-correctamente.jpg"
-              alt="card-image"
-            />
-          </CardHeader>
-          <CardBody>
-            <Typography>Oportunidad</Typography>
-            <Typography variant="h5" color="blue-gray" className="mb-2">
-              Nuevo Mercado de aguacate en Puerto Rico
-            </Typography>
-          </CardBody>
-        </Card>
+      <div className="text-black">{}</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-8">
+        {data.map((saim) => (
+          <SaimCard {...saim} />
+        ))}
       </div>
     </div>
   );

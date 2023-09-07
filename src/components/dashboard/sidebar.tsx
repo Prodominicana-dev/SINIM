@@ -18,7 +18,7 @@ import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useHover } from "usehooks-ts";
 import Image from "next/image";
 
-export function Sidebar() {
+export function Sidebar({ visible }: any) {
   const [open, setOpen] = React.useState(0);
   const hoverRef = useRef(null);
   const isHover = useHover(hoverRef);
@@ -36,12 +36,14 @@ export function Sidebar() {
   return (
     <div
       ref={hoverRef}
-      className="h-full p-4 bg-navy w-28 hover:w-72 duration-700 group"
+      className={`h-full  bg-navy hover:w-72 duration-700 group ${
+        visible ? "w-28 p-4" : "w-0 p-0"
+      }`}
     >
       <div className="mb-2 p-4">
         <div>SINIM</div>
       </div>
-      <List>
+      <List className={` ${visible ? "visible" : "invisible"} duration-200`}>
         <Accordion
           open={open === 1}
           icon={
