@@ -19,6 +19,8 @@ import {
 } from "@heroicons/react/24/solid";
 
 export default function UserProfile() {
+  const { user, error, isLoading } = useUser();
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const profileMenuItems = [
     {
       label: "Perfil",
@@ -31,8 +33,6 @@ export default function UserProfile() {
       link: "api/auth/logout",
     },
   ];
-  const { user, error, isLoading } = useUser();
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const closeMenu = () => setIsMenuOpen(false);
 

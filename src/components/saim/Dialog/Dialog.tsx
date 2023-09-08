@@ -26,13 +26,12 @@ interface SaimData {
 }
 
 interface SaimDialogProps {
-  open: boolean;
   handler: () => void;
   data: SaimData; // Aquí especifica el tipo de data
 }
 
-export default function SaimDialog({ open, handler, data }: SaimDialogProps) {
-  console.log(data);
+export default function SaimDialog({ handler, data }: SaimDialogProps) {
+  const open = true;
   return (
     <Dialog
       open={open}

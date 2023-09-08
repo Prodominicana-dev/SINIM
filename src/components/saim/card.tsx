@@ -4,11 +4,11 @@ import {
   CardHeader,
   Typography,
 } from "@material-tailwind/react";
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import SaimDialog from "./dialog";
+import Link from "next/link";
 
 interface SaimData {
   id: number;
@@ -22,11 +22,9 @@ interface SaimData {
 }
 
 export default function SaimCard(data: SaimData) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(!open);
   return (
-    <>
-      <Card onClick={handleOpen} className="mt-6 w-full group cursor-pointer">
+    <Link href={`/dashboard/saim/${data.id}`}>
+      <Card className="mt-6 w-full group cursor-pointer">
         <CardHeader color="blue-gray" className="relative ">
           <Image
             width={1920}
@@ -46,7 +44,6 @@ export default function SaimCard(data: SaimData) {
           </div>
         </CardBody>
       </Card>
-      <SaimDialog open={open} handler={handleOpen} data={data} />
-    </>
+    </Link>
   );
 }
