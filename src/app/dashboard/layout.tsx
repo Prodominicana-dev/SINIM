@@ -3,13 +3,14 @@ import { Sidebar } from "@/src/components/dashboard/sidebar";
 import { NavbarDashboard } from "@/src/components/dashboard/navbar";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Loading from "./loading";
-import { useState } from "react";
+import { ReactNode, FC, useState } from "react";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+interface RootLayoutProps {
+  children: ReactNode;
+  modal: ReactNode;
+}
+
+export default function RootLayout({ children, modal }: RootLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, error, isLoading } = useUser();
   if (isLoading) return <Loading />;
@@ -27,6 +28,7 @@ export default function RootLayout({
         <NavbarDashboard toggleSidebar={toggleSidebar} />
         {children}
       </div>
+      {modal}
     </div>
   );
 }

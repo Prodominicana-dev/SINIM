@@ -13,6 +13,7 @@ import Image from "next/image";
 import { data } from "autoprefixer";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { useRouter } from "next/navigation";
 
 interface SaimData {
   id: number;
@@ -26,16 +27,21 @@ interface SaimData {
 }
 
 interface SaimDialogProps {
-  handler: () => void;
   data: SaimData; // Aquí especifica el tipo de data
 }
 
-export default function SaimDialog({ handler, data }: SaimDialogProps) {
+export default function Modal({ data }: SaimDialogProps) {
+  const router = useRouter();
+  const handler = (open: boolean): any => {
+    if (!open) {
+      router.back();
+    }
+  };
   const open = true;
   return (
     <Dialog
       open={open}
-      handler={handler}
+      handler={handler(true)}
       size={"xl"}
       animate={{
         mount: { scale: 1, y: 0 },
@@ -48,7 +54,7 @@ export default function SaimDialog({ handler, data }: SaimDialogProps) {
           color="blue-gray"
           size="sm"
           variant="text"
-          onClick={handler}
+          onClick={handler(false)}
         >
           <XMarkIcon className="w-7 m-2" />
         </IconButton>
