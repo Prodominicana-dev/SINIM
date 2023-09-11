@@ -13,9 +13,23 @@ import React, { useState, useEffect } from "react";
 import SaimCard from "../../../components/saim/card";
 import getAllSaim from "@/src/services/saim/getAllSaim";
 import Saim from "@/src/models/saim";
+import Link from "next/link";
 
 export default function Page() {
   const [data, setData] = useState<Saim[]>([]);
+  const [search, setSearch] = useState("");
+  const handleSearchChange = (e: any) => {
+    setSearch(e.target.value);
+  };
+  const filteredData = data.filter(
+    (saim) =>
+      saim.title.toLowerCase().includes(search.toLowerCase()) ||
+      saim.products.some(
+        (product) =>
+          product.name.toLowerCase().includes(search.toLowerCase()) ||
+          product.code.toLowerCase().includes(search.toLowerCase())
+      )
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,41 +79,60 @@ export default function Page() {
           ></video>
         </div>
         <div className="absolute inset-0 bg-black opacity-60 border-0"></div>
-        <div className="relative h-full flex flex-col items-center justify-center px-5 sm:px-0">
-          <div className="inline-flex space-x-5 sm:space-x-10 my-10 text-xs sm:text-base">
-            <div className="bg-white text-black font-bold rounded-full p-4 cursor-pointer">
-              <a href="">Oportunidades</a>
-            </div>
-            <div className="bg-black/50 hover:bg-white hover:text-black rounded-full p-4 duration-300 cursor-pointer">
-              <a href="">Actualizaciones</a>
-            </div>
-            <div className="bg-black/50 hover:bg-white hover:text-black rounded-full p-4 duration-300 cursor-pointer">
-              <a href="">Amenazas</a>
-            </div>
-            <div className="bg-black/50 hover:bg-white hover:text-black rounded-full p-4 duration-300 cursor-pointer">
-              <a href="">Obstaculos</a>
-            </div>
+        <div className="relative h-full flex flex-col items-center justify-center px-5 sm:px-0 w-full">
+          <div className="gap-3 sm:gap-5 lg:gap-10 my-10 text-[14px] sm:text-lg flex flex-row justify-center items-center flex-wrap lg:flex-nowrap sm:w-8/12">
+            <Link
+              href={"#Obstaculos"}
+              className="bg-black/50 hover:bg-white hover:text-black rounded-full p-3 sm:p-4 duration-300 cursor-pointer text-center"
+            >
+              Todos
+            </Link>
+            <Link
+              href={"#Oportunidades"}
+              className="bg-white text-black font-bold rounded-full p-3 sm:p-4 cursor-pointer text-center"
+            >
+              Oportunidades
+            </Link>
+            <Link
+              href={"#actualizaciones"}
+              className="bg-black/50 hover:bg-white hover:text-black rounded-full p-3 sm:p-4 duration-300 cursor-pointer text-center"
+            >
+              Actualizaciones
+            </Link>
+            <Link
+              href={"#Amenazas"}
+              className="bg-black/50 hover:bg-white hover:text-black rounded-full p-3 sm:p-4 duration-300 cursor-pointer text-center "
+            >
+              Amenazas
+            </Link>
+            <Link
+              href={"#Obstaculos"}
+              className="bg-black/50 hover:bg-white hover:text-black rounded-full p-3 sm:p-4 duration-300 cursor-pointer text-center"
+            >
+              Obstáculos
+            </Link>
           </div>
-          <div className="sm:w-8/12 lg:w-4/12 text-center text-white text-2xl sm:text-3xl font-bold">
+          <div className="sm:w-8/12 md:w-6/12 xl:w-4/12 text-center text-white text-2xl sm:text-3xl font-bold">
             Descubra Nuevas Oportunidades de Negocio
           </div>
-          <div className="sm:w-8/12 lg:w-4/12 mt-4 text-center text-sm  sm:text-normal">
+          <div className="sm:w-8/12 md:w-6/12 xl:w-4/12 mt-4 text-center text-sm  sm:text-normal">
             Explore oportunidades emergentes, tendencias y nichos de mercado que
             pueden impulsar su crecimiento empresarial.
           </div>
-          <div className="flex flex-row bg-white p-5 w-8/12 lg:w-4/12 rounded-full my-10">
+          <div className="flex flex-row bg-white p-4 sm:p-5 w-10/12 sm:w-8/12 md:w-6/12 xl:w-4/12 rounded-full my-10">
             <MagnifyingGlassIcon className="w-5 mx-2 text-gray-500" />
             <input
               placeholder="Producto o código arancelario..."
               className="w-10/12  text-blue-500 outline-none"
               name="search"
+              value={search}
+              onChange={handleSearchChange}
             />
           </div>
         </div>
       </div>
-      <div className="text-black">{}</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-8">
-        {data.map((saim) => (
+        {filteredData.map((saim) => (
           <SaimCard key={saim.id} {...saim} />
         ))}
       </div>
