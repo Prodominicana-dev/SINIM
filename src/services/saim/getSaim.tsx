@@ -1,18 +1,8 @@
+import Saim from "@/src/models/saim";
 import { data } from "autoprefixer";
 import axios from "axios";
 
-interface SaimData {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  source: string;
-  link: string;
-  image: string;
-  date: Date;
-}
-
-export default async function getSaim(id: string): Promise<SaimData> {
+export default async function getSaim(id: string): Promise<Saim> {
   const saimEndpoint = `https://sinim-api-git-tools-prodominicanadev.vercel.app/saim/${id}`;
   const response = await axios.get(saimEndpoint);
   const saimData = response.data;

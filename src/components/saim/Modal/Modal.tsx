@@ -1,3 +1,4 @@
+"use client";
 import {
   Dialog,
   DialogHeader,
@@ -7,13 +8,15 @@ import {
   Typography,
   IconButton,
 } from "@material-tailwind/react";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { data } from "autoprefixer";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useRouter } from "next/navigation";
+import getSaim from "@/src/services/saim/getSaim";
+import Saim from "@/src/models/saim";
 
 interface SaimData {
   id: number;
@@ -26,22 +29,28 @@ interface SaimData {
   date: Date;
 }
 
-interface SaimDialogProps {
-  data: SaimData; // Aquí especifica el tipo de data
-}
-
-export default function Modal({ data }: SaimDialogProps) {
+export default function Modal({ id }: any) {
+  const [data, setData] = useState<Saim>();
+  const [open, setOpen] = React.useState(true);
   const router = useRouter();
-  const handler = (open: boolean): any => {
-    if (!open) {
-      router.back();
-    }
-  };
-  const open = true;
+  const handleOpen = useCallback(() => {
+    setOpen(!open);
+    router.back();
+  }, [router]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getSaim(id);
+      setData(response);
+    };
+    fetchData();
+  }, []);
+  if (!data) {
+    return <div>No existe</div>;
+  }
   return (
     <Dialog
       open={open}
-      handler={handler(true)}
+      handler={handleOpen}
       size={"xl"}
       animate={{
         mount: { scale: 1, y: 0 },
@@ -54,12 +63,12 @@ export default function Modal({ data }: SaimDialogProps) {
           color="blue-gray"
           size="sm"
           variant="text"
-          onClick={handler(false)}
+          onClick={handleOpen}
         >
           <XMarkIcon className="w-7 m-2" />
         </IconButton>
       </DialogHeader>
-      <DialogBody className="flex justify-center h-[40rem] overflow-scroll">
+      <DialogBody className="flex justify-center h-[60rem] overflow-scroll">
         <div className="w-10/12 sm:w-8/12">
           <div className="text-base text-neutral-500">{data.category}</div>
           <div className="text-xl sm:text-3xl text-black font-bold my-2">

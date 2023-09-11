@@ -9,12 +9,22 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SaimCard from "../../../components/saim/card";
-import getData from "@/src/services/saim/getData";
+import getAllSaim from "@/src/services/saim/getAllSaim";
+import Saim from "@/src/models/saim";
 
-export default async function Page() {
-  const data = await getData();
+export default function Page() {
+  const [data, setData] = useState<Saim[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getAllSaim();
+      setData(response);
+    };
+
+    fetchData();
+  }, []);
   const saimFilters = [
     {
       name: "Oportunidades",
@@ -55,8 +65,8 @@ export default async function Page() {
           ></video>
         </div>
         <div className="absolute inset-0 bg-black opacity-60 border-0"></div>
-        <div className="relative h-full flex flex-col items-center justify-center">
-          <div className="inline-flex space-x-10 my-10">
+        <div className="relative h-full flex flex-col items-center justify-center px-5 sm:px-0">
+          <div className="inline-flex space-x-5 sm:space-x-10 my-10 text-xs sm:text-base">
             <div className="bg-white text-black font-bold rounded-full p-4 cursor-pointer">
               <a href="">Oportunidades</a>
             </div>
@@ -70,18 +80,19 @@ export default async function Page() {
               <a href="">Obstaculos</a>
             </div>
           </div>
-          <div className="sm:w-6/12 lg:w-4/12 text-center text-white text-3xl font-bold">
+          <div className="sm:w-8/12 lg:w-4/12 text-center text-white text-2xl sm:text-3xl font-bold">
             Descubra Nuevas Oportunidades de Negocio
           </div>
-          <div className="sm:w-6/12 lg:w-4/12 mt-4 text-center text-normal">
+          <div className="sm:w-8/12 lg:w-4/12 mt-4 text-center text-sm  sm:text-normal">
             Explore oportunidades emergentes, tendencias y nichos de mercado que
             pueden impulsar su crecimiento empresarial.
           </div>
-          <div className="flex flex-row bg-white p-3 w-4/12 rounded-full my-10">
+          <div className="flex flex-row bg-white p-5 w-8/12 lg:w-4/12 rounded-full my-10">
             <MagnifyingGlassIcon className="w-5 mx-2 text-gray-500" />
             <input
               placeholder="Producto o código arancelario..."
-              className="w-10/12 text-blue-500 outline-none"
+              className="w-10/12  text-blue-500 outline-none"
+              name="search"
             />
           </div>
         </div>

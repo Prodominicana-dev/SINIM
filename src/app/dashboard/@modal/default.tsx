@@ -1,7 +1,6 @@
-import type { FC } from "react";
+"use client";
+import React from "react";
 
-const Default: FC = () => {
+export default function Default() {
   return null;
-};
-
-export default Default;
+}

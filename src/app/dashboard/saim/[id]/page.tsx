@@ -10,9 +10,24 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import Image from "next/image";
 import getSaim from "@/src/services/saim/getSaim";
+import { useEffect, useState } from "react";
+import Saim from "@/src/models/saim";
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const data = await getSaim(params.id);
+export default function Page({ params }: { params: { id: string } }) {
+  const [data, setData] = useState<Saim>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getSaim(params.id);
+      setData(response);
+    };
+
+    fetchData();
+  }, []);
+
+  if (!data) {
+    return <div>No existe</div>;
+  }
   return (
     <div className="flex justify-center h-[40rem]">
       <div className="w-10/12 sm:w-8/12">
