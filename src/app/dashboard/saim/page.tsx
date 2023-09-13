@@ -14,6 +14,7 @@ import SaimCard from "../../../components/saim/card";
 import getAllSaim from "@/src/services/saim/getAllSaim";
 import Saim from "@/src/models/saim";
 import Link from "next/link";
+import Feed from "@/src/components/saim/feed";
 
 export default function Page() {
   const [data, setData] = useState<Saim[]>([]);
@@ -31,14 +32,14 @@ export default function Page() {
       )
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getAllSaim();
-      setData(response);
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await getAllSaim();
+  //     setData(response);
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
   const saimFilters = [
     {
       name: "Oportunidades",
@@ -131,11 +132,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-8">
-        {filteredData.map((saim) => (
-          <SaimCard key={saim.id} {...saim} />
-        ))}
-      </div>
+      <Feed />
     </div>
   );
 }
