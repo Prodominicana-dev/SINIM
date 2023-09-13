@@ -3,7 +3,7 @@ import Saim from '@/src/models/saim';
 import getAllSaim from '@/src/services/saim/getAllSaim';
 import {useCallback, useState, useEffect} from 'react'
 import { Button, Card, CardBody, CardFooter, CardHeader, Tooltip, Typography } from "@material-tailwind/react";
-import { PlusIcon, PencilIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, PencilIcon, EyeIcon, TrashIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import Image from 'next/image';
 import SCard from '@/src/components/settings/saim/card';
@@ -25,6 +25,18 @@ export default function Page() {
                 <Button variant="outlined" className="rounded-full w-44 cursor-pointer">Actualizaciones</Button>
                 <Button variant="outlined" className="rounded-full w-44 cursor-pointer">Amenazas</Button>
                 <Button variant="outlined" className="rounded-full w-44 cursor-pointer">Obstáculos</Button>
+            </div>
+            <div className='flex w-11/12 justify-end '>
+                <div className='w-3/12 h-16'>
+                    <div className="flex flex-row bg-white p-5 w-full h-full rounded-full my-10 border-[1px] border-black">
+                        <MagnifyingGlassIcon className="w-5 mx-2 text-gray-500" />
+                        <input
+                        placeholder="Producto o código arancelario..."
+                        className="w-10/12  text-black outline-none"
+                        name="search"
+                        />
+                </div>
+            </div>
             </div>
             {/* 
                SAIMS
