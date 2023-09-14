@@ -7,6 +7,8 @@ import { PlusIcon, PencilIcon, EyeIcon, TrashIcon, MagnifyingGlassIcon } from '@
 import Link from 'next/link';
 import Image from 'next/image';
 import SCard from '@/src/components/settings/saim/card';
+import SaimDialog from '@/src/components/saim/Create/saimDialog';
+import React from 'react';
 
 export default function Page() {
     const [data, setData] = useState<Saim[]>([]);
@@ -17,6 +19,10 @@ export default function Page() {
         };
         fetchData();
       }, []);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = (() => {
+        setOpen(!open);
+    });
   return (
     <div className='flex flex-col justify-center items-center '>
         <div className="w-11/12 h-full flex flex-col justify-center items-center my-10">
@@ -42,15 +48,20 @@ export default function Page() {
                SAIMS
             */}
             <div className='w-full h-[28rem] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 p-10'>
-                <Link className='w-full h-full flex justify-center items-center rounded-3xl border-2 border-dashed border-black cursor-pointer hover:bg-gray-200 duration-300' href={''}>
+                <button 
+                className='w-full h-full flex justify-center items-center rounded-3xl border-2 border-dashed border-black cursor-pointer hover:bg-gray-200 duration-300' 
+                onClick={ 
+                    handleOpen
+                    }>
                     <PlusIcon className='w-16 h-16 text-black'/>
-                </Link>
+                </button>
                 {data.map((saim) => (
                     <div className='w-full h-full'>
                         <SCard key={saim.id} {...saim}/>
                     </div>
                 ))}
             </div>
+            <SaimDialog open={open} handleOpen={handleOpen}/>        
         </div>
     </div>
   )

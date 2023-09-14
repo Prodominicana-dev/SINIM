@@ -13,6 +13,7 @@ import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 import { Group, Text, useMantineTheme, rem } from '@mantine/core';
 import Image from 'next/image';
 
+
 import {
   Menu,
   MenuHandler,
@@ -22,7 +23,7 @@ import {
 } from "@material-tailwind/react";
 
 
-export default function Page() {
+export default function SAIM() {
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const openRef = useRef<() => void>(null);
 

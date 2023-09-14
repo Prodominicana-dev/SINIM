@@ -3,6 +3,8 @@ import { Sidebar } from "@/src/components/dashboard/sidebar";
 import { NavbarDashboard } from "@/src/components/dashboard/navbar";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { ReactNode, useState } from "react";
+import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -20,6 +22,7 @@ export default function RootLayout({ children, modal }: RootLayoutProps) {
 
   return (
     <>
+    <MantineProvider withNormalizeCSS withGlobalStyles>
       <div className="bg-white h-screen w-full flex">
         <div className="hidden lg:flex items-end h-full">
           <Sidebar visible={sidebarOpen} />
@@ -30,6 +33,8 @@ export default function RootLayout({ children, modal }: RootLayoutProps) {
         </div>
       </div>
       {modal}
+          <Notifications zIndex={9999} />
+    </MantineProvider>
     </>
   );
 }

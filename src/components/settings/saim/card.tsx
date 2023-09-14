@@ -5,18 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
 
-interface SaimData {
-    id: number;
-    title: string;
-    description: string;
-    category: string;
-    source: string;
-    link: string;
-    image: string;
-    date: Date;
-  }
 
-export default function SCard(data : SaimData) {
+
+export default function SCard(data: Saim) {
   return (
     <Card className="w-full h-full shadow-lg">
         <CardHeader floated={false} className="h-56">

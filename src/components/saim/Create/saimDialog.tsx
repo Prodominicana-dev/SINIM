@@ -1,8 +1,25 @@
 "use client";
-import { format, set } from "date-fns";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  Button,
+  IconButton,
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+} from "@material-tailwind/react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
+import { data } from "autoprefixer";
+import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { useRef, useState } from "react";
-import { useEditor, BubbleMenu } from '@tiptap/react';
+import { useRouter } from "next/navigation";
+import getSaim from "@/src/services/saim/getSaim";
+import Saim from "@/src/models/saim";
+import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { RichTextEditor, Link } from '@mantine/tiptap';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -10,34 +27,52 @@ import Highlight from '@tiptap/extension-highlight';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
-import { Group, Text, useMantineTheme, rem } from '@mantine/core';
-import Image from 'next/image';
+import { Group, Text } from '@mantine/core';
+import axios from "axios";
+import { notifications } from '@mantine/notifications';
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated';
 
-import {
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  Button,
-} from "@material-tailwind/react";
+const animatedComponents = makeAnimated();
 
 
-export default function Page() {
+
+
+export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open: boolean, handleOpen: () => void}) {
+  const [data, setData] = useState<Saim>();
   const [files, setFiles] = useState<FileWithPath[]>([]);
-  const openRef = useRef<() => void>(null);
+  const  [description, setDescription] = useState<any>('')
+  const  [title, setTitle] = useState('')
+  const categories = ['Oportunidades', 'Actualizaciones', 'Amenazas', 'Obstáculos'] 
+  const [category, onChange] = useState(categories[0]);
 
+  const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
     if (openRef.current) {
       openRef.current(); // solo se llama si openRef.current no es null
     }
   };
-
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
   };
-
   const isHovering = files.length > 0 ? 'group-hover:bg-black/30' : 'text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300';
+  
+  const handleSubmit = async () => {
+    const data = {
+      title,
+      description,
+      category,
+      image: files[0]
+    }
+  }
 
+  const disabled = () => {
+    if(title !== '' && !editor1?.isEmpty && files.length !== 0 ) {
+      return false
+    }
+    return true
+  }
+  
   const editor1 = useEditor({
     extensions: [
       StarterKit.configure({
@@ -51,22 +86,52 @@ export default function Page() {
       Link,
       Highlight,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
-      Placeholder.configure({ placeholder: 'Contenido del SAIM' })
+      Placeholder.configure({ placeholder: 'Contenido del SAIM' }),
+      
     ],
-    content: '',
+    content: description,
+
   });
 
-  const theme = useMantineTheme();
-
-
-  const categories = ['Oportunidades', 'Actualizaciones', 'Amenazas', 'Obstáculos'] 
-  const [category, onChange] = useState(categories[0]);
-  console.log(editor1?.getHTML());
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
+  
   return (
-    <div className="flex justify-center h-[40rem]">
-      <div className="w-10/12 sm:w-8/12">
+    <Dialog
+      open={open}
+      handler={handleOpen}
+      size={"xl"}
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0.9, y: -100 },
+      }}
+      className="h-screen flex flex-col overflow-scroll"
+    >
+      <DialogHeader className="justify-end">
+        <IconButton
+          color="blue-gray"
+          size="sm"
+          variant="text"
+          onClick={() => {
+            handleOpen();
+            setFiles([]);
+            editor1?.commands.clearContent();
+
+          }}
+        >
+          <XMarkIcon className="w-7 m-2" />
+        </IconButton>
+      </DialogHeader>
+
+
+      <DialogBody className=" justify-center h-[100vh] overflow-y-auto">
+      <div className="flex justify-center  ">
+      <div className="w-full sm:w-8/12">
         <div className="text-base text-black w-full">
-        <Menu placement="bottom-start">
+        <Menu placement="bottom-start" >
         <MenuHandler>
           <Button
             variant="text"
@@ -76,7 +141,7 @@ export default function Page() {
             {category}
           </Button>
         </MenuHandler>
-          <MenuList className="w-40">
+          <MenuList className="w-40 z-[9999]">
             {categories.map((category) => (
               <MenuItem
                 key={category}
@@ -89,12 +154,15 @@ export default function Page() {
           </MenuList>
         </Menu>
         </div>
-        <input className="text-xl sm:text-3xl text-black font-bold my-2 placeholder-black w-full" placeholder="Título" />
+
+        <input className="text-xl sm:text-3xl text-black font-bold my-2 placeholder-black w-full" 
+        placeholder="Título"
+        onChange={(e) => setTitle(e.target.value)} />
+
         <div className="text-xs font-light text-neutral-500">
           {format(Date.now(), "dd MMMM yyyy", { locale: es })}
         </div>
         
-
         <div className=" relative w-full h-[32rem] group my-5">
           <div className="absolute inset-0 z-0 cursor-pointer " onClick={handleClickSelectFile} >
             {/* ImagePreview */}
@@ -110,27 +178,43 @@ export default function Page() {
               </div> : <div className="flex w-full h-full justify-center border-2 border-dashed border-black rounded-xl"></div>
             }
           </div>
+          
           <div className="text-base flex justify-center items-center text-black w-full h-full">
             <Dropzone
                 openRef={openRef}
                 onDrop={handleDrop}
+                onReject={(e) => {
+                  notifications.show({
+                    id: 'saim',
+                    autoClose: 5000,
+                    withCloseButton: false,
+                    title: "¿Estás loco o qué?",
+                    message: 'La imagen no puede pasar de 5MB.',
+                    color: 'red',
+                    loading: false,
+                  });
+                }}
                 activateOnClick={false}
                 accept={IMAGE_MIME_TYPE}
                 maxFiles={1}
-                maxSize={10 * 1024 * 1024}
+                multiple={false}
+                maxSize={5 * 1024 * 1024}
                 styles={{ inner: { pointerEvents: 'all' } }}
                 className="bg-transparent w-full border-0 group-hover:bg-transparent"
               > 
                 <Group position="center">
                   <Button onClick={handleClickSelectFile} className={`${isHovering} bg-transparent border-[1px] hover:shadow-none `}>Subir imagen</Button>
+                  <div className="text-black">{description}</div>
+            
                 </Group>
+                
               </Dropzone>
           </div>
         </div>
 
-        <div className="pb-10 text-black text-lg">
-          
-          <RichTextEditor editor={editor1}>
+        <div className=" text-black text-lg">
+          <RichTextEditor editor={editor1} 
+         >
           <RichTextEditor.Toolbar sticky>
             <RichTextEditor.ControlsGroup>
               <RichTextEditor.Bold />
@@ -167,12 +251,23 @@ export default function Page() {
               <RichTextEditor.AlignRight />
             </RichTextEditor.ControlsGroup>
           </RichTextEditor.Toolbar>
-
-          <RichTextEditor.Content />
+          <RichTextEditor.Content  />
         </RichTextEditor>
         </div>
-       
+
+        <Select closeMenuOnSelect={false}
+      components={animatedComponents}
+      
+      isMulti
+      options={options}/>
+
+        <div className="w-full my-5 h-12 flex justify-end">
+          <Button disabled={disabled()} color="green">Guardar</Button>
+        </div>
       </div>
     </div>
+      </DialogBody>
+      
+    </Dialog>
   );
 }
