@@ -2,6 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -19,9 +20,15 @@ export default function RootLayout({
 }) {
   return (
     <UserProvider>
+      
+      
       <html lang="es">
-        <body>{children}</body>
+        <body>
+          
+          {children}
+        </body>
       </html>
+      
     </UserProvider>
   );
 }

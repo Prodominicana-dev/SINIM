@@ -8,6 +8,8 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
+import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -28,6 +30,7 @@ export default function RootLayout({ children, modal }: RootLayoutProps) {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+         <MantineProvider withNormalizeCSS withGlobalStyles>
         <div className="bg-white h-screen w-full flex">
           <div className="hidden lg:flex items-end h-full">
             <Sidebar visible={sidebarOpen} />
@@ -38,6 +41,8 @@ export default function RootLayout({ children, modal }: RootLayoutProps) {
           </div>
         </div>
         {modal}
+            <Notifications zIndex={9999} />
+            </MantineProvider>
       </QueryClientProvider>
     </>
   );
