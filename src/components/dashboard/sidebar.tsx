@@ -62,7 +62,7 @@ export function Sidebar({ visible }: any) {
             >
               <ListItemPrefix>
                 <Image
-                  src={"/images/logo/datamarket.svg"}
+                  src={"/images/logo/datamarket-white.svg"}
                   width={600}
                   height={600}
                   draggable={false}
@@ -105,7 +105,7 @@ export function Sidebar({ visible }: any) {
         <ListItem>
           <ListItemPrefix>
             <Image
-              src={"/images/logo/rami.svg"}
+              src={"/images/logo/rami-white.svg"}
               width={600}
               height={600}
               draggable={false}
@@ -123,7 +123,7 @@ export function Sidebar({ visible }: any) {
         <ListItem>
           <ListItemPrefix>
             <Image
-              src={"/images/logo/saim.svg"}
+              src={"/images/logo/saim-white.svg"}
               width={600}
               height={600}
               draggable={false}
@@ -141,7 +141,7 @@ export function Sidebar({ visible }: any) {
         <ListItem>
           <ListItemPrefix>
             <Image
-              src={"/images/logo/sied.svg"}
+              src={"/images/logo/sied-white.svg"}
               width={600}
               height={600}
               draggable={false}
