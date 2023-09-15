@@ -32,6 +32,7 @@ import axios from "axios";
 import { notifications } from '@mantine/notifications';
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
+import { useShallowEffect } from '@mantine/hooks';
 
 const animatedComponents = makeAnimated();
 
@@ -45,6 +46,10 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
   const  [title, setTitle] = useState('')
   const categories = ['Oportunidades', 'Actualizaciones', 'Amenazas', 'Obstáculos'] 
   const [category, onChange] = useState(categories[0]);
+  const [countries, setCountries] = useState<any>([])
+  const [products, setProducts] = useState<any>([])
+  const [selectedCountries, setSelectedCountries] = useState<any>([])
+  const [selectedProducts, setSelectedProducts] = useState<any>([])
 
   const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
@@ -52,25 +57,88 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
       openRef.current(); // solo se llama si openRef.current no es null
     }
   };
+
+  useShallowEffect( () => {
+    const getCountries = async () => {
+      const {data} = await axios.get('http://localhost:3001/countries')
+      const countries = data.map((country: any) => {
+        const val = {
+          id: country.id,
+          name: country.name,
+          code: country.abbreviation,
+      }
+        return {value: val, label: country.name}
+      })
+      setCountries(countries)
+    }
+    getCountries()
+    const getProducts = async () => {
+      const {data} = await axios.get('http://localhost:3001/products')
+      const products = data.map((product: any) => {
+        const val = {
+            id: product.id,
+            name: product.name,
+            code: product.code,
+        }
+        return {value: val, label: `${product.name} - ${product.code}`}
+      })
+      setProducts(products)
+    }
+    getProducts()
+    
+  }, []);
+  
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
   };
   const isHovering = files.length > 0 ? 'group-hover:bg-black/30' : 'text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300';
   
   const handleSubmit = async () => {
-    const data = {
-      title,
-      description,
-      category,
-      image: files[0]
-    }
-  }
+    const products = selectedProducts.map((product: any) => {
+      return product.value
+    })
+    const countries = selectedCountries.map((country: any) => {
+      return country.value
+    })
+    const data = new FormData();
+    data.append('title', title)
+    data.append('description', editor1?.getHTML() !== undefined ? editor1?.getHTML() : '')
+    data.append('category', category)
+    data.append('countries', JSON.stringify(countries))
+    data.append('products', JSON.stringify(products))
+    data.append('file', files[0])
 
-  const disabled = () => {
-    if(title !== '' && !editor1?.isEmpty && files.length !== 0 ) {
-      return false
-    }
-    return true
+
+    await axios.post('http://localhost:3001/saim', data).then((res) => {
+      if(res.status === 200){
+        notifications.show({
+          id: 'saim',
+          autoClose: 5000,
+          withCloseButton: false,
+          title: "SAIM creado",
+          message: 'El SAIM se ha creado correctamente.',
+          color: 'green',
+          loading: false,
+        });
+        handleOpen();
+        setFiles([]);
+        editor1?.commands.clearContent();
+        setTitle('');
+        setSelectedCountries([]);
+        setSelectedProducts([]);
+      }
+      notifications.show({
+        id: 'saim',
+        autoClose: 5000,
+        withCloseButton: false,
+        title: "Error",
+        message: 'El SAIM no se ha creado correctamente.',
+        color: 'green',
+        loading: false,
+      });
+    })
+    
+
   }
   
   const editor1 = useEditor({
@@ -119,7 +187,9 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
             handleOpen();
             setFiles([]);
             editor1?.commands.clearContent();
-
+            setTitle('');
+            setSelectedCountries([]);
+            setSelectedProducts([]);
           }}
         >
           <XMarkIcon className="w-7 m-2" />
@@ -255,14 +325,30 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
         </RichTextEditor>
         </div>
 
+        <div className="w-full my-5">
+          <div className="text-black font-bold text-lg">Seleccione los países del SAIM</div>
         <Select closeMenuOnSelect={false}
-      components={animatedComponents}
-      
-      isMulti
-      options={options}/>
+          components={animatedComponents}
+          isMulti
+          placeholder="Seleccione los países del SAIM..."
+          onChange={(e) => setSelectedCountries(e)}
+          options={countries}/>
+          </div> 
+
+          <div className="w-full my-5">
+          <div className="text-black font-bold text-lg">Seleccione los productos del SAIM</div>
+        <Select closeMenuOnSelect={false}
+          components={animatedComponents}
+          isMulti
+          placeholder="Seleccione los productos del SAIM..."
+          onChange={(e) => setSelectedProducts(e)}
+          options={products}/>
+          </div>      
 
         <div className="w-full my-5 h-12 flex justify-end">
-          <Button disabled={disabled()} color="green">Guardar</Button>
+          <Button disabled={title === '' || editor1?.isEmpty || files.length === 0 || countries.lenght === 0 || products.length === 0} 
+          onClick={handleSubmit} 
+          color="green">Guardar</Button>
         </div>
       </div>
     </div>
