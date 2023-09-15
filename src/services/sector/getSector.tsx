@@ -2,8 +2,8 @@
 import sector from '@/src/models/sector';
 import axios from 'axios'
 
-export default async function getCountries() : Promise<sector> { 
-    const url = `http://127.0.0.1:3001/sector`;
+export default async function getSector() : Promise<sector> { 
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/sector`;
     const response = await axios.get(url);
     const sector = response.data;
     const data = sector.map((item: sector) => item);
