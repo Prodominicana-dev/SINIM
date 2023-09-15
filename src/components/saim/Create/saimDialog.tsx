@@ -62,12 +62,7 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
     const getCountries = async () => {
       const {data} = await axios.get('http://localhost:3001/countries')
       const countries = data.map((country: any) => {
-        const val = {
-          id: country.id,
-          name: country.name,
-          code: country.abbreviation,
-      }
-        return {value: val, label: country.name}
+        return {value: country, label: country.name}
       })
       setCountries(countries)
     }
@@ -76,7 +71,6 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
       const {data} = await axios.get('http://localhost:3001/products')
       const products = data.map((product: any) => {
         const val = {
-            id: product.id,
             name: product.name,
             code: product.code,
         }
@@ -85,7 +79,23 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
       setProducts(products)
     }
     getProducts()
-    
+  
+    if(saim){
+      setTitle(saim.title)
+      onChange(saim.category)
+      const saimCountries = saim.countries.map((country: any) => {
+        return {value: country, label: country.name}
+      })
+      setSelectedCountries(saimCountries)
+      const saimProducts = saim.products.map((product: any) => {
+        const val = {
+            name: product.name,
+            code: product.code,
+        }
+        return {value: val, label: `${product.name} - ${product.code}`}
+      })
+      setSelectedProducts(saimProducts)
+    }
   }, []);
   
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
@@ -106,17 +116,49 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
     data.append('category', category)
     data.append('countries', JSON.stringify(countries))
     data.append('products', JSON.stringify(products))
-    data.append('file', files[0])
+    if(files.length > 0){
+      data.append('file', files[0])
+    }
+    console.log(data.values)
+    if(!saim){
+      return await axios.post('http://localhost:3001/saim', data).then((res) => {
+        if(res.status === 200){
+          notifications.show({
+            id: 'saim',
+            autoClose: 5000,
+            withCloseButton: false,
+            title: "SAIM creado",
+            message: 'El SAIM se ha creado correctamente.',
+            color: 'green',
+            loading: false,
+          });
+          handleOpen();
+          setFiles([]);
+          editor1?.commands.clearContent();
+          setTitle('');
+          setSelectedCountries([]);
+          setSelectedProducts([]);
+        }
+        notifications.show({
+          id: 'saim',
+          autoClose: 5000,
+          withCloseButton: false,
+          title: "Error",
+          message: 'El SAIM no se ha creado correctamente.',
+          color: 'green',
+          loading: false,
+        });
+      })
+    }
 
-
-    await axios.post('http://localhost:3001/saim', data).then((res) => {
+    await axios.put(`http://localhost:3001/saim/${saim.id}`, data).then((res) => {
       if(res.status === 200){
         notifications.show({
           id: 'saim',
           autoClose: 5000,
           withCloseButton: false,
-          title: "SAIM creado",
-          message: 'El SAIM se ha creado correctamente.',
+          title: "SAIM editado",
+          message: 'El SAIM ha sido modificado correctamente.',
           color: 'green',
           loading: false,
         });
@@ -126,18 +168,19 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
         setTitle('');
         setSelectedCountries([]);
         setSelectedProducts([]);
+        // Editar el SAIM editado en el estado
+
       }
       notifications.show({
         id: 'saim',
         autoClose: 5000,
         withCloseButton: false,
         title: "Error",
-        message: 'El SAIM no se ha creado correctamente.',
+        message: 'Hubo un error editando el SAIM.',
         color: 'green',
         loading: false,
       });
     })
-    
 
   }
   
@@ -157,16 +200,10 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
       Placeholder.configure({ placeholder: 'Contenido del SAIM' }),
       
     ],
-    content: description,
+    content: saim?.description,
 
   });
 
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-  ]
-  
   return (
     <Dialog
       open={open}
@@ -184,12 +221,14 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
           size="sm"
           variant="text"
           onClick={() => {
+            if(!saim){
+              setFiles([]);
+              editor1?.commands.clearContent();
+              setTitle('');
+              setSelectedCountries([]);
+              setSelectedProducts([]);
+            }
             handleOpen();
-            setFiles([]);
-            editor1?.commands.clearContent();
-            setTitle('');
-            setSelectedCountries([]);
-            setSelectedProducts([]);
           }}
         >
           <XMarkIcon className="w-7 m-2" />
@@ -227,7 +266,8 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
 
         <input className="text-xl sm:text-3xl text-black font-bold my-2 placeholder-black w-full" 
         placeholder="Título"
-        onChange={(e) => setTitle(e.target.value)} />
+        onChange={(e) => setTitle(e.target.value)}
+        defaultValue={saim ? title : ''} />
 
         <div className="text-xs font-light text-neutral-500">
           {format(Date.now(), "dd MMMM yyyy", { locale: es })}
@@ -236,10 +276,10 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
         <div className=" relative w-full h-[32rem] group my-5">
           <div className="absolute inset-0 z-0 cursor-pointer " onClick={handleClickSelectFile} >
             {/* ImagePreview */}
-            {(files.length > 0) ? 
+            {(files.length > 0 || saim) ? 
               <div className="flex w-full h-full justify-center">
                 <Image
-                  src={URL.createObjectURL(files[0])}
+                  src={!saim ? URL.createObjectURL(files[0]) : `http://127.0.0.1:3001/data/saim/${saim?.id}/img/${saim?.image}`}
                   width={1920}
                   height={1080}
                   alt="card-image"
@@ -332,6 +372,7 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
           isMulti
           placeholder="Seleccione los países del SAIM..."
           onChange={(e) => setSelectedCountries(e)}
+          defaultValue={selectedCountries}
           options={countries}/>
           </div> 
 
@@ -342,6 +383,7 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
           isMulti
           placeholder="Seleccione los productos del SAIM..."
           onChange={(e) => setSelectedProducts(e)}
+          defaultValue={selectedProducts}
           options={products}/>
           </div>      
 
@@ -357,3 +399,7 @@ export default function SaimDialog({saim, open, handleOpen}: {saim?: Saim, open:
     </Dialog>
   );
 }
+function async(id: number | undefined) {
+  throw new Error("Function not implemented.");
+}
+

@@ -1,3 +1,4 @@
+import country from "./country";
 import product from "./product";
 
 export default interface Saim {
@@ -9,5 +10,6 @@ export default interface Saim {
   link: string;
   image: string;
   date: Date;
+  countries: country[];
   products: product[];
 }
