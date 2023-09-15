@@ -14,7 +14,7 @@ import Saim from "@/src/models/saim";
 export default function SaimCard(data: Saim) {
   return (
     <Link prefetch href={`/dashboard/saim/${data.id}`}>
-      <Card className="mt-6 w-full group cursor-pointer">
+      <Card className="mt-6 w-full group cursor-pointer h-80">
         <CardHeader color="blue-gray" className="relative ">
           <Image
             width={1920}

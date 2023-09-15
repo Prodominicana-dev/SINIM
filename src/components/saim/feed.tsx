@@ -19,7 +19,7 @@ export default function Feed() {
         return response;
       },
       {
-        getNextPageParam: (_, pages) => {
+        getNextPageParam: (_: any, pages: string | any[]) => {
           return pages.length + 1;
         },
       }
@@ -34,11 +34,11 @@ export default function Feed() {
     if (hasNextPage && entry?.isIntersecting) fetchNextPage();
   }, [entry]);
 
-  const _allSaim = data?.pages.flatMap((saim) => saim);
+  const _allSaim = data?.pages.flatMap((saim: any) => saim);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-8">
-      {_allSaim?.map((saim, i) => {
+      {_allSaim?.map((saim: Saim, i: number) => {
         if (i === _allSaim.length - 1)
           return (
             <div ref={ref} key={saim.id}>

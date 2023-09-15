@@ -14,6 +14,8 @@ import SaimCard from "../../../components/saim/card";
 import getAllSaim from "@/src/services/saim/getAllSaim";
 import Saim from "@/src/models/saim";
 import Feed from "@/src/components/saim/feed";
+import { useAtom } from "jotai";
+import { saimAtom } from "@/src/state";
 
 export default function Page() {
   const saimFilters = [
@@ -48,7 +50,6 @@ export default function Page() {
         "Aprenda a eludir obstáculos y encontrar atajos inteligentes en su búsqueda hacia el logro de sus objetivos.",
     },
   ];
-  const [data, setData] = useState<Saim[]>([]);
   const [filteredData, setFilteredData] = useState<Saim[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(saimFilters[0].name);
@@ -56,6 +57,8 @@ export default function Page() {
   const [categoryDescription, setCategoryDescription] = useState(
     saimFilters[0].description
   );
+  const [data, setData] = useAtom(saimAtom);
+  console.log(JSON.stringify(data));
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -106,13 +109,6 @@ export default function Page() {
     filterData();
   }, [search, category]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getAllSaim();
-      setData(response);
-    };
-    fetchData();
-  }, []);
   return (
     <div className="w-full h-full">
       <div className="relative w-full sm:h-4/6">
@@ -136,8 +132,8 @@ export default function Page() {
                 className={`${
                   category === filter.name
                     ? "bg-white text-black font-bold"
-                    : "bg-black/50 hover:bg-white hover:text-black"
-                } rounded-full p-3 sm:p-4 cursor-pointer text-center`}
+                    : "bg-black/50 text-white hover:bg-white hover:text-black"
+                } rounded-full p-3 sm:p-4 cursor-pointer text-center duration-200`}
               >
                 {filter.name}
               </button>
@@ -146,7 +142,7 @@ export default function Page() {
           <div className="sm:w-8/12 md:w-6/12 xl:w-4/12 text-center text-white text-2xl sm:text-3xl font-bold">
             {categoryTitle}
           </div>
-          <div className="sm:w-8/12 md:w-6/12 xl:w-4/12 mt-4 text-center text-sm  sm:text-normal">
+          <div className="sm:w-8/12 md:w-6/12 xl:w-4/12 mt-4 text-center text-white text-sm  sm:text-normal">
             {categoryDescription}
           </div>
           <div className="flex flex-row bg-white p-4 sm:p-5 w-10/12 sm:w-8/12 md:w-6/12 xl:w-4/12 rounded-full my-10">

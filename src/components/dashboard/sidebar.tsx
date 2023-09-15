@@ -40,7 +40,7 @@ export function Sidebar({ visible }: any) {
         visible ? "w-28 p-4" : "w-0 p-0"
       }`}
     >
-      <div className="mb-2 p-4">
+      <div className="mb-2 p-4 text-white">
         <div>SINIM</div>
       </div>
       <List className={` ${visible ? "visible" : "invisible"} duration-200`}>

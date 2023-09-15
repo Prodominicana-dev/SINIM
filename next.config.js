@@ -8,6 +8,9 @@ const nextConfig = {
       "images.unsplash.com",
     ],
   },
+  experimental: {
+    swcPlugins: [["@swc-jotai/react-refresh", {}]],
+  },
 };
 
 module.exports = nextConfig;
