@@ -65,7 +65,7 @@ export default function UserProfile() {
         {profileMenuItems.map(({ label, icon, link }, key) => {
           const isLastItem = key === profileMenuItems.length - 1;
           return (
-            <Link href={link}>
+            <Link href={link} key={key}>
               <MenuItem
                 key={label}
                 onClick={closeMenu}

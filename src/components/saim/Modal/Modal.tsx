@@ -56,7 +56,7 @@ export default function Modal({ id }: any) {
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0.9, y: -100 },
       }}
-      className="h-screen"
+      className="h-screen overflow-scroll"
     >
       <DialogHeader className="justify-end">
         <IconButton
@@ -68,7 +68,7 @@ export default function Modal({ id }: any) {
           <XMarkIcon className="w-7 m-2" />
         </IconButton>
       </DialogHeader>
-      <DialogBody className="flex justify-center h-[60rem] overflow-scroll">
+      <DialogBody className="flex justify-center h-[100vm] overflow-y-auto">
         <div className="w-10/12 sm:w-8/12">
           <div className="text-base text-neutral-500">{data.category}</div>
           <div className="text-xl sm:text-3xl text-black font-bold my-2">
@@ -80,7 +80,7 @@ export default function Modal({ id }: any) {
           <Image
             width={1920}
             height={1080}
-            src={`https://sinim-api-git-tools-prodominicanadev.vercel.app/data/saim/${data.id}/img/${data.image}`}
+            src={`http://127.0.0.1:3001/data/saim/${data.id}/img/${data.image}`}
             alt="card-image"
             className="object-cover w-full rounded-lg my-3"
           />
@@ -90,14 +90,6 @@ export default function Modal({ id }: any) {
           ></div>
         </div>
       </DialogBody>
-      {/* <DialogFooter>
-        <Button variant="text" color="red" onClick={handler} className="mr-1">
-          <span>Cancel</span>
-        </Button>
-        <Button variant="gradient" color="green" onClick={handler}>
-          <span>Confirm</span>
-        </Button>
-      </DialogFooter> */}
     </Dialog>
   );
 }

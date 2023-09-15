@@ -9,27 +9,17 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import Link from "next/link";
+import Saim from "@/src/models/saim";
 
-interface SaimData {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  source: string;
-  link: string;
-  image: string;
-  date: Date;
-}
-
-export default function SaimCard(data: SaimData) {
+export default function SaimCard(data: Saim) {
   return (
-    <Link href={`/dashboard/saim/${data.id}`}>
+    <Link prefetch href={`/dashboard/saim/${data.id}`}>
       <Card className="mt-6 w-full group cursor-pointer">
         <CardHeader color="blue-gray" className="relative ">
           <Image
             width={1920}
             height={1080}
-            src={`https://sinim-api-git-tools-prodominicanadev.vercel.app/data/saim/${data.id}/img/${data.image}`}
+            src={`http://127.0.0.1:3001/data/saim/${data.id}/img/${data.image}`}
             alt="card-image"
             className="object-cover h-52"
           />

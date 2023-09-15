@@ -1,4 +1,4 @@
-import React from "react";
+import product from "./product";
 
 export default interface Saim {
   id: number;
@@ -9,4 +9,5 @@ export default interface Saim {
   link: string;
   image: string;
   date: Date;
+  products: product[];
 }
