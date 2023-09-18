@@ -15,7 +15,7 @@ import getAllSaim from "@/src/services/saim/getAllSaim";
 import Saim from "@/src/models/saim";
 import Feed from "@/src/components/saim/feed";
 import { useAtom } from "jotai";
-import { saimAtom } from "@/src/state";
+import { saimAtom } from "@/src/state/saim";
 
 export default function Page() {
   const saimFilters = [

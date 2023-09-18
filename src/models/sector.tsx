@@ -1,4 +1,4 @@
-export default interface sector{
+export default interface Sector{
     id :         number;
     name :       String;
 }

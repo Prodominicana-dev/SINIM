@@ -23,16 +23,11 @@ import Image from "next/image";
 import SCard from "@/src/components/settings/saim/card";
 import SaimDialog from "@/src/components/saim/Create/saimDialog";
 import React from "react";
+import { useAtom } from "jotai";
+import { saimAtom } from "@/src/state/saim";
 
 export default function Page() {
-  const [data, setData] = useState<Saim[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getAllSaim();
-      setData(response);
-    };
-    fetchData();
-  }, []);
+  const [data, setData] = useAtom(saimAtom)
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(!open);

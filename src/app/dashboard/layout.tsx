@@ -7,10 +7,17 @@ import { Notifications } from "@mantine/notifications";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useShallowEffect } from "@mantine/hooks";
 import getAllSaim from "@/src/services/saim/getAllSaim";
+import getProduct from "@/src/services/products/getProducts";
+import getCountry from "@/src/services/countries/getCountries";
+import getSector from "@/src/services/sector/getSector";
 import Saim from "@/src/models/saim";
 import { Sidebar } from "@/src/components/dashboard/sidebar";
 import { NavbarDashboard } from "@/src/components/dashboard/navbar";
-import { saimAtom } from "@/src/state";
+import { saimAtom } from "@/src/state/saim";
+import { productAtom } from "@/src/state/products";
+import { countryAtom } from "@/src/state/countries";
+import { sectorAtom } from "@/src/state/sector";
+import { get } from "http";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -22,7 +29,10 @@ const queryClient = new QueryClient();
 function RootLayoutComponent({ children, modal }: RootLayoutProps) {
   const { user, error, isLoading } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [data, setData] = useAtom(saimAtom);
+  const [dataSAIM, setDataSaim] = useAtom(saimAtom);
+  const [dataProduct, setDataProduct] = useAtom(productAtom);
+  const [dataCountry, setDataCountry] = useAtom(countryAtom);
+  const [dataSector, setDataSector] = useAtom(sectorAtom);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -30,15 +40,33 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
 
   useEffect(() => {
     // Todos los SAIMS
-    const getSaim = async () => {
-      const response = await getAllSaim();
-      setData(response);
+    const allSaim = async () => {
+      const saim = await getAllSaim();
+      setDataSaim(saim);
     };
-    getSaim();
-  }, [setData]);
+    allSaim();
+
+    const allProducts = async () => {
+      const products = await getProduct();
+      setDataProduct(products);
+    }
+    allProducts();
+
+    const allCountries = async () => {
+      const countries = await getCountry();
+      setDataCountry(countries);
+    }
+    allCountries();
+
+    const allSectors = async () => {
+      const sectors = await getSector();
+      setDataSector(sectors);
+    }
+    allSectors();
+  }, [setDataSaim]);
 
   if (isLoading) return <div>cargando...</div>;
-
+  console.log(dataSAIM, dataProduct, dataCountry, dataSector)
   return (
     <div className="bg-white h-screen w-full flex">
       <div className="hidden lg:flex items-end h-full">

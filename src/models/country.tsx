@@ -1,4 +1,4 @@
-export default interface country{
+export default interface Country{
     id: number;
     name:  String;
     abbreviation: String;

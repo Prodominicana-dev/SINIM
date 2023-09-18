@@ -1,4 +1,4 @@
-export default interface rami {
+export default interface Rami {
     id:          number
     countryId:   number
     productId:   number
