@@ -1,17 +1,7 @@
 "use client";
-
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Typography,
-  CardFooter,
-  Button,
-} from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import SaimCard from "../../../components/saim/card";
-import getAllSaim from "@/src/services/saim/getAllSaim";
 import Saim from "@/src/models/saim";
 import Feed from "@/src/components/saim/feed";
 import { useAtom } from "jotai";
@@ -50,6 +40,7 @@ export default function Page() {
         "Aprenda a eludir obstáculos y encontrar atajos inteligentes en su búsqueda hacia el logro de sus objetivos.",
     },
   ];
+  const [data, setData] = useAtom(saimAtom);
   const [filteredData, setFilteredData] = useState<Saim[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(saimFilters[0].name);
@@ -57,8 +48,10 @@ export default function Page() {
   const [categoryDescription, setCategoryDescription] = useState(
     saimFilters[0].description
   );
-  const [data, setData] = useAtom(saimAtom);
-  console.log(JSON.stringify(data));
+
+  useEffect(() => {
+    setFilteredData(data);
+  });
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);

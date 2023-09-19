@@ -15,38 +15,22 @@ import { data } from "autoprefixer";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useRouter } from "next/navigation";
-import getSaim from "@/src/services/saim/getSaim";
+import useSaim from "@/src/services/saim/useSaim";
 import Saim from "@/src/models/saim";
 
-interface SaimData {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  source: string;
-  link: string;
-  image: string;
-  date: Date;
-}
-
 export default function Modal({ id }: any) {
-  const [data, setData] = useState<Saim>();
+  const { data, isLoading, isError } = useSaim(id);
   const [open, setOpen] = React.useState(true);
   const router = useRouter();
   const handleOpen = useCallback(() => {
     setOpen(!open);
     router.back();
   }, [router]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getSaim(id);
-      setData(response);
-    };
-    fetchData();
-  }, []);
-  if (!data) {
-    return <div>No existe</div>;
+
+  if (isLoading) {
+    return <div></div>;
   }
+
   return (
     <Dialog
       open={open}

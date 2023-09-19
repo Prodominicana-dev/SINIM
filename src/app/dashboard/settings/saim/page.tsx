@@ -1,6 +1,6 @@
 "use client";
 import Saim from "@/src/models/saim";
-import getAllSaim from "@/src/services/saim/getAllSaim";
+import getAllSaim from "@/src/services/saim/useSaims";
 import { useCallback, useState, useEffect } from "react";
 import {
   Button,
@@ -27,7 +27,7 @@ import { useAtom } from "jotai";
 import { saimAtom } from "@/src/state/saim";
 
 export default function Page() {
-  const [data, setData] = useAtom(saimAtom)
+  const [data, setData] = useAtom(saimAtom);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(!open);

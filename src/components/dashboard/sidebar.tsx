@@ -17,6 +17,7 @@ import { PresentationChartBarIcon } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useHover } from "usehooks-ts";
 import Image from "next/image";
+import Link from "next/link";
 
 export function Sidebar({ visible }: any) {
   const [open, setOpen] = React.useState(0);
@@ -120,24 +121,26 @@ export function Sidebar({ visible }: any) {
             RAMI
           </Typography>
         </ListItem>
-        <ListItem>
-          <ListItemPrefix>
-            <Image
-              src={"/images/logo/saim-white.svg"}
-              width={600}
-              height={600}
-              draggable={false}
-              alt=""
-              className="h-10 w-10 text-white group-hover:h-7 group-hover:w-7 duration-700"
-            />
-          </ListItemPrefix>
-          <Typography
-            color="white"
-            className="mr-auto font-normal opacity-0 group-hover:opacity-100 duration-300"
-          >
-            SAIM
-          </Typography>
-        </ListItem>
+        <Link href={"/dashboard/saim"}>
+          <ListItem className={open ? "" : "bg-transparent"}>
+            <ListItemPrefix>
+              <Image
+                src={"/images/logo/saim-white.svg"}
+                width={600}
+                height={600}
+                draggable={false}
+                alt=""
+                className="h-10 w-10 text-white group-hover:h-7 group-hover:w-7 duration-700"
+              />
+            </ListItemPrefix>
+            <Typography
+              color="white"
+              className="mr-auto font-normal opacity-0 group-hover:opacity-100 duration-300"
+            >
+              SAIM
+            </Typography>
+          </ListItem>
+        </Link>
         <ListItem>
           <ListItemPrefix>
             <Image

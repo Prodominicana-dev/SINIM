@@ -38,7 +38,7 @@ export function NavbarDashboard({ toggleSidebar }: any) {
   return (
     <Navbar
       color="white"
-      className="w-full p-8 lg:p-8 max-w-none rounded-none shadow-none"
+      className="w-full p-8 lg:p-8 max-w-none rounded-none shadow-none h-[10vh]"
     >
       <div className="container mx-2 flex items-center justify-between text-blue-gray-900 max-w-none">
         <div className="basis-1/12 hidden lg:block">

@@ -9,21 +9,12 @@ import {
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import Image from "next/image";
-import getSaim from "@/src/services/saim/getSaim";
+import getSaim from "@/src/services/saim/useSaim";
 import { useEffect, useState } from "react";
 import Saim from "@/src/models/saim";
 
-export default function Page({ params }: { params: { id: string } }) {
-  const [data, setData] = useState<Saim>();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getSaim(params.id);
-      setData(response);
-    };
-
-    fetchData();
-  }, []);
+export default function Page({ params }: { params: { id: number } }) {
+  const { data, isLoading, isError } = getSaim(params.id);
 
   if (!data) {
     return <div>No existe</div>;

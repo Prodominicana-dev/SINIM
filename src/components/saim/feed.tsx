@@ -1,29 +1,15 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useIntersection } from "@mantine/hooks";
 import SaimCard from "./card";
-import getAllSaim from "@/src/services/saim/getAllSaim";
 import Saim from "@/src/models/saim";
-import getPaginatedSaim from "@/src/services/saim/getPaginatedSaim";
+import { useSaimsPage } from "@/src/services/saim/useSaimsPage";
 
 export default function Feed() {
-  const [allSaim, setAllSaim] = useState<Saim[]>([]);
-
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data } =
-    useInfiniteQuery(
-      ["query"],
-      async ({ pageParam = 1 }) => {
-        const response = await getPaginatedSaim(pageParam);
-        return response;
-      },
-      {
-        getNextPageParam: (_: any, pages: string | any[]) => {
-          return pages.length + 1;
-        },
-      }
-    );
+    useSaimsPage();
   const containerRef = useRef<HTMLElement>(null);
   const { ref, entry } = useIntersection({
     root: containerRef.current,
