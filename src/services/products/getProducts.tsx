@@ -6,7 +6,7 @@ export default async function getProducts() : Promise<any[]> {
     const response = await axios.get(url);
     const products = response.data;
     const data = products.map((item: any) => {
-        item
+        item.id, item.code, item.name, item.description, item.sectorId
     });
     return data;
 }

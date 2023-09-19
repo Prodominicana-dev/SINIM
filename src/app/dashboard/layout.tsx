@@ -18,6 +18,7 @@ import { productAtom } from "@/src/state/products";
 import { countryAtom } from "@/src/state/countries";
 import { sectorAtom } from "@/src/state/sector";
 import { get } from "http";
+import axios from "axios";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -47,8 +48,8 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
     allSaim();
 
     const allProducts = async () => {
-      const products = await getProduct();
-      setDataProduct(products);
+      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`);
+      setDataProduct(data);
     }
     allProducts();
 
@@ -63,13 +64,13 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
       setDataSector(sectors);
     }
     allSectors();
-  }, [setDataSaim]);
+  }, []);
 
   if (isLoading) return <div>cargando...</div>;
-  console.log(dataSAIM, dataProduct, dataCountry, dataSector)
+
   return (
-    <div className="bg-white h-screen w-full flex">
-      <div className="hidden lg:flex items-end h-full">
+    <div className="flex w-full h-screen bg-white">
+      <div className="items-end hidden h-full lg:flex">
         <Sidebar visible={sidebarOpen} />
       </div>
       <div className="w-full h-full overflow-y-auto">

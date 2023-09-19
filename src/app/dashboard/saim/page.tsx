@@ -58,7 +58,6 @@ export default function Page() {
     saimFilters[0].description
   );
   const [data, setData] = useAtom(saimAtom);
-  console.log(JSON.stringify(data));
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -117,13 +116,13 @@ export default function Page() {
             autoPlay
             loop
             muted
-            className="w-full h-full object-cover"
+            className="object-cover w-full h-full"
             src="/videos/rami.mp4"
             typeof="video/mp4"
           ></video>
         </div>
-        <div className="absolute inset-0 bg-black opacity-60 border-0"></div>
-        <div className="relative h-full flex flex-col items-center justify-center px-5 sm:px-0 w-full">
+        <div className="absolute inset-0 bg-black border-0 opacity-60"></div>
+        <div className="relative flex flex-col items-center justify-center w-full h-full px-5 sm:px-0">
           <div className="gap-3 sm:gap-5 lg:gap-10 my-10 text-[14px] sm:text-lg flex flex-row justify-center items-center flex-wrap lg:flex-nowrap sm:w-8/12">
             {saimFilters.map((filter) => (
               <button
@@ -139,17 +138,17 @@ export default function Page() {
               </button>
             ))}
           </div>
-          <div className="sm:w-8/12 md:w-6/12 xl:w-4/12 text-center text-white text-2xl sm:text-3xl font-bold">
+          <div className="text-2xl font-bold text-center text-white sm:w-8/12 md:w-6/12 xl:w-4/12 sm:text-3xl">
             {categoryTitle}
           </div>
-          <div className="sm:w-8/12 md:w-6/12 xl:w-4/12 mt-4 text-center text-white text-sm  sm:text-normal">
+          <div className="mt-4 text-sm text-center text-white sm:w-8/12 md:w-6/12 xl:w-4/12 sm:text-normal">
             {categoryDescription}
           </div>
-          <div className="flex flex-row bg-white p-4 sm:p-5 w-10/12 sm:w-8/12 md:w-6/12 xl:w-4/12 rounded-full my-10">
+          <div className="flex flex-row w-10/12 p-4 my-10 bg-white rounded-full sm:p-5 sm:w-8/12 md:w-6/12 xl:w-4/12">
             <MagnifyingGlassIcon className="w-5 mx-2 text-gray-500" />
             <input
               placeholder="Buscar..."
-              className="w-10/12  text-blue-500 outline-none"
+              className="w-10/12 text-blue-500 outline-none"
               name="search"
               value={search}
               onChange={handleSearchChange}
@@ -160,7 +159,7 @@ export default function Page() {
       {search === "" && category === "Todos" ? (
         <Feed />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-8">
+        <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filteredData?.map((saim) => {
             return (
               <div key={saim.id}>

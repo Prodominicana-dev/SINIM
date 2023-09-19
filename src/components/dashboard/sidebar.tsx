@@ -31,7 +31,7 @@ export function Sidebar({ visible }: any) {
     if (!isHover) {
       setOpen(0);
     }
-  });
+  }); //infinito ?
 
   return (
     <div
