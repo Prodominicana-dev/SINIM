@@ -75,8 +75,8 @@ export default function SaimDialog({
     }
   };
 
-  useShallowEffect(() => {
-    if (countries.length > 0) {
+  useEffect(() => {
+    if (countries?.length > 0) {
       const c = countries.map((country: any) => {
         return {
           value: country,
@@ -86,7 +86,7 @@ export default function SaimDialog({
       setSCountry(c);
     }
 
-    if (products.length > 0) {
+    if (products?.length > 0) {
       const p = products.map((product: any) => {
         const val = {
           name: product.name,
@@ -116,7 +116,7 @@ export default function SaimDialog({
       });
       setSelectedProducts(saimProducts);
     }
-  }, []);
+  });
 
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
@@ -251,8 +251,7 @@ export default function SaimDialog({
               setFiles([]);
               editor1?.commands.clearContent();
               setTitle("");
-              setSelectedCountries([]);
-              setSelectedProducts([]);
+              // setSelectedCountries([]);
             }
             handleOpen();
           }}
@@ -344,7 +343,7 @@ export default function SaimDialog({
                   styles={{ inner: { pointerEvents: "all" } }}
                   className="bg-transparent w-full border-0 group-hover:bg-transparent"
                 >
-                  <Group position="center">
+                  <Group justify="center">
                     <Button
                       onClick={handleClickSelectFile}
                       className={`${isHovering} bg-transparent border-[1px] hover:shadow-none `}

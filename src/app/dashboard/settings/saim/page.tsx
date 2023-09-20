@@ -28,6 +28,7 @@ import { saimAtom } from "@/src/state/saim";
 
 export default function Page() {
   const [data, setData] = useAtom(saimAtom);
+  console.log(data);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(!open);
@@ -83,7 +84,7 @@ export default function Page() {
           >
             <PlusIcon className="w-16 h-16 text-black" />
           </button>
-          {data.map((saim) => (
+          {data?.map((saim) => (
             <div className="w-full h-full">
               <SCard key={saim.id} {...saim} />
             </div>

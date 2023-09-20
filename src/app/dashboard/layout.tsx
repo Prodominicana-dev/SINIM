@@ -16,6 +16,7 @@ import { sectorAtom } from "@/src/state/sector";
 import { useAtom } from "jotai";
 import { useProducts } from "@/src/services/products/useProducts";
 import "@mantine/core/styles.css";
+import "@mantine/tiptap/styles.css";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -29,7 +30,6 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
   const [, setSaim] = useAtom(saimAtom);
   const [, setProducts] = useAtom(productAtom);
   const [, setCountries] = useAtom(countryAtom);
-  const [, setSectors] = useAtom(sectorAtom);
   const {
     data: saims,
     isLoading: isSaimsLoading,
