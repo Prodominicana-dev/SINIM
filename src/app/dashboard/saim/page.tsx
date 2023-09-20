@@ -5,7 +5,7 @@ import SaimCard from "../../../components/saim/card";
 import Saim from "@/src/models/saim";
 import Feed from "@/src/components/saim/feed";
 import { useAtom } from "jotai";
-import { saimAtom } from "@/src/state/saim";
+import { saimAtom } from "@/src/state/states";
 
 export default function Page() {
   const saimFilters = [

@@ -24,11 +24,11 @@ import SCard from "@/src/components/settings/saim/card";
 import SaimDialog from "@/src/components/saim/Create/saimDialog";
 import React from "react";
 import { useAtom } from "jotai";
-import { saimAtom } from "@/src/state/saim";
+import useSaims from "@/src/services/saim/useSaims";
+import { saimAtom } from "@/src/state/states";
 
 export default function Page() {
   const [data, setData] = useAtom(saimAtom);
-  console.log(data);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(!open);
@@ -90,7 +90,7 @@ export default function Page() {
             </div>
           ))}
         </div>
-        <SaimDialog open={open} handleOpen={handleOpen} />
+        <SaimDialog open={open} handleOpen={handleOpen} updateSaim={() => {}} />
       </div>
     </div>
   );

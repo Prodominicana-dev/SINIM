@@ -63,7 +63,12 @@ export default function SCard(data: Saim) {
             </Tooltip>
           </Link>
         </div>
-        <SaimDialog saim={data} open={open} handleOpen={handleOpen} />
+        <SaimDialog
+          saim={data}
+          open={open}
+          handleOpen={handleOpen}
+          updateSaim={() => {}}
+        />
       </CardBody>
     </Card>
   );

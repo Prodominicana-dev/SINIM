@@ -1,11 +1,10 @@
 "use client";
 
-import { saimAtom } from "@/src/state/saim";
+import { saimAtom } from "@/src/state/states";
 import { useAtom } from "jotai";
 import React from "react";
 
 export default function Page() {
-  const [data, setData] = useAtom(saimAtom);
   return (
     <div className="w-full sm:px-10 py-5 h-[88vh] flex items-center justify-center">
       <iframe

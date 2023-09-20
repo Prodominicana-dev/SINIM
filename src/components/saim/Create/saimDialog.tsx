@@ -34,8 +34,12 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useShallowEffect } from "@mantine/hooks";
 import { useAtom } from "jotai";
-import { countryAtom } from "@/src/state/countries";
-import { productAtom } from "@/src/state/products";
+import {
+  countryAtom,
+  countrySelect,
+  productAtom,
+  productSelect,
+} from "@/src/state/states";
 
 const animatedComponents = makeAnimated();
 
@@ -43,10 +47,12 @@ export default function SaimDialog({
   saim,
   open,
   handleOpen,
+  updateSaim,
 }: {
   saim?: Saim;
   open: boolean;
   handleOpen: () => void;
+  updateSaim: () => void;
 }) {
   const [data, setData] = useState<Saim>();
   const [files, setFiles] = useState<FileWithPath[]>([]);
@@ -59,14 +65,10 @@ export default function SaimDialog({
     "Obstáculos",
   ];
   const [category, onChange] = useState(categories[0]);
-  const [countries, setCountries] = useAtom(countryAtom);
-  const [products, setProducts] = useAtom(productAtom);
-  const [sCountries, setSCountry] = useState<any>([]);
-  const [sProducts, setSProducts] = useState<any>([]);
+  const [countries, setCountries] = useAtom(countrySelect);
+  const [products, setProducts] = useAtom(productSelect);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
-
-  console.log(countries, products);
 
   const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
@@ -76,30 +78,6 @@ export default function SaimDialog({
   };
 
   useEffect(() => {
-    if (countries?.length > 0) {
-      const c = countries.map((country: any) => {
-        return {
-          value: country,
-          label: country.name,
-        };
-      });
-      setSCountry(c);
-    }
-
-    if (products?.length > 0) {
-      const p = products.map((product: any) => {
-        const val = {
-          name: product.name,
-          code: product.code,
-        };
-        return {
-          value: val,
-          label: `${product.name} - ${product.code}`,
-        };
-      });
-      setSProducts(p);
-    }
-
     if (saim) {
       setTitle(saim.title);
       onChange(saim.category);
@@ -116,7 +94,7 @@ export default function SaimDialog({
       });
       setSelectedProducts(saimProducts);
     }
-  });
+  }, []);
 
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
@@ -409,7 +387,7 @@ export default function SaimDialog({
                 placeholder="Seleccione los países del SAIM..."
                 onChange={(e) => setSelectedCountries(e)}
                 defaultValue={selectedCountries}
-                options={sCountries}
+                options={countries}
               />
             </div>
 
@@ -424,7 +402,7 @@ export default function SaimDialog({
                 placeholder="Seleccione los productos del SAIM..."
                 onChange={(e) => setSelectedProducts(e)}
                 defaultValue={selectedProducts}
-                options={sProducts}
+                options={products}
               />
             </div>
 

@@ -9,14 +9,19 @@ import { NavbarDashboard } from "@/src/components/dashboard/navbar";
 import useSaims from "@/src/services/saim/useSaims";
 import useCountries from "@/src/services/countries/useCountries";
 import Saim from "@/src/models/saim";
-import { saimAtom } from "@/src/state/saim";
-import { productAtom } from "@/src/state/products";
-import { countryAtom } from "@/src/state/countries";
-import { sectorAtom } from "@/src/state/sector";
 import { useAtom } from "jotai";
 import { useProducts } from "@/src/services/products/useProducts";
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
+import {
+  countryAtom,
+  countrySelect,
+  productAtom,
+  productSelect,
+  saimAtom,
+} from "@/src/state/states";
+import { useSelectProducts } from "@/src/services/products/useSelectProducts";
+import useSelectCountries from "@/src/services/countries/useSelectCountries";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -28,8 +33,8 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
   const { user, error, isLoading } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [, setSaim] = useAtom(saimAtom);
-  const [, setProducts] = useAtom(productAtom);
-  const [, setCountries] = useAtom(countryAtom);
+  const [, setProducts] = useAtom(productSelect);
+  const [, setCountries] = useAtom(countrySelect);
   const {
     data: saims,
     isLoading: isSaimsLoading,
@@ -40,19 +45,19 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
     data: products,
     isLoading: isProductsLoading,
     isError: isProductsError,
-  } = useProducts();
+  } = useSelectProducts();
 
   const {
     data: countries,
     isLoading: isCountriesLoading,
     isError: isCountriesError,
-  } = useCountries();
+  } = useSelectCountries();
 
   useEffect(() => {
     setSaim(saims);
     setProducts(products);
     setCountries(countries);
-  });
+  }, [saims, products, countries]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
