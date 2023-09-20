@@ -12,7 +12,7 @@ import Image from "next/image";
 import React from "react";
 import SaimDialog from "../../saim/Create/saimDialog";
 
-export default function SCard(data: Saim) {
+export default function SCard({data, updateSaims} : {data: Saim, updateSaims: () => void}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(!open);
@@ -30,40 +30,40 @@ export default function SCard(data: Saim) {
       </CardHeader>
       <CardBody className="text-center">
         <div className="text-gray-500">{data.category}</div>
-        <div className="font-bold mb-2 line-clamp-2 text-lg">{data.title}</div>
+        <div className="mb-2 text-lg font-bold line-clamp-2">{data.title}</div>
         <div className="flex justify-center my-4">
-          <Link
+          {/* <Link
             href={`/dashboard/saim/${data.id}`}
-            className="w-10 h-10 mx-3 bg-blue-600 hover:bg-blue-700 duration-300 rounded-full flex justify-center items-center"
+            className="flex items-center justify-center w-10 h-10 mx-3 duration-300 bg-blue-600 rounded-full hover:bg-blue-700"
           >
             <Tooltip content="Ver">
               <Typography variant="lead" color="green" textGradient>
-                <EyeIcon className="text-white w-6 h-6" />
+                <EyeIcon className="w-6 h-6 text-white" />
               </Typography>
             </Tooltip>
-          </Link>
+          </Link> */}
           <button
             onClick={handleOpen}
-            className="w-10 h-10 mx-3 bg-green-600 hover:bg-green-700 duration-300 rounded-full flex justify-center items-center"
+            className="flex items-center justify-center w-10 h-10 mx-3 duration-300 bg-green-600 rounded-full hover:bg-green-700"
           >
             <Tooltip content="Editar">
               <Typography variant="lead" color="green" textGradient>
-                <PencilIcon className="text-white w-6 h-6" />
+                <PencilIcon className="w-6 h-6 text-white" />
               </Typography>
             </Tooltip>
           </button>
           <Link
             href={"/dashboard/saim"}
-            className="w-10 h-10 mx-3 bg-red-600 hover:bg-red-700 duration-300 rounded-full flex justify-center items-center"
+            className="flex items-center justify-center w-10 h-10 mx-3 duration-300 bg-red-600 rounded-full hover:bg-red-700"
           >
             <Tooltip content="Eliminar">
               <Typography variant="lead" color="green" textGradient>
-                <TrashIcon className="text-white w-6 h-6" />
+                <TrashIcon className="w-6 h-6 text-white" />
               </Typography>
             </Tooltip>
           </Link>
         </div>
-        <SaimDialog saim={data} open={open} handleOpen={handleOpen} />
+        <SaimDialog saim={data} open={open} handleOpen={handleOpen} updateSaims={updateSaims} />
       </CardBody>
     </Card>
   );
