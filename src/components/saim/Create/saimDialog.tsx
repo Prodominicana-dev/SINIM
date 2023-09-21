@@ -39,6 +39,7 @@ import {
   countrySelect,
   productAtom,
   productSelect,
+  saimAtom,
 } from "@/src/state/states";
 
 const animatedComponents = makeAnimated();
@@ -47,14 +48,15 @@ export default function SaimDialog({
   saim,
   open,
   handleOpen,
-  updateSaim,
+  updateSaims,
 }: {
   saim?: Saim;
   open: boolean;
   handleOpen: () => void;
-  updateSaim: () => void;
+  updateSaims: () => void;
 }) {
-  const [data, setData] = useState<Saim>();
+  const [data, setData] = useAtom(saimAtom);
+  const [handle, setHandle] = useState<boolean>(false);
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [description, setDescription] = useState<any>("");
   const [title, setTitle] = useState("");
@@ -81,11 +83,11 @@ export default function SaimDialog({
     if (saim) {
       setTitle(saim.title);
       onChange(saim.category);
-      const saimCountries = saim.countries.map((country: any) => {
+      const saimCountries = saim.countries?.map((country: any) => {
         return { value: country, label: country.name };
       });
       setSelectedCountries(saimCountries);
-      const saimProducts = saim.products.map((product: any) => {
+      const saimProducts = saim.products?.map((product: any) => {
         const val = {
           name: product.name,
           code: product.code,
@@ -144,6 +146,7 @@ export default function SaimDialog({
             setTitle("");
             setSelectedCountries([]);
             setSelectedProducts([]);
+            updateSaims();
           }
           notifications.show({
             id: "saim",
@@ -177,6 +180,7 @@ export default function SaimDialog({
           setSelectedCountries([]);
           setSelectedProducts([]);
           // Editar el SAIM editado en el estado
+          updateSaims();
         }
         notifications.show({
           id: "saim",
@@ -217,7 +221,7 @@ export default function SaimDialog({
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0.9, y: -100 },
       }}
-      className="h-screen flex flex-col overflow-scroll"
+      className="flex flex-col h-screen overflow-scroll"
     >
       <DialogHeader className="justify-end">
         <IconButton
@@ -234,19 +238,19 @@ export default function SaimDialog({
             handleOpen();
           }}
         >
-          <XMarkIcon className="w-7 m-2" />
+          <XMarkIcon className="m-2 w-7" />
         </IconButton>
       </DialogHeader>
 
       <DialogBody className=" justify-center h-[100vh] overflow-y-auto">
-        <div className="flex justify-center  ">
+        <div className="flex justify-center ">
           <div className="w-full sm:w-8/12">
-            <div className="text-base text-black w-full">
+            <div className="w-full text-base text-black">
               <Menu placement="bottom-start">
                 <MenuHandler>
                   <Button
                     variant="text"
-                    className="flex h-5 hover:bg-transparent  items-center p-0 "
+                    className="flex items-center h-5 p-0 hover:bg-transparent "
                     ripple={false}
                   >
                     {category}
@@ -263,7 +267,7 @@ export default function SaimDialog({
             </div>
 
             <input
-              className="text-xl sm:text-3xl text-black font-bold my-2 placeholder-black w-full"
+              className="w-full my-2 text-xl font-bold text-black placeholder-black sm:text-3xl"
               placeholder="Título"
               onChange={(e) => setTitle(e.target.value)}
               defaultValue={saim ? title : ""}
@@ -280,7 +284,7 @@ export default function SaimDialog({
               >
                 {/* ImagePreview */}
                 {files.length > 0 || saim ? (
-                  <div className="flex w-full h-full justify-center">
+                  <div className="flex justify-center w-full h-full">
                     <Image
                       src={
                         !saim
@@ -290,15 +294,15 @@ export default function SaimDialog({
                       width={1920}
                       height={1080}
                       alt="card-image"
-                      className="object-cover h-full rounded-md group-hover:blur-sm duration-500"
+                      className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
                     />
                   </div>
                 ) : (
-                  <div className="flex w-full h-full justify-center border-2 border-dashed border-black rounded-xl"></div>
+                  <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
                 )}
               </div>
 
-              <div className="text-base flex justify-center items-center text-black w-full h-full">
+              <div className="flex items-center justify-center w-full h-full text-base text-black">
                 <Dropzone
                   openRef={openRef}
                   onDrop={handleDrop}
@@ -319,7 +323,7 @@ export default function SaimDialog({
                   multiple={false}
                   maxSize={5 * 1024 * 1024}
                   styles={{ inner: { pointerEvents: "all" } }}
-                  className="bg-transparent w-full border-0 group-hover:bg-transparent"
+                  className="w-full bg-transparent border-0 group-hover:bg-transparent"
                 >
                   <Group justify="center">
                     <Button
@@ -334,7 +338,7 @@ export default function SaimDialog({
               </div>
             </div>
 
-            <div className=" text-black text-lg">
+            <div className="text-lg text-black ">
               <RichTextEditor editor={editor1}>
                 <RichTextEditor.Toolbar sticky>
                   <RichTextEditor.ControlsGroup>
@@ -377,7 +381,7 @@ export default function SaimDialog({
             </div>
 
             <div className="w-full my-5">
-              <div className="text-black font-bold text-lg">
+              <div className="text-lg font-bold text-black">
                 Seleccione los países del SAIM
               </div>
               <Select
@@ -392,13 +396,13 @@ export default function SaimDialog({
             </div>
 
             <div className="w-full my-5">
-              <div className="text-black font-bold text-lg">
+              <div className="text-lg font-bold text-black">
                 Seleccione los productos del SAIM
               </div>
               <Select
                 closeMenuOnSelect={false}
                 components={animatedComponents}
-                isMulti
+                isMulti={false}
                 placeholder="Seleccione los productos del SAIM..."
                 onChange={(e) => setSelectedProducts(e)}
                 defaultValue={selectedProducts}
@@ -406,7 +410,7 @@ export default function SaimDialog({
               />
             </div>
 
-            <div className="w-full my-5 h-12 flex justify-end">
+            <div className="flex justify-end w-full h-12 my-5">
               <Button
                 disabled={
                   title === "" ||
@@ -426,7 +430,4 @@ export default function SaimDialog({
       </DialogBody>
     </Dialog>
   );
-}
-function async(id: number | undefined) {
-  throw new Error("Function not implemented.");
 }

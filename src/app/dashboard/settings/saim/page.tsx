@@ -33,42 +33,53 @@ export default function Page() {
   const handleOpen = () => {
     setOpen(!open);
   };
+
+  const {
+    data: d,
+    isLoading: isSaimsLoading,
+    isError: isSaimsError,
+  } = useSaims();
+  const updateSaims = () => {
+    console.log("ENTREEEEEEEE AAAAA");
+    setData(d);
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center ">
-      <div className="w-full h-full flex flex-col justify-center items-center my-10">
-        <div className=" w-8/12 flex flex-row justify-between items-center">
+    <div className="flex flex-col items-center justify-center ">
+      <div className="flex flex-col items-center justify-center w-full h-full my-10">
+        <div className="flex flex-row items-center justify-between w-8/12 ">
           <Button
             variant="outlined"
-            className="rounded-full w-44 hover:bg-gray-200 duration-300 cursor-pointer"
+            className="duration-300 rounded-full cursor-pointer w-44 hover:bg-gray-200"
           >
             Oportunidades
           </Button>
           <Button
             variant="outlined"
-            className="rounded-full w-44 cursor-pointer"
+            className="rounded-full cursor-pointer w-44"
           >
             Actualizaciones
           </Button>
           <Button
             variant="outlined"
-            className="rounded-full w-44 cursor-pointer"
+            className="rounded-full cursor-pointer w-44"
           >
             Amenazas
           </Button>
           <Button
             variant="outlined"
-            className="rounded-full w-44 cursor-pointer"
+            className="rounded-full cursor-pointer w-44"
           >
             Obstáculos
           </Button>
         </div>
-        <div className="flex w-11/12 justify-end ">
+        <div className="flex justify-end w-11/12 ">
           <div className="w-3/12 h-16">
             <div className="flex flex-row bg-white p-5 w-full h-full rounded-full my-10 border-[1px] border-black">
               <MagnifyingGlassIcon className="w-5 mx-2 text-gray-500" />
               <input
                 placeholder="Producto o código arancelario..."
-                className="w-10/12  text-black outline-none"
+                className="w-10/12 text-black outline-none"
                 name="search"
               />
             </div>
@@ -79,18 +90,22 @@ export default function Page() {
             */}
         <div className="w-full h-[28rem] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 p-10">
           <button
-            className="w-full h-full flex justify-center items-center rounded-3xl border-2 border-dashed border-black cursor-pointer hover:bg-gray-200 duration-300"
+            className="flex items-center justify-center w-full h-full duration-300 border-2 border-black border-dashed cursor-pointer rounded-3xl hover:bg-gray-200"
             onClick={handleOpen}
           >
             <PlusIcon className="w-16 h-16 text-black" />
           </button>
           {data?.map((saim) => (
             <div className="w-full h-full">
-              <SCard key={saim.id} {...saim} />
+              <SCard key={saim.id} data={saim} updateSaims={updateSaims} />
             </div>
           ))}
         </div>
-        <SaimDialog open={open} handleOpen={handleOpen} updateSaim={() => {}} />
+        <SaimDialog
+          open={open}
+          handleOpen={handleOpen}
+          updateSaims={updateSaims}
+        />
       </div>
     </div>
   );
