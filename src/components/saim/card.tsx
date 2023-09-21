@@ -14,7 +14,7 @@ import Saim from "@/src/models/saim";
 export default function SaimCard(data: Saim) {
   return (
     <Link prefetch href={`/dashboard/saim/${data.id}`}>
-      <Card className="mt-6 w-full group cursor-pointer h-80">
+      <Card className="w-full mt-6 cursor-pointer group h-80">
         <CardHeader color="blue-gray" className="relative ">
           <Image
             width={1920}
@@ -26,10 +26,10 @@ export default function SaimCard(data: Saim) {
         </CardHeader>
         <CardBody>
           <div className="text-gray-500">{data.category}</div>
-          <div className="font-bold mb-2 line-clamp-2 text-xl">
+          <div className="mb-2 text-xl font-bold line-clamp-2">
             {data.title}
           </div>
-          <div className="text-end text-xs">
+          <div className="text-xs text-end">
             {format(new Date(data.date), "dd MMMM yyyy", { locale: es })}
           </div>
         </CardBody>

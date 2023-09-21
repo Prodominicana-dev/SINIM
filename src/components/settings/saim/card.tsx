@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
-import SaimDialog from "../../saim/Create/saimDialog";
+import SaimDialog from "../../saim/Settings/saimDialog";
 
 export default function SCard({
   data,
@@ -24,7 +24,7 @@ export default function SCard({
     setOpen(!open);
   };
   return (
-    <Card className="w-full h-full shadow-lg">
+    <Card className="w-full h-full mt-5 shadow-lg">
       <CardHeader floated={false} className="h-56">
         <Image
           width={1920}
@@ -38,16 +38,6 @@ export default function SCard({
         <div className="text-gray-500">{data.category}</div>
         <div className="mb-2 text-lg font-bold line-clamp-2">{data.title}</div>
         <div className="flex justify-center my-4">
-          {/* <Link
-            href={`/dashboard/saim/${data.id}`}
-            className="flex items-center justify-center w-10 h-10 mx-3 duration-300 bg-blue-600 rounded-full hover:bg-blue-700"
-          >
-            <Tooltip content="Ver">
-              <Typography variant="lead" color="green" textGradient>
-                <EyeIcon className="w-6 h-6 text-white" />
-              </Typography>
-            </Tooltip>
-          </Link> */}
           <button
             onClick={handleOpen}
             className="flex items-center justify-center w-10 h-10 mx-3 duration-300 bg-green-600 rounded-full hover:bg-green-700"

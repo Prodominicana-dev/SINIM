@@ -21,11 +21,12 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import SCard from "@/src/components/settings/saim/card";
-import SaimDialog from "@/src/components/saim/Create/saimDialog";
+import SaimDialog from "@/src/components/saim/Settings/saimDialog";
 import React from "react";
 import { useAtom } from "jotai";
 import useSaims from "@/src/services/saim/useSaims";
 import { saimAtom } from "@/src/state/states";
+import SettingsFeed from "@/src/components/saim/Settings/settingsFeed";
 
 export default function Page() {
   const [data, setData] = useAtom(saimAtom);
@@ -45,8 +46,8 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center ">
-      <div className="flex flex-col items-center justify-center w-full h-full my-10">
+    <div className="">
+      <div className="flex flex-col items-center justify-center w-full h-full my-10 space-y-8">
         <div className="flex flex-row items-center justify-between w-8/12 ">
           <Button
             variant="outlined"
@@ -73,7 +74,7 @@ export default function Page() {
             Obstáculos
           </Button>
         </div>
-        <div className="flex justify-end w-11/12 ">
+        <div className="flex justify-end w-11/12 h-full">
           <div className="w-3/12 h-16">
             <div className="flex flex-row bg-white p-5 w-full h-full rounded-full my-10 border-[1px] border-black">
               <MagnifyingGlassIcon className="w-5 mx-2 text-gray-500" />
@@ -88,18 +89,14 @@ export default function Page() {
         {/* 
                SAIMS
             */}
-        <div className="w-full h-[28rem] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 p-10">
+        <div className="grid w-full grid-cols-1 gap-10 p-8 h-72 sm:grid-cols-2 lg:grid-cols-4 ">
           <button
-            className="flex items-center justify-center w-full h-full duration-300 border-2 border-black border-dashed cursor-pointer rounded-3xl hover:bg-gray-200"
+            className="flex items-center justify-center w-full h-full mt-5 duration-300 border-2 border-black border-dashed cursor-pointer rounded-3xl hover:bg-gray-200"
             onClick={handleOpen}
           >
             <PlusIcon className="w-16 h-16 text-black" />
           </button>
-          {data?.map((saim) => (
-            <div className="w-full h-full">
-              <SCard key={saim.id} data={saim} updateSaims={updateSaims} />
-            </div>
-          ))}
+          <SettingsFeed updateSaims={updateSaims}/>
         </div>
         <SaimDialog
           open={open}

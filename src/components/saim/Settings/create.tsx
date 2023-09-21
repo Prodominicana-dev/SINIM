@@ -66,12 +66,12 @@ export default function SAIM() {
   return (
     <div className="flex justify-center h-[40rem]">
       <div className="w-10/12 sm:w-8/12">
-        <div className="text-base text-black w-full">
+        <div className="w-full text-base text-black">
         <Menu placement="bottom-start">
         <MenuHandler>
           <Button
             variant="text"
-            className="flex h-5 hover:bg-transparent  items-center p-0 "
+            className="flex items-center h-5 p-0 hover:bg-transparent "
             ripple={false}
           >
             {category}
@@ -90,7 +90,7 @@ export default function SAIM() {
           </MenuList>
         </Menu>
         </div>
-        <input className="text-xl sm:text-3xl text-black font-bold my-2 placeholder-black w-full" placeholder="Título" />
+        <input className="w-full my-2 text-xl font-bold text-black placeholder-black sm:text-3xl" placeholder="Título" />
         <div className="text-xs font-light text-neutral-500">
           {format(Date.now(), "dd MMMM yyyy", { locale: es })}
         </div>
@@ -100,18 +100,18 @@ export default function SAIM() {
           <div className="absolute inset-0 z-0 cursor-pointer " onClick={handleClickSelectFile} >
             {/* ImagePreview */}
             {(files.length > 0) ? 
-              <div className="flex w-full h-full justify-center">
+              <div className="flex justify-center w-full h-full">
                 <Image
                   src={URL.createObjectURL(files[0])}
                   width={1920}
                   height={1080}
                   alt="card-image"
-                  className="object-cover h-full rounded-md group-hover:blur-sm duration-500"
+                  className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
                 />
-              </div> : <div className="flex w-full h-full justify-center border-2 border-dashed border-black rounded-xl"></div>
+              </div> : <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
             }
           </div>
-          <div className="text-base flex justify-center items-center text-black w-full h-full">
+          <div className="flex items-center justify-center w-full h-full text-base text-black">
             <Dropzone
                 openRef={openRef}
                 onDrop={handleDrop}
@@ -120,16 +120,16 @@ export default function SAIM() {
                 maxFiles={1}
                 maxSize={10 * 1024 * 1024}
                 styles={{ inner: { pointerEvents: 'all' } }}
-                className="bg-transparent w-full border-0 group-hover:bg-transparent"
+                className="w-full bg-transparent border-0 group-hover:bg-transparent"
               > 
-                <Group position="center">
+                <Group justify="center">
                   <Button onClick={handleClickSelectFile} className={`${isHovering} bg-transparent border-[1px] hover:shadow-none `}>Subir imagen</Button>
                 </Group>
               </Dropzone>
           </div>
         </div>
 
-        <div className="pb-10 text-black text-lg">
+        <div className="pb-10 text-lg text-black">
           
           <RichTextEditor editor={editor1}>
           <RichTextEditor.Toolbar sticky>
