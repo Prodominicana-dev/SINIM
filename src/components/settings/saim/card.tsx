@@ -12,6 +12,7 @@ import Image from "next/image";
 import React from "react";
 import SaimDialog from "../../saim/Settings/saimDialog";
 import axios from "axios";
+import DeleteSaim from "./delete";
 
 export default function SCard({
   data,
@@ -23,6 +24,10 @@ export default function SCard({
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(!open);
+  };
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const handleDeleteOpen = () => {
+    setDeleteOpen(!deleteOpen);
   };
   return (
     <Card className="w-full h-full mt-5 shadow-lg">
@@ -50,10 +55,7 @@ export default function SCard({
             </Tooltip>
           </button>
           <button
-            onClick={async () => {
-              await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/saim/${data.id}`)
-              updateSaims()
-            }}
+            onClick={handleDeleteOpen}
             className="flex items-center justify-center w-10 h-10 mx-3 duration-300 bg-red-600 rounded-full hover:bg-red-700"
           >
             <Tooltip content="Eliminar">
@@ -69,6 +71,7 @@ export default function SCard({
           handleOpen={handleOpen}
           updateSaims={updateSaims}
         />
+        <DeleteSaim id={data.id} open={deleteOpen} handleOpen={handleDeleteOpen} updateSaims={updateSaims} />
       </CardBody>
     </Card>
   );

@@ -13,6 +13,7 @@ import { useAtom } from "jotai";
 import { useProducts } from "@/src/services/products/useProducts";
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
+import '@mantine/notifications/styles.css';
 import {
   countryAtom,
   countrySelect,
@@ -63,8 +64,8 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
     setSidebarOpen(!sidebarOpen);
   };
   return (
-    <div className="bg-white h-screen w-full flex">
-      <div className="hidden lg:flex items-end h-full">
+    <div className="flex w-full h-screen bg-white">
+      <div className="items-end hidden h-full lg:flex">
         <Sidebar visible={sidebarOpen} />
       </div>
       <div className="w-full h-full overflow-y-auto">

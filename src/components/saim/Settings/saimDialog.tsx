@@ -279,23 +279,6 @@ export default function SaimDialog({
                 onClick={handleClickSelectFile}
               >
                 {/* ImagePreview */}
-                {/* {files.length > 0 || saim ? (
-                  <div className="flex justify-center w-full h-full">
-                    <Image
-                      src={
-                        !saim
-                          ? URL.createObjectURL(files[0])
-                          : `http://127.0.0.1:3001/data/saim/${saim?.id}/img/${saim?.image}`
-                      }
-                      width={1920}
-                      height={1080}
-                      alt="card-image"
-                      className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
-                )} */}
                 {files.length > 0 ? (
                 <div className="flex justify-center w-full h-full">
                   <Image
