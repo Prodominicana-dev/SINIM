@@ -11,6 +11,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import SaimDialog from "../../saim/Settings/saimDialog";
+import axios from "axios";
 
 export default function SCard({
   data,
@@ -48,8 +49,11 @@ export default function SCard({
               </Typography>
             </Tooltip>
           </button>
-          <Link
-            href={"/dashboard/saim"}
+          <button
+            onClick={async () => {
+              await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/saim/${data.id}`)
+              updateSaims()
+            }}
             className="flex items-center justify-center w-10 h-10 mx-3 duration-300 bg-red-600 rounded-full hover:bg-red-700"
           >
             <Tooltip content="Eliminar">
@@ -57,7 +61,7 @@ export default function SCard({
                 <TrashIcon className="w-6 h-6 text-white" />
               </Typography>
             </Tooltip>
-          </Link>
+          </button>
         </div>
         <SaimDialog
           saim={data}
