@@ -18,10 +18,12 @@ import {
   countrySelect,
   productAtom,
   productSelect,
+  ramiAtom,
   saimAtom,
 } from "@/src/state/states";
 import { useSelectProducts } from "@/src/services/products/useSelectProducts";
 import useSelectCountries from "@/src/services/countries/useSelectCountries";
+import useRamis from "@/src/services/ramis/useRamis";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -32,9 +34,12 @@ const queryClient = new QueryClient();
 function RootLayoutComponent({ children, modal }: RootLayoutProps) {
   const { user, error, isLoading } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [, setSaim] = useAtom(saimAtom);
-  const [, setProducts] = useAtom(productSelect);
-  const [, setCountries] = useAtom(countrySelect);
+  const [, setRamis] = useAtom(ramiAtom);
+  const [, setSaims] = useAtom(saimAtom);
+  const [, setProduct] = useAtom(productAtom);
+  const [, setCountry] = useAtom(countryAtom);
+  const [, setProductSelect] = useAtom(productSelect);
+  const [, setCountrySelect] = useAtom(countrySelect);
   const {
     data: saims,
     isLoading: isSaimsLoading,
@@ -45,19 +50,40 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
     data: products,
     isLoading: isProductsLoading,
     isError: isProductsError,
-  } = useSelectProducts();
+  } = useProducts();
 
   const {
     data: countries,
     isLoading: isCountriesLoading,
     isError: isCountriesError,
+  } = useCountries();
+
+  const {
+    data: productsSelect,
+    isLoading: isProductsSelectLoading,
+    isError: isProductsSelectError,
+  } = useSelectProducts();
+
+  const {
+    data: countriesSelect,
+    isLoading: isCountriesSelectLoading,
+    isError: isCountriesSelectError,
   } = useSelectCountries();
 
+  const {
+    data: ramis,
+    isLoading: isRamisLoading,
+    isError: isRamisError,
+  } = useRamis();
+
   useEffect(() => {
-    setSaim(saims);
-    setProducts(products);
-    setCountries(countries);
-  }, [saims, products, countries]);
+    setRamis(ramis);
+    setSaims(saims);
+    setProduct(products);
+    setCountry(countries);
+    setProductSelect(productsSelect);
+    setCountrySelect(countriesSelect);
+  }, [saims, products, countries, ramis, productSelect, countriesSelect]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
