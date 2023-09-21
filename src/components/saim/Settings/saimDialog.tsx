@@ -10,14 +10,11 @@ import {
   MenuList,
   MenuItem,
 } from "@material-tailwind/react";
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { data } from "autoprefixer";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { useRouter } from "next/navigation";
-import getSaim from "@/src/services/saim/useSaim";
 import Saim from "@/src/models/saim";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -32,12 +29,10 @@ import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { useShallowEffect } from "@mantine/hooks";
+
 import { useAtom } from "jotai";
 import {
-  countryAtom,
   countrySelect,
-  productAtom,
   productSelect,
   saimAtom,
 } from "@/src/state/states";
@@ -55,10 +50,8 @@ export default function SaimDialog({
   handleOpen: () => void;
   updateSaims: () => void;
 }) {
-  const [data, setData] = useAtom(saimAtom);
-  const [handle, setHandle] = useState<boolean>(false);
   const [files, setFiles] = useState<FileWithPath[]>([]);
-  const [description, setDescription] = useState<any>("");
+  const [description, ] = useState<any>("");
   const [title, setTitle] = useState("");
   const categories = [
     "Oportunidades",
@@ -67,8 +60,8 @@ export default function SaimDialog({
     "Obstáculos",
   ];
   const [category, onChange] = useState(categories[0]);
-  const [countries, setCountries] = useAtom(countrySelect);
-  const [products, setProducts] = useAtom(productSelect);
+  const [countries,] = useAtom(countrySelect);
+  const [products,] = useAtom(productSelect);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
 
@@ -79,8 +72,27 @@ export default function SaimDialog({
     }
   };
 
+  const editor1 = useEditor({
+    extensions: [
+      StarterKit.configure({
+        bulletList: {
+          HTMLAttributes: {
+            class: "text-black",
+          },
+        },
+      }),
+      Underline,
+      Link,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({ placeholder: "Contenido del SAIM" }),
+    ],
+    content: saim?.description,
+  });
+
   useEffect(() => {
     if (saim) {
+      editor1?.commands.insertContent(saim.description);
       setTitle(saim.title);
       onChange(saim.category);
       const saimCountries = saim.countries?.map((country: any) => {
@@ -96,7 +108,7 @@ export default function SaimDialog({
       });
       setSelectedProducts(saimProducts);
     }
-  }, []);
+  }, [saim]);
 
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
@@ -125,7 +137,6 @@ export default function SaimDialog({
     if (files.length > 0) {
       data.append("file", files[0]);
     }
-    console.log(data.values);
     if (!saim) {
       return await axios
         .post("http://localhost:3001/saim", data)
@@ -159,7 +170,7 @@ export default function SaimDialog({
           });
         });
     }
-
+    console.log(data)
     await axios
       .put(`http://localhost:3001/saim/${saim.id}`, data)
       .then((res) => {
@@ -194,23 +205,7 @@ export default function SaimDialog({
       });
   };
 
-  const editor1 = useEditor({
-    extensions: [
-      StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: "text-black",
-          },
-        },
-      }),
-      Underline,
-      Link,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Contenido del SAIM" }),
-    ],
-    content: saim?.description,
-  });
+  
 
   return (
     <Dialog
@@ -233,7 +228,8 @@ export default function SaimDialog({
               setFiles([]);
               editor1?.commands.clearContent();
               setTitle("");
-              // setSelectedCountries([]);
+              setSelectedCountries([]);
+              setSelectedProducts([]);
             }
             handleOpen();
           }}
@@ -283,23 +279,29 @@ export default function SaimDialog({
                 onClick={handleClickSelectFile}
               >
                 {/* ImagePreview */}
-                {files.length > 0 || saim ? (
-                  <div className="flex justify-center w-full h-full">
-                    <Image
-                      src={
-                        !saim
-                          ? URL.createObjectURL(files[0])
-                          : `http://127.0.0.1:3001/data/saim/${saim?.id}/img/${saim?.image}`
-                      }
-                      width={1920}
-                      height={1080}
-                      alt="card-image"
-                      className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
-                )}
+                {files.length > 0 ? (
+                <div className="flex justify-center w-full h-full">
+                  <Image
+                    src={URL.createObjectURL(files[0])}
+                    width={1920}
+                    height={1080}
+                    alt="card-image"
+                    className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
+                  />
+                </div>
+              ) : saim ? (
+                <div className="flex justify-center w-full h-full">
+                  <Image
+                    src={`http://127.0.0.1:3001/data/saim/${saim?.id}/img/${saim?.image}`}
+                    width={1920}
+                    height={1080}
+                    alt="saim-image"
+                    className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
+                  />
+                </div>
+              ) : (
+                <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
+              )}
               </div>
 
               <div className="flex items-center justify-center w-full h-full text-base text-black">
@@ -402,7 +404,7 @@ export default function SaimDialog({
               <Select
                 closeMenuOnSelect={false}
                 components={animatedComponents}
-                isMulti={false}
+                isMulti
                 placeholder="Seleccione los productos del SAIM..."
                 onChange={(e) => setSelectedProducts(e)}
                 defaultValue={selectedProducts}
@@ -412,12 +414,16 @@ export default function SaimDialog({
 
             <div className="flex justify-end w-full h-12 my-5">
               <Button
-                disabled={
+                disabled={ !saim ?
                   title === "" ||
                   editor1?.isEmpty ||
                   files.length === 0 ||
-                  countries.length === 0 ||
-                  products.length === 0
+                  selectedCountries.length === 0 ||
+                  selectedProducts.length === 0 : 
+                  title === "" ||
+                  editor1?.isEmpty ||
+                  selectedCountries.length === 0 ||
+                  selectedProducts.length === 0
                 }
                 onClick={handleSubmit}
                 color="green"

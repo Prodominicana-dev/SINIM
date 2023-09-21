@@ -49,13 +49,13 @@ export default function Modal({ id }: any) {
           variant="text"
           onClick={handleOpen}
         >
-          <XMarkIcon className="w-7 m-2" />
+          <XMarkIcon className="m-2 w-7" />
         </IconButton>
       </DialogHeader>
       <DialogBody className="flex justify-center h-[100vm] overflow-y-auto">
         <div className="w-10/12 sm:w-8/12">
           <div className="text-base text-neutral-500">{data.category}</div>
-          <div className="text-xl sm:text-3xl text-black font-bold my-2">
+          <div className="my-2 text-xl font-bold text-black sm:text-3xl">
             {data.title}
           </div>
           <div className="text-xs font-light text-neutral-500">
@@ -66,10 +66,10 @@ export default function Modal({ id }: any) {
             height={1080}
             src={`http://127.0.0.1:3001/data/saim/${data.id}/img/${data.image}`}
             alt="card-image"
-            className="object-cover w-full rounded-lg my-3"
+            className="object-cover w-full my-3 rounded-lg"
           />
           <div
-            className="pb-10 text-black text-lg"
+            className="pb-10 text-lg text-black"
             dangerouslySetInnerHTML={{ __html: data.description }}
           ></div>
         </div>
