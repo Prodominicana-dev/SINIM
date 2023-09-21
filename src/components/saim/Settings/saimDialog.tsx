@@ -10,14 +10,11 @@ import {
   MenuList,
   MenuItem,
 } from "@material-tailwind/react";
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { data } from "autoprefixer";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { useRouter } from "next/navigation";
-import getSaim from "@/src/services/saim/useSaim";
 import Saim from "@/src/models/saim";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -32,12 +29,10 @@ import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { useShallowEffect } from "@mantine/hooks";
+
 import { useAtom } from "jotai";
 import {
-  countryAtom,
   countrySelect,
-  productAtom,
   productSelect,
   saimAtom,
 } from "@/src/state/states";
@@ -96,7 +91,7 @@ export default function SaimDialog({
       });
       setSelectedProducts(saimProducts);
     }
-  }, []);
+  }, [saim]);
 
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
@@ -233,7 +228,8 @@ export default function SaimDialog({
               setFiles([]);
               editor1?.commands.clearContent();
               setTitle("");
-              // setSelectedCountries([]);
+              setSelectedCountries([]);
+              setSelectedProducts([]);
             }
             handleOpen();
           }}
@@ -402,7 +398,7 @@ export default function SaimDialog({
               <Select
                 closeMenuOnSelect={false}
                 components={animatedComponents}
-                isMulti={false}
+                isMulti
                 placeholder="Seleccione los productos del SAIM..."
                 onChange={(e) => setSelectedProducts(e)}
                 defaultValue={selectedProducts}
@@ -416,8 +412,8 @@ export default function SaimDialog({
                   title === "" ||
                   editor1?.isEmpty ||
                   files.length === 0 ||
-                  countries.length === 0 ||
-                  products.length === 0
+                  selectedCountries.length === 0 ||
+                  selectedProducts.length === 0
                 }
                 onClick={handleSubmit}
                 color="green"

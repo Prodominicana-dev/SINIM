@@ -27,24 +27,30 @@ import { useAtom } from "jotai";
 import useSaims from "@/src/services/saim/useSaims";
 import { saimAtom } from "@/src/state/states";
 import SettingsFeed from "@/src/components/saim/Settings/settingsFeed";
+import { useSaimsPage } from "@/src/services/saim/useSaimsPage";
 
 export default function Page() {
   const [data, setData] = useAtom(saimAtom);
   const [open, setOpen] = React.useState(false);
+  const [refresh, setRefresh] = useState(false);
   const handleOpen = () => {
     setOpen(!open);
   };
 
-  const {
-    data: d,
-    isLoading: isSaimsLoading,
-    isError: isSaimsError,
-  } = useSaims();
   const updateSaims = () => {
-    console.log("ENTREEEEEEEE AAAAA");
-    setData(d);
-  };
+    setRefresh(!refresh);
+  }
+  const {refetch} = useSaims();
+// , { fetchNextPage, hasNextPage, data: d, refetch: _refetch }
+  const pagination = useSaimsPage();
 
+  useEffect(() => {
+    refetch().then((res) => {
+      setData(res.data);
+    });
+    pagination.refetch();
+  }, [refresh])
+  
   return (
     <div className="">
       <div className="flex flex-col items-center justify-center w-full h-full my-10 space-y-8">
@@ -96,7 +102,7 @@ export default function Page() {
           >
             <PlusIcon className="w-16 h-16 text-black" />
           </button>
-          <SettingsFeed updateSaims={updateSaims}/>
+          <SettingsFeed queryI={pagination} updateSaims={updateSaims}/>
         </div>
         <SaimDialog
           open={open}
