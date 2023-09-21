@@ -50,10 +50,8 @@ export default function SaimDialog({
   handleOpen: () => void;
   updateSaims: () => void;
 }) {
-  const [data, setData] = useAtom(saimAtom);
-  const [handle, setHandle] = useState<boolean>(false);
   const [files, setFiles] = useState<FileWithPath[]>([]);
-  const [description, setDescription] = useState<any>("");
+  const [description, ] = useState<any>("");
   const [title, setTitle] = useState("");
   const categories = [
     "Oportunidades",
@@ -62,8 +60,8 @@ export default function SaimDialog({
     "Obstáculos",
   ];
   const [category, onChange] = useState(categories[0]);
-  const [countries, setCountries] = useAtom(countrySelect);
-  const [products, setProducts] = useAtom(productSelect);
+  const [countries,] = useAtom(countrySelect);
+  const [products,] = useAtom(productSelect);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
 
@@ -172,7 +170,7 @@ export default function SaimDialog({
           });
         });
     }
-
+    console.log(data)
     await axios
       .put(`http://localhost:3001/saim/${saim.id}`, data)
       .then((res) => {
@@ -281,7 +279,7 @@ export default function SaimDialog({
                 onClick={handleClickSelectFile}
               >
                 {/* ImagePreview */}
-                {files.length > 0 || saim ? (
+                {/* {files.length > 0 || saim ? (
                   <div className="flex justify-center w-full h-full">
                     <Image
                       src={
@@ -297,7 +295,30 @@ export default function SaimDialog({
                   </div>
                 ) : (
                   <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
-                )}
+                )} */}
+                {files.length > 0 ? (
+                <div className="flex justify-center w-full h-full">
+                  <Image
+                    src={URL.createObjectURL(files[0])}
+                    width={1920}
+                    height={1080}
+                    alt="card-image"
+                    className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
+                  />
+                </div>
+              ) : saim ? (
+                <div className="flex justify-center w-full h-full">
+                  <Image
+                    src={`http://127.0.0.1:3001/data/saim/${saim?.id}/img/${saim?.image}`}
+                    width={1920}
+                    height={1080}
+                    alt="saim-image"
+                    className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
+                  />
+                </div>
+              ) : (
+                <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
+              )}
               </div>
 
               <div className="flex items-center justify-center w-full h-full text-base text-black">
@@ -410,10 +431,14 @@ export default function SaimDialog({
 
             <div className="flex justify-end w-full h-12 my-5">
               <Button
-                disabled={
+                disabled={ !saim ?
                   title === "" ||
                   editor1?.isEmpty ||
                   files.length === 0 ||
+                  selectedCountries.length === 0 ||
+                  selectedProducts.length === 0 : 
+                  title === "" ||
+                  editor1?.isEmpty ||
                   selectedCountries.length === 0 ||
                   selectedProducts.length === 0
                 }
