@@ -74,8 +74,27 @@ export default function SaimDialog({
     }
   };
 
+  const editor1 = useEditor({
+    extensions: [
+      StarterKit.configure({
+        bulletList: {
+          HTMLAttributes: {
+            class: "text-black",
+          },
+        },
+      }),
+      Underline,
+      Link,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({ placeholder: "Contenido del SAIM" }),
+    ],
+    content: saim?.description,
+  });
+
   useEffect(() => {
     if (saim) {
+      editor1?.commands.insertContent(saim.description);
       setTitle(saim.title);
       onChange(saim.category);
       const saimCountries = saim.countries?.map((country: any) => {
@@ -120,7 +139,6 @@ export default function SaimDialog({
     if (files.length > 0) {
       data.append("file", files[0]);
     }
-    console.log(data.values);
     if (!saim) {
       return await axios
         .post("http://localhost:3001/saim", data)
@@ -189,23 +207,7 @@ export default function SaimDialog({
       });
   };
 
-  const editor1 = useEditor({
-    extensions: [
-      StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: "text-black",
-          },
-        },
-      }),
-      Underline,
-      Link,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Contenido del SAIM" }),
-    ],
-    content: saim?.description,
-  });
+  
 
   return (
     <Dialog
