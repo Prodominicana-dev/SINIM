@@ -3,11 +3,9 @@ import Saim from "@/src/models/saim";
 import getAllSaim from "@/src/services/saim/useSaims";
 import { useCallback, useState, useEffect } from "react";
 import {
-  Input,
-} from "@material-tailwind/react";
-import {
   PlusIcon,
   MagnifyingGlassIcon,
+  AdjustmentsHorizontalIcon
 } from "@heroicons/react/24/solid";
 import SCard from "@/src/components/settings/saim/card";
 import SaimDialog from "@/src/components/saim/Settings/saimDialog";
@@ -17,6 +15,14 @@ import useSaims from "@/src/services/saim/useSaims";
 import { saimAtom } from "@/src/state/states";
 import SettingsFeed from "@/src/components/saim/Settings/settingsFeed";
 import { useSaimsPage } from "@/src/services/saim/useSaimsPage";
+import { Select } from "@mantine/core";
+import {
+  Collapse,
+  Button,
+  Card,
+  Typography,
+  CardBody,
+} from "@material-tailwind/react";
 
 export default function Page() {
   const [data, setData] = useState<Saim[]>([]);
@@ -25,6 +31,7 @@ export default function Page() {
   const [category, setCategory] = useState("Todos");
   const [open, setOpen] = React.useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
   
   const handleOpen = () => {
     setOpen(!open);
@@ -94,9 +101,62 @@ export default function Page() {
   };
   
   return (
-    <div className="">
+    <div>
       <div className="flex flex-col items-center justify-center w-full h-full">
-        <div className="flex flex-row flex-wrap items-center justify-center w-11/12 lg:w-8/12 lg:justify-between">
+        <div className="w-full h-16">
+        <div className="flex flex-row justify-end w-full h-full p-8 space-x-8">
+          <input type="text" 
+          className="w-56 h-10 px-5 rounded-full ring-2 ring-gray-300"
+          placeholder="Buscar..."
+          onChange={handleSearchChange}/>
+
+        <Button onClick={() => setFilterOpen(!filterOpen)}
+        className="flex items-center h-10 gap-3 text-black duration-100 bg-white rounded-full shadow-none ring-gray-300 ring-2 hover:ring hover:shadow-none w-36">
+          <AdjustmentsHorizontalIcon className="w-5 h-5" />
+          Filtrar
+        </Button>
+
+            {/* <Select
+              className="w-40"
+              size="md"
+              radius="md"
+              data={filterSaims}
+              defaultValue="Todos"
+              searchable={false}
+            /> */}
+          
+            {/* <Input icon={<MagnifyingGlassIcon  />} variant="outlined" placeholder="Buscar..." crossOrigin={""}
+            onChange={handleSearchChange}   /> */}
+          </div>
+        </div>
+        
+      <div className="flex flex-row w-full px-8 pt-8 pb-4 space-x-8">
+      <Select
+              className="w-4/12"
+              size="md"
+              radius="md"
+              data={filterSaims}
+              defaultValue="Todos"
+              searchable={false}
+            />
+      <Select
+        className="w-4/12"
+        size="md"
+        radius="md"
+        data={filterSaims}
+        defaultValue="Todos"
+        searchable={false}
+      />
+      <Select
+        className="w-4/12"
+        size="md"
+        radius="md"
+        data={filterSaims}
+        defaultValue="Todos"
+        searchable={false}
+      />
+      </div>
+        {/* <div className="flex flex-row flex-wrap items-center justify-center w-11/12 lg:w-8/12 lg:justify-between">
           {filterSaims.map((filter) => (
             <button
             onClick={() => handleFilter(filter)}
@@ -113,11 +173,9 @@ export default function Page() {
             <Input icon={<MagnifyingGlassIcon  />} variant="standard" placeholder="Buscar..." crossOrigin={""}
             onChange={handleSearchChange}   />
           </div>
-        </div>
-        {/* 
-               SAIMS
-            */}
-        <div className="grid w-full h-full grid-cols-1 gap-10 p-8 sm:grid-cols-2 lg:grid-cols-4 ">
+        </div> */}
+        {/* SAIMS */}
+        <div className="grid w-full h-full grid-cols-1 gap-10 px-8 py-4 sm:grid-cols-2 lg:grid-cols-4 ">
           <button
             className="flex items-center justify-center w-full h-full duration-300 border-2 border-black border-dashed cursor-pointer rounded-3xl hover:bg-gray-200"
             onClick={handleOpen}
