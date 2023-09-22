@@ -13,8 +13,8 @@ export default function DeleteSaim({id, open, handleOpen, updateSaims}: {id: num
     const handleDelete = async () => {
         await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/saim/${id}`).then(() => {
             notifications.show({
-                title: "SAIM eliminado",
-                message: "El SAIM ha sido eliminado correctamente",
+                title: "SAIM desactivado",
+                message: "El SAIM ha sido desactivado correctamente",
                 color: "green",
                 autoClose: 5000,
             })
@@ -25,19 +25,22 @@ export default function DeleteSaim({id, open, handleOpen, updateSaims}: {id: num
     }
   return (
     <>
-        <Dialog open={open} handler={handleOpen} size="xs">
-            <DialogHeader>¿Estás seguro de eliminar este SAIM?</DialogHeader>
-            <DialogBody>
-                <Button color="red" onClick={handleDelete}>Sí</Button>
+        <Dialog open={open} handler={handleOpen} size="md">
+            <DialogHeader>¿Estás seguro de desactivar el SAIM?</DialogHeader>
+            <DialogBody divider>
+             <p>El SAIM será desactivado, no eliminado.</p>   
+            </DialogBody>
+            <DialogFooter>
+            <Button color="red" onClick={handleDelete}>Sí</Button>
                 <Button
                     variant="text"
-                    color="red"
+                    
                     onClick={handleOpen}
                     className="mr-1"
                 >
                     <span>Cancelar</span>
                 </Button>
-            </DialogBody>
+            </DialogFooter>
         </Dialog>
       </>
   )

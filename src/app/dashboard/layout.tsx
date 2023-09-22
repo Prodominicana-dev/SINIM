@@ -25,6 +25,7 @@ import {
 import { useSelectProducts } from "@/src/services/products/useSelectProducts";
 import useSelectCountries from "@/src/services/countries/useSelectCountries";
 import useRamis from "@/src/services/ramis/useRamis";
+import useActiveSaims from "@/src/services/saim/useActiveSaim";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -45,7 +46,7 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
     data: saims,
     isLoading: isSaimsLoading,
     isError: isSaimsError,
-  } = useSaims();
+  } = useActiveSaims();
 
   const {
     data: products,
