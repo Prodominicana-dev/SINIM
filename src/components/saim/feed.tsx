@@ -6,10 +6,11 @@ import { useIntersection } from "@mantine/hooks";
 import SaimCard from "./card";
 import Saim from "@/src/models/saim";
 import { useSaimsPage } from "@/src/services/saim/useSaimsPage";
+import { useActiveSaimsPage } from "@/src/services/saim/useActiveSaimsPage";
 
 export default function Feed() {
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data } =
-    useSaimsPage();
+    useActiveSaimsPage();
   const containerRef = useRef<HTMLElement>(null);
   const { ref, entry } = useIntersection({
     root: containerRef.current,
@@ -23,7 +24,7 @@ export default function Feed() {
   const _allSaim = data?.pages.flatMap((saim: any) => saim);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-8">
+    <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {_allSaim?.map((saim: Saim, i: number) => {
         if (i === _allSaim.length - 1)
           return (

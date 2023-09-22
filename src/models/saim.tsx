@@ -10,6 +10,7 @@ export default interface Saim {
   link: string;
   image: string;
   date: Date;
+  status: string;
   countries: country[];
   products: product[];
 }
