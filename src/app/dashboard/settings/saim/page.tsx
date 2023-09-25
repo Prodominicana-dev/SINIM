@@ -23,6 +23,8 @@ import {
   Typography,
   CardBody,
 } from "@material-tailwind/react";
+import { set } from "date-fns";
+import { ca } from "date-fns/locale";
 
 export default function Page() {
   const [data, setData] = useState<Saim[]>([]);
@@ -32,6 +34,7 @@ export default function Page() {
   const [open, setOpen] = React.useState(false);
   const [refresh, setRefresh] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [status, setStatus] = useState("");
   
   const handleOpen = () => {
     setOpen(!open);
@@ -69,36 +72,83 @@ export default function Page() {
         : data.filter(
             (saim) => saim.category.toLowerCase() === category.toLowerCase()
           );
-
-    const filteredBySearch = filteredByCategory.filter(
-      (saim) =>
-        saim.title.toLowerCase().includes(search.toLowerCase()) ||
-        saim.products.some(
-          (product) =>
-            product.name.toLowerCase().includes(search.toLowerCase()) ||
-            product.code.toLowerCase().includes(search.toLowerCase())
-        )
-    );
-
+  
+    let filteredBySearch;
+  
+    if (!status) {
+      // Si no se ha seleccionado un estado, mostrar todos los registros
+      filteredBySearch = filteredByCategory.filter(
+        (saim) =>
+          saim.title.toLowerCase().includes(search.toLowerCase()) ||
+          saim.products.some(
+            (product) =>
+              product.name.toLowerCase().includes(search.toLowerCase()) ||
+              product.code.toLowerCase().includes(search.toLowerCase())
+          )
+      );
+    } else {
+      // Si se ha seleccionado un estado, filtrar por estado y búsqueda
+      filteredBySearch = filteredByCategory.filter(
+        (saim) =>
+          saim.status.toLowerCase() === status.toLowerCase() &&
+          (saim.title.toLowerCase().includes(search.toLowerCase()) ||
+            saim.products.some(
+              (product) =>
+                product.name.toLowerCase().includes(search.toLowerCase()) ||
+                product.code.toLowerCase().includes(search.toLowerCase())
+            ))
+      );
+    }
+  
     setFilteredData(filteredBySearch);
   };
+  
+  
+
+  useEffect(() => {
+    filterData();
+  }, [search, category]);
 
   useEffect(() => {
     filterData();
   }, [search, category]);
 
   const filterSaims = ["Todos", "Oportunidades", "Actualizaciones", "Amenazas", "Obstáculos"] 
+  const statusSaims = [{label:"Publicados", value:"active"}, {label:"Ocultos", value:"deleted"}]
 
   const handleFilter = (selectedCategory: string) => {
-    // Filtrar datos por categoría y actualizar el estado
-    const SaimByCategory = data.filter(
-      (saim) => saim.category.toLowerCase() === selectedCategory.toLowerCase()
-    );
-    setCategory(selectedCategory);
-    selectedCategory.toLowerCase() == "todos"
-      ? setFilteredData(data)
-      : setFilteredData(SaimByCategory);
+    if(selectedCategory.toLowerCase() == "todos"){
+      const SaimByCategory = data.filter(
+        (saim) => saim.status.toLowerCase() === status.toLowerCase()
+      );
+      setCategory(selectedCategory);
+      return setFilteredData(SaimByCategory);
+    }else{
+      const SaimByCategory = data.filter(
+        (saim) => saim.category.toLowerCase() === selectedCategory.toLowerCase() && saim.status.toLowerCase() === status.toLowerCase()
+      );
+      console.log(status)
+      console.log(SaimByCategory)
+      setCategory(selectedCategory);
+      setFilteredData(SaimByCategory);
+    }
   };
+
+  const handleStatus = (selectedStatus: string) => {
+    const SaimByStatus = category !== "Todos" ? data.filter(
+      (saim) => (saim.status.toLowerCase() === selectedStatus.toLowerCase() && saim.category.toLowerCase() === category.toLowerCase())
+    ) : data.filter((saim) => (saim.status.toLowerCase() === selectedStatus.toLowerCase()));
+    setStatus(selectedStatus);
+    console.log(SaimByStatus)
+    setFilteredData(SaimByStatus);
+    console.log(filteredData)
+  }
+
+  const handleFilterOpen = () => {
+    setFilterOpen(!filterOpen);
+  }
+
+  const isVisible = filterOpen ? "visible" : "hidden";
   
   return (
     <div>
@@ -110,74 +160,38 @@ export default function Page() {
           placeholder="Buscar..."
           onChange={handleSearchChange}/>
 
-        <Button onClick={() => setFilterOpen(!filterOpen)}
+        <Button onClick={handleFilterOpen}
         className="flex items-center h-10 gap-3 text-black duration-100 bg-white rounded-full shadow-none ring-gray-300 ring-2 hover:ring hover:shadow-none w-36">
           <AdjustmentsHorizontalIcon className="w-5 h-5" />
           Filtrar
         </Button>
-
-            {/* <Select
-              className="w-40"
-              size="md"
-              radius="md"
-              data={filterSaims}
-              defaultValue="Todos"
-              searchable={false}
-            /> */}
-          
-            {/* <Input icon={<MagnifyingGlassIcon  />} variant="outlined" placeholder="Buscar..." crossOrigin={""}
-            onChange={handleSearchChange}   /> */}
           </div>
         </div>
         
-      <div className="flex flex-row w-full px-8 pt-8 pb-4 space-x-8">
+      <div className={`${isVisible} flex flex-row w-full px-8 pt-8 pb-4 space-x-8`}>
       <Select
-              className="w-4/12"
-              size="md"
-              radius="md"
-              data={filterSaims}
-              defaultValue="Todos"
-              searchable={false}
+          className="w-4/12"
+          size="md"
+          radius="md"
+          data={filterSaims}
+          defaultValue="Todos"
+          searchable={false}
+          onChange={(e:string) => handleFilter(e)}
             />
       <Select
         className="w-4/12"
         size="md"
         radius="md"
-        data={filterSaims}
-        defaultValue="Todos"
+        data={statusSaims}
+        placeholder="Estado"
         searchable={false}
-      />
-      <Select
-        className="w-4/12"
-        size="md"
-        radius="md"
-        data={filterSaims}
-        defaultValue="Todos"
-        searchable={false}
+        onChange={(e:string) => handleStatus(e)}
       />
       </div>
-        {/* <div className="flex flex-row flex-wrap items-center justify-center w-11/12 lg:w-8/12 lg:justify-between">
-          {filterSaims.map((filter) => (
-            <button
-            onClick={() => handleFilter(filter)}
-            className={category === filter ? 
-              "h-12 duration-300 border-2 bg-navy/90 text-white rounded-full cursor-pointer w-32 lg:w-44 m-2" : 
-              "h-12 duration-300 border-2 border-black rounded-full cursor-pointer lg:w-44 hover:bg-gray-200 w-32 m-2"}
-          >
-            {filter}
-          </button>
-          ))}
-        </div>
-        <div className="flex justify-end w-full pt-8 pr-8">
-          <div className="w-3/12 h-14">
-            <Input icon={<MagnifyingGlassIcon  />} variant="standard" placeholder="Buscar..." crossOrigin={""}
-            onChange={handleSearchChange}   />
-          </div>
-        </div> */}
         {/* SAIMS */}
         <div className="grid w-full h-full grid-cols-1 gap-10 px-8 py-4 sm:grid-cols-2 lg:grid-cols-4 ">
           <button
-            className="flex items-center justify-center w-full h-full duration-300 border-2 border-black border-dashed cursor-pointer rounded-3xl hover:bg-gray-200"
+            className="flex items-center justify-center w-full duration-300 border-2 border-black border-dashed cursor-pointer h-[28rem] rounded-3xl hover:bg-gray-200"
             onClick={handleOpen}
           >
             <PlusIcon className="w-16 h-16 text-black" />
