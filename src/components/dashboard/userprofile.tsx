@@ -30,7 +30,7 @@ export default function UserProfile() {
     {
       label: "Cerrar sesion",
       icon: PowerIcon,
-      link: "api/auth/logout",
+      link: "/api/auth/logout",
     },
   ];
 
