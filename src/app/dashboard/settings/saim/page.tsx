@@ -26,6 +26,7 @@ import {
 } from "@material-tailwind/react";
 import { set } from "date-fns";
 import { ca } from "date-fns/locale";
+import Suscribe from "@/src/components/saim/Suscribe/suscribe";
 
 export default function Page() {
   const [data, setData] = useState<Saim[]>([]);
@@ -36,6 +37,11 @@ export default function Page() {
   const [refresh, setRefresh] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [status, setStatus] = useState("");
+  const [suscribeOpen, setSuscribeOpen] = useState(false);
+
+  const handleSuscribeOpen = () => {
+    setSuscribeOpen(!suscribeOpen);
+  }
   
   const handleOpen = () => {
     setOpen(!open);
@@ -156,6 +162,11 @@ export default function Page() {
         </div>
         <div className="w-full h-16">
         <div className="flex flex-row justify-end w-full h-full p-8 space-x-8">
+        <Button onClick={handleSuscribeOpen}
+        className="flex items-center h-10 gap-3 text-black duration-100 bg-white rounded-full shadow-none ring-gray-300 ring-2 hover:ring hover:shadow-none w-36">
+          <AdjustmentsHorizontalIcon className="w-5 h-5" />
+          Suscribir
+        </Button>
           <input type="text" 
           className="w-56 h-10 px-5 rounded-full ring-2 ring-gray-300"
           placeholder="Buscar..."
@@ -230,6 +241,7 @@ export default function Page() {
           handleOpen={handleOpen}
           updateSaims={updateSaims}
         />
+        <Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} />
       </div>
     </div>
   );
