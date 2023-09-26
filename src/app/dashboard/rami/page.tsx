@@ -1,18 +1,10 @@
 "use client";
-import {
-  countryAtom,
-  countrySelect,
-  productAtom,
-  productSelect,
-  ramiAtom,
-} from "@/src/state/states";
-import { Divider, Select } from "@mantine/core";
-import { Button, IconButton } from "@material-tailwind/react";
+import { countryAtom, productAtom, ramiAtom } from "@/src/state/states";
+import { Select } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
-import country from "@/src/models/country";
-import product from "@/src/models/product";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [countries, setCountries] = useAtom(countryAtom);
@@ -26,9 +18,10 @@ export default function Page() {
   const [originalProductSelect, setOriginalProductSelect] = useState<any>([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
-    if (countries) {
+    if (countries && ramis) {
       const countryidRamis = ramis.map((rami) => rami.countryId);
 
       const country = countries
@@ -40,7 +33,7 @@ export default function Page() {
       setOriginalCountriesSelect(country);
       setCountriesSelect(country);
     }
-    if (products) {
+    if (products && ramis) {
       const productidRamis = ramis.map((rami) => rami.productId);
       const product = products
         .filter((product) => productidRamis.includes(product.id)) // Utiliza filter en lugar de map
@@ -105,10 +98,15 @@ export default function Page() {
 
   // Función para manejar la búsqueda
   const handleSearch = () => {
-    // Accede a los IDs seleccionados directamente a través de selectedProduct y selectedCountry
-    console.log("Producto seleccionado:", selectedProduct);
-    console.log("País seleccionado:", selectedCountry);
-    // Realiza cualquier acción adicional que desees aquí
+    const rami = ramis.find(
+      (rami) =>
+        rami.productId === Number(selectedProduct) &&
+        rami.countryId === Number(selectedCountry)
+    );
+    console.log(rami);
+    if (rami) {
+      router.push(`/dashboard/rami/${rami.id}`);
+    }
   };
   return (
     <div className="w-full h-[90vh]">
@@ -158,7 +156,19 @@ export default function Page() {
               value={selectedCountry}
               onChange={handleCountryChange}
             />
-            <button className="flex justify-center items-center h-16 w-full sm:w-60 bg-navy text-white p-0 rounded-lg">
+            <button
+              {...(selectedCountry && selectedProduct
+                ? {}
+                : { disabled: true })}
+              className={`flex justify-center items-center h-16 w-full sm:w-60 bg-navy text-white p-0 rounded-lg ${
+                selectedCountry && selectedProduct
+                  ? "hover:bg-navy/80"
+                  : "cursor-not-allowed"
+              }`}
+              onClick={() => {
+                handleSearch();
+              }}
+            >
               <IconSearch />
             </button>
           </div>
