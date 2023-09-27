@@ -27,6 +27,7 @@ import {
 import { set } from "date-fns";
 import { ca } from "date-fns/locale";
 import Suscribe from "@/src/components/saim/Suscribe/suscribe";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Page() {
   const [data, setData] = useState<Saim[]>([]);
@@ -38,6 +39,7 @@ export default function Page() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [status, setStatus] = useState("");
   const [suscribeOpen, setSuscribeOpen] = useState(false);
+  const { user, error, isLoading } = useUser();
 
   const handleSuscribeOpen = () => {
     setSuscribeOpen(!suscribeOpen);
@@ -161,7 +163,7 @@ export default function Page() {
           <div className="w-6/12 text-xl font-thin text-center text-white">Tu centro de operaciones personal para alertas comerciales. Agrega, edita y oculta información clave al instante. Toma el control de tus alertas.</div>
         </div>
         <div className="w-full h-16">
-        <div className="flex flex-row justify-end w-full h-full p-8 space-x-8">
+        <div className="flex flex-row flex-wrap justify-end w-full h-full p-8 space-x-8">
         <Button onClick={handleSuscribeOpen}
         className="flex items-center h-10 gap-3 text-black duration-100 bg-white rounded-full shadow-none ring-gray-300 ring-2 hover:ring hover:shadow-none w-36">
           <AdjustmentsHorizontalIcon className="w-5 h-5" />
@@ -241,7 +243,7 @@ export default function Page() {
           handleOpen={handleOpen}
           updateSaims={updateSaims}
         />
-        {suscribeOpen ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} />) : null}
+        {suscribeOpen ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user?.email} />) : null}
       </div>
     </div>
   );
