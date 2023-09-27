@@ -242,7 +242,6 @@ export default function Page() {
           updateSaims={updateSaims}
         />
         {suscribeOpen ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} />) : null}
-        
       </div>
     </div>
   );
