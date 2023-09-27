@@ -9,9 +9,18 @@ import {
 import UserProfile from "./userprofile";
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import Suscribe from "../saim/Suscribe/suscribe";
 
 export function NavbarDashboard({ toggleSidebar }: any) {
   const [openNav, setOpenNav] = React.useState(false);
+  const pathname = usePathname();
+  const [suscribeOpen, setSuscribeOpen] = React.useState(false);
+  const { user, error, isLoading } = useUser();
+  const handleSuscribeOpen = () => {
+    setSuscribeOpen(!suscribeOpen);
+  }
 
   React.useEffect(() => {
     window.addEventListener(
@@ -40,34 +49,39 @@ export function NavbarDashboard({ toggleSidebar }: any) {
       color="white"
       className="w-full max-w-none rounded-none shadow-none h-[10vh]"
     >
-      <div className="container h-full mx-2 flex items-center justify-between text-blue-gray-900 max-w-none">
-        <div className="basis-1/12 hidden lg:block">
+      <div className="container flex items-center justify-between h-full mx-2 text-blue-gray-900 max-w-none">
+        <div className="hidden w-4/12 lg:flex lg:justify-start ">
           <button className="" onClick={toggleSidebar}>
             <Bars3Icon className="w-10" />
           </button>
         </div>
-        <Typography className="font-medium font-custom text-3xl">
+        <Typography className="w-4/12 text-3xl font-medium text-center font-custom">
           SAIM
         </Typography>
-        <div className="hidden lg:block">
+        
+        <div className="hidden w-4/12 lg:flex lg:flex-row lg:space-x-4 lg:justify-end">
+        {pathname === "/dashboard/saim" ? (<>
+          <button onClick={handleSuscribeOpen}>Suscríbete</button>
+        </>) : null}
           <UserProfile />
         </div>
         <IconButton
           variant="text"
-          className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+          className="w-6 h-6 ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
           ripple={false}
           onClick={() => setOpenNav(!openNav)}
         >
           {openNav ? (
-            <XMarkIcon className="w-7 text-black" />
+            <XMarkIcon className="text-black w-7" />
           ) : (
-            <Bars3Icon className="w-7 text-black" />
+            <Bars3Icon className="text-black w-7" />
           )}
         </IconButton>
       </div>
       <Collapse open={openNav}>
         <div className="container mx-auto">{navList}</div>
       </Collapse>
+      {suscribeOpen ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user?.email} />) : null}
     </Navbar>
   );
 }

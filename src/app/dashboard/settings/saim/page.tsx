@@ -1,33 +1,21 @@
 "use client";
 import Saim from "@/src/models/saim";
-import getAllSaim from "@/src/services/saim/useSaims";
 import { useCallback, useState, useEffect } from "react";
 import {
   PlusIcon,
-  MagnifyingGlassIcon,
   AdjustmentsHorizontalIcon,
   XMarkIcon
 } from "@heroicons/react/24/solid";
 import SCard from "@/src/components/settings/saim/card";
 import SaimDialog from "@/src/components/saim/Settings/saimDialog";
 import React from "react";
-import { useAtom } from "jotai";
 import useSaims from "@/src/services/saim/useSaims";
-import { saimAtom } from "@/src/state/states";
 import SettingsFeed from "@/src/components/saim/Settings/settingsFeed";
 import { useSaimsPage } from "@/src/services/saim/useSaimsPage";
 import { Select } from "@mantine/core";
 import {
-  Collapse,
   Button,
-  Card,
-  Typography,
-  CardBody,
 } from "@material-tailwind/react";
-import { set } from "date-fns";
-import { ca } from "date-fns/locale";
-import Suscribe from "@/src/components/saim/Suscribe/suscribe";
-import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Page() {
   const [data, setData] = useState<Saim[]>([]);
@@ -38,13 +26,7 @@ export default function Page() {
   const [refresh, setRefresh] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [status, setStatus] = useState("");
-  const [suscribeOpen, setSuscribeOpen] = useState(false);
-  const { user, error, isLoading } = useUser();
 
-  const handleSuscribeOpen = () => {
-    setSuscribeOpen(!suscribeOpen);
-  }
-  
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -164,11 +146,6 @@ export default function Page() {
         </div>
         <div className="w-full h-16">
         <div className="flex flex-row flex-wrap justify-end w-full h-full p-8 space-x-8">
-        <Button onClick={handleSuscribeOpen}
-        className="flex items-center h-10 gap-3 text-black duration-100 bg-white rounded-full shadow-none ring-gray-300 ring-2 hover:ring hover:shadow-none w-36">
-          <AdjustmentsHorizontalIcon className="w-5 h-5" />
-          Suscribir
-        </Button>
           <input type="text" 
           className="w-56 h-10 px-5 rounded-full ring-2 ring-gray-300"
           placeholder="Buscar..."
@@ -243,7 +220,6 @@ export default function Page() {
           handleOpen={handleOpen}
           updateSaims={updateSaims}
         />
-        {suscribeOpen ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user?.email} />) : null}
       </div>
     </div>
   );
