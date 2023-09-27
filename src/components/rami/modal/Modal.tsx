@@ -56,16 +56,18 @@ export default function Modal({ id }: any) {
       </DialogHeader>
       <DialogBody className="flex justify-center h-[100vm] overflow-y-auto">
         <div className="w-11/12">
-          <div className="flex justify-between items-center w-full h-96 bg-gradient-to-tr from-purple-700 to-sky-500 rounded-3xl p-8 text-white">
-            <div className="flex flex-col leading-normal">
-              <div>Exporta</div>
-              <div className="text-[3vw]">{data.product.name}</div>
-              <div className="text-end">{data.product.code}</div>
+          <div className="flex flex-col sm:flex-row justify-between items-center w-full  sm:h-64 lg:h-96 bg-gradient-to-tr from-purple-700 to-sky-500 rounded-lg sm:rounded-xl lg:rounded-3xl p-5 sm:p-8 text-white">
+            <div className="flex flex-col leading-normal w-10/12 sm:w-6/12">
+              <div className="text-xs sm:text-sm lg:text-lg">Exporta</div>
+              <div className="text-2xl lg:text-6xl">{data.product.name}</div>
+              <div className="text-xs lg:text-sm mb-2 sm:my-0 ">
+                {data.product.code}
+              </div>
             </div>
-            <div className="flex flex-col justify-between bg-white/25 w-5/12 h-full rounded-lg p-5">
+            <div className="flex flex-col justify-between bg-white/25 w-10/12 sm:w-5/12 h-48 sm:h-full rounded-lg p-3 sm:p-5">
               <div>
-                <div>Destino</div>
-                <div className="text-3xl">{data.country.name}</div>
+                <div className="text-xs lg:text-sm">Destino</div>
+                <div className="text-lg lg:text-4xl">{data.country.name}</div>
               </div>
               <Image
                 width={1920}
@@ -73,17 +75,13 @@ export default function Modal({ id }: any) {
                 alt=""
                 priority
                 src={`https://flagcdn.com/${data.country.abbreviation}.svg`}
-                className="rounded-lg w-full h-52 object-cover"
+                className="rounded-md lg:rounded-lg w-full h-28 sm:h-24 lg:h-52 object-cover"
               />
             </div>
           </div>
           <div className="pt-3">
             <UnderlineTabs {...data} />
           </div>
-          {/* <div
-            className="pb-10 text-lg text-black"
-            dangerouslySetInnerHTML={{ __html: data.tradeAgreement }}
-          ></div> */}
         </div>
       </DialogBody>
     </Dialog>
@@ -137,10 +135,10 @@ function UnderlineTabs(rami: any) {
   return (
     <Tabs value={activeTab}>
       <TabsHeader
-        className="rounded-none border-b border-blue-gray-50 bg-white p-0"
+        className="rounded-none bg-white p-0 flex justify-center flex-wrap"
         indicatorProps={{
           className:
-            "bg-gradient-to-r from-purple-700 to-sky-500 shadow-none rounded-none",
+            "bg-gradient-to-r from-purple-700 to-sky-500 shadow-none rounded-none w-[80vw] sm:w-[9vw] lg:w-[8vw]",
         }}
       >
         {data.map(({ label, value }) => (
@@ -149,10 +147,10 @@ function UnderlineTabs(rami: any) {
             value={value}
             onClick={() => setActiveTab(value)}
             className={`${
-              activeTab === value ? "text-gray-900 w-full" : ""
-            } py-0 px-0`}
+              activeTab === value ? "text-gray-900 w-full" : "bg-white"
+            } py-0 px-0 w-[80vw] sm:w-[9vw] lg:w-[8vw]`}
           >
-            <div className="bg-white w-[9vw] h-16 grow mb-1 flex items-center justify-center">
+            <div className="bg-white w-[80vw] sm:w-[9vw] lg:w-[8vw] h-16 grow ml-2 sm:ml-0 sm:mb-0.5 lg:mb-1 flex items-center justify-center  sm:text-[10px] lg:text-sm">
               {label}
             </div>
           </Tab>

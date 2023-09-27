@@ -49,8 +49,6 @@ export default function Page() {
   // Función para manejar la selección de producto
   const handleProductChange = (value: any) => {
     if (!value) {
-      console.log("entro");
-      console.log(countriesSelect);
       setProductSelect(originalProductSelect);
       setCountriesSelect(originalCountriesSelect);
       setSelectedProduct(value);
@@ -85,8 +83,6 @@ export default function Page() {
       .filter((rami) => rami.countryId === Number(value))
       .map((rami) => rami.productId);
 
-    console.log(productidRamis);
-
     const productOptions = products
       .filter((product) => productidRamis.includes(product.id))
       .map((product) => ({
@@ -103,7 +99,6 @@ export default function Page() {
         rami.productId === Number(selectedProduct) &&
         rami.countryId === Number(selectedCountry)
     );
-    console.log(rami);
     if (rami) {
       router.push(`/dashboard/rami/${rami.id}`);
     }
