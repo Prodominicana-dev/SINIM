@@ -42,6 +42,7 @@ import useActiveSaims from "@/src/services/saim/useActiveSaim";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Suscribe from "@/src/components/saim/Suscribe/suscribe";
+import Image from "next/image";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -54,7 +55,7 @@ const navigationOptions = [
   { href: "/dashboard/rami", icon: <RectangleStackIcon />, text: "RAMI" },
   { href: "/dashboard/saim", icon: <BellAlertIcon />, text: "SAIM" },
   { href: "#", icon: <ExclamationCircleIcon />, text: "SIED" },
-  { href: `/api/auth/logout?returnTo`, icon: <ArrowLeftOnRectangleIcon />, text: "Cerrar sesión" },
+  { href: `/api/auth/logout`, icon: <ArrowLeftOnRectangleIcon />, text: "Cerrar sesión" },
 ];
 
 function NavigationLink({ option, isActive, onClose }: any) {
@@ -83,7 +84,7 @@ function NavigationDrawer({ isOpen, onClose }: any) {
   return (
     <React.Fragment>  
     <Drawer open={isOpen} onClose={onClose} placement="right" className="z-[9999] h-screen flex flex-col justify-between">
-      <div className="flex flex-col items-center justify-between bg-navy/90">
+      <div className="flex flex-col items-center justify-between bg-[url('/images/logo/accountLog.jpg')]">
         <div className="flex flex-row justify-between items-center w-full px-4 pt-2">
         <Typography variant="h5" color="white">
           SINIM
@@ -96,7 +97,9 @@ function NavigationDrawer({ isOpen, onClose }: any) {
         {user ? (<>
         <Avatar variant="circular" size="lg" className="" src={user.picture as string} />
         <Typography className="text-white font-thin">{user.name}</Typography>
-        </>) : (<></>)}
+        </>) : (<>
+        
+        </>)}
         </div>
 
       </div>
