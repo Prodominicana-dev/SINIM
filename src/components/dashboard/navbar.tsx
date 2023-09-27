@@ -5,7 +5,10 @@ import {
   Collapse,
   Typography,
   IconButton,
+  Drawer,
+  Button,
 } from "@material-tailwind/react";
+
 import UserProfile from "./userprofile";
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import Link from "next/link";
@@ -13,21 +16,15 @@ import { usePathname } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Suscribe from "../saim/Suscribe/suscribe";
 
-export function NavbarDashboard({ toggleSidebar }: any) {
-  const [openNav, setOpenNav] = React.useState(false);
+export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
   const pathname = usePathname();
   const [suscribeOpen, setSuscribeOpen] = React.useState(false);
   const { user, error, isLoading } = useUser();
   const handleSuscribeOpen = () => {
     setSuscribeOpen(!suscribeOpen);
   }
+ 
 
-  React.useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false)
-    );
-  }, []);
 
   const navList = (
     <ul className="flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:justify-end lg:gap-6">
@@ -65,18 +62,22 @@ export function NavbarDashboard({ toggleSidebar }: any) {
         </>) : null}
           <UserProfile />
         </div>
-        <IconButton
-          variant="text"
-          className="w-6 h-6 ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-          ripple={false}
-          onClick={() => setOpenNav(!openNav)}
-        >
-          {openNav ? (
-            <XMarkIcon className="text-black w-7" />
-          ) : (
-            <Bars3Icon className="text-black w-7" />
-          )}
-        </IconButton>
+        <React.Fragment>
+          <IconButton
+            variant="text"
+            className="w-6 h-6 ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+            ripple={false}
+            onClick={openDrawer}
+          >
+            {openNav ? (
+              <XMarkIcon className="text-black w-7" />
+            ) : (
+              <Bars3Icon className="text-black w-7" />
+            )}
+          </IconButton>
+          
+        </React.Fragment>
+        
       </div>
       <Collapse open={openNav}>
         <div className="container mx-auto">{navList}</div>

@@ -44,7 +44,9 @@ export default function UserProfile() {
     );
 
   return (
-    <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
+    <>
+      <div className="hidden lg:block">
+      <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>
         <Button
           variant="text"
@@ -94,5 +96,7 @@ export default function UserProfile() {
         })}
       </MenuList>
     </Menu>
+      </div>
+    </>
   );
 }
