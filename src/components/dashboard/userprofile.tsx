@@ -17,6 +17,7 @@ import {
   PowerIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
+import { usePathname } from "next/navigation";
 
 export default function UserProfile() {
   const { user, error, isLoading } = useUser();
@@ -35,11 +36,18 @@ export default function UserProfile() {
   ];
 
   const closeMenu = () => setIsMenuOpen(false);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const pathname = usePathname();
+  const callbackUrl = `${baseUrl}${pathname}`;
 
   if (!user)
     return (
       <Button className="bg-navy">
-        <Link href={"/api/auth/login"}>Inicia sesion</Link>
+        <Link
+          href={`/api/auth/login?returnTo=${encodeURIComponent(callbackUrl)}`}
+        >
+          Inicia sesion
+        </Link>
       </Button>
     );
 
