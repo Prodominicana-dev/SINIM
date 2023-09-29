@@ -19,7 +19,7 @@ export default function Feed() {
 
   useEffect(() => {
     if (hasNextPage && entry?.isIntersecting) fetchNextPage();
-  }, [entry]);
+  }, [entry, fetchNextPage, hasNextPage]);
 
   const _allSaim = data?.pages.flatMap((saim: any) => saim);
 

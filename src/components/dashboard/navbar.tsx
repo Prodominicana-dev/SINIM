@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Navbar,
   Collapse,
@@ -15,16 +15,26 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Suscribe from "../saim/Suscribe/suscribe";
+import { useRouter } from "next/navigation";
 
 export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
   const pathname = usePathname();
   const [suscribeOpen, setSuscribeOpen] = React.useState(false);
   const { user, error, isLoading } = useUser();
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const callbackUrl = `${baseUrl}/dashboard/saim#suscribe`;
   const handleSuscribeOpen = () => {
+    if(!user) return router.push(`/api/auth/login?returnTo=${callbackUrl}`);
     setSuscribeOpen(!suscribeOpen);
   }
+  const router = useRouter();
+  const path = usePathname();
  
-
+  useEffect(() => {
+    if(path.includes("suscribe")) {
+      setSuscribeOpen(true);
+    }
+  }, [path]);
 
   const navList = (
     <ul className="flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:justify-end lg:gap-6">
@@ -58,7 +68,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
         
         <div className="hidden w-4/12 lg:flex lg:flex-row lg:space-x-4 lg:justify-end">
         {pathname === "/dashboard/saim" ? (<>
-          <button onClick={handleSuscribeOpen}>Suscríbete</button>
+          <button onClick={handleSuscribeOpen} className="w-36 h-12 bg-gradient-to-r from-purple-600 hover:from-purple-700 from-[20%] rounded-lg via-sky-400 hover:via-sky-500 to-sky-300 hover:to-sky-400 duration-700 text-white font-semibold s">Suscríbete</button>
         </>) : null}
           <UserProfile />
         </div>

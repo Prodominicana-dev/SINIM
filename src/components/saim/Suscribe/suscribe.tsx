@@ -62,9 +62,7 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
   }, [countries, products]);
 
   useEffect(() => {
-    if(!isLoading && !user){
-        return router.push("/api/auth/login");
-    }
+    
     const getData = async () => {
       const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/suscriber/${user?.email}/saim`
@@ -84,13 +82,7 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
       }
     };
     getData();
-  }, []);
-
-
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const callbackUrl = `${baseUrl}/dashboard/saim#suscribe`;
-
-
+  }, [user?.email]);
 
   const handleProductOnChange = (value: any) => {
     setSelectedProducts(value);

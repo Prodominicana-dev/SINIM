@@ -25,7 +25,7 @@ export default function Modal({ id }: any) {
   const handleOpen = useCallback(() => {
     setOpen(!open);
     router.back();
-  }, [router]);
+  }, [router, open]);
 
   if (isLoading) {
     return <div></div>;
@@ -69,7 +69,7 @@ export default function Modal({ id }: any) {
             className="object-cover w-full my-5 rounded-lg"
           />
           <div
-            className="pb-10 text-lg text-black text-justify"
+            className="pb-10 text-lg text-justify text-black"
             dangerouslySetInnerHTML={{ __html: data.description }}
           ></div>
         </div>

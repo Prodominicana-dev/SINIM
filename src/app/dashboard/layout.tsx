@@ -194,7 +194,7 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
     setCountry(countries);
     setProductSelect(productsSelect);
     setCountrySelect(countriesSelect);
-  }, [saims, products, countries, ramis, productSelect, countriesSelect]);
+  }, [saims, products, countries, ramis, productsSelect, countriesSelect, setCountry, setCountrySelect, setProduct, setProductSelect, setRamis, setSaims]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);

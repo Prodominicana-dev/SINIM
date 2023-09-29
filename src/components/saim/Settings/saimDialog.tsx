@@ -108,7 +108,7 @@ export default function SaimDialog({
       });
       setSelectedProducts(saimProducts);
     }
-  }, [saim]);
+  }, [saim, editor1?.commands]);
 
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);

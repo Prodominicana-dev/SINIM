@@ -46,11 +46,11 @@ export default function Page() {
       setData(res.data);
     });
     pagination.refetch();
-  }, [refresh])
+  }, [refresh, refetch, pagination])
 
   useEffect(() => {
     setFilteredData(data);
-  },[]);
+  },[data, setFilteredData]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);

@@ -62,7 +62,7 @@ export default function Page({ params }: { params: { id: number } }) {
       ];
       setRamiData(ramidata);
     }
-  }, [data]);
+  }, [data, isLoading]);
   if (isLoading) {
     return <div></div>;
   }

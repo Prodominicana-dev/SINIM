@@ -69,14 +69,14 @@ export default function Modal({ id }: any) {
       ];
       setRamiData(ramidata);
     }
-  }, [data]);
+  }, [data, isLoading]);
 
   const [open, setOpen] = useState(true);
   const router = useRouter();
   const handleOpen = useCallback(() => {
     setOpen(!open);
     router.back();
-  }, [router]);
+  }, [router, open]);
 
   if (isLoading) {
     return <div></div>;

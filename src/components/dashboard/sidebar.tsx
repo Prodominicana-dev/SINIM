@@ -32,7 +32,7 @@ export function Sidebar({ visible }: any) {
     if (!isHover) {
       setOpen(0);
     }
-  });
+  },[setOpen, isHover]);
 
   return (
     <div
@@ -41,7 +41,7 @@ export function Sidebar({ visible }: any) {
         visible ? "w-28 p-4" : "w-0 p-0"
       }`}
     >
-      <div className="mb-2 p-4 text-white">
+      <div className="p-4 mb-2 text-white">
         <div>SINIM</div>
       </div>
       <List className={` ${visible ? "visible" : "invisible"} duration-200`}>
@@ -59,7 +59,7 @@ export function Sidebar({ visible }: any) {
           <ListItem className="p-0" selected={open === 1}>
             <AccordionHeader
               onClick={() => handleOpen(1)}
-              className="border-b-0 p-3"
+              className="p-3 border-b-0"
             >
               <ListItemPrefix>
                 <Image
@@ -68,13 +68,13 @@ export function Sidebar({ visible }: any) {
                   height={600}
                   draggable={false}
                   alt=""
-                  className="h-10 w-10 text-white group-hover:h-7 group-hover:w-7 duration-700"
+                  className="w-10 h-10 text-white duration-700 group-hover:h-7 group-hover:w-7"
                 />
-                {/* <PresentationChartBarIcon className="h-8 w-8 text-white group-hover:h-5 group-hover:w-5 duration-700" /> */}
+                {/* <PresentationChartBarIcon className="w-8 h-8 text-white duration-700 group-hover:h-5 group-hover:w-5" /> */}
               </ListItemPrefix>
               <Typography
                 color="white"
-                className="mr-auto font-normal opacity-0 group-hover:opacity-100 duration-300"
+                className="mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100"
               >
                 Datamarket
               </Typography>
@@ -84,19 +84,19 @@ export function Sidebar({ visible }: any) {
             <List className="p-0">
               <ListItem>
                 <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />
                 </ListItemPrefix>
                 Analytics
               </ListItem>
               <ListItem>
                 <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />
                 </ListItemPrefix>
                 Reporting
               </ListItem>
               <ListItem>
                 <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />
                 </ListItemPrefix>
                 Projects
               </ListItem>
@@ -111,12 +111,12 @@ export function Sidebar({ visible }: any) {
               height={600}
               draggable={false}
               alt=""
-              className="h-10 w-10 text-white group-hover:h-7 group-hover:w-7 duration-700"
+              className="w-10 h-10 text-white duration-700 group-hover:h-7 group-hover:w-7"
             />
           </ListItemPrefix>
           <Typography
             color="white"
-            className="mr-auto font-normal opacity-0 group-hover:opacity-100 duration-300"
+            className="mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100"
           >
             RAMI
           </Typography>
@@ -130,12 +130,12 @@ export function Sidebar({ visible }: any) {
                 height={600}
                 draggable={false}
                 alt=""
-                className="h-10 w-10 text-white group-hover:h-7 group-hover:w-7 duration-700"
+                className="w-10 h-10 text-white duration-700 group-hover:h-7 group-hover:w-7"
               />
             </ListItemPrefix>
             <Typography
               color="white"
-              className="mr-auto font-normal opacity-0 group-hover:opacity-100 duration-300"
+              className="mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100"
             >
               SAIM
             </Typography>
@@ -149,12 +149,12 @@ export function Sidebar({ visible }: any) {
               height={600}
               draggable={false}
               alt=""
-              className="h-10 w-10 text-white group-hover:h-7 group-hover:w-7 duration-700"
+              className="w-10 h-10 text-white duration-700 group-hover:h-7 group-hover:w-7"
             />
           </ListItemPrefix>
           <Typography
             color="white"
-            className="mr-auto font-normal opacity-0 group-hover:opacity-100 duration-300"
+            className="mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100"
           >
             SIED
           </Typography>
