@@ -103,6 +103,7 @@ export function Sidebar({ visible }: any) {
             </List>
           </AccordionBody>
         </Accordion>
+        <Link href={"/dashboard/rami"}>
         <ListItem>
           <ListItemPrefix>
             <Image
@@ -121,6 +122,7 @@ export function Sidebar({ visible }: any) {
             RAMI
           </Typography>
         </ListItem>
+        </Link>
         <Link href={"/dashboard/saim"}>
           <ListItem className={open ? "" : "bg-transparent"}>
             <ListItemPrefix>

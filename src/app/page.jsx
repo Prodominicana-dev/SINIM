@@ -63,7 +63,7 @@ export default function Home() {
       background: "/videos/rami.mp4",
       icon: "/svg/saimicon.svg",
       logo: "/images/logo/saim.svg",
-      root: "/",
+      root: "/dashboard/saim",
       gradientPos: "br",
       visible: true,
     },
@@ -78,7 +78,7 @@ export default function Home() {
       background: "/videos/connection.mp4",
       icon: "/svg/ramiicon.svg",
       logo: "/images/logo/rami.svg",
-      root: "/",
+      root: "/dashboard/rami",
       gradientPos: "br",
       visible: true,
     },
@@ -96,14 +96,14 @@ export default function Home() {
       
       <Background video={tool.background} color={tool.color} />
 
-      <nav className="lg:absolute w-full sm:p-12 p-8  flex md:items-center md:justify-between  bg-transparent z-10">
-        <div className="flex sm:justify-between justify-center items-center w-full">
+      <nav className="z-10 flex w-full p-8 bg-transparent lg:absolute sm:p-12 md:items-center md:justify-between">
+        <div className="flex items-center justify-center w-full sm:justify-between">
           <div className="flex items-center">
             <button
               onClick={() => {
                 setTool(sinim);
               }}
-              className="flex mx-2 md:w-full w-32"
+              className="flex w-32 mx-2 md:w-full"
             >
               <Image
                 width={150}
@@ -114,9 +114,9 @@ export default function Home() {
               />
             </button>
           </div>
-          <div className="hidden sm:flex items-center space-x-5">
-            <Link href="/dashboard" className="md:block hidden">
-              <div className="w-28 text-center text-lg rounded-full border-2 border-white px-5 py-2 hover:shadow-button duration-500">
+          <div className="items-center hidden space-x-5 sm:flex">
+            <Link href="/dashboard/rami" className="hidden md:block">
+              <div className="px-5 py-2 text-lg text-center duration-500 border-2 border-white rounded-full w-28 hover:shadow-button">
                 Acceder
               </div>
             </Link>
@@ -131,7 +131,7 @@ export default function Home() {
         link={tool.root}
       />
 
-      <div className="lg:h-screen flex sm:flex-row sm:flex-wrap lg:flex-nowrap flex-col w-full justify-center items-center lg:items-end sm:mt-8 lg:mt-0">
+      <div className="flex flex-col items-center justify-center w-full lg:h-screen sm:flex-row sm:flex-wrap lg:flex-nowrap lg:items-end sm:mt-8 lg:mt-0">
         {tools.map((tool, index) =>
           tool.visible ? (
             <Card
