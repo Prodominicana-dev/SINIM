@@ -114,8 +114,7 @@ export default function Page() {
       const SaimByCategory = data.filter(
         (saim) => saim.category.toLowerCase() === selectedCategory.toLowerCase() && saim.status.toLowerCase() === status.toLowerCase()
       );
-      console.log(status)
-      console.log(SaimByCategory)
+      
       setCategory(selectedCategory);
       setFilteredData(SaimByCategory);
     }
@@ -126,9 +125,9 @@ export default function Page() {
       (saim) => (saim.status.toLowerCase() === selectedStatus.toLowerCase() && saim.category.toLowerCase() === category.toLowerCase())
     ) : data.filter((saim) => (saim.status.toLowerCase() === selectedStatus.toLowerCase()));
     setStatus(selectedStatus);
-    console.log(SaimByStatus)
+    
     setFilteredData(SaimByStatus);
-    console.log(filteredData)
+    
   }
 
   const handleFilterOpen = () => {

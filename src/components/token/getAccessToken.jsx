@@ -14,7 +14,6 @@ export default function AccessToken() {
     };
     
     axios.request(options).then(function (response) {
-      console.log(response.data);
       return response.data
     }).catch(function (error) {
       console.error(error);

@@ -26,7 +26,6 @@ export default function UserProfile() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const pathname = usePathname();
   const callbackUrl = `${baseUrl}${pathname}`;
-  console.log(callbackUrl);
   const profileMenuItems = [
     {
       label: "Perfil",

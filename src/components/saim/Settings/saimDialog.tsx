@@ -139,7 +139,7 @@ export default function SaimDialog({
     }
     if (!saim) {
       return await axios
-        .post("http://localhost:3001/saim", data)
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/saim`, data)
         .then((res) => {
           if (res.status === 200) {
             notifications.show({
@@ -170,9 +170,8 @@ export default function SaimDialog({
           });
         });
     }
-    console.log(data)
     await axios
-      .put(`http://localhost:3001/saim/${saim.id}`, data)
+      .put(`${process.env.NEXT_PUBLIC_API_URL}/saim/${saim.id}`, data)
       .then((res) => {
         if (res.status === 200) {
           notifications.show({

@@ -6,11 +6,11 @@ export default function loginHandler(e) {
   // Verificar si ya existe la cookie 'token'
   if (document.cookie.includes("token")) {
     // La cookie 'token' ya existe, no se hace otra solicitud
-    console.log("Ya existe una cookie 'token'");
+    
     return;
   }
 
-  const route = "http://localhost:3001/auth/login";
+  const route = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
   const data = {
     email: e.target.email.value,
     password: e.target.pwd.value,
