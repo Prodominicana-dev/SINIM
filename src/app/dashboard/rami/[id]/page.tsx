@@ -70,15 +70,15 @@ export default function Page({ params }: { params: { id: number } }) {
   return (
     <div className="flex justify-center h-[100vm] overflow-y-auto">
       <div className="w-8/12">
-        <div className="flex flex-col sm:flex-row justify-between items-center w-full  sm:h-64 lg:h-96 bg-gradient-to-tr from-purple-700 to-sky-500 rounded-lg sm:rounded-xl lg:rounded-3xl p-5 sm:p-8 text-white">
-          <div className="flex flex-col leading-normal w-full sm:w-6/12">
+        <div className="flex flex-col items-center justify-between w-full p-5 text-white rounded-lg sm:flex-row sm:h-64 lg:h-96 bg-gradient-to-tr from-purple-700 to-sky-500 sm:rounded-xl lg:rounded-3xl sm:p-8">
+          <div className="flex flex-col w-full leading-normal sm:w-6/12">
             <div className="text-xs sm:text-sm lg:text-lg">Exporta</div>
             <div className="text-2xl lg:text-6xl">{data.product.name}</div>
-            <div className="text-xs lg:text-sm mb-2 sm:my-0 ">
+            <div className="mb-2 text-xs lg:text-sm sm:my-0 ">
               {data.product.code}
             </div>
           </div>
-          <div className="flex flex-col justify-between bg-white/25 w-full sm:w-5/12 h-52 sm:h-full rounded-lg p-3 sm:p-5">
+          <div className="flex flex-col justify-between w-full p-3 rounded-lg bg-white/25 sm:w-5/12 h-52 sm:h-full sm:p-5">
             <div>
               <div className="text-xs lg:text-sm">Destino</div>
               <div className="text-lg lg:text-4xl">{data.country.name}</div>
@@ -89,7 +89,7 @@ export default function Page({ params }: { params: { id: number } }) {
               alt=""
               priority
               src={`https://flagcdn.com/${data.country.abbreviation}.svg`}
-              className="rounded-md lg:rounded-lg w-full h-32 sm:h-24 lg:h-52 object-cover"
+              className="object-cover w-full h-32 rounded-md lg:rounded-lg sm:h-24 lg:h-52"
             />
           </div>
         </div>
@@ -98,8 +98,8 @@ export default function Page({ params }: { params: { id: number } }) {
             <UnderlineTabs data={ramiData} />
           </div>
           <div className="block sm:hidden">
-            {ramiData.map(({ label, value, desc }: any) => (
-              <div className="p-2">
+            {ramiData.map(({ label, value, desc, key }: any) => (
+              <div className="p-2" key={key}>
                 <SectionRami title={label} desc={desc} />
               </div>
             ))}
@@ -116,7 +116,7 @@ function UnderlineTabs({ data }: any) {
   return (
     <Tabs value={activeTab}>
       <TabsHeader
-        className="rounded-none bg-white p-0 flex justify-center flex-wrap"
+        className="flex flex-wrap justify-center p-0 bg-white rounded-none"
         indicatorProps={{
           className:
             "bg-gradient-to-r from-purple-700 to-sky-500 shadow-none rounded-none w-[80vw] sm:w-[9vw] lg:w-[8vw]",
@@ -151,7 +151,7 @@ function UnderlineTabs({ data }: any) {
 function SectionRami({ title, desc }: any) {
   return (
     <div>
-      <div className="text-2xl font-semibold bg-gradient-to-r from-purple-700 to-sky-500  inline-block text-transparent bg-clip-text mb-3">
+      <div className="inline-block mb-3 text-2xl font-semibold text-transparent bg-gradient-to-r from-purple-700 to-sky-500 bg-clip-text">
         {title}
       </div>
       <div dangerouslySetInnerHTML={{ __html: desc }}></div>

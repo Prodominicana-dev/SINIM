@@ -95,81 +95,49 @@ function NavigationDrawer({ isOpen, onClose }: any) {
     setSuscribeOpen(!suscribeOpen);
   };
   return (
-    <React.Fragment>
-      <Drawer
-        open={isOpen}
-        onClose={onClose}
-        placement="right"
-        className="z-[9999] h-screen flex flex-col justify-between"
-      >
-        <div className="flex flex-col items-center justify-between bg-[url('/images/logo/accountLog.jpg')]">
-          <div className="flex flex-row justify-between items-center w-full px-4 pt-2">
-            <Typography variant="h5" color="white">
-              SINIM
-            </Typography>
-            <IconButton variant="text" color="blue-gray" onClick={onClose}>
-              <XMarkIcon className="w-6 h-6 text-white" />
-            </IconButton>
-          </div>
-          <div className="w-full space-y-4 p-4">
-            {user ? (
-              <>
-                <Avatar
-                  variant="circular"
-                  size="lg"
-                  className=""
-                  src={user.picture as string}
-                />
-                <Typography className="text-white font-thin">
-                  {user.name}
-                </Typography>
-              </>
-            ) : (
-              <div className="h-32  w-full flex items-end">
-                <Link
-                  href={"#"}
-                  className="w-full  rounded-lg h-12 border-2 border-white text-white "
-                >
-                  Iniciar sesión
-                </Link>
-              </div>
-            )}
-          </div>
+    <React.Fragment>  
+    <Drawer open={isOpen} onClose={onClose} placement="right" className="z-[9999] h-screen flex flex-col justify-between">
+      <div className="flex flex-col items-center justify-between bg-[url('/images/logo/accountLog.jpg')]">
+        <div className="flex flex-row items-center justify-between w-full px-4 pt-2">
+        <Typography variant="h5" color="white">
+          SINIM
+        </Typography>
+        <IconButton variant="text" color="blue-gray" onClick={onClose}>
+          <XMarkIcon className="w-6 h-6 text-white" />
+        </IconButton>
         </div>
-        <div className="flex flex-col p-2 gap-4 h-4/6">
-          {navigationOptions.map((option, index) => (
-            <NavigationLink
-              key={index}
-              option={option}
-              onClose={onClose}
-              isActive={pathname.includes(option.text.toLowerCase())}
-            />
-          ))}
+        <div className="w-full p-4 space-y-4">
+        {user ? (<>
+        <Avatar variant="circular" size="lg" className="" src={user.picture as string} />
+        <Typography className="font-thin text-white">{user.name}</Typography>
+        </>) : (<>
+        
+        </>)}
         </div>
-        <div className="p-2">
-          {pathname === "/dashboard/saim" ? (
-            <>
-              <button
-                onClick={() => {
-                  handleSuscribeOpen();
-                  onClose();
-                }}
-                className="w-full flex justify-center items-center text-white rounded-xl p-4 h-12 bg-gradient-to-tr from-purple-500 from-[15%] via-sky-600 to-sky-400"
-              >
-                Suscríbete
-              </button>
-            </>
-          ) : null}
-        </div>
-        {suscribeOpen ? (
-          <Suscribe
-            open={suscribeOpen}
-            handleOpen={handleSuscribeOpen}
-            email={user?.email}
+
+      </div>
+      <div className="flex flex-col gap-4 p-2 h-4/6">
+        {navigationOptions.map((option, index) => (
+          <NavigationLink
+            key={index}
+            option={option}
+            onClose={onClose}
+            isActive={pathname.includes(option.text.toLowerCase())}
           />
-        ) : null}
-      </Drawer>
-    </React.Fragment>
+        ))}
+      </div>
+      <div className="p-2">
+      {pathname === "/dashboard/saim" ? (
+        <><button onClick={() => {
+          handleSuscribeOpen();
+          onClose();
+         }} className="w-full flex justify-center items-center text-white rounded-xl p-4 h-12 bg-gradient-to-tr from-purple-500 from-[15%] via-sky-600 to-sky-400">Suscríbete</button></>
+      ) : null}
+      </div>
+      {suscribeOpen && user ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user.email ?? ""} />) : null}
+    </Drawer>
+    </React.Fragment>  
+
   );
 }
 
