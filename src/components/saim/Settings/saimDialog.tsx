@@ -292,7 +292,7 @@ export default function SaimDialog({
               ) : saim ? (
                 <div className="flex justify-center w-full h-full">
                   <Image
-                    src={`http://127.0.0.1:3001/data/saim/${saim?.id}/img/${saim?.image}`}
+                    src={`${process.env.NEXT_PUBLIC_API_URL}/data/saim/${saim?.id}/img/${saim?.image}`}
                     width={1920}
                     height={1080}
                     alt="saim-image"

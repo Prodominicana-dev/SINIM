@@ -6,6 +6,7 @@ const nextConfig = {
       "localhost",
       "sinim-api-git-tools-prodominicanadev.vercel.app",
       "images.unsplash.com",
+      "sinim.prodominicana.gob.do"
     ],
   },
   experimental: {

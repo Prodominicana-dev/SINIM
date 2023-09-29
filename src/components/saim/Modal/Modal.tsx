@@ -64,7 +64,7 @@ export default function Modal({ id }: any) {
           <Image
             width={1920}
             height={1080}
-            src={`http://127.0.0.1:3001/data/saim/${data.id}/img/${data.image}`}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/data/saim/${data.id}/img/${data.image}`}
             alt="card-image"
             className="object-cover w-full my-5 rounded-lg"
           />

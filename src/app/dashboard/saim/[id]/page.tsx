@@ -23,7 +23,7 @@ export default function Page({ params }: { params: { id: number } }) {
     <div className="flex justify-center h-[40rem]">
       <div className="w-10/12 sm:w-8/12">
         <div className="text-base text-neutral-500">{data.category}</div>
-        <div className="text-xl sm:text-3xl text-black font-bold my-2">
+        <div className="my-2 text-xl font-bold text-black sm:text-3xl">
           {data.title}
         </div>
         <div className="text-xs font-light text-neutral-500">
@@ -32,12 +32,12 @@ export default function Page({ params }: { params: { id: number } }) {
         <Image
           width={1920}
           height={1080}
-          src={`http://127.0.0.1:3001/data/saim/${data.id}/img/${data.image}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/data/saim/${data.id}/img/${data.image}`}
           alt="card-image"
-          className="object-cover w-full rounded-lg my-3"
+          className="object-cover w-full my-3 rounded-lg"
         />
         <div
-          className="pb-10 text-black text-lg"
+          className="pb-10 text-lg text-black"
           dangerouslySetInnerHTML={{ __html: data.description }}
         ></div>
       </div>
