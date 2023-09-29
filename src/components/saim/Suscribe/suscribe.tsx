@@ -1,4 +1,4 @@
-"using client"
+"use client"
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { notifications } from "@mantine/notifications";
 import {
@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 const animatedComponents = makeAnimated();
 
 interface SuscribeProps {
-    open: boolean, handleOpen: () => void, email?: string
+    open: boolean, handleOpen: () => void, email: string
 }
 
 export default function Suscribe({open, handleOpen, email} : SuscribeProps) {
@@ -57,6 +57,9 @@ export default function Suscribe({open, handleOpen, email} : SuscribeProps) {
     }, [countries, products]);
 
     useEffect(() => {
+        if(!isLoading && !user){
+            return router.push("/api/auth/login");
+        }
         const getData = async () => {
             const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/suscriber/${user?.email}/saim`);
             if(data){
@@ -76,9 +79,7 @@ export default function Suscribe({open, handleOpen, email} : SuscribeProps) {
         getData();
     }, [])
 
-    if(!isLoading && !user){
-        return router.push("/api/auth/login");
-    }
+    
 
     const handleProductOnChange = (value : any) => {
         setSelectedProducts(value);

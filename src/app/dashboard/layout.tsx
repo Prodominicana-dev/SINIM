@@ -85,7 +85,7 @@ function NavigationDrawer({ isOpen, onClose }: any) {
     <React.Fragment>  
     <Drawer open={isOpen} onClose={onClose} placement="right" className="z-[9999] h-screen flex flex-col justify-between">
       <div className="flex flex-col items-center justify-between bg-[url('/images/logo/accountLog.jpg')]">
-        <div className="flex flex-row justify-between items-center w-full px-4 pt-2">
+        <div className="flex flex-row items-center justify-between w-full px-4 pt-2">
         <Typography variant="h5" color="white">
           SINIM
         </Typography>
@@ -93,17 +93,17 @@ function NavigationDrawer({ isOpen, onClose }: any) {
           <XMarkIcon className="w-6 h-6 text-white" />
         </IconButton>
         </div>
-        <div className="w-full space-y-4 p-4">
+        <div className="w-full p-4 space-y-4">
         {user ? (<>
         <Avatar variant="circular" size="lg" className="" src={user.picture as string} />
-        <Typography className="text-white font-thin">{user.name}</Typography>
+        <Typography className="font-thin text-white">{user.name}</Typography>
         </>) : (<>
         
         </>)}
         </div>
 
       </div>
-      <div className="flex flex-col p-2 gap-4 h-4/6">
+      <div className="flex flex-col gap-4 p-2 h-4/6">
         {navigationOptions.map((option, index) => (
           <NavigationLink
             key={index}
@@ -121,7 +121,7 @@ function NavigationDrawer({ isOpen, onClose }: any) {
          }} className="w-full flex justify-center items-center text-white rounded-xl p-4 h-12 bg-gradient-to-tr from-purple-500 from-[15%] via-sky-600 to-sky-400">Suscríbete</button></>
       ) : null}
       </div>
-      {suscribeOpen ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user?.email} />) : null}
+      {suscribeOpen && user ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user.email ?? ""} />) : null}
     </Drawer>
     </React.Fragment>  
   );

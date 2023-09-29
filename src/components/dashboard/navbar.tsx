@@ -82,7 +82,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
       <Collapse open={openNav}>
         <div className="container mx-auto">{navList}</div>
       </Collapse>
-      {suscribeOpen ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user?.email} />) : null}
+      {suscribeOpen && user ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user.email ?? ""} />) : null}
     </Navbar>
   );
 }
