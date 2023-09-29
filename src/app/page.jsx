@@ -17,7 +17,7 @@ export default function Home() {
     color:
       "bg-gradient-to-br from-45% from-[#062381] via-[#2997F2]/50 to-[#1AD25D]",
     background: "/videos/charts.mp4",
-    logo: "/images/logo/sinim.png",
+    logo: "/svg/sinim.svg",
     root: "/",
   };
 
@@ -125,6 +125,7 @@ export default function Home() {
       </nav>
 
       <InfoTool
+        title={tool.title}
         logo={tool.logo}
         description={tool.description}
         link={tool.root}
