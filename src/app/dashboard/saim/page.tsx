@@ -51,7 +51,7 @@ export default function Page() {
 
   useEffect(() => {
     setFilteredData(data);
-  });
+  }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);

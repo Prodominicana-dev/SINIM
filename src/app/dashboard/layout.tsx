@@ -13,11 +13,16 @@ import { useAtom } from "jotai";
 import { useProducts } from "@/src/services/products/useProducts";
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
-import '@mantine/notifications/styles.css';
-import { XMarkIcon, 
-  UserCircleIcon, 
-  ChartBarIcon, 
-  RectangleStackIcon, BellAlertIcon, ExclamationCircleIcon, ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
+import "@mantine/notifications/styles.css";
+import {
+  XMarkIcon,
+  UserCircleIcon,
+  ChartBarIcon,
+  RectangleStackIcon,
+  BellAlertIcon,
+  ExclamationCircleIcon,
+  ArrowLeftOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 import {
   Navbar,
   Collapse,
@@ -49,14 +54,6 @@ interface RootLayoutProps {
   modal: React.ReactNode;
 }
 const queryClient = new QueryClient();
-const navigationOptions = [
-  { href: "#", icon: <UserCircleIcon />, text: "Perfíl" },
-  { href: "#", icon: <ChartBarIcon />, text: "DataMarket" },
-  { href: "/dashboard/rami", icon: <RectangleStackIcon />, text: "RAMI" },
-  { href: "/dashboard/saim", icon: <BellAlertIcon />, text: "SAIM" },
-  { href: "#", icon: <ExclamationCircleIcon />, text: "SIED" },
-  { href: `/api/auth/logout`, icon: <ArrowLeftOnRectangleIcon />, text: "Cerrar sesión" },
-];
 
 function NavigationLink({ option, isActive, onClose }: any) {
   const linkClasses = `flex flex-row items-center justify-start w-full p-4 gap-3 text-center bg-transparent shadow-none h-12 rounded-lg ${
@@ -64,66 +61,115 @@ function NavigationLink({ option, isActive, onClose }: any) {
   }`;
 
   const iconClasses = `w-4 h-4 ${isActive ? "text-white" : "text-navy"}`;
-  const textClasses = isActive ? "text-white font-normal" : "text-black font-thin";
+  const textClasses = isActive
+    ? "text-white font-normal"
+    : "text-black font-thin";
 
   return (
     <Link href={option.href} className={linkClasses} onClick={onClose}>
-        {option.icon && <option.icon.type className={iconClasses} />}
-        <p className={textClasses}>{option.text}</p>
+      {option.icon && <option.icon.type className={iconClasses} />}
+      <p className={textClasses}>{option.text}</p>
     </Link>
   );
 }
 
 function NavigationDrawer({ isOpen, onClose }: any) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const pathname = usePathname();
+  const callbackUrl = `${baseUrl}${pathname}`;
+  const navigationOptions = [
+    { href: "#", icon: <UserCircleIcon />, text: "Perfíl" },
+    { href: "#", icon: <ChartBarIcon />, text: "DataMarket" },
+    { href: "/dashboard/rami", icon: <RectangleStackIcon />, text: "RAMI" },
+    { href: "/dashboard/saim", icon: <BellAlertIcon />, text: "SAIM" },
+    { href: "#", icon: <ExclamationCircleIcon />, text: "SIED" },
+    {
+      href: `/api/auth/logout?returnTo=${encodeURIComponent(callbackUrl)}`,
+      icon: <ArrowLeftOnRectangleIcon />,
+      text: "Cerrar sesión",
+    },
+  ];
   const { user, error, isLoading } = useUser();
   const [suscribeOpen, setSuscribeOpen] = React.useState(false);
   const handleSuscribeOpen = () => {
     setSuscribeOpen(!suscribeOpen);
-  }
+  };
   return (
-    <React.Fragment>  
-    <Drawer open={isOpen} onClose={onClose} placement="right" className="z-[9999] h-screen flex flex-col justify-between">
-      <div className="flex flex-col items-center justify-between bg-[url('/images/logo/accountLog.jpg')]">
-        <div className="flex flex-row justify-between items-center w-full px-4 pt-2">
-        <Typography variant="h5" color="white">
-          SINIM
-        </Typography>
-        <IconButton variant="text" color="blue-gray" onClick={onClose}>
-          <XMarkIcon className="w-6 h-6 text-white" />
-        </IconButton>
+    <React.Fragment>
+      <Drawer
+        open={isOpen}
+        onClose={onClose}
+        placement="right"
+        className="z-[9999] h-screen flex flex-col justify-between"
+      >
+        <div className="flex flex-col items-center justify-between bg-[url('/images/logo/accountLog.jpg')]">
+          <div className="flex flex-row justify-between items-center w-full px-4 pt-2">
+            <Typography variant="h5" color="white">
+              SINIM
+            </Typography>
+            <IconButton variant="text" color="blue-gray" onClick={onClose}>
+              <XMarkIcon className="w-6 h-6 text-white" />
+            </IconButton>
+          </div>
+          <div className="w-full space-y-4 p-4">
+            {user ? (
+              <>
+                <Avatar
+                  variant="circular"
+                  size="lg"
+                  className=""
+                  src={user.picture as string}
+                />
+                <Typography className="text-white font-thin">
+                  {user.name}
+                </Typography>
+              </>
+            ) : (
+              <div className="h-32  w-full flex items-end">
+                <Link
+                  href={"#"}
+                  className="w-full  rounded-lg h-12 border-2 border-white text-white "
+                >
+                  Iniciar sesión
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
-        <div className="w-full space-y-4 p-4">
-        {user ? (<>
-        <Avatar variant="circular" size="lg" className="" src={user.picture as string} />
-        <Typography className="text-white font-thin">{user.name}</Typography>
-        </>) : (<>
-        
-        </>)}
+        <div className="flex flex-col p-2 gap-4 h-4/6">
+          {navigationOptions.map((option, index) => (
+            <NavigationLink
+              key={index}
+              option={option}
+              onClose={onClose}
+              isActive={pathname.includes(option.text.toLowerCase())}
+            />
+          ))}
         </div>
-
-      </div>
-      <div className="flex flex-col p-2 gap-4 h-4/6">
-        {navigationOptions.map((option, index) => (
-          <NavigationLink
-            key={index}
-            option={option}
-            onClose={onClose}
-            isActive={pathname.includes(option.text.toLowerCase())}
+        <div className="p-2">
+          {pathname === "/dashboard/saim" ? (
+            <>
+              <button
+                onClick={() => {
+                  handleSuscribeOpen();
+                  onClose();
+                }}
+                className="w-full flex justify-center items-center text-white rounded-xl p-4 h-12 bg-gradient-to-tr from-purple-500 from-[15%] via-sky-600 to-sky-400"
+              >
+                Suscríbete
+              </button>
+            </>
+          ) : null}
+        </div>
+        {suscribeOpen ? (
+          <Suscribe
+            open={suscribeOpen}
+            handleOpen={handleSuscribeOpen}
+            email={user?.email}
           />
-        ))}
-      </div>
-      <div className="p-2">
-      {pathname === "/dashboard/saim" ? (
-        <><button onClick={() => {
-          handleSuscribeOpen();
-          onClose();
-         }} className="w-full flex justify-center items-center text-white rounded-xl p-4 h-12 bg-gradient-to-tr from-purple-500 from-[15%] via-sky-600 to-sky-400">Suscríbete</button></>
-      ) : null}
-      </div>
-      {suscribeOpen ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user?.email} />) : null}
-    </Drawer>
-    </React.Fragment>  
+        ) : null}
+      </Drawer>
+    </React.Fragment>
   );
 }
 
@@ -195,14 +241,17 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
         <Sidebar visible={sidebarOpen} />
       </div>
       <div className="w-full h-full overflow-y-auto">
-        <NavbarDashboard toggleSidebar={toggleSidebar} openNav={openNav} openDrawer={openDrawer} />
+        <NavbarDashboard
+          toggleSidebar={toggleSidebar}
+          openNav={openNav}
+          openDrawer={openDrawer}
+        />
         {children}
       </div>
       {modal}
       <Notifications zIndex={9999} />
-      
+
       <NavigationDrawer isOpen={openNav} onClose={closeDrawer} />
-      
     </div>
   );
 }
