@@ -66,10 +66,10 @@ export default function Modal({ id }: any) {
             height={1080}
             src={`http://127.0.0.1:3001/data/saim/${data.id}/img/${data.image}`}
             alt="card-image"
-            className="object-cover w-full my-3 rounded-lg"
+            className="object-cover w-full my-5 rounded-lg"
           />
           <div
-            className="pb-10 text-lg text-black"
+            className="pb-10 text-lg text-black text-justify"
             dangerouslySetInnerHTML={{ __html: data.description }}
           ></div>
         </div>

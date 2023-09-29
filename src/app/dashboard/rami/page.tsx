@@ -136,7 +136,6 @@ export default function Page() {
               data={productSelect ? productSelect : []}
               searchable
               nothingFoundMessage="Nothing found..."
-              value={selectedProduct}
               onChange={handleProductChange}
             />
             <Select
@@ -148,7 +147,6 @@ export default function Page() {
               data={countriesSelect ? countriesSelect : []}
               searchable
               nothingFoundMessage="Nothing found..."
-              value={selectedCountry}
               onChange={handleCountryChange}
             />
             <button

@@ -13,11 +13,16 @@ import { useAtom } from "jotai";
 import { useProducts } from "@/src/services/products/useProducts";
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
-import '@mantine/notifications/styles.css';
-import { XMarkIcon, 
-  UserCircleIcon, 
-  ChartBarIcon, 
-  RectangleStackIcon, BellAlertIcon, ExclamationCircleIcon, ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
+import "@mantine/notifications/styles.css";
+import {
+  XMarkIcon,
+  UserCircleIcon,
+  ChartBarIcon,
+  RectangleStackIcon,
+  BellAlertIcon,
+  ExclamationCircleIcon,
+  ArrowLeftOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 import {
   Navbar,
   Collapse,
@@ -49,14 +54,6 @@ interface RootLayoutProps {
   modal: React.ReactNode;
 }
 const queryClient = new QueryClient();
-const navigationOptions = [
-  { href: "#", icon: <UserCircleIcon />, text: "Perfíl" },
-  { href: "#", icon: <ChartBarIcon />, text: "DataMarket" },
-  { href: "/dashboard/rami", icon: <RectangleStackIcon />, text: "RAMI" },
-  { href: "/dashboard/saim", icon: <BellAlertIcon />, text: "SAIM" },
-  { href: "#", icon: <ExclamationCircleIcon />, text: "SIED" },
-  { href: `/api/auth/logout`, icon: <ArrowLeftOnRectangleIcon />, text: "Cerrar sesión" },
-];
 
 function NavigationLink({ option, isActive, onClose }: any) {
   const linkClasses = `flex flex-row items-center justify-start w-full p-4 gap-3 text-center bg-transparent shadow-none h-12 rounded-lg ${
@@ -64,23 +61,39 @@ function NavigationLink({ option, isActive, onClose }: any) {
   }`;
 
   const iconClasses = `w-4 h-4 ${isActive ? "text-white" : "text-navy"}`;
-  const textClasses = isActive ? "text-white font-normal" : "text-black font-thin";
+  const textClasses = isActive
+    ? "text-white font-normal"
+    : "text-black font-thin";
 
   return (
     <Link href={option.href} className={linkClasses} onClick={onClose}>
-        {option.icon && <option.icon.type className={iconClasses} />}
-        <p className={textClasses}>{option.text}</p>
+      {option.icon && <option.icon.type className={iconClasses} />}
+      <p className={textClasses}>{option.text}</p>
     </Link>
   );
 }
 
 function NavigationDrawer({ isOpen, onClose }: any) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const pathname = usePathname();
+  const callbackUrl = `${baseUrl}${pathname}`;
+  const navigationOptions = [
+    { href: "#", icon: <UserCircleIcon />, text: "Perfíl" },
+    { href: "#", icon: <ChartBarIcon />, text: "DataMarket" },
+    { href: "/dashboard/rami", icon: <RectangleStackIcon />, text: "RAMI" },
+    { href: "/dashboard/saim", icon: <BellAlertIcon />, text: "SAIM" },
+    { href: "#", icon: <ExclamationCircleIcon />, text: "SIED" },
+    {
+      href: `/api/auth/logout?returnTo=${encodeURIComponent(callbackUrl)}`,
+      icon: <ArrowLeftOnRectangleIcon />,
+      text: "Cerrar sesión",
+    },
+  ];
   const { user, error, isLoading } = useUser();
   const [suscribeOpen, setSuscribeOpen] = React.useState(false);
   const handleSuscribeOpen = () => {
     setSuscribeOpen(!suscribeOpen);
-  }
+  };
   return (
     <React.Fragment>  
     <Drawer open={isOpen} onClose={onClose} placement="right" className="z-[9999] h-screen flex flex-col justify-between">
@@ -124,6 +137,7 @@ function NavigationDrawer({ isOpen, onClose }: any) {
       {suscribeOpen && user ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user.email ?? ""} />) : null}
     </Drawer>
     </React.Fragment>  
+
   );
 }
 
@@ -195,14 +209,17 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
         <Sidebar visible={sidebarOpen} />
       </div>
       <div className="w-full h-full overflow-y-auto">
-        <NavbarDashboard toggleSidebar={toggleSidebar} openNav={openNav} openDrawer={openDrawer} />
+        <NavbarDashboard
+          toggleSidebar={toggleSidebar}
+          openNav={openNav}
+          openDrawer={openDrawer}
+        />
         {children}
       </div>
       {modal}
       <Notifications zIndex={9999} />
-      
+
       <NavigationDrawer isOpen={openNav} onClose={closeDrawer} />
-      
     </div>
   );
 }
