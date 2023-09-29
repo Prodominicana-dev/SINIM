@@ -7,6 +7,7 @@ import Background from "@/src/components/home/background";
 import InfoTool from "@/src/components/home/infoTool";
 import { useEffect, useState } from "react";
 import config from "@/public/config.json";
+import AccessToken from "../components/token/getAccessToken";
 
 export default function Home() {
   const sinim = {
@@ -92,6 +93,7 @@ export default function Home() {
 
   return (
     <main className="relative ">
+      
       <Background video={tool.background} color={tool.color} />
 
       <nav className="lg:absolute w-full sm:p-12 p-8  flex md:items-center md:justify-between  bg-transparent z-10">
