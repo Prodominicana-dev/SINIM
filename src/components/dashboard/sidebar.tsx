@@ -32,7 +32,7 @@ export function Sidebar({ visible }: any) {
     if (!isHover) {
       setOpen(0);
     }
-  },[setOpen, isHover]);
+  }, [setOpen, isHover]);
 
   return (
     <div
@@ -45,7 +45,7 @@ export function Sidebar({ visible }: any) {
         <div>SINIM</div>
       </div>
       <List className={` ${visible ? "visible" : "invisible"} duration-200`}>
-        <Accordion
+        {/* <Accordion
           open={open === 1}
           icon={
             <ChevronDownIcon
@@ -70,7 +70,6 @@ export function Sidebar({ visible }: any) {
                   alt=""
                   className="w-10 h-10 text-white duration-700 group-hover:h-7 group-hover:w-7"
                 />
-                {/* <PresentationChartBarIcon className="w-8 h-8 text-white duration-700 group-hover:h-5 group-hover:w-5" /> */}
               </ListItemPrefix>
               <Typography
                 color="white"
@@ -102,29 +101,29 @@ export function Sidebar({ visible }: any) {
               </ListItem>
             </List>
           </AccordionBody>
-        </Accordion>
+        </Accordion> */}
         <Link href={"/dashboard/rami"}>
-        <ListItem>
-          <ListItemPrefix>
-            <Image
-              src={"/images/logo/rami-white.svg"}
-              width={600}
-              height={600}
-              draggable={false}
-              alt=""
-              className="w-10 h-10 text-white duration-700 group-hover:h-7 group-hover:w-7"
-            />
-          </ListItemPrefix>
-          <Typography
-            color="white"
-            className="mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100"
-          >
-            RAMI
-          </Typography>
-        </ListItem>
+          <ListItem className="focus:bg-transparent">
+            <ListItemPrefix>
+              <Image
+                src={"/images/logo/rami-white.svg"}
+                width={600}
+                height={600}
+                draggable={false}
+                alt=""
+                className="w-10 h-10 text-white duration-700 group-hover:h-7 group-hover:w-7"
+              />
+            </ListItemPrefix>
+            <Typography
+              color="white"
+              className="mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100"
+            >
+              RAMI
+            </Typography>
+          </ListItem>
         </Link>
         <Link href={"/dashboard/saim"}>
-          <ListItem className={open ? "" : "bg-transparent"}>
+          <ListItem className="focus:bg-transparent">
             <ListItemPrefix>
               <Image
                 src={"/images/logo/saim-white.svg"}
@@ -143,7 +142,7 @@ export function Sidebar({ visible }: any) {
             </Typography>
           </ListItem>
         </Link>
-        <ListItem>
+        {/* <ListItem>
           <ListItemPrefix>
             <Image
               src={"/images/logo/sied-white.svg"}
@@ -160,7 +159,7 @@ export function Sidebar({ visible }: any) {
           >
             SIED
           </Typography>
-        </ListItem>
+        </ListItem> */}
       </List>
     </div>
   );
