@@ -18,38 +18,33 @@ import Suscribe from "../saim/Suscribe/suscribe";
 import { useRouter } from "next/navigation";
 
 export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
+  const routes = [
+    { path: "rami", title: "RAMI" },
+    { path: "saim", title: "SAIM" },
+    { path: "sied", title: "SIED" },
+    { path: "datamarket", title: "Data Market" },
+    // Puedes agregar más rutas aquí cuando necesites
+  ];
   const pathname = usePathname();
+  const currentPath = pathname.toLowerCase();
+  const currentRoute = routes.find((route) => currentPath.includes(route.path));
+  const title = currentRoute ? currentRoute.title : "SINIM";
   const [suscribeOpen, setSuscribeOpen] = React.useState(false);
   const { user, error, isLoading } = useUser();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const callbackUrl = `${baseUrl}/dashboard/saim#suscribe`;
   const handleSuscribeOpen = () => {
-    if(!user) return router.push(`/api/auth/login?returnTo=${callbackUrl}`);
+    if (!user) return router.push(`/api/auth/login?returnTo=${callbackUrl}`);
     setSuscribeOpen(!suscribeOpen);
-  }
+  };
   const router = useRouter();
   const path = usePathname();
- 
+
   useEffect(() => {
-    if(path.includes("suscribe")) {
+    if (path.includes("suscribe")) {
       setSuscribeOpen(true);
     }
   }, [path]);
-
-  const navList = (
-    <ul className="flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:justify-end lg:gap-6">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="font-2xl"
-      >
-        <Link href="#" className="flex items-center">
-          Pages
-        </Link>
-      </Typography>
-    </ul>
-  );
 
   return (
     <Navbar
@@ -63,13 +58,20 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
           </button>
         </div>
         <Typography className="w-4/12 text-3xl font-medium text-center font-custom">
-          SAIM
+          {title}
         </Typography>
-        
+
         <div className="hidden w-4/12 lg:flex lg:flex-row lg:space-x-4 lg:justify-end">
-        {pathname === "/dashboard/saim" ? (<>
-          <button onClick={handleSuscribeOpen} className="w-36 h-12 bg-gradient-to-r from-purple-600 hover:from-purple-700 from-[20%] rounded-lg via-sky-400 hover:via-sky-500 to-sky-300 hover:to-sky-400 duration-700 text-white font-semibold s">Suscríbete</button>
-        </>) : null}
+          {pathname === "/dashboard/saim" ? (
+            <>
+              <button
+                onClick={handleSuscribeOpen}
+                className="w-36 h-12 bg-gradient-to-r from-purple-600 hover:from-purple-700 from-[20%] rounded-lg via-sky-400 hover:via-sky-500 to-sky-300 hover:to-sky-400 duration-700 text-white font-semibold s"
+              >
+                Suscríbete
+              </button>
+            </>
+          ) : null}
           <UserProfile />
         </div>
         <React.Fragment>
@@ -85,14 +87,15 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
               <Bars3Icon className="text-black w-7" />
             )}
           </IconButton>
-          
         </React.Fragment>
-        
       </div>
-      <Collapse open={openNav}>
-        <div className="container mx-auto">{navList}</div>
-      </Collapse>
-      {suscribeOpen && user ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user.email ?? ""} />) : null}
+      {suscribeOpen && user ? (
+        <Suscribe
+          open={suscribeOpen}
+          handleOpen={handleSuscribeOpen}
+          email={user.email ?? ""}
+        />
+      ) : null}
     </Navbar>
   );
 }

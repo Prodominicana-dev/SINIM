@@ -38,14 +38,13 @@ export default function UserProfile() {
       link: `/api/auth/logout?returnTo=${encodeURIComponent(callbackUrl)}`,
     },
   ];
-
   const closeMenu = () => setIsMenuOpen(false);
-
   if (!user)
     return (
       <Button className="bg-navy">
         <Link
           href={`/api/auth/login?returnTo=${encodeURIComponent(callbackUrl)}`}
+          prefetch
         >
           Inicia sesion
         </Link>
