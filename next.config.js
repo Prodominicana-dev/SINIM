@@ -1,13 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "127.0.0.1",
-      "localhost",
-      "sinim-api-git-tools-prodominicanadev.vercel.app",
-      "images.unsplash.com",
-      "sinim.prodominicana.gob.do"
-    ],
+    domains: ["localhost", "images.unsplash.com", "sinim.prodominicana.gob.do"],
+  },
+  env: {
+    AUTH0_SECRET: process.env.AUTH0_SECRET,
+    AUTH0_BASE_URL: process.env.AUTH0_BASE_URL,
+    AUTH0_ISSUER_BASE_URL: process.env.AUTH0_ISSUER_BASE_URL,
+    AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
+    AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
+    API_CLIENT_ID: process.env.API_CLIENT_ID,
+    API_CLIENT_SECRET: process.env.API_CLIENT_SECRET,
+    API_IDENTIFIER: process.env.API_IDENTIFIER,
+    AUTH0_API_TOKEN: process.env.AUTH0_API_TOKEN,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
   },
   experimental: {
     swcPlugins: [["@swc-jotai/react-refresh", {}]],
