@@ -104,30 +104,36 @@ export default function Page() {
   const statusSaims = [{label:"Publicados", value:"active"}, {label:"Ocultos", value:"deleted"}]
 
   const handleFilter = (selectedCategory: string) => {
-    if(selectedCategory.toLowerCase() == "todos"){
+    const statusToFilter = status || "active";
+    const categoryToFilter = selectedCategory || "Todos";
+
+    if(categoryToFilter.toLowerCase() == "todos") {
       const SaimByCategory = data.filter(
-        (saim) => saim.status.toLowerCase() === status.toLowerCase()
+        (saim) => saim.status.toLowerCase() === statusToFilter.toLowerCase()
       );
-      setCategory(selectedCategory);
-      return setFilteredData(SaimByCategory);
+      setCategory(categoryToFilter);
+      setFilteredData(SaimByCategory);
     }else{
       const SaimByCategory = data.filter(
-        (saim) => saim.category.toLowerCase() === selectedCategory.toLowerCase() && saim.status.toLowerCase() === status.toLowerCase()
+        (saim) => saim.category.toLowerCase() === categoryToFilter.toLowerCase() && saim.status.toLowerCase() === statusToFilter.toLowerCase()
       );
-      
-      setCategory(selectedCategory);
+      setCategory(categoryToFilter);
       setFilteredData(SaimByCategory);
     }
   };
 
   const handleStatus = (selectedStatus: string) => {
-    const SaimByStatus = category !== "Todos" ? data.filter(
-      (saim) => (saim.status.toLowerCase() === selectedStatus.toLowerCase() && saim.category.toLowerCase() === category.toLowerCase())
-    ) : data.filter((saim) => (saim.status.toLowerCase() === selectedStatus.toLowerCase()));
-    setStatus(selectedStatus);
-    
+    const statusToFilter = selectedStatus || "active";
+    const categoryToFilter = category || "Todos";
+
+    const SaimByStatus = (categoryToFilter !== "Todos") ? 
+    data.filter(
+      (saim) => (saim.status.toLowerCase() === statusToFilter.toLowerCase() && 
+      saim.category.toLowerCase() === categoryToFilter.toLowerCase())
+    ) : data.filter((saim) => (saim.status.toLowerCase() === statusToFilter.toLowerCase()));
+    setStatus(statusToFilter);
+    console.log(SaimByStatus)
     setFilteredData(SaimByStatus);
-    
   }
 
   const handleFilterOpen = () => {
@@ -148,6 +154,7 @@ export default function Page() {
           <input type="text" 
           className="w-56 h-10 px-5 rounded-full ring-2 ring-gray-300"
           placeholder="Buscar..."
+          value={search}
           onChange={handleSearchChange}/>
 
         <Button onClick={handleFilterOpen}
@@ -168,6 +175,7 @@ export default function Page() {
           data={filterSaims}
           defaultValue="Todos"
           searchable={false}
+          value={category}
           onChange={(e:string) => handleFilter(e)}
             />
         </div>
@@ -180,6 +188,7 @@ export default function Page() {
             data={statusSaims}
             placeholder="Estado"
             searchable={false}
+            value={status}
             onChange={(e:string) => handleStatus(e)}
           />
           </div>
@@ -204,7 +213,7 @@ export default function Page() {
           >
             <PlusIcon className="w-16 h-16 text-black" />
           </button>
-          {search === "" && category === "Todos" ? (
+          {search === "" && category === "Todos" && status === "active" ? (
             <SettingsFeed queryI={pagination} updateSaims={updateSaims}/>
           ) : (
             filteredData?.map((saim) => {

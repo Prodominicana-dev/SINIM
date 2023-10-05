@@ -12,7 +12,9 @@ import Image from "next/image";
 import React from "react";
 import SaimDialog from "../../saim/Settings/saimDialog";
 import axios from "axios";
-import DeleteSaim from "./delete";
+import HideButton from "./hide";
+import ActiveButton from "./active";
+import DeleteButton from "./delete";
 
 export default function SCard({
   data,
@@ -25,10 +27,56 @@ export default function SCard({
   const handleOpen = () => {
     setOpen(!open);
   };
+  const [hideOpen, setHideOpen] = React.useState(false);
+  const handleHideOpen = () => {
+    setHideOpen(!hideOpen);
+  };
+
+  const [activeOpen, setActiveOpen] = React.useState(false);
+  const handleActiveOpen = () => {
+    setActiveOpen(!activeOpen);
+  };
+
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const handleDeleteOpen = () => {
     setDeleteOpen(!deleteOpen);
   };
+  
+  const hideCreateNotification = {
+    title: "Alerta Comercial ocultada",
+    message: "La Alerta Comercial ha sido ocultada exitosamente.",
+    color: "green",
+  }
+
+  const hideErrorNotification = {
+    title: "Error ocultando la Alerta Comercial",
+    message: "Ha ocurrido un error, intenta nuevamente.",
+    color: "red",
+  }
+
+  const activeCreateNotification = {
+    title: "Alerta Comercial activada",
+    message: "La Alerta Comercial ha sido activada exitosamente.",
+    color: "green",
+  }
+
+  const activeErrorNotification = {
+    title: "Error activando la Alerta Comercial",
+    message: "Ha ocurrido un error, intenta nuevamente.",
+    color: "red",
+  }
+
+  const deleteCreateNotification = {
+    title: "Alerta Comercial eliminada",
+    message: "La Alerta Comercial ha sido eliminada exitosamente.",
+    color: "green",
+  }
+
+  const deleteErrorNotification = {
+    title: "Error eliminando la Alerta Comercial",
+    message: "Ha ocurrido un error, intenta nuevamente.",
+    color: "red",
+  }
 
   const isActive = data.status === "active" ? "" : "group opacity-50 bg-gray-200 hover:opacity-100 duration-300";
   return (
@@ -58,10 +106,10 @@ export default function SCard({
           </button>
           {data.status === "active" ? (
             <button
-            onClick={handleDeleteOpen}
+            onClick={handleHideOpen}
             className="flex items-center justify-center w-10 h-10 mx-3 duration-300 bg-black rounded-full "
           >
-            <Tooltip content="Desactivar">
+            <Tooltip content="Ocultar">
               <Typography variant="lead" color="green" textGradient>
                 <EyeSlashIcon className="w-6 h-6 text-white" />
               </Typography>
@@ -69,7 +117,7 @@ export default function SCard({
           </button>
           ): (
             <button
-            onClick={handleDeleteOpen}
+            onClick={handleActiveOpen}
             className="flex items-center justify-center w-10 h-10 mx-3 duration-300 bg-white rounded-full hover:bg-gray-300"
           >
             <Tooltip content="Activar">
@@ -80,7 +128,7 @@ export default function SCard({
           </button>
           )}
           <button
-            onClick={handleOpen}
+            onClick={handleDeleteOpen}
             className="flex items-center justify-center w-10 h-10 mx-3 duration-300 bg-red-600 rounded-full hover:bg-red-700"
           >
             <Tooltip content="Eliminar">
@@ -96,7 +144,25 @@ export default function SCard({
           handleOpen={handleOpen}
           updateSaims={updateSaims}
         />
-        <DeleteSaim id={data.id} open={deleteOpen} handleOpen={handleDeleteOpen} updateSaims={updateSaims} />
+        <HideButton open={hideOpen} handleOpen={handleHideOpen} updateSaims={updateSaims} 
+        title={"¿Estás seguro de ocultar la Alerta Comercial?"} message="La Alerta Comercial será ocultada, no eliminada."
+        endpoint={`/saim/${data.id}`}
+        createNotification={hideCreateNotification}
+        errorNotification={hideErrorNotification}
+        />
+        <ActiveButton open={activeOpen} handleOpen={handleActiveOpen} updateSaims={updateSaims} 
+        title={"¿Estás seguro de activar la Alerta Comercial?"} message="La Alerta Comercial se activará y podrá verla cualquier persona."
+        endpoint={`/saim/${data.id}`}
+        createNotification={activeCreateNotification}
+        errorNotification={activeErrorNotification}
+        />
+        <DeleteButton open={deleteOpen} handleOpen={handleDeleteOpen} updateSaims={updateSaims} 
+        title={"¿Estás seguro de eliminar la Alerta Comercial?"} message="La Alerta Comercial será eliminada y podrá ser recuperada."
+        endpoint={`/saim/d/${data.id}`}
+        createNotification={deleteCreateNotification}
+        errorNotification={deleteErrorNotification}
+        />
+
       </CardBody>
     </Card>
   );

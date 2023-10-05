@@ -66,7 +66,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
             <>
               <button
                 onClick={handleSuscribeOpen}
-                className="w-36 h-12 ring-2 rounded-md ring-navy hover:bg-navy hover:text-white duration-300 text-navy font-semibold "
+                className="h-12 font-semibold duration-300 rounded-md w-36 ring-2 ring-navy hover:bg-navy hover:text-white text-navy "
               >
                 Suscríbete
               </button>
