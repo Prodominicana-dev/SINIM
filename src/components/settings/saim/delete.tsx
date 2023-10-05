@@ -50,7 +50,7 @@ export default function DeleteButton({open, handleOpen, updateSaims, title, mess
                 <p className="w-full text-xs font-thin md:w-11/12 md:text-base">{message}</p>
                 </div>
                 <div className="flex flex-row w-full space-x-3">
-                <button className="w-full h-12 font-thin text-white duration-300 bg-red-700 rounded-lg hover:shadow-lg hover:text-white/80" onClick={handleActive}>Activar</button>
+                <button className="w-full h-12 font-thin text-white duration-300 bg-red-700 rounded-lg hover:shadow-lg hover:text-white/80" onClick={handleActive}>Eliminar</button>
                 <button 
                     onClick={handleOpen}
                     className="w-full h-12 font-thin text-red-700 duration-300 bg-white border-2 border-red-700 rounded-lg hover:bg-red-700 hover:text-white"

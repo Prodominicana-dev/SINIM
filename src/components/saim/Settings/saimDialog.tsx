@@ -29,6 +29,7 @@ import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import {Image as Img} from '@tiptap/extension-image'
 
 import { useAtom } from "jotai";
 import {
@@ -85,8 +86,16 @@ export default function SaimDialog({
       Link,
       Highlight,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Contenido del SAIM" }),
+      Placeholder.configure({ placeholder: "Contenido de la Alerta Comercial" }),
+      Img.configure({
+        inline: true,
+        HTMLAttributes: {
+          class: "w-full h-auto",
+        },
+        allowBase64: true,
+      }),
     ],
+    
     content: saim?.description,
   });
 
@@ -146,8 +155,8 @@ export default function SaimDialog({
               id: "saim",
               autoClose: 5000,
               withCloseButton: false,
-              title: "SAIM creado",
-              message: "El SAIM se ha creado correctamente.",
+              title: "Alerta Comercial creada",
+              message: "La Alerta Comercial ha sido creada correctamente.",
               color: "green",
               loading: false,
             });
@@ -164,7 +173,7 @@ export default function SaimDialog({
             autoClose: 5000,
             withCloseButton: false,
             title: "Error",
-            message: "El SAIM no se ha creado correctamente.",
+            message: "La Alerta Comercial no se ha creado correctamente.",
             color: "green",
             loading: false,
           });
@@ -178,8 +187,8 @@ export default function SaimDialog({
             id: "saim",
             autoClose: 5000,
             withCloseButton: false,
-            title: "SAIM editado",
-            message: "El SAIM ha sido modificado correctamente.",
+            title: "Alerta Comercial editado",
+            message: "La Alerta Comercial ha sido modificada correctamente.",
             color: "green",
             loading: false,
           });
@@ -197,14 +206,13 @@ export default function SaimDialog({
           autoClose: 5000,
           withCloseButton: false,
           title: "Error",
-          message: "Hubo un error editando el SAIM.",
+          message: "Hubo un error editando la Alerta Comercial.",
           color: "green",
           loading: false,
         });
       });
   };
 
-  
 
   return (
     <Dialog
@@ -340,6 +348,9 @@ export default function SaimDialog({
             </div>
 
             <div className="text-lg text-black ">
+            <div className="text-lg font-bold text-black">
+                Contenido de la Alerta Comercial
+              </div>
               <RichTextEditor editor={editor1}>
                 <RichTextEditor.Toolbar sticky>
                   <RichTextEditor.ControlsGroup>
@@ -349,7 +360,6 @@ export default function SaimDialog({
                     <RichTextEditor.Strikethrough />
                     <RichTextEditor.ClearFormatting />
                     <RichTextEditor.Highlight />
-                    <RichTextEditor.Code />
                   </RichTextEditor.ControlsGroup>
 
                   <RichTextEditor.ControlsGroup>
@@ -376,6 +386,7 @@ export default function SaimDialog({
                     <RichTextEditor.AlignCenter />
                     <RichTextEditor.AlignRight />
                   </RichTextEditor.ControlsGroup>
+                  
                 </RichTextEditor.Toolbar>
                 <RichTextEditor.Content />
               </RichTextEditor>
@@ -383,13 +394,13 @@ export default function SaimDialog({
 
             <div className="w-full my-5">
               <div className="text-lg font-bold text-black">
-                Seleccione los países del SAIM
+                Seleccione los países de la Alerta Comercial
               </div>
               <Select
                 closeMenuOnSelect={false}
                 components={animatedComponents}
                 isMulti
-                placeholder="Seleccione los países del SAIM..."
+                placeholder="Seleccione los países de la Alerta Comercial..."
                 onChange={(e) => setSelectedCountries(e)}
                 defaultValue={selectedCountries}
                 options={countries}
@@ -398,13 +409,13 @@ export default function SaimDialog({
 
             <div className="w-full my-5">
               <div className="text-lg font-bold text-black">
-                Seleccione los productos del SAIM
+                Seleccione los productos de la Alerta Comercial
               </div>
               <Select
                 closeMenuOnSelect={false}
                 components={animatedComponents}
                 isMulti
-                placeholder="Seleccione los productos del SAIM..."
+                placeholder="Seleccione los productos de la Alerta Comercial..."
                 onChange={(e) => setSelectedProducts(e)}
                 defaultValue={selectedProducts}
                 options={products}
