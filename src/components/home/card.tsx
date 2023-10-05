@@ -12,7 +12,7 @@ export default function Card({ image, title, color, tool, changeT }: any) {
         onClick={handleClick}
       >
         <Image src={`${image}`} width={100} height={100} alt=""></Image>
-        <div className="absolute font-custom">{title}</div>
+        <div className="absolute font-custom text-white">{title}</div>
       </button>
     </div>
   );

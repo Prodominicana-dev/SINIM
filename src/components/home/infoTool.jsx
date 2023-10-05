@@ -16,7 +16,7 @@ export default function InfoTool({ title, description, logo, link }) {
     }, 100);
   }, [description]);
   return (
-    <div className="flex h-full lg:h-full sm:h-3/6 sm:p-5 ml-0 justify-start items-center lg:absolute sm:mt-8 lg:mt-0">
+    <div className="flex h-full lg:h-full sm:h-3/6 sm:p-5 ml-0 justify-start items-center lg:absolute sm:mt-8 lg:mt-0 text-white">
       <div className="flex flex-col space-y-6 mx-10 w-full sm:w-3/6">
         <div className="flex flex-row space-x-5 items-center ">
           <Image

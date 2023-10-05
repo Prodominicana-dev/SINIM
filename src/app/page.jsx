@@ -93,7 +93,6 @@ export default function Home() {
 
   return (
     <main className="relative ">
-      
       <Background video={tool.background} color={tool.color} />
 
       <nav className="z-10 flex w-full p-8 bg-transparent lg:absolute sm:p-12 md:items-center md:justify-between">
@@ -116,7 +115,7 @@ export default function Home() {
           </div>
           <div className="items-center hidden space-x-5 sm:flex">
             <Link href="/dashboard/rami" className="hidden md:block">
-              <div className="px-5 py-2 text-lg text-center duration-500 border-2 border-white rounded-full w-28 hover:shadow-button">
+              <div className="px-5 py-2 text-lg text-center duration-500 border-2 border-white rounded-full w-28 hover:shadow-button text-white">
                 Acceder
               </div>
             </Link>
