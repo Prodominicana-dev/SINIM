@@ -30,7 +30,6 @@ import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import {Image as Img} from '@tiptap/extension-image'
-
 import { useAtom } from "jotai";
 import {
   countrySelect,
@@ -270,12 +269,11 @@ export default function SaimDialog({
             </div>
 
             <input
-              className="w-full my-2 text-xl font-bold text-black placeholder-black sm:text-3xl"
+              className="w-full my-2 text-xl font-bold text-black placeholder-black resize-none sm:text-3xl"
               placeholder="Título"
               onChange={(e) => setTitle(e.target.value)}
               defaultValue={saim ? title : ""}
             />
-
             <div className="text-xs font-light text-neutral-500">
               {format(Date.now(), "dd MMMM yyyy", { locale: es })}
             </div>
@@ -347,7 +345,7 @@ export default function SaimDialog({
               </div>
             </div>
 
-            <div className="text-lg text-black ">
+            <div className="text-lg font-normal text-black">
             <div className="text-lg font-bold text-black">
                 Contenido de la Alerta Comercial
               </div>
