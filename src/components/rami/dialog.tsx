@@ -263,9 +263,6 @@ export default function RamiDialog({
     content: "",
   });
 
-  
-  
-  
   useEffect(() => {
     if (rami && !isLoading) {
     
@@ -353,6 +350,18 @@ export default function RamiDialog({
           size="sm"
           variant="text"
           onClick={() => {
+            if (rami) {
+              outputReq?.commands.clearContent();
+            importReq?.commands.clearContent();
+            regTecnicas?.commands.clearContent();
+            permCertf?.commands.clearContent();
+            etiquetado?.commands.clearContent();
+            acComerciales?.commands.clearContent();
+            impAran?.commands.clearContent();
+            recursos?.commands.clearContent();
+              setSelectedCountries([]);
+              setSelectedProducts([]);
+            }
             handleOpen();
           }}
         >
