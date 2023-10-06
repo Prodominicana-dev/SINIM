@@ -29,13 +29,18 @@ import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+<<<<<<< Updated upstream
 import {Image as Img} from '@tiptap/extension-image'
+=======
+import { Image as Img } from "@tiptap/extension-image";
+import Table from "@tiptap/extension-table";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+
+>>>>>>> Stashed changes
 import { useAtom } from "jotai";
-import {
-  countrySelect,
-  productSelect,
-  saimAtom,
-} from "@/src/state/states";
+import { countrySelect, productSelect, saimAtom } from "@/src/state/states";
 
 const animatedComponents = makeAnimated();
 
@@ -51,7 +56,7 @@ export default function SaimDialog({
   updateSaims: () => void;
 }) {
   const [files, setFiles] = useState<FileWithPath[]>([]);
-  const [description, ] = useState<any>("");
+  const [description] = useState<any>("");
   const [title, setTitle] = useState("");
   const categories = [
     "Oportunidades",
@@ -60,10 +65,11 @@ export default function SaimDialog({
     "Obstáculos",
   ];
   const [category, onChange] = useState(categories[0]);
-  const [countries,] = useAtom(countrySelect);
-  const [products,] = useAtom(productSelect);
+  const [countries] = useAtom(countrySelect);
+  const [products] = useAtom(productSelect);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
+  const [tableMenuOpen, setTableMenuOpen] = useState(false);
 
   const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
@@ -71,6 +77,31 @@ export default function SaimDialog({
       openRef.current(); // solo se llama si openRef.current no es null
     }
   };
+
+  const tableHTML = `
+  <table ">
+    <tr>
+      <th>Firstname</th>
+      <th>Lastname</th>
+      <th>Age</th>
+    </tr>
+    <tr>
+      <td>Jill</td>
+      <td>Smith</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <td>Eve</td>
+      <td>Jackson</td>
+      <td>94</td>
+    </tr>
+    <tr>
+      <td>John</td>
+      <td>Doe</td>
+      <td>80</td>
+    </tr>
+  </table>
+`;
 
   const editor1 = useEditor({
     extensions: [
@@ -84,8 +115,32 @@ export default function SaimDialog({
       Underline,
       Link,
       Highlight,
+      Table.configure({
+        HTMLAttributes: {
+          style:
+            "padding: 1.5rem; border-radius: 0.5rem; border-width: 2px;	border-color: rgb(243 244 246);",
+        },
+        resizable: true,
+      }),
+      TableRow.configure({
+        HTMLAttributes: {
+          style: "border-width: 2px;	border-color: rgb(243 244 246);",
+        },
+      }),
+      TableCell.configure({
+        HTMLAttributes: {
+          style: "border-width: 2px;	border-color: rgb(243 244 246);",
+        },
+      }),
+      TableHeader.configure({
+        HTMLAttributes: {
+          style: "border-width: 2px;	border-color: rgb(243 244 246);",
+        },
+      }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Contenido de la Alerta Comercial" }),
+      Placeholder.configure({
+        placeholder: "Contenido de la Alerta Comercial",
+      }),
       Img.configure({
         inline: true,
         HTMLAttributes: {
@@ -94,7 +149,7 @@ export default function SaimDialog({
         allowBase64: true,
       }),
     ],
-    
+
     content: saim?.description,
   });
 
@@ -212,7 +267,6 @@ export default function SaimDialog({
       });
   };
 
-
   return (
     <Dialog
       open={open}
@@ -285,28 +339,28 @@ export default function SaimDialog({
               >
                 {/* ImagePreview */}
                 {files.length > 0 ? (
-                <div className="flex justify-center w-full h-full">
-                  <Image
-                    src={URL.createObjectURL(files[0])}
-                    width={1920}
-                    height={1080}
-                    alt="card-image"
-                    className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
-                  />
-                </div>
-              ) : saim ? (
-                <div className="flex justify-center w-full h-full">
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_API_URL}/data/saim/${saim?.id}/img/${saim?.image}`}
-                    width={1920}
-                    height={1080}
-                    alt="saim-image"
-                    className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
-                  />
-                </div>
-              ) : (
-                <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
-              )}
+                  <div className="flex justify-center w-full h-full">
+                    <Image
+                      src={URL.createObjectURL(files[0])}
+                      width={1920}
+                      height={1080}
+                      alt="card-image"
+                      className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
+                    />
+                  </div>
+                ) : saim ? (
+                  <div className="flex justify-center w-full h-full">
+                    <Image
+                      src={`${process.env.NEXT_PUBLIC_API_URL}/data/saim/${saim?.id}/img/${saim?.image}`}
+                      width={1920}
+                      height={1080}
+                      alt="saim-image"
+                      className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
+                )}
               </div>
 
               <div className="flex items-center justify-center w-full h-full text-base text-black">
@@ -345,8 +399,13 @@ export default function SaimDialog({
               </div>
             </div>
 
+<<<<<<< Updated upstream
             <div className="text-lg font-normal text-black">
             <div className="text-lg font-bold text-black">
+=======
+            <div className="text-lg text-black ">
+              <div className="text-lg font-bold text-black">
+>>>>>>> Stashed changes
                 Contenido de la Alerta Comercial
               </div>
               <RichTextEditor editor={editor1}>
@@ -384,7 +443,89 @@ export default function SaimDialog({
                     <RichTextEditor.AlignCenter />
                     <RichTextEditor.AlignRight />
                   </RichTextEditor.ControlsGroup>
-                  
+
+                  <RichTextEditor.ControlsGroup>
+                    <Menu placement="right-start">
+                      <MenuHandler>
+                        <button className="container p-1 h-[1.625rem] w-[1.625rem] bg-white ring-1 ring-gray-300 rounded-md">
+                          <img
+                            width="50"
+                            height="50"
+                            src="https://img.icons8.com/ios/50/table-1.png"
+                            alt="table-1"
+                          />
+                        </button>
+                      </MenuHandler>
+                      <MenuList className="z-[9999]">
+                        <MenuItem
+                          onClick={() =>
+                            editor1
+                              ?.chain()
+                              .focus()
+                              .insertTable({
+                                rows: 3,
+                                cols: 3,
+                                withHeaderRow: true,
+                              })
+                              .run()
+                          }
+                        >
+                          Añadir tabla
+                        </MenuItem>
+                        <hr className="my-2" />
+                        <MenuItem
+                          onClick={() =>
+                            editor1?.chain().focus().addColumnBefore().run()
+                          }
+                        >
+                          Añadir columna antes
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() =>
+                            editor1?.chain().focus().addColumnAfter().run()
+                          }
+                        >
+                          Añadir columna despues
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() =>
+                            editor1?.chain().focus().addRowBefore().run()
+                          }
+                        >
+                          Añadir fila antes
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() =>
+                            editor1?.chain().focus().addRowAfter().run()
+                          }
+                        >
+                          Añadir fila despues
+                        </MenuItem>
+                        <hr className="my-2" />
+                        <MenuItem
+                          onClick={() =>
+                            editor1?.chain().focus().deleteColumn().run()
+                          }
+                        >
+                          Borrar columna
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() =>
+                            editor1?.chain().focus().deleteRow().run()
+                          }
+                        >
+                          Borrar fila
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() =>
+                            editor1?.chain().focus().deleteTable().run()
+                          }
+                        >
+                          Borrar tabla
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </RichTextEditor.ControlsGroup>
                 </RichTextEditor.Toolbar>
                 <RichTextEditor.Content />
               </RichTextEditor>
@@ -422,16 +563,17 @@ export default function SaimDialog({
 
             <div className="flex justify-end w-full h-12 my-5">
               <Button
-                disabled={ !saim ?
-                  title === "" ||
-                  editor1?.isEmpty ||
-                  files.length === 0 ||
-                  selectedCountries.length === 0 ||
-                  selectedProducts.length === 0 : 
-                  title === "" ||
-                  editor1?.isEmpty ||
-                  selectedCountries.length === 0 ||
-                  selectedProducts.length === 0
+                disabled={
+                  !saim
+                    ? title === "" ||
+                      editor1?.isEmpty ||
+                      files.length === 0 ||
+                      selectedCountries.length === 0 ||
+                      selectedProducts.length === 0
+                    : title === "" ||
+                      editor1?.isEmpty ||
+                      selectedCountries.length === 0 ||
+                      selectedProducts.length === 0
                 }
                 onClick={handleSubmit}
                 color="green"
