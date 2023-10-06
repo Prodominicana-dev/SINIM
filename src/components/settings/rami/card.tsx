@@ -1,17 +1,17 @@
 import Rami from "@/src/models/rami";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import React, { useEffect } from "react";
 import RamiDialog from "../../rami/dialog";
 
-export default function Card({ rami }: { rami: any }) {
+export default function Card({ rami, updateRamis }: { rami: any, updateRamis: () => void }) {
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  
   return (
     <>
-    <div className="grid items-center w-full h-24 grid-cols-5 p-5 text-center bg-white rounded-lg ring-2 ring-gray-100">
-          <div>{rami.id}</div>
+    <div className="grid items-center w-full h-24 grid-cols-4 p-5 text-center bg-white rounded-lg ring-2 ring-gray-100">
           <div>{rami.product.name}</div>
           <div>{rami.product.code}</div>
           <div>{rami.country.name}</div>
@@ -24,7 +24,7 @@ export default function Card({ rami }: { rami: any }) {
             </button>
           </div>
         </div>
-      { open ? <RamiDialog rami={rami} open={open} handleOpen={handleClose} key={rami.id} updateRami={() => {}} title={"Editar RAMI"} /> : null}
+      { open ? <RamiDialog rami={rami} open={open} handleOpen={handleClose} updateRami={updateRamis} title={"Editar RAMI"} /> : null}
     </>
     
     

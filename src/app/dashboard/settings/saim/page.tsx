@@ -16,6 +16,7 @@ import { Select } from "@mantine/core";
 import {
   Button,
 } from "@material-tailwind/react";
+import Header from "@/src/components/settings/header";
 
 export default function Page() {
   const [data, setData] = useState<Saim[]>([]);
@@ -145,10 +146,7 @@ export default function Page() {
   return (
     <div>
       <div className="flex flex-col items-center justify-center w-full h-full">
-        <div className="w-full h-[26rem] bg-gradient-to-tr from-purple-500 from-[15%] via-sky-600 to-sky-400 flex flex-col justify-center items-center space-y-6">
-          <div className="text-5xl font-bold text-white">Gestión de Alertas Comerciales</div>
-          <div className="w-6/12 text-xl font-thin text-center text-white">Tu centro de operaciones personal para alertas comerciales. Agrega, edita y oculta información clave al instante. Toma el control de tus alertas.</div>
-        </div>
+        <Header title="Gestión de Alertas Comerciales" message="Tu centro de operaciones personal para alertas comerciales. Agrega, edita y oculta información clave al instante. Toma el control de tus alertas." />
         <div className="w-full h-16">
         <div className="flex flex-row flex-wrap justify-end w-full h-full p-8 space-x-8">
           <input type="text" 

@@ -34,6 +34,7 @@ import {
 import TextEditor from "../settings/rami/rich-editor";
 import useRami from "@/src/services/ramis/useRami";
 
+
 const animatedComponents = makeAnimated();
 
 export default function RamiDialog({
@@ -53,8 +54,17 @@ export default function RamiDialog({
   const [products,] = useAtom(productSelect);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
-  const { data, isLoading, isError } = useRami(rami.id);
+  const { data, isLoading, isError } = useRami(rami?.id);
   const [ramiData, setRamiData] = useState<any>([]);
+  const [outputRequirement, setOutputRequirement] = useState<any>("");
+  const [importRequirement, setImportRequirement] = useState<any>("");
+  const [technicalRequirements, setTechnicalRequirements] = useState<any>("");
+  const [permitsCertifications, setPermitsCertifications] = useState<any>("");
+  const [labelingCertifications, setLabelingCertifications] = useState<any>("");
+  const [tradeAgreement, setTradeAgreement] = useState<any>("");
+  const [tariffsImposed, setTariffsImposed] = useState<any>("");
+  const [webResource, setWebResource] = useState<any>("");
+
 
   const outputReq = useEditor({
     extensions: [
@@ -78,7 +88,7 @@ export default function RamiDialog({
         allowBase64: true,
       }),
     ],
-    content: "",
+    content: data?.outputRequirement,
   });
 
   const importReq = useEditor({
@@ -104,7 +114,7 @@ export default function RamiDialog({
       }),
     ],
     
-    content: "",
+    content: data?.importRequirement,
   });
 
   const regTecnicas = useEditor({
@@ -130,7 +140,7 @@ export default function RamiDialog({
       }),
     ],
     
-    content: "",
+    content: data?.technicalRequirements,
   });
 
   const permCertf = useEditor({
@@ -156,7 +166,7 @@ export default function RamiDialog({
       }),
     ],
     
-    content: "",
+    content: data?.permitsCertifications,
   });
 
   const etiquetado = useEditor({
@@ -182,7 +192,7 @@ export default function RamiDialog({
       }),
     ],
     
-    content: "",
+    content: data?.labelingCertifications,
   });
 
   const acComerciales = useEditor({
@@ -208,7 +218,7 @@ export default function RamiDialog({
       }),
     ],
     
-    content: "",
+    content: data?.tradeAgreement,
   });
 
   const impAran = useEditor({
@@ -234,7 +244,7 @@ export default function RamiDialog({
       }),
     ],
     
-    content: "",
+    content: data?.tariffsImposed,
   });
 
   const recursos = useEditor({
@@ -260,10 +270,64 @@ export default function RamiDialog({
       }),
     ],
     
-    content: "",
+    content: data?.webResource,
   });
 
   useEffect(() => {
+    setOutputRequirement(data?.outputRequirement);
+    setImportRequirement(data?.importRequirement);
+    setTechnicalRequirements(data?.technicalRequirements);
+    setPermitsCertifications(data?.permitsCertifications);
+    setLabelingCertifications(data?.labelingCertifications);
+    setTradeAgreement(data?.tradeAgreement);
+    setTariffsImposed(data?.tariffsImposed);
+    setWebResource(data?.webResource);
+    
+  }, [data])
+
+  useEffect(() => {
+    const ramidata = [
+      {
+        label: "Requerimientos salida",
+        value: "salida",
+        editor: outputReq,
+      },
+      {
+        label: "Requisitos importacion",
+        value: "importacion",
+        editor: importReq,
+      },
+      {
+        label: "Regulaciones tecnicas",
+        value: "regulaciones",
+        editor: regTecnicas,
+      },
+      {
+        label: "Permisos y certificaciones",
+        value: "certificaciones",
+        editor: permCertf,
+      },
+      {
+        label: "Etiquetado",
+        value: "etiquetado",
+        editor: etiquetado,
+      },
+      {
+        label: "Acuerdos comerciales",
+        value: "acuerdos",
+        editor: acComerciales,
+      },
+      {
+        label: "Impuestos y aranceles",
+        value: "aranceles",
+        editor: impAran,
+      },
+      {
+        label: "Recursos web",
+        value: "recursosweb",
+        editor: recursos,
+      },
+    ];
     if (rami && !isLoading) {
     
       const ramiCountry = countries.find(
@@ -275,63 +339,77 @@ export default function RamiDialog({
         (product: any) => product.value.id === data.product.id
       );
       setSelectedProducts(ramiProduct);
-        outputReq?.commands.setContent(data.outputRequirement);
-      importReq?.commands.setContent(data.importRequirement);
-      regTecnicas?.commands.setContent(data.technicalRequirements);
-      permCertf?.commands.setContent(data.permitsCertifications);
-      etiquetado?.commands.setContent(data.labelingCertifications);
-      acComerciales?.commands.setContent(data.tradeAgreement);
-      impAran?.commands.setContent(data.tariffsImposed);
-      recursos?.commands.setContent(data.webResource);
-    if (!isLoading) {
-        const ramidata = [
-          {
-            label: "Requerimientos salida",
-            value: "salida",
-            editor: outputReq,
-          },
-          {
-            label: "Requisitos importacion",
-            value: "importacion",
-            editor: importReq,
-          },
-          {
-            label: "Regulaciones tecnicas",
-            value: "regulaciones",
-            editor: regTecnicas,
-          },
-          {
-            label: "Permisos y certificaciones",
-            value: "certificaciones",
-            editor: permCertf,
-          },
-          {
-            label: "Etiquetado",
-            value: "etiquetado",
-            editor: etiquetado,
-          },
-          {
-            label: "Acuerdos comerciales",
-            value: "acuerdos",
-            editor: acComerciales,
-          },
-          {
-            label: "Impuestos y aranceles",
-            value: "aranceles",
-            editor: impAran,
-          },
-          {
-            label: "Recursos web",
-            value: "recursosweb",
-            editor: recursos,
-          },
-        ];
-        setRamiData(ramidata);
-      }
-
+      outputReq?.commands.setContent(outputRequirement);
+      importReq?.commands.setContent(importRequirement);
+      regTecnicas?.commands.setContent(technicalRequirements);
+      permCertf?.commands.setContent(permitsCertifications);
+      etiquetado?.commands.setContent(labelingCertifications);
+      acComerciales?.commands.setContent(tradeAgreement);
+      impAran?.commands.setContent(tariffsImposed);
+      recursos?.commands.setContent(webResource);
+       
     }
-  }, [rami, data, isLoading]);
+    setRamiData(ramidata);
+  }, [rami, isLoading, outputRequirement, importRequirement, technicalRequirements, permitsCertifications, labelingCertifications, tradeAgreement, tariffsImposed, webResource]);
 
+  const handleSubmit = async () => {
+    const data = {
+      countryId: Number(selectedCountries.value.id),
+      productId: Number(selectedProducts.value.id),
+      outputRequirement: outputReq?.getHTML() !== undefined ? outputReq?.getHTML() : "",
+      importRequirement: importReq?.getHTML() !== undefined ? importReq?.getHTML() : "",
+      technicalRequirements: regTecnicas?.getHTML() !== undefined ? regTecnicas?.getHTML() : "",
+      permitsCertifications: permCertf?.getHTML() !== undefined ? permCertf?.getHTML() : "",
+      labelingCertifications: etiquetado?.getHTML() !== undefined ? etiquetado?.getHTML() : "",
+      tradeAgreement: acComerciales?.getHTML() !== undefined ? acComerciales?.getHTML() : "",
+      tariffsImposed: impAran?.getHTML() !== undefined ? impAran?.getHTML() : "",
+      webResource: recursos?.getHTML() !== undefined ? recursos?.getHTML() : "",
+    }
+    
+    if(!rami){
+      return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/rami`, data).then((res) => {
+        if(res.status < 300){
+          notifications.show({
+            title: "RAMI creado correctamente",
+            message: "El RAMI se creó correctamente.",
+            color: "teal",
+            autoClose: 5000,
+          });
+          updateRami();
+          handleOpen();
+        }else{
+          notifications.show({
+            title: "Error creando el RAMI",
+            message: "Ha ocurrido un error, intenta nuevamente.",
+            color: "red",
+            autoClose: 5000,
+          });
+        }
+      })
+    }else{
+      return await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/rami/${rami.id}`, data).then((res) => {
+         console.log(res.data)
+        if(res.status === 200){
+          notifications.show({
+            title: "RAMI actualizado correctamente",
+            message: "El RAMI se actualizó correctamente.",
+            color: "teal",
+            autoClose: 5000,
+          });
+          updateRami();
+          handleOpen();
+        }else{
+          notifications.show({
+            title: "Error actualizando el RAMI",
+            message: "Ha ocurrido un error, intenta nuevamente.",
+            color: "red",
+            autoClose: 5000,
+          });
+        }
+      })
+      
+    }
+   }
 
   return (
     <Dialog
@@ -350,18 +428,6 @@ export default function RamiDialog({
           size="sm"
           variant="text"
           onClick={() => {
-            if (rami) {
-              outputReq?.commands.clearContent();
-            importReq?.commands.clearContent();
-            regTecnicas?.commands.clearContent();
-            permCertf?.commands.clearContent();
-            etiquetado?.commands.clearContent();
-            acComerciales?.commands.clearContent();
-            impAran?.commands.clearContent();
-            recursos?.commands.clearContent();
-              setSelectedCountries([]);
-              setSelectedProducts([]);
-            }
             handleOpen();
           }}
         >
@@ -376,7 +442,7 @@ export default function RamiDialog({
             <p className="w-full text-3xl font-bold text-black">{title}</p>
 
             <div className="flex flex-row w-full space-x-8">
-            <div className="w-full">
+            <div className="w-6/12">
               <div className="text-lg font-bold text-black">
                 Seleccione el país del RAMI
               </div>
@@ -388,11 +454,11 @@ export default function RamiDialog({
                 onChange={(e) => setSelectedCountries(e)}
                 value={selectedCountries}
                 options={countries}
-                className="z-[9999]"
+                className="z-[9999] "
               />
             </div>
 
-            <div className="w-full ">
+            <div className="w-6/12">
               <div className="text-lg font-bold text-black">
                 Seleccione el producto del RAMI
               </div>
@@ -404,7 +470,7 @@ export default function RamiDialog({
                 onChange={(e) => setSelectedProducts(e)}
                 value={selectedProducts}
                 options={products}
-                className="z-[9999]"
+                className="z-[9999] "
               />
             </div>
             </div>
@@ -414,8 +480,8 @@ export default function RamiDialog({
                 <UnderlineTabs data={ramiData} />
             </div>
             <div className="block sm:hidden">
-                {ramiData.map(({ label, value, editor, key }: any) => (
-                <div className="p-2" key={key}>
+                {ramiData.map(({ label, value, editor }: any, index: number) => (
+                <div className="p-2" key={index}>
                     <SectionRami title={label} editor={editor} />
                 </div>
                 ))}
@@ -427,6 +493,7 @@ export default function RamiDialog({
                 color="green"
                 disabled = { selectedCountries === null || selectedProducts === null || 
                 outputReq?.isEmpty || importReq?.isEmpty || regTecnicas?.isEmpty || permCertf?.isEmpty || etiquetado?.isEmpty || acComerciales?.isEmpty || impAran?.isEmpty || recursos?.isEmpty}
+                  onClick={handleSubmit}
               >
                 Guardar
               </Button>
@@ -450,9 +517,9 @@ function UnderlineTabs({ data }: any) {
               "bg-gradient-to-r from-purple-700 to-sky-500 shadow-none rounded-none w-[80vw] sm:w-[9vw] lg:w-[8vw]",
           }}
         >
-          {data.map(({ label, value }: any) => (
+          {data.map(({ label, value }: any, index: number) => (
             <Tab
-              key={value}
+              key={index}
               value={value}
               onClick={() => setActiveTab(value)}
               className={`${
@@ -466,8 +533,8 @@ function UnderlineTabs({ data }: any) {
           ))}
         </TabsHeader>
         <TabsBody>
-          {data.map(({ label, value, editor }: any) => (
-            <TabPanel className="p-0" key={value} value={value}>
+          {data.map(({ label, value, editor }: any, index: number) => (
+            <TabPanel className="p-0" key={index} value={value}>
               <SectionRami  title={label} editor={editor} />
             </TabPanel>
           ))}
