@@ -29,16 +29,11 @@ import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-<<<<<<< Updated upstream
 import {Image as Img} from '@tiptap/extension-image'
-=======
-import { Image as Img } from "@tiptap/extension-image";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
-
->>>>>>> Stashed changes
 import { useAtom } from "jotai";
 import { countrySelect, productSelect, saimAtom } from "@/src/state/states";
 
@@ -399,13 +394,8 @@ export default function SaimDialog({
               </div>
             </div>
 
-<<<<<<< Updated upstream
             <div className="text-lg font-normal text-black">
             <div className="text-lg font-bold text-black">
-=======
-            <div className="text-lg text-black ">
-              <div className="text-lg font-bold text-black">
->>>>>>> Stashed changes
                 Contenido de la Alerta Comercial
               </div>
               <RichTextEditor editor={editor1}>
