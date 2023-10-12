@@ -42,7 +42,14 @@ export function Sidebar({ visible }: any) {
       }`}
     >
       <div className="p-4 mb-2 text-white">
-        <div>SINIM</div>
+        <Link href={"/"}>
+          <Image
+            src={"/svg/sinim.svg"}
+            alt=""
+            width={1920}
+            height={1080}
+          ></Image>
+        </Link>
       </div>
       <List className={` ${visible ? "visible" : "invisible"} duration-200`}>
         {/* <Accordion

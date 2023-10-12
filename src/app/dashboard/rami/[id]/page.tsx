@@ -74,7 +74,7 @@ export default function Page({ params }: { params: { id: number } }) {
           <div className="flex flex-col w-full leading-normal sm:w-6/12">
             <div className="text-xs sm:text-sm lg:text-lg">Exporta</div>
             <div className="text-2xl lg:text-6xl">{data.product.name}</div>
-            <div className="mb-2 text-xs lg:text-sm sm:my-0 ">
+            <div className="mb-2 text-sm lg:text-lg lg:pt-3 sm:my-0">
               {data.product.code}
             </div>
           </div>

@@ -19,9 +19,9 @@ import { useRouter } from "next/navigation";
 
 export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
   const routes = [
-    { path: "rami", title: "RAMI" },
-    { path: "saim", title: "SAIM" },
-    { path: "sied", title: "SIED" },
+    { path: "rami", title: "REQUISITO DE ACCESO A MERCADOS INTERNACIONALES" },
+    { path: "saim", title: "ALERTAS COMERCIALES" },
+    { path: "sied", title: "ALERTAS DE IED" },
     { path: "datamarket", title: "Data Market" },
     // Puedes agregar más rutas aquí cuando necesites
   ];
@@ -57,7 +57,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
             <Bars3Icon className="w-10" />
           </button>
         </div>
-        <Typography className="w-4/12 text-3xl font-medium text-center font-custom">
+        <Typography className="w-6/12 text-3xl pt-3 font-medium text-center font-custom">
           {title}
         </Typography>
 

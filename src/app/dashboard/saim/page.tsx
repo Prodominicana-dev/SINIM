@@ -11,33 +11,33 @@ export default function Page() {
   const saimFilters = [
     {
       name: "Todos",
-      title: "¡Explora Todas Nuestras Alertas!",
+      title: "¡Explora todas nuestras alertas!",
       description:
-        "Bienvenido a la sección de alertas para exportadores en diversos mercados. Aquí encontrarás una amplia gama de información valiosa para ayudarte a navegar por los desafíos y oportunidades del comercio internacional. ¡Sumérgete en nuestras alertas y mantente al tanto de lo que está sucediendo en el mundo del comercio exterior!",
+        "Bienvenido a la sección de Alertas Comerciales del SINIM, donde los exportadores encontrarán una amplia gama de información acerca de las oportunidades, tendencias y desafíos del comercio internacional.",
     },
     {
       name: "Oportunidades",
-      title: "Descubra Nuevas Oportunidades de Negocio",
+      title: "Descubra nuevas oportunidades de negocio",
       description:
-        "Explore oportunidades emergentes, tendencias y nichos de mercado que pueden impulsar su crecimiento empresarial.",
+        "Explore oportunidades emergentes, tendencias y nichos de mercado que pueden impulsar su crecimiento internacional.",
     },
     {
       name: "Actualizaciones",
-      title: "Explore las Novedades más Recientes en su Industria",
+      title: "Explore las novedades más recientes en su industria",
       description:
-        "Mantenga una ventaja competitiva al estar informado sobre las últimas actualizaciones en regulaciones, políticas y tendencias relevantes para su industria.",
+        "Potencie su competitividad al mantenerse actualizado en las regulaciones, políticas y tendencias del comercio internacional.",
     },
     {
       name: "Amenazas",
-      title: "Esté al Pendiente de las Amenazas Potenciales",
+      title: "Esté al pendiente de las amenazas potenciales",
       description:
-        "Manténgase al tanto de las amenazas potenciales y tome medidas preventivas para garantizar la seguridad y el éxito de su empresa. ",
+        "Manténgase al tanto de las amenazas potenciales y tome medidas preventivas para garantizar la seguridad y el éxito de sus exportaciones. ",
     },
     {
       name: "Obstáculos",
-      title: "Descubra Estrategias para Sortear los Obstáculos",
+      title: "Eluda los obstáculos presentes en el comercio global",
       description:
-        "Aprenda a eludir obstáculos y encontrar atajos inteligentes en su búsqueda hacia el logro de sus objetivos.",
+        "Acceda a los obstáculos identificados en los mercados internacionales, manteniéndose informado acerca de los desafíos que pueden impactar sus objetivos comerciales.",
     },
   ];
   const [data, setData] = useAtom(saimAtom);

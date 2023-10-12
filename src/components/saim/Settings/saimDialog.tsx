@@ -9,9 +9,14 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
+  Popover,
+  Input,
+  PopoverContent,
+  PopoverHandler,
+  Typography,
 } from "@material-tailwind/react";
 import React, { useEffect, useState, useRef } from "react";
-import { XMarkIcon } from "@heroicons/react/24/solid";
+import { PlusIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -24,18 +29,20 @@ import Highlight from "@tiptap/extension-highlight";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from "@mantine/dropzone";
-import { Group, Text } from "@mantine/core";
+import { Group } from "@mantine/core";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import {Image as Img} from '@tiptap/extension-image'
+import { Image as Img } from "@tiptap/extension-image";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
 import { useAtom } from "jotai";
 import { countrySelect, productSelect, saimAtom } from "@/src/state/states";
+import { useProducts } from "@/src/services/products/useProducts";
+import { useSelectProducts } from "@/src/services/products/useSelectProducts";
 
 const animatedComponents = makeAnimated();
 
@@ -61,10 +68,13 @@ export default function SaimDialog({
   ];
   const [category, onChange] = useState(categories[0]);
   const [countries] = useAtom(countrySelect);
-  const [products] = useAtom(productSelect);
+  const [products, setProducts] = useAtom(productSelect);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
-  const [tableMenuOpen, setTableMenuOpen] = useState(false);
+  const [productName, setProductName] = useState<any>("");
+  const [productCode, setProductCode] = useState<any>("");
+  const [openProduct, setOpenProduct] = useState(false);
+  const { refetch } = useSelectProducts();
 
   const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
@@ -73,30 +83,9 @@ export default function SaimDialog({
     }
   };
 
-  const tableHTML = `
-  <table ">
-    <tr>
-      <th>Firstname</th>
-      <th>Lastname</th>
-      <th>Age</th>
-    </tr>
-    <tr>
-      <td>Jill</td>
-      <td>Smith</td>
-      <td>50</td>
-    </tr>
-    <tr>
-      <td>Eve</td>
-      <td>Jackson</td>
-      <td>94</td>
-    </tr>
-    <tr>
-      <td>John</td>
-      <td>Doe</td>
-      <td>80</td>
-    </tr>
-  </table>
-`;
+  const handleOpenProduct = () => {
+    setOpenProduct(!openProduct);
+  };
 
   const editor1 = useEditor({
     extensions: [
@@ -175,6 +164,43 @@ export default function SaimDialog({
     files.length > 0
       ? "group-hover:bg-black/30"
       : "text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300";
+
+  const handleProductSubmit = async () => {
+    const data = {
+      name: productName,
+      code: productCode,
+    };
+    await axios
+      .post(`${process.env.NEXT_PUBLIC_API_URL}/product`, data)
+      .then((res) => {
+        if (res.status === 201) {
+          notifications.show({
+            id: "saim",
+            autoClose: 5000,
+            withCloseButton: false,
+            title: "Producto creado",
+            message: "El producto ha sido creado correctamente.",
+            color: "green",
+            loading: false,
+          });
+          setProductName("");
+          setProductCode("");
+          handleOpenProduct();
+          refetch().then((res) => {
+            setProducts(res.data);
+          });
+        }
+        notifications.show({
+          id: "saim",
+          autoClose: 5000,
+          withCloseButton: false,
+          title: "Error",
+          message: "El producto no se ha creado correctamente.",
+          color: "green",
+          loading: false,
+        });
+      });
+  };
 
   const handleSubmit = async () => {
     const products = selectedProducts.map((product: any) => {
@@ -395,7 +421,7 @@ export default function SaimDialog({
             </div>
 
             <div className="text-lg font-normal text-black">
-            <div className="text-lg font-bold text-black">
+              <div className="text-lg font-bold text-black">
                 Contenido de la Alerta Comercial
               </div>
               <RichTextEditor editor={editor1}>
@@ -540,15 +566,49 @@ export default function SaimDialog({
               <div className="text-lg font-bold text-black">
                 Seleccione los productos de la Alerta Comercial
               </div>
-              <Select
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                isMulti
-                placeholder="Seleccione los productos de la Alerta Comercial..."
-                onChange={(e) => setSelectedProducts(e)}
-                defaultValue={selectedProducts}
-                options={products}
-              />
+              <div className="w-full inline-flex space-x-3">
+                <Select
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  placeholder="Seleccione los productos de la Alerta Comercial..."
+                  onChange={(e) => setSelectedProducts(e)}
+                  defaultValue={selectedProducts}
+                  options={products}
+                  className="w-11/12"
+                />
+                <Popover
+                  open={openProduct}
+                  handler={handleOpenProduct}
+                  placement="top"
+                >
+                  <PopoverHandler>
+                    <button className="bg-navy p-2 rounded-md w-1/12 flex justify-center items-center ">
+                      <PlusIcon className="w-5 text-white" />
+                    </button>
+                  </PopoverHandler>
+                  <PopoverContent className="w-64 z-[9999]">
+                    <Typography variant="h6" color="blue-gray" className="mb-6">
+                      Agregar Producto
+                    </Typography>
+                    <div className="flex flex-col gap-4">
+                      <Input
+                        label="Nombre"
+                        crossOrigin={""}
+                        onChange={(e) => setProductName(e.target.value)}
+                      />
+                      <Input
+                        label="Codigo"
+                        crossOrigin={""}
+                        onChange={(e) => setProductCode(e.target.value)}
+                      />
+                      <Button className="bg-navy" onClick={handleProductSubmit}>
+                        Agregar
+                      </Button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
 
             <div className="flex justify-end w-full h-12 my-5">

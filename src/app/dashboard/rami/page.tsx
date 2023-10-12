@@ -122,9 +122,9 @@ export default function Page() {
             ¿Ya sabes qué necesitas para exportar?
           </div>
           <div className="sm:w-8/12 lg:w-6/12 xl:w-4/12 mt-4 text-center text-white text-sm">
-            Selecciona tu producto y el país de destino, y descubre al instante
-            los requisitos específicos de exportación. Dando un salto seguro
-            hacia el éxito internacional.
+            Selecciona tu producto y país de destino, y obtén al instante las
+            principales prescripciones técnicas y requisitos de acceso para
+            exportar.
           </div>
           <div className="sm:flex my-5 sm:w-8/12 lg:w-6/12 xl:w-5/12 space-y-5 sm:space-y-0 sm:space-x-5">
             <Select
@@ -143,7 +143,7 @@ export default function Page() {
               size="xl"
               radius="md"
               rightSection={<></>}
-              placeholder="Pais"
+              placeholder="País"
               data={countriesSelect ? countriesSelect : []}
               searchable
               nothingFoundMessage="Nothing found..."

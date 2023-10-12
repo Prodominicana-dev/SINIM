@@ -39,7 +39,7 @@ export default function InfoTool({ title, description, logo, link }) {
         </p>
         <Link href={link} className="block">
           <div className="w-28 text-center text-sm bg-white text-black rounded-full px-5 py-1 duration-500">
-            Ver mas
+            Ver más
           </div>
         </Link>
       </div>
