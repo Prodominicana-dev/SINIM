@@ -2,12 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import Card from "@/src/components/settings/products/card";
-import useRamisSettings from "@/src/services/ramis/useRamisSettings";
 import Header from "@/src/components/settings/header";
 import RamiDialog from "@/src/components/rami/dialog";
 import Product from "@/src/models/product";
 import ProductDialog from "@/src/components/settings/products/dialog";
-import { useProducts } from "@/src/services/products/products.service";
+import { useProducts } from "@/src/services/products/service";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = useProducts();

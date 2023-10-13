@@ -1,7 +1,4 @@
-import {
-  createProduct,
-  updateProduct,
-} from "@/src/services/products/products.service";
+import { createProduct, updateProduct } from "@/src/services/products/service";
 import {
   Button,
   Dialog,

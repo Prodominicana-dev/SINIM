@@ -41,7 +41,7 @@ import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
 import { useAtom } from "jotai";
 import { countrySelect, productSelect, saimAtom } from "@/src/state/states";
-import { useSelectProducts } from "@/src/services/products/products.service";
+import { useSelectProducts } from "@/src/services/products/service";
 import ProductPopover from "../../settings/products/popover";
 
 const animatedComponents = makeAnimated();

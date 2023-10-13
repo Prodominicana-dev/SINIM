@@ -5,8 +5,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useIntersection } from "@mantine/hooks";
 import SaimCard from "./card";
 import Saim from "@/src/models/saim";
-import { useSaimsPage } from "@/src/services/saim/useSaimsPage";
-import { useActiveSaimsPage } from "@/src/services/saim/useActiveSaimsPage";
+import { useActiveSaimsPage } from "@/src/services/saim/service";
 
 export default function Feed() {
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data } =

@@ -1,4 +1,4 @@
-import { createProduct } from "@/src/services/products/products.service";
+import { createProduct } from "@/src/services/products/service";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import {
   Popover,
@@ -25,7 +25,6 @@ export default function ProductPopover({
   const [productCode, setProductCode] = useState<any>("");
   const handleProductSubmit = async () => {
     const product = {
-      id: 0,
       name: productName,
       code: productCode,
     };

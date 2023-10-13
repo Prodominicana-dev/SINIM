@@ -4,9 +4,9 @@ import { ramiAtom } from "@/src/state/states";
 import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 import Card from "@/src/components/settings/rami/card";
-import useRamisSettings from "@/src/services/ramis/useRamisSettings";
 import Header from "@/src/components/settings/header";
 import RamiDialog from "@/src/components/rami/dialog";
+import useRamisSettings from "@/src/services/ramis/service";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = useRamisSettings();

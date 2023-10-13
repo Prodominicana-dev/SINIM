@@ -1,42 +1,30 @@
-
-"use client"
+"use client";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { notifications } from "@mantine/notifications";
 import {
-  Button,
   Dialog,
-  DialogHeader,
   DialogBody,
-  DialogFooter,
   Input,
   Typography,
 } from "@material-tailwind/react";
 import axios from "axios";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
-import {
-  countryAtom,
-  countrySelect,
-  productAtom,
-  productSelect,
-} from "@/src/state/states";
+import { countryAtom, productAtom } from "@/src/state/states";
 import { useEffect, useState } from "react";
 
 const animatedComponents = makeAnimated();
 
 interface SuscribeProps {
-
-    open: boolean, handleOpen: () => void, email: string
-
+  open: boolean;
+  handleOpen: () => void;
+  email: string;
 }
 
 export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
   const { user, error, isLoading } = useUser();
-  const router = useRouter();
-  const option = ["SAIM", "SAIM 2", "SAIM 3"];
   const [countries] = useAtom(countryAtom);
   const [products] = useAtom(productAtom);
   const [sCountries, setSCountries] = useState<any>([]);
@@ -62,7 +50,6 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
   }, [countries, products]);
 
   useEffect(() => {
-    
     const getData = async () => {
       const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/suscriber/${user?.email}/saim`

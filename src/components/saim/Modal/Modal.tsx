@@ -15,8 +15,8 @@ import { data } from "autoprefixer";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useRouter } from "next/navigation";
-import useSaim from "@/src/services/saim/useSaim";
 import Saim from "@/src/models/saim";
+import { useSaim } from "@/src/services/saim/service";
 
 export default function Modal({ id }: any) {
   const { data, isLoading, isError } = useSaim(id);

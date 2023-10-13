@@ -1,18 +1,4 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MantineProvider } from "@mantine/core";
-import { Notifications } from "@mantine/notifications";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { Sidebar } from "@/src/components/dashboard/sidebar";
-import { NavbarDashboard } from "@/src/components/dashboard/navbar";
-import useSaims from "@/src/services/saim/useSaims";
-import useCountries from "@/src/services/countries/useCountries";
-import Saim from "@/src/models/saim";
-import { useAtom } from "jotai";
-import "@mantine/core/styles.css";
-import "@mantine/tiptap/styles.css";
-import "@mantine/notifications/styles.css";
 import {
   XMarkIcon,
   UserCircleIcon,
@@ -39,17 +25,31 @@ import {
   ramiAtom,
   saimAtom,
 } from "@/src/state/states";
-import useSelectCountries from "@/src/services/countries/useSelectCountries";
-import useRamis from "@/src/services/ramis/useRamis";
-import useActiveSaims from "@/src/services/saim/useActiveSaim";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Suscribe from "@/src/components/saim/Suscribe/suscribe";
 import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { Sidebar } from "@/src/components/dashboard/sidebar";
+import { NavbarDashboard } from "@/src/components/dashboard/navbar";
+import { useAtom } from "jotai";
+import "@mantine/core/styles.css";
+import "@mantine/tiptap/styles.css";
+import "@mantine/notifications/styles.css";
 import {
   useProducts,
   useSelectProducts,
-} from "@/src/services/products/products.service";
+} from "@/src/services/products/service";
+import {
+  useCountries,
+  useSelectCountries,
+} from "@/src/services/countries/service";
+import { useRamis } from "@/src/services/ramis/service";
+import { useActiveSaims } from "@/src/services/saim/service";
 
 interface RootLayoutProps {
   children: React.ReactNode;

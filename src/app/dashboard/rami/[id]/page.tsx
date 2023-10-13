@@ -6,12 +6,9 @@ import {
   TabsBody,
   TabsHeader,
 } from "@material-tailwind/react";
-import { useCallback, useState, useEffect } from "react";
-import { XMarkIcon } from "@heroicons/react/24/solid";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import useRami from "@/src/services/ramis/useRami";
-import { data } from "autoprefixer";
+import { useRami } from "@/src/services/ramis/service";
 
 export default function Page({ params }: { params: { id: number } }) {
   const { data, isLoading, isError } = useRami(params.id);

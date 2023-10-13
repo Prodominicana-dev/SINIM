@@ -3,9 +3,6 @@ import {
   Dialog,
   DialogHeader,
   DialogBody,
-  DialogFooter,
-  Button,
-  Typography,
   IconButton,
   Tabs,
   Tab,
@@ -17,8 +14,7 @@ import { useCallback, useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import useRami from "@/src/services/ramis/useRami";
-import { data } from "autoprefixer";
+import { useRami } from "@/src/services/ramis/service";
 
 export default function Modal({ id }: any) {
   const { data, isLoading, isError } = useRami(id);

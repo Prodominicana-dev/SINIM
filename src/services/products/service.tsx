@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 interface ProductProps {
-  product: Product;
+  product: any;
   handleOpen: () => void;
   updateProducts: () => void;
 }
