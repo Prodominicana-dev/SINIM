@@ -7,6 +7,8 @@ import Card from "@/src/components/settings/rami/card";
 import Header from "@/src/components/settings/header";
 import RamiDialog from "@/src/components/settings/rami/dialog";
 import useRamisSettings from "@/src/services/ramis/service";
+import country from "@/src/models/country";
+import { nfd } from "unorm";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = useRamisSettings();
@@ -25,7 +27,9 @@ export default function Page() {
     (currentPage - 1) * itemsPerPage
   );
   const [endIndex] = useState(currentPage * itemsPerPage);
-  const totalPages = Math.ceil(data?.length / itemsPerPage);
+  const [totalPages, setTotalPages] = useState(
+    Math.ceil(data?.length / itemsPerPage)
+  );
 
   const nextPage = () => {
     if (currentPage < ramis.length / itemsPerPage) {
@@ -40,6 +44,32 @@ export default function Page() {
       setStartIndex((currentPage - 1 - 1) * itemsPerPage);
     }
   };
+
+  useEffect(() => {
+    if (search) {
+      const filteredRamis = ramis.filter((rami) => {
+        const productName = nfd(rami.product.name.toLowerCase());
+        const productCode = nfd(rami.product.code.toLowerCase());
+        const countryName = nfd(rami.country.name.toLowerCase());
+        const _search = search.toLowerCase();
+        return (
+          productName.includes(_search) ||
+          productCode.includes(_search) ||
+          countryName.includes(_search)
+        );
+      });
+      const filteredTotalPages = Math.ceil(filteredRamis.length / itemsPerPage);
+      setTotalPages(filteredTotalPages);
+      if (currentPage > filteredTotalPages) {
+        setCurrentPage(1);
+      }
+      return setCurrentPageData(filteredRamis?.slice(startIndex, endIndex));
+    }
+    const normalTotalPages = Math.ceil(ramis?.length / itemsPerPage);
+    setTotalPages(normalTotalPages);
+    setCurrentPage(1);
+    setCurrentPageData(ramis?.slice(startIndex, endIndex));
+  }, [ramis, data, currentPage, search]);
 
   useEffect(() => {
     setRamis(data);
@@ -82,6 +112,8 @@ export default function Page() {
             type="text"
             className="h-10 px-5 rounded-full w-72 ring-2 ring-gray-300"
             placeholder="Buscar..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
       </div>

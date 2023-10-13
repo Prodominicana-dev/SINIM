@@ -6,6 +6,7 @@ import Header from "@/src/components/settings/header";
 import Product from "@/src/models/product";
 import ProductDialog from "@/src/components/settings/products/dialog";
 import { useProducts } from "@/src/services/products/service";
+import { nfd } from "unorm";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = useProducts();
@@ -41,8 +42,8 @@ export default function Page() {
   useEffect(() => {
     if (search) {
       const filteredProducts = products.filter((product) => {
-        const name = product.name.toLowerCase();
-        const code = product.code.toLowerCase();
+        const name = nfd(product.name.toLowerCase());
+        const code = nfd(product.code.toLowerCase());
         const _search = search.toLowerCase();
         return name.includes(_search) || code.includes(_search);
       });
@@ -51,12 +52,13 @@ export default function Page() {
       );
       setTotalPages(filteredTotalPages);
       if (currentPage > filteredTotalPages) {
-        setCurrentPage(filteredTotalPages);
+        setCurrentPage(1);
       }
       return setCurrentPageData(filteredProducts?.slice(startIndex, endIndex));
     }
     const normalTotalPages = Math.ceil(products?.length / itemsPerPage);
     setTotalPages(normalTotalPages);
+    setCurrentPage(1);
     setCurrentPageData(products?.slice(startIndex, endIndex));
   }, [products, data, currentPage, search]);
 

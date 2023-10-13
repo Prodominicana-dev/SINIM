@@ -12,24 +12,11 @@ import {
   TabsHeader,
 } from "@material-tailwind/react";
 import React, { useEffect, useState, useRef } from "react";
-import {
-  XMarkIcon,
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ArrowDownIcon,
-} from "@heroicons/react/24/solid";
-import { useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { RichTextEditor, Link } from "@mantine/tiptap";
-import Placeholder from "@tiptap/extension-placeholder";
-import Highlight from "@tiptap/extension-highlight";
-import Underline from "@tiptap/extension-underline";
-import TextAlign from "@tiptap/extension-text-align";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { Image as Img } from "@tiptap/extension-image";
 import { useAtom } from "jotai";
 import { countrySelect, productSelect, saimAtom } from "@/src/state/states";
 import TextEditor from "./rich-editor";
@@ -137,10 +124,9 @@ export default function RamiDialog({
         (product: any) => product.value.id === data.product.id
       );
       setSelectedProducts(ramiProduct);
-
     }
 
-    if(!rami){
+    if (!rami) {
       setOutputRequirement("");
       setImportRequirement("");
       setTechnicalRequirements("");
@@ -357,11 +343,17 @@ function UnderlineTabs({ data }: any) {
         ))}
       </TabsHeader>
       <TabsBody>
-        {data.map(({ label, value, placeholder, content }: any, index: number) => (
-          <TabPanel className="p-0" key={index} value={value}>
-            <SectionRami title={label} placeholder={placeholder} content={content} />
-          </TabPanel>
-        ))}
+        {data.map(
+          ({ label, value, placeholder, content }: any, index: number) => (
+            <TabPanel className="p-0" key={index} value={value}>
+              <SectionRami
+                title={label}
+                placeholder={placeholder}
+                content={content}
+              />
+            </TabPanel>
+          )
+        )}
       </TabsBody>
     </Tabs>
   );
