@@ -6,11 +6,10 @@ export default interface Saim {
   title: string;
   description: string;
   category: string;
-  source: string;
-  link: string;
   image: string;
   date: Date;
   status: string;
+  published: boolean;
   countries: country[];
   products: product[];
 }

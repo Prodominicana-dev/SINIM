@@ -174,7 +174,7 @@ export default function SaimDialog({
       ? "group-hover:bg-black/30"
       : "text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300";
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (published? : boolean) => {
     const products = selectedProducts.map((product: any) => {
       return product.value;
     });
@@ -193,6 +193,8 @@ export default function SaimDialog({
     if (files.length > 0) {
       data.append("file", files[0]);
     }
+    if(published)
+      data.append("published", published.toString());
     if (!saim) {
       return await axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/saim`, data)
@@ -538,7 +540,7 @@ export default function SaimDialog({
               <div className="text-lg font-bold text-black">
                 Seleccione los productos de la Alerta Comercial
               </div>
-              <div className="w-full inline-flex space-x-3">
+              <div className="inline-flex w-full space-x-3">
                 <Select
                   closeMenuOnSelect={false}
                   components={animatedComponents}
@@ -557,7 +559,7 @@ export default function SaimDialog({
               </div>
             </div>
 
-            <div className="flex justify-end w-full h-12 my-5">
+            <div className="flex justify-end w-full h-12 my-5 space-x-3">
               <Button
                 disabled={
                   !saim
@@ -571,11 +573,31 @@ export default function SaimDialog({
                       selectedCountries.length === 0 ||
                       selectedProducts.length === 0
                 }
-                onClick={handleSubmit}
+                onClick={() => handleSubmit()}
                 color="green"
               >
                 Guardar
               </Button>
+              { saim?.published === false || !saim ? (
+                <Button
+                disabled={
+                  !saim
+                    ? title === "" ||
+                      editor1?.isEmpty ||
+                      files.length === 0 ||
+                      selectedCountries.length === 0 ||
+                      selectedProducts.length === 0
+                    : title === "" ||
+                      editor1?.isEmpty ||
+                      selectedCountries.length === 0 ||
+                      selectedProducts.length === 0
+                }
+                onClick={() => handleSubmit(true)}
+                color="green"
+              >
+                Guardar y Publicar
+              </Button>
+              ) : null}
             </div>
           </div>
         </div>
