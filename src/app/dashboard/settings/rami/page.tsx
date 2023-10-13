@@ -5,7 +5,7 @@ import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 import Card from "@/src/components/settings/rami/card";
 import Header from "@/src/components/settings/header";
-import RamiDialog from "@/src/components/rami/dialog";
+import RamiDialog from "@/src/components/settings/rami/dialog";
 import useRamisSettings from "@/src/services/ramis/service";
 
 export default function Page() {

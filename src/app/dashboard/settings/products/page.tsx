@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "@/src/components/settings/products/card";
 import Header from "@/src/components/settings/header";
-import RamiDialog from "@/src/components/rami/dialog";
 import Product from "@/src/models/product";
 import ProductDialog from "@/src/components/settings/products/dialog";
 import { useProducts } from "@/src/services/products/service";
@@ -13,7 +12,7 @@ export default function Page() {
   const [products, setProducts] = useState<Product[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState("");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
 
   const [currentPageData, setCurrentPageData] = useState<any[]>([]);

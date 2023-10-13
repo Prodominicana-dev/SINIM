@@ -1,7 +1,5 @@
-import Rami from "@/src/models/rami";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import React, { useEffect } from "react";
-import RamiDialog from "../../rami/dialog";
+import { useState } from "react";
 import Product from "@/src/models/product";
 import ProductDialog from "./dialog";
 
@@ -12,7 +10,7 @@ export default function Card({
   product: Product;
   updateProducts: () => void;
 }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
 
   return (

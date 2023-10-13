@@ -7,9 +7,9 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import SCard from "@/src/components/settings/saim/card";
-import SaimDialog from "@/src/components/saim/Settings/saimDialog";
+import SaimDialog from "@/src/components/settings/saim/dialog";
 import React from "react";
-import SettingsFeed from "@/src/components/saim/Settings/settingsFeed";
+import SettingsFeed from "@/src/components/settings/saim/feed";
 import { Select } from "@mantine/core";
 import { Button } from "@material-tailwind/react";
 import Header from "@/src/components/settings/header";

@@ -42,7 +42,7 @@ import TableRow from "@tiptap/extension-table-row";
 import { useAtom } from "jotai";
 import { countrySelect, productSelect, saimAtom } from "@/src/state/states";
 import { useSelectProducts } from "@/src/services/products/service";
-import ProductPopover from "../../settings/products/popover";
+import ProductPopover from "../products/popover";
 
 const animatedComponents = makeAnimated();
 
@@ -174,7 +174,7 @@ export default function SaimDialog({
       ? "group-hover:bg-black/30"
       : "text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300";
 
-  const handleSubmit = async (published? : boolean) => {
+  const handleSubmit = async (published?: boolean) => {
     const products = selectedProducts.map((product: any) => {
       return product.value;
     });
@@ -193,8 +193,7 @@ export default function SaimDialog({
     if (files.length > 0) {
       data.append("file", files[0]);
     }
-    if(published)
-      data.append("published", published.toString());
+    if (published) data.append("published", published.toString());
     if (!saim) {
       return await axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/saim`, data)
@@ -578,25 +577,25 @@ export default function SaimDialog({
               >
                 Guardar
               </Button>
-              { saim?.published === false || !saim ? (
+              {saim?.published === false || !saim ? (
                 <Button
-                disabled={
-                  !saim
-                    ? title === "" ||
-                      editor1?.isEmpty ||
-                      files.length === 0 ||
-                      selectedCountries.length === 0 ||
-                      selectedProducts.length === 0
-                    : title === "" ||
-                      editor1?.isEmpty ||
-                      selectedCountries.length === 0 ||
-                      selectedProducts.length === 0
-                }
-                onClick={() => handleSubmit(true)}
-                color="green"
-              >
-                Guardar y Publicar
-              </Button>
+                  disabled={
+                    !saim
+                      ? title === "" ||
+                        editor1?.isEmpty ||
+                        files.length === 0 ||
+                        selectedCountries.length === 0 ||
+                        selectedProducts.length === 0
+                      : title === "" ||
+                        editor1?.isEmpty ||
+                        selectedCountries.length === 0 ||
+                        selectedProducts.length === 0
+                  }
+                  onClick={() => handleSubmit(true)}
+                  color="green"
+                >
+                  Guardar y Publicar
+                </Button>
               ) : null}
             </div>
           </div>

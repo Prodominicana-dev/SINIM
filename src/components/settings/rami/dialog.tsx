@@ -12,7 +12,12 @@ import {
   TabsHeader,
 } from "@material-tailwind/react";
 import React, { useEffect, useState, useRef } from "react";
-import { XMarkIcon, ArrowLeftIcon, ArrowRightIcon, ArrowDownIcon } from "@heroicons/react/24/solid";
+import {
+  XMarkIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ArrowDownIcon,
+} from "@heroicons/react/24/solid";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { RichTextEditor, Link } from "@mantine/tiptap";
@@ -24,16 +29,11 @@ import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import {Image as Img} from '@tiptap/extension-image'
+import { Image as Img } from "@tiptap/extension-image";
 import { useAtom } from "jotai";
-import {
-  countrySelect,
-  productSelect,
-  saimAtom,
-} from "@/src/state/states";
-import TextEditor from "../settings/rami/rich-editor";
-import useRami from "@/src/services/ramis/useRami";
-
+import { countrySelect, productSelect, saimAtom } from "@/src/state/states";
+import TextEditor from "./rich-editor";
+import { useRami } from "@/src/services/ramis/service";
 
 const animatedComponents = makeAnimated();
 
@@ -42,7 +42,7 @@ export default function RamiDialog({
   open,
   handleOpen,
   updateRami,
-  title
+  title,
 }: {
   rami?: any;
   open: boolean;
@@ -50,8 +50,8 @@ export default function RamiDialog({
   updateRami: () => void;
   title: string;
 }) {
-  const [countries,] = useAtom(countrySelect);
-  const [products,] = useAtom(productSelect);
+  const [countries] = useAtom(countrySelect);
+  const [products] = useAtom(productSelect);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
   const { data, isLoading, isError } = useRami(rami?.id);
@@ -64,7 +64,6 @@ export default function RamiDialog({
   const [tradeAgreement, setTradeAgreement] = useState<any>("");
   const [tariffsImposed, setTariffsImposed] = useState<any>("");
   const [webResource, setWebResource] = useState<any>("");
-
 
   const outputReq = useEditor({
     extensions: [
@@ -113,7 +112,7 @@ export default function RamiDialog({
         allowBase64: true,
       }),
     ],
-    
+
     content: data?.importRequirement,
   });
 
@@ -139,7 +138,7 @@ export default function RamiDialog({
         allowBase64: true,
       }),
     ],
-    
+
     content: data?.technicalRequirements,
   });
 
@@ -165,7 +164,7 @@ export default function RamiDialog({
         allowBase64: true,
       }),
     ],
-    
+
     content: data?.permitsCertifications,
   });
 
@@ -191,7 +190,7 @@ export default function RamiDialog({
         allowBase64: true,
       }),
     ],
-    
+
     content: data?.labelingCertifications,
   });
 
@@ -217,7 +216,7 @@ export default function RamiDialog({
         allowBase64: true,
       }),
     ],
-    
+
     content: data?.tradeAgreement,
   });
 
@@ -243,7 +242,7 @@ export default function RamiDialog({
         allowBase64: true,
       }),
     ],
-    
+
     content: data?.tariffsImposed,
   });
 
@@ -269,7 +268,7 @@ export default function RamiDialog({
         allowBase64: true,
       }),
     ],
-    
+
     content: data?.webResource,
   });
 
@@ -282,8 +281,7 @@ export default function RamiDialog({
     setTradeAgreement(data?.tradeAgreement);
     setTariffsImposed(data?.tariffsImposed);
     setWebResource(data?.webResource);
-    
-  }, [data])
+  }, [data]);
 
   useEffect(() => {
     const ramidata = [
@@ -329,11 +327,10 @@ export default function RamiDialog({
       },
     ];
     if (rami && !isLoading) {
-    
       const ramiCountry = countries.find(
         (country: any) => country.value.id === data.country.id
       );
-     
+
       setSelectedCountries(ramiCountry);
       const ramiProduct = products.find(
         (product: any) => product.value.id === data.product.id
@@ -347,69 +344,89 @@ export default function RamiDialog({
       acComerciales?.commands.setContent(tradeAgreement);
       impAran?.commands.setContent(tariffsImposed);
       recursos?.commands.setContent(webResource);
-       
     }
     setRamiData(ramidata);
-  }, [rami, isLoading, outputRequirement, importRequirement, technicalRequirements, permitsCertifications, labelingCertifications, tradeAgreement, tariffsImposed, webResource]);
+  }, [
+    rami,
+    isLoading,
+    outputRequirement,
+    importRequirement,
+    technicalRequirements,
+    permitsCertifications,
+    labelingCertifications,
+    tradeAgreement,
+    tariffsImposed,
+    webResource,
+  ]);
 
   const handleSubmit = async () => {
     const data = {
       countryId: Number(selectedCountries.value.id),
       productId: Number(selectedProducts.value.id),
-      outputRequirement: outputReq?.getHTML() !== undefined ? outputReq?.getHTML() : "",
-      importRequirement: importReq?.getHTML() !== undefined ? importReq?.getHTML() : "",
-      technicalRequirements: regTecnicas?.getHTML() !== undefined ? regTecnicas?.getHTML() : "",
-      permitsCertifications: permCertf?.getHTML() !== undefined ? permCertf?.getHTML() : "",
-      labelingCertifications: etiquetado?.getHTML() !== undefined ? etiquetado?.getHTML() : "",
-      tradeAgreement: acComerciales?.getHTML() !== undefined ? acComerciales?.getHTML() : "",
-      tariffsImposed: impAran?.getHTML() !== undefined ? impAran?.getHTML() : "",
+      outputRequirement:
+        outputReq?.getHTML() !== undefined ? outputReq?.getHTML() : "",
+      importRequirement:
+        importReq?.getHTML() !== undefined ? importReq?.getHTML() : "",
+      technicalRequirements:
+        regTecnicas?.getHTML() !== undefined ? regTecnicas?.getHTML() : "",
+      permitsCertifications:
+        permCertf?.getHTML() !== undefined ? permCertf?.getHTML() : "",
+      labelingCertifications:
+        etiquetado?.getHTML() !== undefined ? etiquetado?.getHTML() : "",
+      tradeAgreement:
+        acComerciales?.getHTML() !== undefined ? acComerciales?.getHTML() : "",
+      tariffsImposed:
+        impAran?.getHTML() !== undefined ? impAran?.getHTML() : "",
       webResource: recursos?.getHTML() !== undefined ? recursos?.getHTML() : "",
+    };
+
+    if (!rami) {
+      return await axios
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/rami`, data)
+        .then((res) => {
+          if (res.status < 300) {
+            notifications.show({
+              title: "RAMI creado correctamente",
+              message: "El RAMI se creó correctamente.",
+              color: "teal",
+              autoClose: 5000,
+            });
+            updateRami();
+            handleOpen();
+          } else {
+            notifications.show({
+              title: "Error creando el RAMI",
+              message: "Ha ocurrido un error, intenta nuevamente.",
+              color: "red",
+              autoClose: 5000,
+            });
+          }
+        });
+    } else {
+      return await axios
+        .put(`${process.env.NEXT_PUBLIC_API_URL}/rami/${rami.id}`, data)
+        .then((res) => {
+          console.log(res.data);
+          if (res.status === 200) {
+            notifications.show({
+              title: "RAMI actualizado correctamente",
+              message: "El RAMI se actualizó correctamente.",
+              color: "teal",
+              autoClose: 5000,
+            });
+            updateRami();
+            handleOpen();
+          } else {
+            notifications.show({
+              title: "Error actualizando el RAMI",
+              message: "Ha ocurrido un error, intenta nuevamente.",
+              color: "red",
+              autoClose: 5000,
+            });
+          }
+        });
     }
-    
-    if(!rami){
-      return await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/rami`, data).then((res) => {
-        if(res.status < 300){
-          notifications.show({
-            title: "RAMI creado correctamente",
-            message: "El RAMI se creó correctamente.",
-            color: "teal",
-            autoClose: 5000,
-          });
-          updateRami();
-          handleOpen();
-        }else{
-          notifications.show({
-            title: "Error creando el RAMI",
-            message: "Ha ocurrido un error, intenta nuevamente.",
-            color: "red",
-            autoClose: 5000,
-          });
-        }
-      })
-    }else{
-      return await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/rami/${rami.id}`, data).then((res) => {
-         console.log(res.data)
-        if(res.status === 200){
-          notifications.show({
-            title: "RAMI actualizado correctamente",
-            message: "El RAMI se actualizó correctamente.",
-            color: "teal",
-            autoClose: 5000,
-          });
-          updateRami();
-          handleOpen();
-        }else{
-          notifications.show({
-            title: "Error actualizando el RAMI",
-            message: "Ha ocurrido un error, intenta nuevamente.",
-            color: "red",
-            autoClose: 5000,
-          });
-        }
-      })
-      
-    }
-   }
+  };
 
   return (
     <Dialog
@@ -438,62 +455,71 @@ export default function RamiDialog({
       <DialogBody className=" justify-center h-[100vh] overflow-y-auto font-normal ">
         <div className="flex justify-center ">
           <div className="flex-col w-full space-y-4 sm:w-11/12">
-            
             <p className="w-full text-3xl font-bold text-black">{title}</p>
 
             <div className="flex flex-row w-full space-x-8">
-            <div className="w-6/12">
-              <div className="text-lg font-bold text-black">
-                Seleccione el país del RAMI
+              <div className="w-6/12">
+                <div className="text-lg font-bold text-black">
+                  Seleccione el país del RAMI
+                </div>
+                <Select
+                  components={animatedComponents}
+                  isMulti={false}
+                  placeholder="Seleccione el país..."
+                  onChange={(e) => setSelectedCountries(e)}
+                  value={selectedCountries}
+                  options={countries}
+                  className="z-[9999] "
+                />
               </div>
-              <Select
-                
-                components={animatedComponents}
-                isMulti={false}
-                placeholder="Seleccione el país..."
-                onChange={(e) => setSelectedCountries(e)}
-                value={selectedCountries}
-                options={countries}
-                className="z-[9999] "
-              />
-            </div>
 
-            <div className="w-6/12">
-              <div className="text-lg font-bold text-black">
-                Seleccione el producto del RAMI
+              <div className="w-6/12">
+                <div className="text-lg font-bold text-black">
+                  Seleccione el producto del RAMI
+                </div>
+                <Select
+                  components={animatedComponents}
+                  isMulti={false}
+                  placeholder="Seleccione el producto..."
+                  onChange={(e) => setSelectedProducts(e)}
+                  value={selectedProducts}
+                  options={products}
+                  className="z-[9999] "
+                />
               </div>
-              <Select
-               
-                components={animatedComponents}
-                isMulti={false}
-                placeholder="Seleccione el producto..."
-                onChange={(e) => setSelectedProducts(e)}
-                value={selectedProducts}
-                options={products}
-                className="z-[9999] "
-              />
-            </div>
             </div>
 
             <div className="pt-3 ">
-            <div className="hidden sm:block">
+              <div className="hidden sm:block">
                 <UnderlineTabs data={ramiData} />
+              </div>
+              <div className="block sm:hidden">
+                {ramiData.map(
+                  ({ label, value, editor }: any, index: number) => (
+                    <div className="p-2" key={index}>
+                      <SectionRami title={label} editor={editor} />
+                    </div>
+                  )
+                )}
+              </div>
             </div>
-            <div className="block sm:hidden">
-                {ramiData.map(({ label, value, editor }: any, index: number) => (
-                <div className="p-2" key={index}>
-                    <SectionRami title={label} editor={editor} />
-                </div>
-                ))}
-            </div>
-            </div>        
 
             <div className="flex justify-end w-full h-12 my-5">
               <Button
                 color="green"
-                disabled = { selectedCountries === null || selectedProducts === null || 
-                outputReq?.isEmpty || importReq?.isEmpty || regTecnicas?.isEmpty || permCertf?.isEmpty || etiquetado?.isEmpty || acComerciales?.isEmpty || impAran?.isEmpty || recursos?.isEmpty}
-                  onClick={handleSubmit}
+                disabled={
+                  selectedCountries === null ||
+                  selectedProducts === null ||
+                  outputReq?.isEmpty ||
+                  importReq?.isEmpty ||
+                  regTecnicas?.isEmpty ||
+                  permCertf?.isEmpty ||
+                  etiquetado?.isEmpty ||
+                  acComerciales?.isEmpty ||
+                  impAran?.isEmpty ||
+                  recursos?.isEmpty
+                }
+                onClick={handleSubmit}
               >
                 Guardar
               </Button>
@@ -506,50 +532,48 @@ export default function RamiDialog({
 }
 
 function UnderlineTabs({ data }: any) {
-    const [activeTab, setActiveTab] = useState("salida");
-  
-    return (
-      <Tabs value={activeTab}>
-        <TabsHeader
-          className="flex flex-wrap justify-center p-0 bg-white rounded-none"
-          indicatorProps={{
-            className:
-              "bg-gradient-to-r from-purple-700 to-sky-500 shadow-none rounded-none w-[80vw] sm:w-[9vw] lg:w-[8vw]",
-          }}
-        >
-          {data.map(({ label, value }: any, index: number) => (
-            <Tab
-              key={index}
-              value={value}
-              onClick={() => setActiveTab(value)}
-              className={`${
-                activeTab === value ? "text-gray-900 w-full" : "bg-white"
-              } py-0 px-0 w-[80vw] sm:w-[9vw] lg:w-[8vw]`}
-            >
-              <div className="bg-white w-[80vw] sm:w-[9vw] lg:w-[8vw] h-16 grow ml-2 sm:ml-0 sm:mb-0.5 lg:mb-1 flex items-center justify-center  sm:text-[10px] lg:text-sm">
-                {label}
-              </div>
-            </Tab>
-          ))}
-        </TabsHeader>
-        <TabsBody>
-          {data.map(({ label, value, editor }: any, index: number) => (
-            <TabPanel className="p-0" key={index} value={value}>
-              <SectionRami  title={label} editor={editor} />
-            </TabPanel>
-          ))}
-        </TabsBody>
-      </Tabs>
-    );
-  }
+  const [activeTab, setActiveTab] = useState("salida");
+
+  return (
+    <Tabs value={activeTab}>
+      <TabsHeader
+        className="flex flex-wrap justify-center p-0 bg-white rounded-none"
+        indicatorProps={{
+          className:
+            "bg-gradient-to-r from-purple-700 to-sky-500 shadow-none rounded-none w-[80vw] sm:w-[9vw] lg:w-[8vw]",
+        }}
+      >
+        {data.map(({ label, value }: any, index: number) => (
+          <Tab
+            key={index}
+            value={value}
+            onClick={() => setActiveTab(value)}
+            className={`${
+              activeTab === value ? "text-gray-900 w-full" : "bg-white"
+            } py-0 px-0 w-[80vw] sm:w-[9vw] lg:w-[8vw]`}
+          >
+            <div className="bg-white w-[80vw] sm:w-[9vw] lg:w-[8vw] h-16 grow ml-2 sm:ml-0 sm:mb-0.5 lg:mb-1 flex items-center justify-center  sm:text-[10px] lg:text-sm">
+              {label}
+            </div>
+          </Tab>
+        ))}
+      </TabsHeader>
+      <TabsBody>
+        {data.map(({ label, value, editor }: any, index: number) => (
+          <TabPanel className="p-0" key={index} value={value}>
+            <SectionRami title={label} editor={editor} />
+          </TabPanel>
+        ))}
+      </TabsBody>
+    </Tabs>
+  );
+}
 
 function SectionRami({ title, editor }: any) {
-    return (
-        <div className="text-lg font-normal text-black">
-        <p className="text-lg font-bold text-black">
-            {title}
-          </p>
-          <TextEditor editor={editor} />
-        </div>
-    );
-  }
+  return (
+    <div className="text-lg font-normal text-black">
+      <p className="text-lg font-bold text-black">{title}</p>
+      <TextEditor editor={editor} />
+    </div>
+  );
+}

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { UseInfiniteQueryResult } from "@tanstack/react-query";
 import { useIntersection } from "@mantine/hooks";
 import Saim from "@/src/models/saim";
-import SCard from "../../settings/saim/card";
+import SCard from "./card";
 
 export default function SettingsFeed({
   queryI,
