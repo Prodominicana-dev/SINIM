@@ -41,8 +41,8 @@ import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
 import { useAtom } from "jotai";
 import { countrySelect, productSelect, saimAtom } from "@/src/state/states";
-import { useProducts } from "@/src/services/products/useProducts";
-import { useSelectProducts } from "@/src/services/products/useSelectProducts";
+import { useSelectProducts } from "@/src/services/products/products.service";
+import ProductPopover from "../../settings/products/popover";
 
 const animatedComponents = makeAnimated();
 
@@ -71,9 +71,8 @@ export default function SaimDialog({
   const [products, setProducts] = useAtom(productSelect);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
-  const [productName, setProductName] = useState<any>("");
-  const [productCode, setProductCode] = useState<any>("");
   const [openProduct, setOpenProduct] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const { refetch } = useSelectProducts();
 
   const openRef = useRef<() => void>(null);
@@ -85,6 +84,16 @@ export default function SaimDialog({
 
   const handleOpenProduct = () => {
     setOpenProduct(!openProduct);
+  };
+  useEffect(() => {
+    refetch().then((res) => {
+      setProducts(res.data);
+    });
+    //pagination.refetch();
+  }, [refresh, refetch]);
+
+  const updateProducts = () => {
+    setRefresh(!refresh);
   };
 
   const editor1 = useEditor({
@@ -164,43 +173,6 @@ export default function SaimDialog({
     files.length > 0
       ? "group-hover:bg-black/30"
       : "text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300";
-
-  const handleProductSubmit = async () => {
-    const data = {
-      name: productName,
-      code: productCode,
-    };
-    await axios
-      .post(`${process.env.NEXT_PUBLIC_API_URL}/product`, data)
-      .then((res) => {
-        if (res.status === 201) {
-          notifications.show({
-            id: "saim",
-            autoClose: 5000,
-            withCloseButton: false,
-            title: "Producto creado",
-            message: "El producto ha sido creado correctamente.",
-            color: "green",
-            loading: false,
-          });
-          setProductName("");
-          setProductCode("");
-          handleOpenProduct();
-          refetch().then((res) => {
-            setProducts(res.data);
-          });
-        }
-        notifications.show({
-          id: "saim",
-          autoClose: 5000,
-          withCloseButton: false,
-          title: "Error",
-          message: "El producto no se ha creado correctamente.",
-          color: "green",
-          loading: false,
-        });
-      });
-  };
 
   const handleSubmit = async () => {
     const products = selectedProducts.map((product: any) => {
@@ -577,37 +549,11 @@ export default function SaimDialog({
                   options={products}
                   className="w-11/12"
                 />
-                <Popover
+                <ProductPopover
                   open={openProduct}
-                  handler={handleOpenProduct}
-                  placement="top"
-                >
-                  <PopoverHandler>
-                    <button className="bg-navy p-2 rounded-md w-1/12 flex justify-center items-center ">
-                      <PlusIcon className="w-5 text-white" />
-                    </button>
-                  </PopoverHandler>
-                  <PopoverContent className="w-64 z-[9999]">
-                    <Typography variant="h6" color="blue-gray" className="mb-6">
-                      Agregar Producto
-                    </Typography>
-                    <div className="flex flex-col gap-4">
-                      <Input
-                        label="Nombre"
-                        crossOrigin={""}
-                        onChange={(e) => setProductName(e.target.value)}
-                      />
-                      <Input
-                        label="Codigo"
-                        crossOrigin={""}
-                        onChange={(e) => setProductCode(e.target.value)}
-                      />
-                      <Button className="bg-navy" onClick={handleProductSubmit}>
-                        Agregar
-                      </Button>
-                    </div>
-                  </PopoverContent>
-                </Popover>
+                  handleOpen={handleOpenProduct}
+                  updateProducts={updateProducts}
+                />
               </div>
             </div>
 

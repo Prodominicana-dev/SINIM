@@ -10,7 +10,6 @@ import useSaims from "@/src/services/saim/useSaims";
 import useCountries from "@/src/services/countries/useCountries";
 import Saim from "@/src/models/saim";
 import { useAtom } from "jotai";
-import { useProducts } from "@/src/services/products/useProducts";
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
 import "@mantine/notifications/styles.css";
@@ -40,7 +39,6 @@ import {
   ramiAtom,
   saimAtom,
 } from "@/src/state/states";
-import { useSelectProducts } from "@/src/services/products/useSelectProducts";
 import useSelectCountries from "@/src/services/countries/useSelectCountries";
 import useRamis from "@/src/services/ramis/useRamis";
 import useActiveSaims from "@/src/services/saim/useActiveSaim";
@@ -48,6 +46,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Suscribe from "@/src/components/saim/Suscribe/suscribe";
 import Image from "next/image";
+import {
+  useProducts,
+  useSelectProducts,
+} from "@/src/services/products/products.service";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -95,49 +97,74 @@ function NavigationDrawer({ isOpen, onClose }: any) {
     setSuscribeOpen(!suscribeOpen);
   };
   return (
-    <React.Fragment>  
-    <Drawer open={isOpen} onClose={onClose} placement="right" className="z-[9999] h-screen flex flex-col justify-between">
-      <div className="flex flex-col items-center justify-between bg-[url('/images/logo/accountLog.jpg')]">
-        <div className="flex flex-row items-center justify-between w-full px-4 pt-2">
-        <Typography variant="h5" color="white">
-          SINIM
-        </Typography>
-        <IconButton variant="text" color="blue-gray" onClick={onClose}>
-          <XMarkIcon className="w-6 h-6 text-white" />
-        </IconButton>
+    <React.Fragment>
+      <Drawer
+        open={isOpen}
+        onClose={onClose}
+        placement="right"
+        className="z-[9999] h-screen flex flex-col justify-between"
+      >
+        <div className="flex flex-col items-center justify-between bg-[url('/images/logo/accountLog.jpg')]">
+          <div className="flex flex-row items-center justify-between w-full px-4 pt-2">
+            <Typography variant="h5" color="white">
+              SINIM
+            </Typography>
+            <IconButton variant="text" color="blue-gray" onClick={onClose}>
+              <XMarkIcon className="w-6 h-6 text-white" />
+            </IconButton>
+          </div>
+          <div className="w-full p-4 space-y-4">
+            {user ? (
+              <>
+                <Avatar
+                  variant="circular"
+                  size="lg"
+                  className=""
+                  src={user.picture as string}
+                />
+                <Typography className="font-thin text-white">
+                  {user.name}
+                </Typography>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
-        <div className="w-full p-4 space-y-4">
-        {user ? (<>
-        <Avatar variant="circular" size="lg" className="" src={user.picture as string} />
-        <Typography className="font-thin text-white">{user.name}</Typography>
-        </>) : (<>
-        
-        </>)}
+        <div className="flex flex-col gap-4 p-2 h-4/6">
+          {navigationOptions.map((option, index) => (
+            <NavigationLink
+              key={index}
+              option={option}
+              onClose={onClose}
+              isActive={pathname.includes(option.text.toLowerCase())}
+            />
+          ))}
         </div>
-
-      </div>
-      <div className="flex flex-col gap-4 p-2 h-4/6">
-        {navigationOptions.map((option, index) => (
-          <NavigationLink
-            key={index}
-            option={option}
-            onClose={onClose}
-            isActive={pathname.includes(option.text.toLowerCase())}
+        <div className="p-2">
+          {pathname === "/dashboard/saim" ? (
+            <>
+              <button
+                onClick={() => {
+                  handleSuscribeOpen();
+                  onClose();
+                }}
+                className="w-full flex justify-center items-center text-white rounded-xl p-4 h-12 bg-gradient-to-tr from-purple-500 from-[15%] via-sky-600 to-sky-400"
+              >
+                Suscríbete
+              </button>
+            </>
+          ) : null}
+        </div>
+        {suscribeOpen && user ? (
+          <Suscribe
+            open={suscribeOpen}
+            handleOpen={handleSuscribeOpen}
+            email={user.email ?? ""}
           />
-        ))}
-      </div>
-      <div className="p-2">
-      {pathname === "/dashboard/saim" ? (
-        <><button onClick={() => {
-          handleSuscribeOpen();
-          onClose();
-         }} className="w-full flex justify-center items-center text-white rounded-xl p-4 h-12 bg-gradient-to-tr from-purple-500 from-[15%] via-sky-600 to-sky-400">Suscríbete</button></>
-      ) : null}
-      </div>
-      {suscribeOpen && user ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user.email ?? ""} />) : null}
-    </Drawer>
-    </React.Fragment>  
-
+        ) : null}
+      </Drawer>
+    </React.Fragment>
   );
 }
 
@@ -194,7 +221,20 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
     setCountry(countries);
     setProductSelect(productsSelect);
     setCountrySelect(countriesSelect);
-  }, [saims, products, countries, ramis, productsSelect, countriesSelect, setCountry, setCountrySelect, setProduct, setProductSelect, setRamis, setSaims]);
+  }, [
+    saims,
+    products,
+    countries,
+    ramis,
+    productsSelect,
+    countriesSelect,
+    setCountry,
+    setCountrySelect,
+    setProduct,
+    setProductSelect,
+    setRamis,
+    setSaims,
+  ]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
