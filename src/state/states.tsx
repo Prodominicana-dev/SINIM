@@ -4,6 +4,7 @@ import Saim from "../models/saim";
 import product from "../models/product";
 import Country from "../models/country";
 import Rami from "../models/rami";
+import DataMarket from "../models/datamarket";
 
 export const ramiAtom = atom<Rami[]>([]);
 
@@ -16,3 +17,5 @@ export const productSelect = atom([]);
 export const countryAtom = atom<Country[]>([]);
 
 export const countrySelect = atom([]);
+
+export const datamarketAtom = atom<DataMarket[]>([]);

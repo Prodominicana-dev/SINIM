@@ -18,9 +18,15 @@ import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useHover } from "usehooks-ts";
 import Image from "next/image";
 import Link from "next/link";
+import { useAtom } from "jotai";
+import { datamarketAtom } from "@/src/state/states";
+import SidebarMenu from "./sidebarMenu";
+import { useDataMarketsCategories } from "@/src/services/datamarket/service";
 
 export function Sidebar({ visible }: any) {
   const [open, setOpen] = React.useState(0);
+  const datamarket = useAtom(datamarketAtom);
+  const { data, isLoading, isError } = useDataMarketsCategories();
   const hoverRef = useRef(null);
   const isHover = useHover(hoverRef);
 
@@ -52,7 +58,7 @@ export function Sidebar({ visible }: any) {
         </Link>
       </div>
       <List className={` ${visible ? "visible" : "invisible"} duration-200`}>
-        {/* <Accordion
+        <Accordion
           open={open === 1}
           icon={
             <ChevronDownIcon
@@ -87,28 +93,46 @@ export function Sidebar({ visible }: any) {
             </AccordionHeader>
           </ListItem>
           <AccordionBody className="py-1">
-            <List className="p-0">
-              <ListItem>
-                <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />
-                </ListItemPrefix>
-                Analytics
-              </ListItem>
-              <ListItem>
-                <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />
-                </ListItemPrefix>
-                Reporting
-              </ListItem>
-              <ListItem>
-                <ListItemPrefix>
-                  <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />
-                </ListItemPrefix>
-                Projects
-              </ListItem>
+            <List className="p-0 text-white">
+              {data?.map((datamarket: any, key: number) =>
+                datamarket.data.length > 1 ? (
+                  <SidebarMenu
+                    isHover={isHover}
+                    title={datamarket.category}
+                    data={datamarket.data}
+                    key={key}
+                  />
+                ) : (
+                  <Link href={`/dashboard/datamarket/${datamarket.data[0].id}`}>
+                    <ListItem>
+                      <ListItemPrefix>
+                        <div></div>
+                      </ListItemPrefix>
+                      {datamarket.data[0].title}
+                    </ListItem>
+                  </Link>
+                )
+              )}
+              {/* <SidebarMenu isHover={isHover} title="Comercio de bienes" />
+              <Link href={"/saim"}>
+                <ListItem>
+                  <ListItemPrefix>
+                    <div></div>
+                  </ListItemPrefix>
+                  Analytics
+                </ListItem>
+              </Link>
+              <Link href={"/saim"}>
+                <ListItem>
+                  <ListItemPrefix>
+                    <div></div>
+                  </ListItemPrefix>
+                  Analytics
+                </ListItem>
+              </Link> */}
             </List>
           </AccordionBody>
-        </Accordion> */}
+        </Accordion>
         <Link href={"/dashboard/rami"}>
           <ListItem className="focus:bg-transparent">
             <ListItemPrefix>

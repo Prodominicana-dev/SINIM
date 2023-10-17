@@ -20,6 +20,7 @@ import {
 import {
   countryAtom,
   countrySelect,
+  datamarketAtom,
   productAtom,
   productSelect,
   ramiAtom,
@@ -50,6 +51,7 @@ import {
 } from "@/src/services/countries/service";
 import { useRamis } from "@/src/services/ramis/service";
 import { useActiveSaims } from "@/src/services/saim/service";
+import { useDataMarkets } from "@/src/services/datamarket/service";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -172,6 +174,7 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
   const { user, error, isLoading } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [, setRamis] = useAtom(ramiAtom);
+  const [, setDataMarket] = useAtom(datamarketAtom);
   const [, setSaims] = useAtom(saimAtom);
   const [, setProduct] = useAtom(productAtom);
   const [, setCountry] = useAtom(countryAtom);
@@ -183,6 +186,12 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
     isLoading: isSaimsLoading,
     isError: isSaimsError,
   } = useActiveSaims();
+
+  const {
+    data: datamarket,
+    isLoading: isDataMarketLoading,
+    isError: isDataMarketError,
+  } = useDataMarkets();
 
   const {
     data: products,
