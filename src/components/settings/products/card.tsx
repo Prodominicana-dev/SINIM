@@ -2,6 +2,8 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Product from "@/src/models/product";
 import ProductDialog from "./dialog";
+import DeleteButton from "../saim/delete";
+import HideButton from "../saim/hide";
 
 export default function Card({
   product,
@@ -12,6 +14,20 @@ export default function Card({
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
+
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const handleDeleteOpen = () => setDeleteOpen(!deleteOpen);
+  const deleteCreateNotification = {
+    title: "Producto ocultado",
+    message: "El producto ha sido ocultado exitosamente.",
+    color: "green",
+  };
+
+  const deleteErrorNotification = {
+    title: "Error eliminando el producto",
+    message: "Ha ocurrido un error, intenta nuevamente.",
+    color: "red",
+  };
 
   return (
     <>
@@ -25,11 +41,22 @@ export default function Card({
           >
             <PencilSquareIcon className="w-7" />
           </button>
-          <button className="flex items-center justify-center text-black bg-white rounded-lg w-14 h-14 ring-1 ring-gray-100">
+          <button className="flex items-center justify-center text-black bg-white rounded-lg w-14 h-14 ring-1 ring-gray-100"
+          onClick={handleDeleteOpen}>
             <TrashIcon className="w-7" />
           </button>
         </div>
       </div>
+      <HideButton
+          open={deleteOpen}
+          handleOpen={handleDeleteOpen}
+          updateSaims={updateProducts}
+          title={"¿Estás seguro de eliminar este producto?"}
+          message="El producto será desactivado y no podrá ser recuperada."
+          endpoint={`/product/${product.id}`}
+          createNotification={deleteCreateNotification}
+          errorNotification={deleteErrorNotification}
+        />
       {open ? (
         <ProductDialog
           open={open}

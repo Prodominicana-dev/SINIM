@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import Card from "@/src/components/settings/rami/card";
 import Header from "@/src/components/settings/header";
 import RamiDialog from "@/src/components/settings/rami/dialog";
-import useRamisSettings from "@/src/services/ramis/service";
+import {useRamisSettings} from "@/src/services/ramis/service";
 import country from "@/src/models/country";
 import { nfd } from "unorm";
 
