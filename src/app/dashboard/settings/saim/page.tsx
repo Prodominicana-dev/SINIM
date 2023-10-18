@@ -37,6 +37,7 @@ export default function Page() {
     setData(d);
   }, [d]);
 
+
   const pagination = useSaimsPage();
 
   useEffect(() => {
@@ -232,7 +233,7 @@ export default function Page() {
           >
             <PlusIcon className="w-16 h-16 text-black" />
           </button>
-          {search === "" && category === "Todos" && status === "active" ? (
+          {/* {search === "" && category === "Todos" && status === "active" ? (
             <SettingsFeed queryI={pagination} updateSaims={updateSaims} />
           ) : (
             filteredData?.map((saim) => {
@@ -240,7 +241,14 @@ export default function Page() {
                 <SCard key={saim.id} data={saim} updateSaims={updateSaims} />
               );
             })
-          )}
+          )} */}
+          {
+            filteredData?.map((saim) => {
+              return (
+                <SCard key={saim.id} data={saim} updateSaims={updateSaims} />
+              );
+            })
+          }
         </div>
         <SaimDialog
           open={open}

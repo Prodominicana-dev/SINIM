@@ -29,11 +29,12 @@ import Highlight from "@tiptap/extension-highlight";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import { Image as Img } from "@tiptap/extension-image";
+import Editor from "../rich-editor/config";
 
 
 const animatedComponents = makeAnimated();
 
-export default function RamiDialog({
+export default function RamiEditDialog({
   rami,
   open,
   handleOpen,
@@ -60,224 +61,15 @@ export default function RamiDialog({
   const [tradeAgreement, setTradeAgreement] = useState<any>("");
   const [tariffsImposed, setTariffsImposed] = useState<any>("");
   const [webResource, setWebResource] = useState<any>("");
+  const outputReq = Editor({placeholder: "Requisitos de exportacion...", content: data?.outputRequirement});
+  const importReq = Editor({placeholder: "Requisitos de importación...", content: data?.outputRequirement});
+  const regTecnicas = Editor({placeholder: "Regulaciones técnicas...", content: data?.outputRequirement});
+  const permCertf = Editor({placeholder: "Permisos y certificaciones...", content: data?.outputRequirement});
+  const etiquetado = Editor({placeholder: "Etiquetado...", content: data?.outputRequirement});
+  const acComerciales = Editor({placeholder: "Acuerdos comerciales...", content: data?.outputRequirement});
+  const impAran = Editor({placeholder: "Impuestos y aranceles...", content: data?.outputRequirement});
+  const recursos = Editor({placeholder: "Recursos web...", content: data?.outputRequirement});
 
-  const outputReq = useEditor({
-    extensions: [
-      StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: "text-black",
-          },
-        },
-      }),
-      Underline,
-      Link,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Requisitos de salida..." }),
-      Img.configure({
-        inline: true,
-        HTMLAttributes: {
-          class: "w-full h-auto",
-        },
-        allowBase64: true,
-      }),
-    ],
-    content: data?.outputRequirement,
-  });
-
-  const importReq = useEditor({
-    extensions: [
-      StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: "text-black",
-          },
-        },
-      }),
-      Underline,
-      Link,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Requisitos de importación..." }),
-      Img.configure({
-        inline: true,
-        HTMLAttributes: {
-          class: "w-full h-auto",
-        },
-        allowBase64: true,
-      }),
-    ],
-
-    content: data?.importRequirement,
-  });
-
-  const regTecnicas = useEditor({
-    extensions: [
-      StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: "text-black",
-          },
-        },
-      }),
-      Underline,
-      Link,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Regulaciones técnicas..." }),
-      Img.configure({
-        inline: true,
-        HTMLAttributes: {
-          class: "w-full h-auto",
-        },
-        allowBase64: true,
-      }),
-    ],
-
-    content: data?.technicalRequirements,
-  });
-
-  const permCertf = useEditor({
-    extensions: [
-      StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: "text-black",
-          },
-        },
-      }),
-      Underline,
-      Link,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Permisos y certificaciones..." }),
-      Img.configure({
-        inline: true,
-        HTMLAttributes: {
-          class: "w-full h-auto",
-        },
-        allowBase64: true,
-      }),
-    ],
-
-    content: data?.permitsCertifications,
-  });
-
-  const etiquetado = useEditor({
-    extensions: [
-      StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: "text-black",
-          },
-        },
-      }),
-      Underline,
-      Link,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Etiquetado..." }),
-      Img.configure({
-        inline: true,
-        HTMLAttributes: {
-          class: "w-full h-auto",
-        },
-        allowBase64: true,
-      }),
-    ],
-
-    content: data?.labelingCertifications,
-  });
-
-  const acComerciales = useEditor({
-    extensions: [
-      StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: "text-black",
-          },
-        },
-      }),
-      Underline,
-      Link,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Acuerdos comerciales..." }),
-      Img.configure({
-        inline: true,
-        HTMLAttributes: {
-          class: "w-full h-auto",
-        },
-        allowBase64: true,
-      }),
-    ],
-
-    content: data?.tradeAgreement,
-  });
-
-  const impAran = useEditor({
-    extensions: [
-      StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: "text-black",
-          },
-        },
-      }),
-      Underline,
-      Link,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Impuestos y Aranceles..." }),
-      Img.configure({
-        inline: true,
-        HTMLAttributes: {
-          class: "w-full h-auto",
-        },
-        allowBase64: true,
-      }),
-    ],
-
-    content: data?.tariffsImposed,
-  });
-
-  const recursos = useEditor({
-    extensions: [
-      StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: "text-black",
-          },
-        },
-      }),
-      Underline,
-      Link,
-      Highlight,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Placeholder.configure({ placeholder: "Recursos web..." }),
-      Img.configure({
-        inline: true,
-        HTMLAttributes: {
-          class: "w-full h-auto",
-        },
-        allowBase64: true,
-      }),
-    ],
-
-    content: data?.webResource,
-  });
-
-  useEffect(() => {
-    setOutputRequirement(data?.outputRequirement);
-    setImportRequirement(data?.importRequirement);
-    setTechnicalRequirements(data?.technicalRequirements);
-    setPermitsCertifications(data?.permitsCertifications);
-    setLabelingCertifications(data?.labelingCertifications);
-    setTradeAgreement(data?.tradeAgreement);
-    setTariffsImposed(data?.tariffsImposed);
-    setWebResource(data?.webResource);
-  }, [data]);
 
   useEffect(() => {
     const ramidata = [
@@ -322,7 +114,11 @@ export default function RamiDialog({
         editor: recursos,
       },
     ];
-    if (rami && !isLoading) {
+    setRamiData(ramidata);
+  });
+
+  useEffect(() => {
+    if(!isLoading){
       const ramiCountry = countries.find(
         (country: any) => country.value.id === data.country.id
       );
@@ -331,28 +127,35 @@ export default function RamiDialog({
         (product: any) => product.value.id === data.product.id
       );
       setSelectedProducts(ramiProduct);
-      outputReq?.commands.setContent(outputRequirement);
-      importReq?.commands.setContent(importRequirement);
-      regTecnicas?.commands.setContent(technicalRequirements);
-      permCertf?.commands.setContent(permitsCertifications);
-      etiquetado?.commands.setContent(labelingCertifications);
-      acComerciales?.commands.setContent(tradeAgreement);
-      impAran?.commands.setContent(tariffsImposed);
-      recursos?.commands.setContent(webResource);
+      outputReq?.commands.setContent(data?.outputRequirement);
+      importReq?.commands.setContent(data?.importRequirement);
+      regTecnicas?.commands.setContent(data?.technicalRequirements);
+      permCertf?.commands.setContent(data?.permitsCertifications);
+      etiquetado?.commands.setContent(data?.labelingCertifications);
+      acComerciales?.commands.setContent(data?.tradeAgreement);
+      impAran?.commands.setContent(data?.tariffsImposed);
+      recursos?.commands.setContent(data?.webResource);
+      setOutputRequirement(data?.outputRequirement);
+      setImportRequirement(data?.importRequirement);
+      setTechnicalRequirements(data?.technicalRequirements);
+      setPermitsCertifications(data?.permitsCertifications);
+      setLabelingCertifications(data?.labelingCertifications);
+      setTradeAgreement(data?.tradeAgreement);
+      setTariffsImposed(data?.tariffsImposed);
+      setWebResource(data?.webResource);
     }
-    setRamiData(ramidata);
-  }, [
-    rami,
-    isLoading,
-    outputRequirement,
-    importRequirement,
-    technicalRequirements,
-    permitsCertifications,
-    labelingCertifications,
-    tradeAgreement,
-    tariffsImposed,
-    webResource,
-]);
+  }, [data, isLoading])
+
+useEffect(() => {
+  setOutputRequirement(outputReq?.getHTML());
+  setImportRequirement(importReq?.getHTML());
+  setTechnicalRequirements(regTecnicas?.getHTML());
+  setPermitsCertifications(permCertf?.getHTML());
+  setLabelingCertifications(etiquetado?.getHTML());
+  setTradeAgreement(acComerciales?.getHTML());
+  setTariffsImposed(impAran?.getHTML());
+  setWebResource(recursos?.getHTML());
+}, [outputReq?.getHTML(), importReq?.getHTML(), regTecnicas?.getHTML(), permCertf?.getHTML(), etiquetado?.getHTML(), acComerciales?.getHTML(), impAran?.getHTML(), recursos?.getHTML()]);
 
   const handleSubmit = async () => {
     const data = {
@@ -367,7 +170,7 @@ export default function RamiDialog({
       tariffsImposed: tariffsImposed,
       webResource: webResource,
     };
-
+    console.log(data.outputRequirement)
     if (!rami) {
       return await axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/rami`, data)

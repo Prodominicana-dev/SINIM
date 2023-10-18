@@ -1,8 +1,9 @@
 import Rami from "@/src/models/rami";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import React, { useEffect } from "react";
-import RamiDialog from "./dialog";
+import RamiDialog from "./dialogEdit";
 import DeleteButton from "../saim/delete";
+import RamiEditDialog from "./dialogEdit";
 
 export default function Card({
   rami,
@@ -60,7 +61,7 @@ export default function Card({
           errorNotification={deleteErrorNotification}
         />
       {open ? (
-        <RamiDialog
+        <RamiEditDialog
           rami={rami}
           open={open}
           handleOpen={handleClose}

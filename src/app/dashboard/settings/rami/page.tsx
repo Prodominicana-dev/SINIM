@@ -5,10 +5,12 @@ import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 import Card from "@/src/components/settings/rami/card";
 import Header from "@/src/components/settings/header";
-import RamiDialog from "@/src/components/settings/rami/dialog";
+import RamiDialog from "@/src/components/settings/rami/dialogEdit";
 import {useRamisSettings} from "@/src/services/ramis/service";
 import country from "@/src/models/country";
 import { nfd } from "unorm";
+import RamiEditDialog from "@/src/components/settings/rami/dialogEdit";
+import RamiCreateDialog from "@/src/components/settings/rami/dialogCreate";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = useRamisSettings();
@@ -149,7 +151,7 @@ export default function Page() {
         </div>
       </div>
       {open ? (
-        <RamiDialog
+        <RamiCreateDialog
           open={open}
           handleOpen={handleOpen}
           updateRami={updateRamis}
