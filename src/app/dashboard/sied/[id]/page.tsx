@@ -2,10 +2,10 @@
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import Image from "next/image";
-import { useSaim } from "@/src/services/saim/service";
+import { useSied } from "@/src/services/sied/service";
 
 export default function Page({ params }: { params: { id: number } }) {
-  const { data, isLoading, isError }: any = useSaim(params.id);
+  const { data, isLoading, isError }: any = useSied(params.id);
 
   if (!data) {
     return <div>No existe</div>;
@@ -23,7 +23,7 @@ export default function Page({ params }: { params: { id: number } }) {
         <Image
           width={1920}
           height={1080}
-          src={`${process.env.NEXT_PUBLIC_API_URL}/data/saim/${data.id}/img/${data.image}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/data/sied/${data.id}/img/${data.image}`}
           alt="card-image"
           className="object-cover w-full my-3 rounded-lg"
         />

@@ -1,14 +1,14 @@
 "use client";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { useState, useEffect } from "react";
-import SaimCard from "../../../components/saim/card";
-import Saim from "@/src/models/saim";
-import Feed from "@/src/components/saim/feed";
+import Sied from "@/src/models/sied";
+import Feed from "@/src/components/sied/feed";
 import { useAtom } from "jotai";
-import { saimAtom } from "@/src/state/states";
+import { siedAtom } from "@/src/state/states";
+import SiedCard from "@/src/components/sied/card";
 
 export default function Page() {
-  const saimFilters = [
+  const siedFilters = [
     {
       name: "Todos",
       title: "¡Explora todas nuestras alertas!",
@@ -40,17 +40,16 @@ export default function Page() {
         "Acceda a los obstáculos identificados en los mercados internacionales, manteniéndose informado acerca de los desafíos que pueden impactar sus objetivos comerciales.",
     },
   ];
-  const [data, setData] = useAtom(saimAtom);
-  const [filteredData, setFilteredData] = useState<Saim[]>([]);
+  const [data, setData] = useAtom(siedAtom);
+  const [filteredData, setFilteredData] = useState<Sied[]>([]);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState(saimFilters[0].name);
-  const [categoryTitle, setCategoryTitle] = useState(saimFilters[0].title);
+  const [category, setCategory] = useState(siedFilters[0].name);
+  const [categoryTitle, setCategoryTitle] = useState(siedFilters[0].title);
   const [categoryDescription, setCategoryDescription] = useState(
-    saimFilters[0].description
+    siedFilters[0].description
   );
 
   useEffect(() => {
-    console.log(data);
     setFilteredData(data);
   }, [data]);
 
@@ -60,11 +59,11 @@ export default function Page() {
 
   const handleFilter = (selectedCategory: string) => {
     // Filtrar datos por categoría y actualizar el estado
-    const SaimByCategory = data.filter(
-      (saim) => saim.category.toLowerCase() === selectedCategory.toLowerCase()
+    const SiedByCategory = data.filter(
+      (sied) => sied.category.toLowerCase() === selectedCategory.toLowerCase()
     );
 
-    const selectedFilter = saimFilters.find(
+    const selectedFilter = siedFilters.find(
       (filter) => filter.name.toLowerCase() === selectedCategory.toLowerCase()
     );
 
@@ -75,7 +74,7 @@ export default function Page() {
     setCategory(selectedCategory);
     selectedCategory.toLowerCase() == "todos"
       ? setFilteredData(data)
-      : setFilteredData(SaimByCategory);
+      : setFilteredData(SiedByCategory);
   };
 
   const filterData = () => {
@@ -83,13 +82,13 @@ export default function Page() {
       category === "Todos"
         ? data
         : data.filter(
-            (saim) => saim.category.toLowerCase() === category.toLowerCase()
+            (sied) => sied.category.toLowerCase() === category.toLowerCase()
           );
 
     const filteredBySearch = filteredByCategory.filter(
-      (saim) =>
-        saim.title.toLowerCase().includes(search.toLowerCase()) ||
-        saim.products.some(
+      (sied) =>
+        sied.title.toLowerCase().includes(search.toLowerCase()) ||
+        sied.products.some(
           (product) =>
             product.name.toLowerCase().includes(search.toLowerCase()) ||
             product.code.toLowerCase().includes(search.toLowerCase())
@@ -119,7 +118,7 @@ export default function Page() {
         <div className="absolute inset-0 bg-black border-0 opacity-60"></div>
         <div className="relative flex flex-col items-center justify-center w-full h-full px-5 sm:px-0">
           <div className="gap-3 sm:gap-5 lg:gap-10 my-10 text-[14px] sm:text-lg flex flex-row justify-center items-center flex-wrap lg:flex-nowrap sm:w-8/12">
-            {saimFilters.map((filter) => (
+            {siedFilters.map((filter) => (
               <button
                 key={filter.name}
                 onClick={() => handleFilter(filter.name)}
@@ -155,10 +154,10 @@ export default function Page() {
         <Feed />
       ) : (
         <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {filteredData?.map((saim) => {
+          {filteredData?.map((sied) => {
             return (
-              <div key={saim.id}>
-                <SaimCard {...saim} />
+              <div key={sied.id}>
+                <SiedCard {...sied} />
               </div>
             );
           })}

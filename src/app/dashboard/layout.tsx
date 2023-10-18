@@ -185,43 +185,43 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
     data: saims,
     isLoading: isSaimsLoading,
     isError: isSaimsError,
-  } = useActiveSaims();
+  }: any = useActiveSaims();
 
   const {
     data: datamarket,
     isLoading: isDataMarketLoading,
     isError: isDataMarketError,
-  } = useDataMarkets();
+  }: any = useDataMarkets();
 
   const {
     data: products,
     isLoading: isProductsLoading,
     isError: isProductsError,
-  } = useProducts();
+  }: any = useProducts();
 
   const {
     data: countries,
     isLoading: isCountriesLoading,
     isError: isCountriesError,
-  } = useCountries();
+  }: any = useCountries();
 
   const {
     data: productsSelect,
     isLoading: isProductsSelectLoading,
     isError: isProductsSelectError,
-  } = useSelectProducts();
+  }: any = useSelectProducts();
 
   const {
     data: countriesSelect,
     isLoading: isCountriesSelectLoading,
     isError: isCountriesSelectError,
-  } = useSelectCountries();
+  }: any = useSelectCountries();
 
   const {
     data: ramis,
     isLoading: isRamisLoading,
     isError: isRamisError,
-  } = useRamis();
+  }: any = useRamis();
 
   useEffect(() => {
     setRamis(ramis);

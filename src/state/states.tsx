@@ -5,10 +5,13 @@ import product from "../models/product";
 import Country from "../models/country";
 import Rami from "../models/rami";
 import DataMarket from "../models/datamarket";
+import Sied from "../models/sied";
 
 export const ramiAtom = atom<Rami[]>([]);
 
 export const saimAtom = atom<Saim[]>([]);
+
+export const siedAtom = atom<Sied[]>([]);
 
 export const productAtom = atom<product[]>([]);
 

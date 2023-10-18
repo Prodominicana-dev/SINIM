@@ -11,10 +11,10 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useRouter } from "next/navigation";
-import { useSaim } from "@/src/services/saim/service";
+import { useSied } from "@/src/services/sied/service";
 
 export default function Modal({ id }: any) {
-  const { data, isLoading, isError }: any = useSaim(id);
+  const { data, isLoading, isError }: any = useSied(id);
   const [open, setOpen] = useState(true);
   const router = useRouter();
   const handleOpen = useCallback(() => {
@@ -59,7 +59,7 @@ export default function Modal({ id }: any) {
           <Image
             width={1920}
             height={1080}
-            src={`${process.env.NEXT_PUBLIC_API_URL}/data/saim/${data.id}/img/${data.image}`}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/data/sied/${data.id}/img/${data.image}`}
             alt="card-image"
             className="object-cover w-full my-5 rounded-lg"
           />

@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { useRami } from "@/src/services/ramis/service";
 
 export default function Modal({ id }: any) {
-  const { data, isLoading, isError } = useRami(id);
+  const { data, isLoading, isError }: any = useRami(id);
   const [ramiData, setRamiData] = useState<any>([]);
   useEffect(() => {
     if (!isLoading) {

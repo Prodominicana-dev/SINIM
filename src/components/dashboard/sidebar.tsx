@@ -26,7 +26,7 @@ import { useDataMarketsCategories } from "@/src/services/datamarket/service";
 export function Sidebar({ visible }: any) {
   const [open, setOpen] = React.useState(0);
   const datamarket = useAtom(datamarketAtom);
-  const { data, isLoading, isError } = useDataMarketsCategories();
+  const { data, isLoading, isError }: any = useDataMarketsCategories();
   const hoverRef = useRef(null);
   const isHover = useHover(hoverRef);
 
@@ -103,7 +103,10 @@ export function Sidebar({ visible }: any) {
                     key={key}
                   />
                 ) : (
-                  <Link href={`/dashboard/datamarket/${datamarket.data[0].id}`}>
+                  <Link
+                    href={`/dashboard/datamarket/${datamarket.data[0].id}`}
+                    key={key}
+                  >
                     <ListItem>
                       <ListItemPrefix>
                         <div></div>

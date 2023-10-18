@@ -11,7 +11,7 @@ import Image from "next/image";
 import { useRami } from "@/src/services/ramis/service";
 
 export default function Page({ params }: { params: { id: number } }) {
-  const { data, isLoading, isError } = useRami(params.id);
+  const { data, isLoading, isError }: any = useRami(params.id);
   const [ramiData, setRamiData] = useState<any>([]);
   useEffect(() => {
     if (!isLoading) {

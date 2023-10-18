@@ -78,26 +78,35 @@ export function updateProduct({
 }
 
 export function useProduct(id: number) {
-  return useQuery(["product"], async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/products/${id}`;
-    const { data } = await axios.get(url);
-    return data;
+  return useQuery({
+    queryKey: ["product", id],
+    queryFn: async () => {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/products/${id}`;
+      const { data } = await axios.get(url);
+      return data;
+    },
   });
 }
 
 export function useProducts() {
-  return useQuery(["products"], async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/products`;
-    const { data } = await axios.get(url);
-    return data.map((item: Product) => item);
+  return useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/products`;
+      const { data } = await axios.get(url);
+      return data.map((item: Product) => item);
+    },
   });
 }
 
 export function useSelectProducts() {
-  return useQuery(["selectProducts"], async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/products/select`;
-    const { data } = await axios.get(url);
-    return data.map((item: Product) => item);
+  return useQuery({
+    queryKey: ["selectProducts"],
+    queryFn: async () => {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/products/select`;
+      const { data } = await axios.get(url);
+      return data.map((item: Product) => item);
+    },
   });
 }
 

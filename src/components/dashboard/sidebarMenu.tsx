@@ -65,7 +65,7 @@ export default function SidebarMenu({
       <AccordionBody className="py-1">
         <List className="p-0 text-white">
           {data?.map((datamarket: any, key: number) => (
-            <Link href={`/dashboard/datamarket/${datamarket.id}`}>
+            <Link href={`/dashboard/datamarket/${datamarket.id}`} key={key}>
               <ListItem>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />

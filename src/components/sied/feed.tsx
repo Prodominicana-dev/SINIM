@@ -3,13 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useIntersection } from "@mantine/hooks";
-import SaimCard from "./card";
-import Saim from "@/src/models/saim";
-import { useActiveSaimsPage } from "@/src/services/saim/service";
+import SiedCard from "./card";
+import Sied from "@/src/models/sied";
+import { useActiveSiedsPage } from "@/src/services/sied/service";
 
 export default function Feed() {
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data } =
-    useActiveSaimsPage();
+    useActiveSiedsPage();
   const containerRef = useRef<HTMLElement>(null);
   const { ref, entry } = useIntersection({
     root: containerRef.current,
@@ -20,20 +20,20 @@ export default function Feed() {
     if (hasNextPage && entry?.isIntersecting) fetchNextPage();
   }, [entry, fetchNextPage, hasNextPage]);
 
-  const _allSaim = data?.pages.map((page) => page.data).flat();
+  const _allSied = data?.pages.map((page) => page.data).flat();
 
   return (
     <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {_allSaim?.map((saim: Saim, i: number) => {
-        if (i === _allSaim.length - 1)
+      {_allSied?.map((sied: Sied, i: number) => {
+        if (i === _allSied.length - 1)
           return (
-            <div ref={ref} key={saim.id}>
-              <SaimCard {...saim} />
+            <div ref={ref} key={sied.id}>
+              <SiedCard {...sied} />
             </div>
           );
         return (
-          <div key={saim.id}>
-            <SaimCard {...saim} />
+          <div key={sied.id}>
+            <SiedCard {...sied} />
           </div>
         );
       })}

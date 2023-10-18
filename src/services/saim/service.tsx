@@ -3,57 +3,63 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 export function useActiveSaims() {
-  return useQuery(["activeSaims"], async () => {
-    const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/saim`;
-    const { data } = await axios.get(saimEndpoint);
-    return data.map((item: Saim) => item);
+  return useQuery({
+    queryKey: ["Saims"],
+    queryFn: async () => {
+      const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/saim`;
+      const { data } = await axios.get(saimEndpoint);
+      return data.map((item: Saim) => item);
+    },
   });
 }
 
 export function useActiveSaimsPage() {
-  return useInfiniteQuery(
-    ["saimsActivePage"],
-    async ({ pageParam = 1 }) => {
-      const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/saim/page/${pageParam}`;
-      const { data } = await axios.get(saimEndpoint);
-      return data.data.map((item: Saim) => item);
-    },
-    {
-      getNextPageParam: (_: any, pages: string | any[]) => {
-        return pages.length + 1;
-      },
-    }
-  );
+  const fetchActiveSaimsData = async (pageParam: any) => {
+    const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/saim/page/${pageParam}`;
+    const { data } = await axios.get(saimEndpoint);
+    return data;
+  };
+  return useInfiniteQuery({
+    queryKey: ["activeSaims"],
+    queryFn: ({ pageParam }) => fetchActiveSaimsData(pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.meta.next,
+  });
 }
 
 export function useSaim(id: number) {
-  return useQuery(["saim", id], async () => {
-    const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/saim/${id}`;
-    const { data } = await axios.get(saimEndpoint);
-    return data;
+  return useQuery({
+    queryKey: ["saim", id],
+    queryFn: async () => {
+      const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/saim/${id}`;
+      const { data } = await axios.get(saimEndpoint);
+      return data;
+    },
   });
 }
 
 export default function useSaims() {
-  return useQuery(["saims"], async () => {
-    const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/saim/all`;
-    const { data } = await axios.get(saimEndpoint);
-    return data.map((item: Saim) => item);
+  return useQuery({
+    queryKey: ["saims"],
+    queryFn: async () => {
+      const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/saim/all`;
+      const { data } = await axios.get(saimEndpoint);
+      return data.map((item: Saim) => item);
+    },
   });
 }
 
 export function useSaimsPage() {
-  return useInfiniteQuery(
-    ["saimsPage"],
-    async ({ pageParam = 1 }) => {
-      const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/saim/page/all/${pageParam}`;
-      const { data } = await axios.get(saimEndpoint);
-      return data.data.map((item: Saim) => item);
-    },
-    {
-      getNextPageParam: (_: any, pages: string | any[]) => {
-        return pages.length + 1;
-      },
-    }
-  );
+  const fetchSaimsData = async (pageParam: any) => {
+    const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/saim/page/all/${pageParam}`;
+    const { data } = await axios.get(saimEndpoint);
+    return data;
+  };
+
+  return useInfiniteQuery({
+    queryKey: ["saimsPage"],
+    queryFn: ({ pageParam }) => fetchSaimsData(pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.meta.next,
+  });
 }
