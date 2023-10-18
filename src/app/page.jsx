@@ -53,9 +53,9 @@ export default function Home() {
       visible: true,
     },
     {
-      title: "SAIM",
+      title: "Alertas Comerciales",
       description:
-        "¡Domina el comercio global! Nuestro Sistema de Alertas de Inteligencia de Mercados (SAIM) te mantiene adelante en la competencia, brindándote datos cruciales sobre oportunidades emergentes y obstáculos a evitar. Impulsa tus exportaciones de manera más inteligente.",
+        "¡Domina el comercio global! Nuestras Alertas comerciales que te mantienen adelante en la competencia, brindándote datos cruciales sobre oportunidades emergentes y obstáculos a evitar. Impulsa tus exportaciones de manera más inteligente.",
       color: "bg-gradient-to-tr from-[40%] from-sky-500 to-purple-700/60",
       boxColor: "bg-gradient-to-b from-sky-500 to-purple-700",
       fromColor: "sky-500",
