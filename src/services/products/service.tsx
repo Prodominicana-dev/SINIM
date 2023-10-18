@@ -111,9 +111,12 @@ export function useSelectProducts() {
 }
 
 export function useAllProducts() {
-  return useQuery(["allProducts"], async () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/products/all`;
-    const { data } = await axios.get(url);
-    return data.map((item: Product) => item);
+  return useQuery({
+    queryKey: ["allProducts"],
+    queryFn: async () => {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/products/all`;
+      const { data } = await axios.get(url);
+      return data.map((item: Product) => item);
+    },
   });
 }
