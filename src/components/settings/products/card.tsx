@@ -1,9 +1,10 @@
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { EyeDropperIcon, EyeIcon, EyeSlashIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Product from "@/src/models/product";
 import ProductDialog from "./dialog";
 import DeleteButton from "../saim/delete";
 import HideButton from "../saim/hide";
+import ActiveButton from "../saim/active";
 
 export default function Card({
   product,
@@ -29,11 +30,27 @@ export default function Card({
     color: "red",
   };
 
+  const [activeOpen, setActiveOpen] = useState(false);
+  const handleActiveOpen = () => setActiveOpen(!deleteOpen);
+  const handleActiveClose = () => setActiveOpen(false);
+  const activeCreateNotification = {
+    title: "Producto activado",
+    message: "El producto ha sido activado exitosamente.",
+    color: "green",
+  };
+
+  const activeErrorNotification = {
+    title: "Error activando el producto",
+    message: "Ha ocurrido un error, intenta nuevamente.",
+    color: "red",
+  };
+
   return (
     <>
-      <div className="grid items-center w-full h-24 grid-cols-3 p-5 text-center bg-white rounded-lg ring-2 ring-gray-100">
+      <div className="grid items-center w-full h-24 grid-cols-4 p-5 text-center bg-white rounded-lg ring-2 ring-gray-100">
         <div className="line-clamp-2">{product.name}</div>
         <div>{product.code}</div>
+        {product.status === "active" ? (<div>Activo</div>) : (<div>Oculto</div>)}
         <div className="flex justify-center space-x-5 ">
           <button
             onClick={handleOpen}
@@ -41,10 +58,18 @@ export default function Card({
           >
             <PencilSquareIcon className="w-7" />
           </button>
-          <button className="flex items-center justify-center text-black bg-white rounded-lg w-14 h-14 ring-1 ring-gray-100"
-          onClick={handleDeleteOpen}>
-            <TrashIcon className="w-7" />
-          </button>
+          {product.status === "active" ? (
+            <button className="flex items-center justify-center text-black bg-white rounded-lg w-14 h-14 ring-1 ring-gray-100"
+            onClick={handleDeleteOpen}>
+              <EyeSlashIcon className="w-7" />
+            </button>
+          ) : 
+          (
+            <button className="flex items-center justify-center text-black bg-white rounded-lg w-14 h-14 ring-1 ring-gray-100"
+            onClick={handleActiveOpen}>
+              <EyeIcon className="w-7" />
+            </button>
+          )}
         </div>
       </div>
       <HideButton
@@ -57,6 +82,16 @@ export default function Card({
           createNotification={deleteCreateNotification}
           errorNotification={deleteErrorNotification}
         />
+      <ActiveButton
+        open={activeOpen}
+        handleOpen={handleActiveClose}
+        updateSaims={updateProducts}
+        title={"¿Estás seguro de activar este producto?"}
+        message="El producto será activado y cualquier persona podría verlo."
+        endpoint={`/product/${product.id}`}
+        createNotification={activeCreateNotification}
+        errorNotification={activeErrorNotification}
+      />
       {open ? (
         <ProductDialog
           open={open}

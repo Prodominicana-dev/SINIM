@@ -21,6 +21,15 @@ import { useAtom } from "jotai";
 import { countrySelect, productSelect, saimAtom } from "@/src/state/states";
 import TextEditor from "./rich-editor";
 import { useRami } from "@/src/services/ramis/service";
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { Link } from "@mantine/tiptap";
+import Placeholder from "@tiptap/extension-placeholder";
+import Highlight from "@tiptap/extension-highlight";
+import Underline from "@tiptap/extension-underline";
+import TextAlign from "@tiptap/extension-text-align";
+import { Image as Img } from "@tiptap/extension-image";
+
 
 const animatedComponents = makeAnimated();
 
@@ -52,6 +61,213 @@ export default function RamiDialog({
   const [tariffsImposed, setTariffsImposed] = useState<any>("");
   const [webResource, setWebResource] = useState<any>("");
 
+  const outputReq = useEditor({
+    extensions: [
+      StarterKit.configure({
+        bulletList: {
+          HTMLAttributes: {
+            class: "text-black",
+          },
+        },
+      }),
+      Underline,
+      Link,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({ placeholder: "Requisitos de salida..." }),
+      Img.configure({
+        inline: true,
+        HTMLAttributes: {
+          class: "w-full h-auto",
+        },
+        allowBase64: true,
+      }),
+    ],
+    content: data?.outputRequirement,
+  });
+
+  const importReq = useEditor({
+    extensions: [
+      StarterKit.configure({
+        bulletList: {
+          HTMLAttributes: {
+            class: "text-black",
+          },
+        },
+      }),
+      Underline,
+      Link,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({ placeholder: "Requisitos de importación..." }),
+      Img.configure({
+        inline: true,
+        HTMLAttributes: {
+          class: "w-full h-auto",
+        },
+        allowBase64: true,
+      }),
+    ],
+
+    content: data?.importRequirement,
+  });
+
+  const regTecnicas = useEditor({
+    extensions: [
+      StarterKit.configure({
+        bulletList: {
+          HTMLAttributes: {
+            class: "text-black",
+          },
+        },
+      }),
+      Underline,
+      Link,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({ placeholder: "Regulaciones técnicas..." }),
+      Img.configure({
+        inline: true,
+        HTMLAttributes: {
+          class: "w-full h-auto",
+        },
+        allowBase64: true,
+      }),
+    ],
+
+    content: data?.technicalRequirements,
+  });
+
+  const permCertf = useEditor({
+    extensions: [
+      StarterKit.configure({
+        bulletList: {
+          HTMLAttributes: {
+            class: "text-black",
+          },
+        },
+      }),
+      Underline,
+      Link,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({ placeholder: "Permisos y certificaciones..." }),
+      Img.configure({
+        inline: true,
+        HTMLAttributes: {
+          class: "w-full h-auto",
+        },
+        allowBase64: true,
+      }),
+    ],
+
+    content: data?.permitsCertifications,
+  });
+
+  const etiquetado = useEditor({
+    extensions: [
+      StarterKit.configure({
+        bulletList: {
+          HTMLAttributes: {
+            class: "text-black",
+          },
+        },
+      }),
+      Underline,
+      Link,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({ placeholder: "Etiquetado..." }),
+      Img.configure({
+        inline: true,
+        HTMLAttributes: {
+          class: "w-full h-auto",
+        },
+        allowBase64: true,
+      }),
+    ],
+
+    content: data?.labelingCertifications,
+  });
+
+  const acComerciales = useEditor({
+    extensions: [
+      StarterKit.configure({
+        bulletList: {
+          HTMLAttributes: {
+            class: "text-black",
+          },
+        },
+      }),
+      Underline,
+      Link,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({ placeholder: "Acuerdos comerciales..." }),
+      Img.configure({
+        inline: true,
+        HTMLAttributes: {
+          class: "w-full h-auto",
+        },
+        allowBase64: true,
+      }),
+    ],
+
+    content: data?.tradeAgreement,
+  });
+
+  const impAran = useEditor({
+    extensions: [
+      StarterKit.configure({
+        bulletList: {
+          HTMLAttributes: {
+            class: "text-black",
+          },
+        },
+      }),
+      Underline,
+      Link,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({ placeholder: "Impuestos y Aranceles..." }),
+      Img.configure({
+        inline: true,
+        HTMLAttributes: {
+          class: "w-full h-auto",
+        },
+        allowBase64: true,
+      }),
+    ],
+
+    content: data?.tariffsImposed,
+  });
+
+  const recursos = useEditor({
+    extensions: [
+      StarterKit.configure({
+        bulletList: {
+          HTMLAttributes: {
+            class: "text-black",
+          },
+        },
+      }),
+      Underline,
+      Link,
+      Highlight,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({ placeholder: "Recursos web..." }),
+      Img.configure({
+        inline: true,
+        HTMLAttributes: {
+          class: "w-full h-auto",
+        },
+        allowBase64: true,
+      }),
+    ],
+
+    content: data?.webResource,
+  });
+
   useEffect(() => {
     setOutputRequirement(data?.outputRequirement);
     setImportRequirement(data?.importRequirement);
@@ -68,73 +284,61 @@ export default function RamiDialog({
       {
         label: "Requerimientos salida",
         value: "salida",
-        placeholder: "Requerimientos de salida...",
-        content: outputRequirement,
+        editor: outputReq,
       },
       {
         label: "Requisitos importacion",
         value: "importacion",
-        placeholder: "Requisitos de importación...",
-        content: importRequirement,
+        editor: importReq,
       },
       {
         label: "Regulaciones tecnicas",
         value: "regulaciones",
-        placeholder: "Regulaciones técnicas...",
-        content: technicalRequirements,
+        editor: regTecnicas,
       },
       {
         label: "Permisos y certificaciones",
         value: "certificaciones",
-        placeholder: "Permisos y certificaciones...",
-        content: permitsCertifications,
+        editor: permCertf,
       },
       {
         label: "Etiquetado",
         value: "etiquetado",
-        placeholder: "Etiquetado...",
-        content: labelingCertifications,
+        editor: etiquetado,
       },
       {
         label: "Acuerdos comerciales",
         value: "acuerdos",
-        placeholder: "Acuerdos comerciales...",
-        content: tradeAgreement,
+        editor: acComerciales,
       },
       {
         label: "Impuestos y aranceles",
         value: "aranceles",
-        placeholder: "Impuestos y aranceles...",
-        content: tariffsImposed,
+        editor: impAran,
       },
       {
         label: "Recursos web",
         value: "recursosweb",
-        placeholder: "Recursos web...",
-        content: webResource,
+        editor: recursos,
       },
     ];
     if (rami && !isLoading) {
       const ramiCountry = countries.find(
         (country: any) => country.value.id === data.country.id
       );
-
       setSelectedCountries(ramiCountry);
       const ramiProduct = products.find(
         (product: any) => product.value.id === data.product.id
       );
       setSelectedProducts(ramiProduct);
-    }
-
-    if (!rami) {
-      setOutputRequirement("");
-      setImportRequirement("");
-      setTechnicalRequirements("");
-      setPermitsCertifications("");
-      setLabelingCertifications("");
-      setTradeAgreement("");
-      setTariffsImposed("");
-      setWebResource("");
+      outputReq?.commands.setContent(outputRequirement);
+      importReq?.commands.setContent(importRequirement);
+      regTecnicas?.commands.setContent(technicalRequirements);
+      permCertf?.commands.setContent(permitsCertifications);
+      etiquetado?.commands.setContent(labelingCertifications);
+      acComerciales?.commands.setContent(tradeAgreement);
+      impAran?.commands.setContent(tariffsImposed);
+      recursos?.commands.setContent(webResource);
     }
     setRamiData(ramidata);
   }, [
@@ -148,7 +352,7 @@ export default function RamiDialog({
     tradeAgreement,
     tariffsImposed,
     webResource,
-  ]);
+]);
 
   const handleSubmit = async () => {
     const data = {
@@ -344,12 +548,11 @@ function UnderlineTabs({ data }: any) {
       </TabsHeader>
       <TabsBody>
         {data.map(
-          ({ label, value, placeholder, content }: any, index: number) => (
+          ({ label, value, editor }: any, index: number) => (
             <TabPanel className="p-0" key={index} value={value}>
               <SectionRami
                 title={label}
-                placeholder={placeholder}
-                content={content}
+                editor={editor}
               />
             </TabPanel>
           )
@@ -359,11 +562,11 @@ function UnderlineTabs({ data }: any) {
   );
 }
 
-function SectionRami({ title, placeholder, content }: any) {
+function SectionRami({ title, editor }: any) {
   return (
     <div className="text-lg font-normal text-black">
       <p className="text-lg font-bold text-black">{title}</p>
-      <TextEditor placeholder={placeholder} content={content} />
+      <TextEditor editor={editor} />
     </div>
   );
 }

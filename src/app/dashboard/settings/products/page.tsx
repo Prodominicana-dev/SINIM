@@ -5,11 +5,11 @@ import Card from "@/src/components/settings/products/card";
 import Header from "@/src/components/settings/header";
 import Product from "@/src/models/product";
 import ProductDialog from "@/src/components/settings/products/dialog";
-import { useProducts } from "@/src/services/products/service";
+import { useAllProducts } from "@/src/services/products/service";
 import { nfd } from "unorm";
 
 export default function Page() {
-  const { data, isLoading, isError, refetch } = useProducts();
+  const { data, isLoading, isError, refetch } = useAllProducts();
   const [products, setProducts] = useState<Product[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState("");
@@ -58,7 +58,6 @@ export default function Page() {
     }
     const normalTotalPages = Math.ceil(products?.length / itemsPerPage);
     setTotalPages(normalTotalPages);
-    setCurrentPage(1);
     setCurrentPageData(products?.slice(startIndex, endIndex));
   }, [products, data, currentPage, search]);
 
@@ -102,9 +101,10 @@ export default function Page() {
         </div>
       </div>
       <div className="w-full p-8 space-y-5">
-        <div className="grid items-center justify-between w-full h-24 grid-cols-3 p-5 font-bold text-center bg-white rounded-lg ring-2 ring-gray-100">
+        <div className="grid items-center justify-between w-full h-24 grid-cols-4 p-5 font-bold text-center bg-white rounded-lg ring-2 ring-gray-100">
           <div className="text-center">Nombre</div>
           <div>Código</div>
+          <div>Estado</div>
           <div>Acción</div>
         </div>
 

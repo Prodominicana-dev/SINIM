@@ -100,3 +100,11 @@ export function useSelectProducts() {
     return data.map((item: Product) => item);
   });
 }
+
+export function useAllProducts() {
+  return useQuery(["allProducts"], async () => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/products/all`;
+    const { data } = await axios.get(url);
+    return data.map((item: Product) => item);
+  });
+}

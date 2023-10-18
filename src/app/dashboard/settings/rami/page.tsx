@@ -34,14 +34,12 @@ export default function Page() {
   const nextPage = () => {
     if (currentPage < ramis.length / itemsPerPage) {
       setCurrentPage(currentPage + 1);
-      setStartIndex((currentPage + 1 - 1) * itemsPerPage);
     }
   };
 
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
-      setStartIndex((currentPage - 1 - 1) * itemsPerPage);
     }
   };
 
@@ -67,7 +65,6 @@ export default function Page() {
     }
     const normalTotalPages = Math.ceil(ramis?.length / itemsPerPage);
     setTotalPages(normalTotalPages);
-    setCurrentPage(1);
     setCurrentPageData(ramis?.slice(startIndex, endIndex));
   }, [ramis, data, currentPage, search]);
 
