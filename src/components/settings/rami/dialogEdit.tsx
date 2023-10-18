@@ -62,13 +62,13 @@ export default function RamiEditDialog({
   const [tariffsImposed, setTariffsImposed] = useState<any>("");
   const [webResource, setWebResource] = useState<any>("");
   const outputReq = Editor({placeholder: "Requisitos de exportacion...", content: data?.outputRequirement});
-  const importReq = Editor({placeholder: "Requisitos de importación...", content: data?.outputRequirement});
-  const regTecnicas = Editor({placeholder: "Regulaciones técnicas...", content: data?.outputRequirement});
-  const permCertf = Editor({placeholder: "Permisos y certificaciones...", content: data?.outputRequirement});
-  const etiquetado = Editor({placeholder: "Etiquetado...", content: data?.outputRequirement});
-  const acComerciales = Editor({placeholder: "Acuerdos comerciales...", content: data?.outputRequirement});
-  const impAran = Editor({placeholder: "Impuestos y aranceles...", content: data?.outputRequirement});
-  const recursos = Editor({placeholder: "Recursos web...", content: data?.outputRequirement});
+  const importReq = Editor({placeholder: "Requisitos de importación...", content: data?.importRequirement});
+  const regTecnicas = Editor({placeholder: "Regulaciones técnicas...", content: data?.technicalRequirements});
+  const permCertf = Editor({placeholder: "Permisos y certificaciones...", content: data?.permitsCertifications});
+  const etiquetado = Editor({placeholder: "Etiquetado...", content: data?.labelingCertifications});
+  const acComerciales = Editor({placeholder: "Acuerdos comerciales...", content: data?.tradeAgreement});
+  const impAran = Editor({placeholder: "Impuestos y aranceles...", content: data?.tariffsImposed});
+  const recursos = Editor({placeholder: "Recursos web...", content: data?.webResource});
 
 
   useEffect(() => {
