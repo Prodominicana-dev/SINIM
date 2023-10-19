@@ -1,22 +1,22 @@
 "use client";
-import Saim from "@/src/models/saim";
+import Sied from "@/src/models/sied";
 import { useState, useEffect } from "react";
 import {
   PlusIcon,
   AdjustmentsHorizontalIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
-import SCard from "@/src/components/settings/saim/card";
-import SaimDialog from "@/src/components/settings/saim/dialog";
+import SCard from "@/src/components/settings/sied/card";
+import SiedDialog from "@/src/components/settings/sied/dialog";
 import React from "react";
 import { Select } from "@mantine/core";
 import { Button } from "@material-tailwind/react";
 import Header from "@/src/components/settings/header";
-import useSaims, { useSaimsPage } from "@/src/services/saim/service";
+import useSieds, { useSiedsPage } from "@/src/services/sied/service";
 
 export default function Page() {
-  const [data, setData] = useState<Saim[]>([]);
-  const [filteredData, setFilteredData] = useState<Saim[]>([]);
+  const [data, setData] = useState<Sied[]>([]);
+  const [filteredData, setFilteredData] = useState<Sied[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Todos");
   const [open, setOpen] = React.useState(false);
@@ -31,12 +31,12 @@ export default function Page() {
   const update = () => {
     setRefresh(!refresh);
   };
-  const { data: d, refetch } = useSaims();
+  const { data: d, refetch } = useSieds();
   useEffect(() => {
     setData(d);
   }, [d]);
 
-  const pagination = useSaimsPage();
+  const pagination = useSiedsPage();
 
   useEffect(() => {
     refetch().then((res) => {
@@ -58,7 +58,7 @@ export default function Page() {
       category === "Todos"
         ? data
         : data.filter(
-            (saim) => saim.category.toLowerCase() === category.toLowerCase()
+            (sied) => sied.category.toLowerCase() === category.toLowerCase()
           );
 
     let filteredBySearch;
@@ -66,9 +66,9 @@ export default function Page() {
     if (!status) {
       // Si no se ha seleccionado un estado, mostrar todos los registros
       filteredBySearch = filteredByCategory.filter(
-        (saim) =>
-          saim.title.toLowerCase().includes(search.toLowerCase()) ||
-          saim.products.some(
+        (sied) =>
+          sied.title.toLowerCase().includes(search.toLowerCase()) ||
+          sied.products.some(
             (product) =>
               product.name.toLowerCase().includes(search.toLowerCase()) ||
               product.code.toLowerCase().includes(search.toLowerCase())
@@ -77,10 +77,10 @@ export default function Page() {
     } else {
       // Si se ha seleccionado un estado, filtrar por estado y búsqueda
       filteredBySearch = filteredByCategory.filter(
-        (saim) =>
-          saim.status.toLowerCase() === status.toLowerCase() &&
-          (saim.title.toLowerCase().includes(search.toLowerCase()) ||
-            saim.products.some(
+        (sied) =>
+          sied.status.toLowerCase() === status.toLowerCase() &&
+          (sied.title.toLowerCase().includes(search.toLowerCase()) ||
+            sied.products.some(
               (product) =>
                 product.name.toLowerCase().includes(search.toLowerCase()) ||
                 product.code.toLowerCase().includes(search.toLowerCase())
@@ -95,14 +95,14 @@ export default function Page() {
     filterData();
   }, [search, category]);
 
-  const filterSaims = [
+  const filterSieds = [
     "Todos",
     "Oportunidades",
     "Actualizaciones",
     "Amenazas",
     "Obstáculos",
   ];
-  const statusSaims = [
+  const statusSieds = [
     { label: "Publicados", value: "active" },
     { label: "Ocultos", value: "deleted" },
   ];
@@ -112,19 +112,19 @@ export default function Page() {
     const categoryToFilter = selectedCategory || "Todos";
 
     if (categoryToFilter.toLowerCase() == "todos") {
-      const SaimByCategory = data.filter(
-        (saim) => saim.status.toLowerCase() === statusToFilter.toLowerCase()
+      const SiedByCategory = data.filter(
+        (sied) => sied.status.toLowerCase() === statusToFilter.toLowerCase()
       );
       setCategory(categoryToFilter);
-      setFilteredData(SaimByCategory);
+      setFilteredData(SiedByCategory);
     } else {
-      const SaimByCategory = data.filter(
-        (saim) =>
-          saim.category.toLowerCase() === categoryToFilter.toLowerCase() &&
-          saim.status.toLowerCase() === statusToFilter.toLowerCase()
+      const SiedByCategory = data.filter(
+        (sied) =>
+          sied.category.toLowerCase() === categoryToFilter.toLowerCase() &&
+          sied.status.toLowerCase() === statusToFilter.toLowerCase()
       );
       setCategory(categoryToFilter);
-      setFilteredData(SaimByCategory);
+      setFilteredData(SiedByCategory);
     }
   };
 
@@ -132,19 +132,19 @@ export default function Page() {
     const statusToFilter = selectedStatus || "active";
     const categoryToFilter = category || "Todos";
 
-    const SaimByStatus =
+    const SiedByStatus =
       categoryToFilter !== "Todos"
         ? data.filter(
-            (saim) =>
-              saim.status.toLowerCase() === statusToFilter.toLowerCase() &&
-              saim.category.toLowerCase() === categoryToFilter.toLowerCase()
+            (sied) =>
+              sied.status.toLowerCase() === statusToFilter.toLowerCase() &&
+              sied.category.toLowerCase() === categoryToFilter.toLowerCase()
           )
         : data.filter(
-            (saim) => saim.status.toLowerCase() === statusToFilter.toLowerCase()
+            (sied) => sied.status.toLowerCase() === statusToFilter.toLowerCase()
           );
     setStatus(statusToFilter);
-    console.log(SaimByStatus);
-    setFilteredData(SaimByStatus);
+    console.log(SiedByStatus);
+    setFilteredData(SiedByStatus);
   };
 
   const handleFilterOpen = () => {
@@ -157,8 +157,8 @@ export default function Page() {
     <div>
       <div className="flex flex-col items-center justify-center w-full h-full">
         <Header
-          title="Gestión de Alertas Comerciales"
-          message="Tu centro de operaciones personal para alertas comerciales. Agrega, edita y oculta información clave al instante. Toma el control de tus alertas."
+          title="Gestión de Alertas de IED"
+          message="Tu centro de operaciones personal para alertas de IED. Agrega, edita y oculta información clave al instante. Toma el control de tus alertas."
         />
         <div className="w-full h-16">
           <div className="flex flex-row flex-wrap justify-end w-full h-full p-8 space-x-8">
@@ -189,7 +189,7 @@ export default function Page() {
               className="w-full"
               size="md"
               radius="md"
-              data={filterSaims}
+              data={filterSieds}
               defaultValue="Todos"
               searchable={false}
               value={category}
@@ -202,7 +202,7 @@ export default function Page() {
               className="w-full"
               size="md"
               radius="md"
-              data={statusSaims}
+              data={statusSieds}
               placeholder="Estado"
               searchable={false}
               value={status}
@@ -234,17 +234,17 @@ export default function Page() {
           {/* {search === "" && category === "Todos" && status === "active" ? (
             <SettingsFeed queryI={pagination} update={update} />
           ) : (
-            filteredData?.map((saim) => {
+            filteredData?.map((sied) => {
               return (
-                <SCard key={saim.id} data={saim} update={update} />
+                <SCard key={sied.id} data={sied} update={update} />
               );
             })
           )} */}
-          {filteredData?.map((saim) => {
-            return <SCard key={saim.id} data={saim} update={update} />;
+          {filteredData?.map((sied) => {
+            return <SCard key={sied.id} data={sied} update={update} />;
           })}
         </div>
-        <SaimDialog open={open} handleOpen={handleOpen} update={update} />
+        <SiedDialog open={open} handleOpen={handleOpen} update={update} />
       </div>
     </div>
   );

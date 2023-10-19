@@ -2,16 +2,12 @@
 import React, { useEffect } from "react";
 import {
   Navbar,
-  Collapse,
   Typography,
   IconButton,
-  Drawer,
-  Button,
 } from "@material-tailwind/react";
 
 import UserProfile from "./userprofile";
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Suscribe from "../saim/Suscribe/suscribe";

@@ -11,26 +11,17 @@ import {
   TabsBody,
   TabsHeader,
 } from "@material-tailwind/react";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useAtom } from "jotai";
-import { countrySelect, productSelect, saimAtom } from "@/src/state/states";
-import TextEditor from "./rich-editor";
+import { countrySelect, productSelect } from "@/src/state/states";
+import TextEditor from "../rich-editor";
 import { useRami } from "@/src/services/ramis/service";
-import { useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { Link } from "@mantine/tiptap";
-import Placeholder from "@tiptap/extension-placeholder";
-import Highlight from "@tiptap/extension-highlight";
-import Underline from "@tiptap/extension-underline";
-import TextAlign from "@tiptap/extension-text-align";
-import { Image as Img } from "@tiptap/extension-image";
 import Editor from "../rich-editor/config";
-
 
 const animatedComponents = makeAnimated();
 
@@ -61,15 +52,38 @@ export default function RamiEditDialog({
   const [tradeAgreement, setTradeAgreement] = useState<any>("");
   const [tariffsImposed, setTariffsImposed] = useState<any>("");
   const [webResource, setWebResource] = useState<any>("");
-  const outputReq = Editor({placeholder: "Requisitos de exportacion...", content: data?.outputRequirement});
-  const importReq = Editor({placeholder: "Requisitos de importación...", content: data?.importRequirement});
-  const regTecnicas = Editor({placeholder: "Regulaciones técnicas...", content: data?.technicalRequirements});
-  const permCertf = Editor({placeholder: "Permisos y certificaciones...", content: data?.permitsCertifications});
-  const etiquetado = Editor({placeholder: "Etiquetado...", content: data?.labelingCertifications});
-  const acComerciales = Editor({placeholder: "Acuerdos comerciales...", content: data?.tradeAgreement});
-  const impAran = Editor({placeholder: "Impuestos y aranceles...", content: data?.tariffsImposed});
-  const recursos = Editor({placeholder: "Recursos web...", content: data?.webResource});
-
+  const outputReq = Editor({
+    placeholder: "Requisitos de exportacion...",
+    content: data?.outputRequirement,
+  });
+  const importReq = Editor({
+    placeholder: "Requisitos de importación...",
+    content: data?.importRequirement,
+  });
+  const regTecnicas = Editor({
+    placeholder: "Regulaciones técnicas...",
+    content: data?.technicalRequirements,
+  });
+  const permCertf = Editor({
+    placeholder: "Permisos y certificaciones...",
+    content: data?.permitsCertifications,
+  });
+  const etiquetado = Editor({
+    placeholder: "Etiquetado...",
+    content: data?.labelingCertifications,
+  });
+  const acComerciales = Editor({
+    placeholder: "Acuerdos comerciales...",
+    content: data?.tradeAgreement,
+  });
+  const impAran = Editor({
+    placeholder: "Impuestos y aranceles...",
+    content: data?.tariffsImposed,
+  });
+  const recursos = Editor({
+    placeholder: "Recursos web...",
+    content: data?.webResource,
+  });
 
   useEffect(() => {
     const ramidata = [
@@ -118,7 +132,7 @@ export default function RamiEditDialog({
   });
 
   useEffect(() => {
-    if(!isLoading){
+    if (!isLoading) {
       const ramiCountry = countries.find(
         (country: any) => country.value.id === data.country.id
       );
@@ -144,18 +158,27 @@ export default function RamiEditDialog({
       setTariffsImposed(data?.tariffsImposed);
       setWebResource(data?.webResource);
     }
-  }, [data, isLoading])
+  }, [data, isLoading]);
 
-useEffect(() => {
-  setOutputRequirement(outputReq?.getHTML());
-  setImportRequirement(importReq?.getHTML());
-  setTechnicalRequirements(regTecnicas?.getHTML());
-  setPermitsCertifications(permCertf?.getHTML());
-  setLabelingCertifications(etiquetado?.getHTML());
-  setTradeAgreement(acComerciales?.getHTML());
-  setTariffsImposed(impAran?.getHTML());
-  setWebResource(recursos?.getHTML());
-}, [outputReq?.getHTML(), importReq?.getHTML(), regTecnicas?.getHTML(), permCertf?.getHTML(), etiquetado?.getHTML(), acComerciales?.getHTML(), impAran?.getHTML(), recursos?.getHTML()]);
+  useEffect(() => {
+    setOutputRequirement(outputReq?.getHTML());
+    setImportRequirement(importReq?.getHTML());
+    setTechnicalRequirements(regTecnicas?.getHTML());
+    setPermitsCertifications(permCertf?.getHTML());
+    setLabelingCertifications(etiquetado?.getHTML());
+    setTradeAgreement(acComerciales?.getHTML());
+    setTariffsImposed(impAran?.getHTML());
+    setWebResource(recursos?.getHTML());
+  }, [
+    outputReq?.getHTML(),
+    importReq?.getHTML(),
+    regTecnicas?.getHTML(),
+    permCertf?.getHTML(),
+    etiquetado?.getHTML(),
+    acComerciales?.getHTML(),
+    impAran?.getHTML(),
+    recursos?.getHTML(),
+  ]);
 
   const handleSubmit = async () => {
     const data = {
@@ -170,7 +193,7 @@ useEffect(() => {
       tariffsImposed: tariffsImposed,
       webResource: webResource,
     };
-    console.log(data.outputRequirement)
+    console.log(data.outputRequirement);
     if (!rami) {
       return await axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/rami`, data)
@@ -350,16 +373,11 @@ function UnderlineTabs({ data }: any) {
         ))}
       </TabsHeader>
       <TabsBody>
-        {data.map(
-          ({ label, value, editor }: any, index: number) => (
-            <TabPanel className="p-0" key={index} value={value}>
-              <SectionRami
-                title={label}
-                editor={editor}
-              />
-            </TabPanel>
-          )
-        )}
+        {data.map(({ label, value, editor }: any, index: number) => (
+          <TabPanel className="p-0" key={index} value={value}>
+            <SectionRami title={label} editor={editor} />
+          </TabPanel>
+        ))}
       </TabsBody>
     </Tabs>
   );

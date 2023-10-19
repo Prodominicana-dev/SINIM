@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
 import SiedCard from "./card";
 import Sied from "@/src/models/sied";

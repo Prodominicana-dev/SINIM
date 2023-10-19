@@ -1,8 +1,6 @@
-import Rami from "@/src/models/rami";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import React, { useEffect } from "react";
-import RamiDialog from "./dialogEdit";
-import DeleteButton from "../saim/delete";
+import React from "react";
+import DeleteButton from "../delete";
 import RamiEditDialog from "./dialogEdit";
 
 export default function Card({
@@ -29,7 +27,6 @@ export default function Card({
     message: "Ha ocurrido un error, intenta nuevamente.",
     color: "red",
   };
-  
 
   return (
     <>
@@ -44,22 +41,24 @@ export default function Card({
           >
             <PencilSquareIcon className="w-7" />
           </button>
-          <button className="flex items-center justify-center text-black bg-white rounded-lg w-14 h-14 ring-1 ring-gray-100" 
-            onClick={handleDeleteOpen}>
+          <button
+            className="flex items-center justify-center text-black bg-white rounded-lg w-14 h-14 ring-1 ring-gray-100"
+            onClick={handleDeleteOpen}
+          >
             <TrashIcon className="w-7" />
           </button>
         </div>
       </div>
       <DeleteButton
-          open={deleteOpen}
-          handleOpen={handleDeleteOpen}
-          updateSaims={updateRamis}
-          title={"¿Estás seguro de eliminar este Requisito?"}
-          message="El RAMI será eliminada y no podrá ser recuperada."
-          endpoint={`/rami/${rami.id}`}
-          createNotification={deleteCreateNotification}
-          errorNotification={deleteErrorNotification}
-        />
+        open={deleteOpen}
+        handleOpen={handleDeleteOpen}
+        update={updateRamis}
+        title={"¿Estás seguro de eliminar este Requisito?"}
+        message="El RAMI será eliminada y no podrá ser recuperada."
+        endpoint={`/rami/${rami.id}`}
+        createNotification={deleteCreateNotification}
+        errorNotification={deleteErrorNotification}
+      />
       {open ? (
         <RamiEditDialog
           rami={rami}

@@ -11,17 +11,16 @@ import {
   TabsBody,
   TabsHeader,
 } from "@material-tailwind/react";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useAtom } from "jotai";
-import { countrySelect, productSelect, saimAtom } from "@/src/state/states";
-import TextEditor from "./rich-editor";
+import { countrySelect, productSelect } from "@/src/state/states";
+import TextEditor from "../rich-editor";
 import Editor from "../rich-editor/config";
-
 
 const animatedComponents = makeAnimated();
 
@@ -39,7 +38,7 @@ export default function RamiCreateDialog({
   const [countries] = useAtom(countrySelect);
   const [products] = useAtom(productSelect);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
-  const [selectedProducts, setSelectedProducts] = useState<any>([]);  
+  const [selectedProducts, setSelectedProducts] = useState<any>([]);
   const [ramiData, setRamiData] = useState<any>([]);
   const [outputRequirement, setOutputRequirement] = useState<any>("");
   const [importRequirement, setImportRequirement] = useState<any>("");
@@ -49,16 +48,39 @@ export default function RamiCreateDialog({
   const [tradeAgreement, setTradeAgreement] = useState<any>("");
   const [tariffsImposed, setTariffsImposed] = useState<any>("");
   const [webResource, setWebResource] = useState<any>("");
-  const outputReq = Editor({placeholder: "Requisitos de exportacion...", content: outputRequirement});
-  const importReq = Editor({placeholder: "Requisitos de importación...", content: importRequirement});
-  const regTecnicas = Editor({placeholder: "Regulaciones técnicas...", content: technicalRequirements});
-  const permCertf = Editor({placeholder: "Permisos y certificaciones...", content: permitsCertifications});
-  const etiquetado = Editor({placeholder: "Etiquetado...", content: labelingCertifications});
-  const acComerciales = Editor({placeholder: "Acuerdos comerciales...", content: tradeAgreement});
-  const impAran = Editor({placeholder: "Impuestos y aranceles...", content: tariffsImposed});
-  const recursos = Editor({placeholder: "Recursos web...", content: webResource});
+  const outputReq = Editor({
+    placeholder: "Requisitos de exportacion...",
+    content: outputRequirement,
+  });
+  const importReq = Editor({
+    placeholder: "Requisitos de importación...",
+    content: importRequirement,
+  });
+  const regTecnicas = Editor({
+    placeholder: "Regulaciones técnicas...",
+    content: technicalRequirements,
+  });
+  const permCertf = Editor({
+    placeholder: "Permisos y certificaciones...",
+    content: permitsCertifications,
+  });
+  const etiquetado = Editor({
+    placeholder: "Etiquetado...",
+    content: labelingCertifications,
+  });
+  const acComerciales = Editor({
+    placeholder: "Acuerdos comerciales...",
+    content: tradeAgreement,
+  });
+  const impAran = Editor({
+    placeholder: "Impuestos y aranceles...",
+    content: tariffsImposed,
+  });
+  const recursos = Editor({
+    placeholder: "Recursos web...",
+    content: webResource,
+  });
 
-  
   const ramidata = [
     {
       label: "Requerimientos salida",
@@ -104,20 +126,27 @@ export default function RamiCreateDialog({
 
   useEffect(() => {
     setRamiData(ramidata);
-  },
-  [ramidata]);
+  }, [ramidata]);
 
-
-useEffect(() => {
-  setOutputRequirement(outputReq?.getHTML());
-  setImportRequirement(importReq?.getHTML());
-  setTechnicalRequirements(regTecnicas?.getHTML());
-  setPermitsCertifications(permCertf?.getHTML());
-  setLabelingCertifications(etiquetado?.getHTML());
-  setTradeAgreement(acComerciales?.getHTML());
-  setTariffsImposed(impAran?.getHTML());
-  setWebResource(recursos?.getHTML());
-}, [outputReq?.getHTML(), importReq?.getHTML(), regTecnicas?.getHTML(), permCertf?.getHTML(), etiquetado?.getHTML(), acComerciales?.getHTML(), impAran?.getHTML(), recursos?.getHTML()]);
+  useEffect(() => {
+    setOutputRequirement(outputReq?.getHTML());
+    setImportRequirement(importReq?.getHTML());
+    setTechnicalRequirements(regTecnicas?.getHTML());
+    setPermitsCertifications(permCertf?.getHTML());
+    setLabelingCertifications(etiquetado?.getHTML());
+    setTradeAgreement(acComerciales?.getHTML());
+    setTariffsImposed(impAran?.getHTML());
+    setWebResource(recursos?.getHTML());
+  }, [
+    outputReq?.getHTML(),
+    importReq?.getHTML(),
+    regTecnicas?.getHTML(),
+    permCertf?.getHTML(),
+    etiquetado?.getHTML(),
+    acComerciales?.getHTML(),
+    impAran?.getHTML(),
+    recursos?.getHTML(),
+  ]);
 
   const handleSubmit = async () => {
     const data = {
@@ -132,29 +161,28 @@ useEffect(() => {
       tariffsImposed: tariffsImposed,
       webResource: webResource,
     };
-    console.log(data.outputRequirement)
-      return await axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/rami`, data)
-        .then((res) => {
-          if (res.status < 300) {
-            notifications.show({
-              title: "RAMI creado correctamente",
-              message: "El RAMI se creó correctamente.",
-              color: "teal",
-              autoClose: 5000,
-            });
-            updateRami();
-            handleOpen();
-          } else {
-            notifications.show({
-              title: "Error creando el RAMI",
-              message: "Ha ocurrido un error, intenta nuevamente.",
-              color: "red",
-              autoClose: 5000,
-            });
-          }
-        });
-    
+    console.log(data.outputRequirement);
+    return await axios
+      .post(`${process.env.NEXT_PUBLIC_API_URL}/rami`, data)
+      .then((res) => {
+        if (res.status < 300) {
+          notifications.show({
+            title: "RAMI creado correctamente",
+            message: "El RAMI se creó correctamente.",
+            color: "teal",
+            autoClose: 5000,
+          });
+          updateRami();
+          handleOpen();
+        } else {
+          notifications.show({
+            title: "Error creando el RAMI",
+            message: "Ha ocurrido un error, intenta nuevamente.",
+            color: "red",
+            autoClose: 5000,
+          });
+        }
+      });
   };
 
   return (
@@ -288,16 +316,11 @@ function UnderlineTabs({ data }: any) {
         ))}
       </TabsHeader>
       <TabsBody>
-        {data.map(
-          ({ label, value, editor }: any, index: number) => (
-            <TabPanel className="p-0" key={index} value={value}>
-              <SectionRami
-                title={label}
-                editor={editor}
-              />
-            </TabPanel>
-          )
-        )}
+        {data.map(({ label, value, editor }: any, index: number) => (
+          <TabPanel className="p-0" key={index} value={value}>
+            <SectionRami title={label} editor={editor} />
+          </TabPanel>
+        ))}
       </TabsBody>
     </Tabs>
   );

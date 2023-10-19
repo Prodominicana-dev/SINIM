@@ -2,7 +2,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Typography,
 } from "@material-tailwind/react";
 import React from "react";
 import Image from "next/image";

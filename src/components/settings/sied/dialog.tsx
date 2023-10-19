@@ -15,29 +15,21 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import Saim from "@/src/models/saim";
+import Sied from "@/src/models/sied";
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from "@mantine/dropzone";
 import { Group } from "@mantine/core";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
-import { useAtom } from "jotai";
-import { countrySelect, productSelect } from "@/src/state/states";
-import { useSelectProducts } from "@/src/services/products/service";
-import ProductPopover from "../products/popover";
 import TextEditor from "../rich-editor";
 import Editor from "../rich-editor/config";
 
-const animatedComponents = makeAnimated();
-
-export default function SaimDialog({
-  saim,
+export default function SiedDialog({
+  sied,
   open,
   handleOpen,
   update,
 }: {
-  saim?: Saim;
+  sied?: Sied;
   open: boolean;
   handleOpen: () => void;
   update: () => void;
@@ -52,13 +44,7 @@ export default function SaimDialog({
     "Obstáculos",
   ];
   const [category, onChange] = useState(categories[0]);
-  const [countries] = useAtom(countrySelect);
-  const [products, setProducts] = useAtom(productSelect);
-  const [selectedCountries, setSelectedCountries] = useState<any>([]);
-  const [selectedProducts, setSelectedProducts] = useState<any>([]);
-  const [openProduct, setOpenProduct] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const { refetch } = useSelectProducts();
 
   const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
@@ -67,44 +53,18 @@ export default function SaimDialog({
     }
   };
 
-  const handleOpenProduct = () => {
-    setOpenProduct(!openProduct);
-  };
-  useEffect(() => {
-    refetch().then((res) => {
-      setProducts(res.data);
-    });
-    //pagination.refetch();
-  }, [refresh, refetch]);
-
-  const updateProducts = () => {
-    setRefresh(!refresh);
-  };
-
   const editor1 = Editor({
     placeholder: "Contenido de la alerta de IED",
-    content: saim?.description,
+    content: sied?.description,
   });
 
   useEffect(() => {
-    if (saim) {
-      editor1?.commands.insertContent(saim.description);
-      setTitle(saim.title);
-      onChange(saim.category);
-      const saimCountries = saim.countries?.map((country: any) => {
-        return { value: country, label: country.name };
-      });
-      setSelectedCountries(saimCountries);
-      const saimProducts = saim.products?.map((product: any) => {
-        const val = {
-          name: product.name,
-          code: product.code,
-        };
-        return { value: val, label: `${product.name} - ${product.code}` };
-      });
-      setSelectedProducts(saimProducts);
+    if (sied) {
+      editor1?.commands.insertContent(sied.description);
+      setTitle(sied.title);
+      onChange(sied.category);
     }
-  }, [saim]);
+  }, [sied]);
 
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
@@ -115,12 +75,6 @@ export default function SaimDialog({
       : "text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300";
 
   const handleSubmit = async (published?: boolean) => {
-    const products = selectedProducts.map((product: any) => {
-      return product.value;
-    });
-    const countries = selectedCountries.map((country: any) => {
-      return country.value;
-    });
     const data = new FormData();
     data.append("title", title);
     data.append(
@@ -128,23 +82,21 @@ export default function SaimDialog({
       editor1?.getHTML() !== undefined ? editor1?.getHTML() : ""
     );
     data.append("category", category);
-    data.append("countries", JSON.stringify(countries));
-    data.append("products", JSON.stringify(products));
     if (files.length > 0) {
       data.append("file", files[0]);
     }
     if (published) data.append("published", published.toString());
-    if (!saim) {
+    if (!sied) {
       return await axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/saim`, data)
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/sied`, data)
         .then((res) => {
           if (res.status === 200) {
             notifications.show({
-              id: "saim",
+              id: "sied",
               autoClose: 5000,
               withCloseButton: false,
-              title: "Alerta Comercial creada",
-              message: "La Alerta Comercial ha sido creada correctamente.",
+              title: "Alerta de IED creada",
+              message: "La Alerta de IED ha sido creada correctamente.",
               color: "green",
               loading: false,
             });
@@ -152,31 +104,29 @@ export default function SaimDialog({
             setFiles([]);
             editor1?.commands.clearContent();
             setTitle("");
-            setSelectedCountries([]);
-            setSelectedProducts([]);
             update();
           }
           notifications.show({
-            id: "saim",
+            id: "sied",
             autoClose: 5000,
             withCloseButton: false,
             title: "Error",
-            message: "La Alerta Comercial no se ha creado correctamente.",
+            message: "La Alerta de IED no se ha creado correctamente.",
             color: "green",
             loading: false,
           });
         });
     }
     await axios
-      .put(`${process.env.NEXT_PUBLIC_API_URL}/saim/${saim.id}`, data)
+      .put(`${process.env.NEXT_PUBLIC_API_URL}/sied/${sied.id}`, data)
       .then((res) => {
         if (res.status === 200) {
           notifications.show({
-            id: "saim",
+            id: "sied",
             autoClose: 5000,
             withCloseButton: false,
-            title: "Alerta Comercial editado",
-            message: "La Alerta Comercial ha sido modificada correctamente.",
+            title: "Alerta de IED editado",
+            message: "La Alerta de IED ha sido modificada correctamente.",
             color: "green",
             loading: false,
           });
@@ -184,17 +134,15 @@ export default function SaimDialog({
           setFiles([]);
           editor1?.commands.clearContent();
           setTitle("");
-          setSelectedCountries([]);
-          setSelectedProducts([]);
           // Editar el SAIM editado en el estado
           update();
         }
         notifications.show({
-          id: "saim",
+          id: "sied",
           autoClose: 5000,
           withCloseButton: false,
           title: "Error",
-          message: "Hubo un error editando la Alerta Comercial.",
+          message: "Hubo un error editando la Alerta de IED.",
           color: "green",
           loading: false,
         });
@@ -218,12 +166,10 @@ export default function SaimDialog({
           size="sm"
           variant="text"
           onClick={() => {
-            if (!saim) {
+            if (!sied) {
               setFiles([]);
               editor1?.commands.clearContent();
               setTitle("");
-              setSelectedCountries([]);
-              setSelectedProducts([]);
             }
             handleOpen();
           }}
@@ -260,7 +206,7 @@ export default function SaimDialog({
               className="w-full my-2 text-xl font-bold text-black placeholder-black resize-none sm:text-3xl"
               placeholder="Título"
               onChange={(e) => setTitle(e.target.value)}
-              defaultValue={saim ? title : ""}
+              defaultValue={sied ? title : ""}
             />
             <div className="text-xs font-light text-neutral-500">
               {format(Date.now(), "dd MMMM yyyy", { locale: es })}
@@ -282,13 +228,13 @@ export default function SaimDialog({
                       className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
                     />
                   </div>
-                ) : saim ? (
+                ) : sied ? (
                   <div className="flex justify-center w-full h-full">
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_API_URL}/data/saim/${saim?.id}/img/${saim?.image}`}
+                      src={`${process.env.NEXT_PUBLIC_API_URL}/data/sied/${sied?.id}/img/${sied?.image}`}
                       width={1920}
                       height={1080}
-                      alt="saim-image"
+                      alt="sied-image"
                       className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
                     />
                   </div>
@@ -303,7 +249,7 @@ export default function SaimDialog({
                   onDrop={handleDrop}
                   onReject={(e) => {
                     notifications.show({
-                      id: "saim",
+                      id: "sied",
                       autoClose: 5000,
                       withCloseButton: false,
                       title: "¿Estás loco o qué?",
@@ -335,81 +281,29 @@ export default function SaimDialog({
 
             <div className="text-lg font-normal text-black">
               <div className="text-lg font-bold text-black">
-                Contenido de la Alerta Comercial
+                Contenido de la Alerta de IED
               </div>
               <TextEditor editor={editor1} />
-            </div>
-
-            <div className="w-full my-5">
-              <div className="text-lg font-bold text-black">
-                Seleccione los países de la Alerta Comercial
-              </div>
-              <Select
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                isMulti
-                placeholder="Seleccione los países de la Alerta Comercial..."
-                onChange={(e) => setSelectedCountries(e)}
-                defaultValue={selectedCountries}
-                options={countries}
-              />
-            </div>
-
-            <div className="w-full my-5">
-              <div className="text-lg font-bold text-black">
-                Seleccione los productos de la Alerta Comercial
-              </div>
-              <div className="inline-flex w-full space-x-3">
-                <Select
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  placeholder="Seleccione los productos de la Alerta Comercial..."
-                  onChange={(e) => setSelectedProducts(e)}
-                  defaultValue={selectedProducts}
-                  options={products}
-                  className="w-11/12"
-                />
-                <ProductPopover
-                  open={openProduct}
-                  handleOpen={handleOpenProduct}
-                  updateProducts={updateProducts}
-                />
-              </div>
             </div>
 
             <div className="flex justify-end w-full h-12 my-5 space-x-3">
               <Button
                 disabled={
-                  !saim
-                    ? title === "" ||
-                      editor1?.isEmpty ||
-                      files.length === 0 ||
-                      selectedCountries.length === 0 ||
-                      selectedProducts.length === 0
-                    : title === "" ||
-                      editor1?.isEmpty ||
-                      selectedCountries.length === 0 ||
-                      selectedProducts.length === 0
+                  !sied
+                    ? title === "" || editor1?.isEmpty || files.length === 0
+                    : title === "" || editor1?.isEmpty
                 }
                 onClick={() => handleSubmit()}
                 color="green"
               >
                 Guardar
               </Button>
-              {saim?.published === false || !saim ? (
+              {sied?.published === false || !sied ? (
                 <Button
                   disabled={
-                    !saim
-                      ? title === "" ||
-                        editor1?.isEmpty ||
-                        files.length === 0 ||
-                        selectedCountries.length === 0 ||
-                        selectedProducts.length === 0
-                      : title === "" ||
-                        editor1?.isEmpty ||
-                        selectedCountries.length === 0 ||
-                        selectedProducts.length === 0
+                    !sied
+                      ? title === "" || editor1?.isEmpty || files.length === 0
+                      : title === "" || editor1?.isEmpty
                   }
                   onClick={() => handleSubmit(true)}
                   color="green"

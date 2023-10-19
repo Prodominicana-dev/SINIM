@@ -1,4 +1,4 @@
-import Saim from "@/src/models/saim";
+import Sied from "@/src/models/sied";
 import {
   EyeIcon,
   EyeSlashIcon,
@@ -14,7 +14,7 @@ import {
 } from "@material-tailwind/react";
 import Image from "next/image";
 import React from "react";
-import SaimDialog from "./dialog";
+import SiedDialog from "./dialog";
 import HideButton from "../hide";
 import ActiveButton from "../active";
 import DeleteButton from "../delete";
@@ -23,7 +23,7 @@ export default function SCard({
   data,
   update,
 }: {
-  data: Saim;
+  data: Sied;
   update: () => void;
 }) {
   const [open, setOpen] = React.useState(false);
@@ -91,7 +91,7 @@ export default function SCard({
         <Image
           width={1920}
           height={1080}
-          src={`${process.env.NEXT_PUBLIC_API_URL}/data/saim/${data.id}/img/${data.image}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/data/sied/${data.id}/img/${data.image}`}
           alt="foto"
           className="object-cover w-full h-full"
         />
@@ -146,8 +146,8 @@ export default function SCard({
             </Tooltip>
           </button>
         </div>
-        <SaimDialog
-          saim={data}
+        <SiedDialog
+          sied={data}
           open={open}
           handleOpen={handleOpen}
           update={update}
@@ -158,7 +158,7 @@ export default function SCard({
           update={update}
           title={"¿Estás seguro de ocultar la Alerta Comercial?"}
           message="La Alerta Comercial será ocultada, no eliminada."
-          endpoint={`/saim/${data.id}`}
+          endpoint={`/sied/${data.id}`}
           createNotification={hideCreateNotification}
           errorNotification={hideErrorNotification}
         />
@@ -168,7 +168,7 @@ export default function SCard({
           update={update}
           title={"¿Estás seguro de activar la Alerta Comercial?"}
           message="La Alerta Comercial se activará y podrá verla cualquier persona."
-          endpoint={`/saim/${data.id}`}
+          endpoint={`/sied/${data.id}`}
           createNotification={activeCreateNotification}
           errorNotification={activeErrorNotification}
         />
@@ -178,7 +178,7 @@ export default function SCard({
           update={update}
           title={"¿Estás seguro de eliminar la Alerta Comercial?"}
           message="La Alerta Comercial será eliminada y podrá ser recuperada."
-          endpoint={`/saim/d/${data.id}`}
+          endpoint={`/sied/d/${data.id}`}
           createNotification={deleteCreateNotification}
           errorNotification={deleteErrorNotification}
         />

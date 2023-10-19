@@ -12,9 +12,6 @@ import {
 import Link from "next/link";
 import {
   ChevronDownIcon,
-  InboxArrowDownIcon,
-  LifebuoyIcon,
-  PowerIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
 import { usePathname } from "next/navigation";

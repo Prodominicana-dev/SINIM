@@ -1,16 +1,13 @@
 import {
-  EyeDropperIcon,
   EyeIcon,
   EyeSlashIcon,
   PencilSquareIcon,
-  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Product from "@/src/models/product";
 import ProductDialog from "./dialog";
-import DeleteButton from "../saim/delete";
-import HideButton from "../saim/hide";
-import ActiveButton from "../saim/active";
+import HideButton from "../hide";
+import ActiveButton from "../active";
 
 export default function Card({
   product,
@@ -84,7 +81,7 @@ export default function Card({
       <HideButton
         open={deleteOpen}
         handleOpen={handleDeleteOpen}
-        updateSaims={updateProducts}
+        update={updateProducts}
         title={"¿Estás seguro de ocultar este producto?"}
         message="El producto será ocultado y podrá ser activado."
         endpoint={`/product/${product.id}`}
@@ -94,7 +91,7 @@ export default function Card({
       <ActiveButton
         open={activeOpen}
         handleOpen={handleActiveClose}
-        updateSaims={updateProducts}
+        update={updateProducts}
         title={"¿Estás seguro de activar este producto?"}
         message="El producto será activado y cualquier persona podría verlo."
         endpoint={`/product/${product.id}`}

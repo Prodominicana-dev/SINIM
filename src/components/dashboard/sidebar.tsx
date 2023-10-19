@@ -2,19 +2,15 @@
 // @ts-ignore
 import React, { useEffect, useRef } from "react";
 import {
-  Card,
   Typography,
   List,
   ListItem,
   ListItemPrefix,
-  ListItemSuffix,
-  Chip,
   Accordion,
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-import { PresentationChartBarIcon } from "@heroicons/react/24/solid";
-import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useHover } from "usehooks-ts";
 import Image from "next/image";
 import Link from "next/link";
@@ -94,27 +90,31 @@ export function Sidebar({ visible }: any) {
           </ListItem>
           <AccordionBody className="py-1">
             <List className="p-0 text-white">
-              {data?.map((datamarket: any, key: number) =>
-                datamarket.data.length > 1 ? (
-                  <SidebarMenu
-                    isHover={isHover}
-                    title={datamarket.category}
-                    data={datamarket.data}
-                    key={key}
-                  />
-                ) : (
-                  <Link
-                    href={`/dashboard/datamarket/${datamarket.data[0].id}`}
-                    key={key}
-                  >
-                    <ListItem>
-                      <ListItemPrefix>
-                        <div></div>
-                      </ListItemPrefix>
-                      {datamarket.data[0].title}
-                    </ListItem>
-                  </Link>
+              {!isLoading ? (
+                data?.map((datamarket: any, key: number) =>
+                  datamarket.data.length > 1 ? (
+                    <SidebarMenu
+                      isHover={isHover}
+                      title={datamarket.category}
+                      data={datamarket.data}
+                      key={key}
+                    />
+                  ) : (
+                    <Link
+                      href={`/dashboard/datamarket/${datamarket.data[0].id}`}
+                      key={key}
+                    >
+                      <ListItem>
+                        <ListItemPrefix>
+                          <div></div>
+                        </ListItemPrefix>
+                        {datamarket.data[0].title}
+                      </ListItem>
+                    </Link>
+                  )
                 )
+              ) : (
+                <ListItem>Loading...</ListItem>
               )}
             </List>
           </AccordionBody>

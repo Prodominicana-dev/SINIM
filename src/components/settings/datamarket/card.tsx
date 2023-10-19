@@ -1,15 +1,13 @@
 import {
-  EyeDropperIcon,
   EyeIcon,
   EyeSlashIcon,
   PencilSquareIcon,
-  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Datamarket from "@/src/models/datamarket";
 import DatamarketDialog from "./dialog";
-import HideButton from "../saim/hide";
-import ActiveButton from "../saim/active";
+import HideButton from "../hide";
+import ActiveButton from "../active";
 
 export default function Card({
   datamarket,
@@ -83,17 +81,17 @@ export default function Card({
       <HideButton
         open={deleteOpen}
         handleOpen={handleDeleteOpen}
-        updateSaims={updateDatamarkets}
+        update={updateDatamarkets}
         title={"¿Estás seguro de ocultar este Datamarket?"}
         message="El Datamarket será ocultado y podrá ser activado."
-        endpoint={`/datamarket/${datamarket.id}`}
+        endpoint={`/datamarket/deactive/${datamarket.id}`}
         createNotification={deleteCreateNotification}
         errorNotification={deleteErrorNotification}
       />
       <ActiveButton
         open={activeOpen}
         handleOpen={handleActiveClose}
-        updateSaims={updateDatamarkets}
+        update={updateDatamarkets}
         title={"¿Estás seguro de activar este Datamarket?"}
         message="El Datamarket será activado y cualquier persona podría verlo."
         endpoint={`/datamarket/${datamarket.id}`}

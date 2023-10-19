@@ -9,12 +9,9 @@ import {
   ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import {
-  Navbar,
-  Collapse,
   Typography,
   IconButton,
   Drawer,
-  Button,
   Avatar,
 } from "@material-tailwind/react";
 import {
@@ -29,7 +26,6 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Suscribe from "@/src/components/saim/Suscribe/suscribe";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";

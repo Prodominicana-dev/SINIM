@@ -1,7 +1,5 @@
 "use client";
 
-import { saimAtom } from "@/src/state/states";
-import { useAtom } from "jotai";
 import React from "react";
 
 export default function Page() {

@@ -1,5 +1,4 @@
 import { atom } from "jotai";
-import Sector from "../models/sector";
 import Saim from "../models/saim";
 import product from "../models/product";
 import Country from "../models/country";
