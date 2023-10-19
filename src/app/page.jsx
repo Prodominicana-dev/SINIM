@@ -68,7 +68,7 @@ export default function Home() {
       visible: true,
     },
     {
-      title: "SIED",
+      title: "Alertas de IED",
       description:
         "¡Conquista el mundo de las inversiones! Nuestro Sistema de Inteligencia de Inversión Extranjera Directa (SIED) te brinda la ventaja competitiva que necesitas. Descubre oportunidades globales, anticipa tendencias y navega por las regulaciones con facilidad para lograr inversiones exitosas.",
       color: "bg-gradient-to-tr from-[40%] from-pink-600 to-violet-800/60",

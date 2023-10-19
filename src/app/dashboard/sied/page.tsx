@@ -111,7 +111,7 @@ export default function Page() {
             loop
             muted
             className="object-cover w-full h-full"
-            src="/videos/rami.mp4"
+            src="/videos/charts.mp4"
             typeof="video/mp4"
           ></video>
         </div>

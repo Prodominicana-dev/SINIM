@@ -1,5 +1,6 @@
 export default interface DataMarket {
   id: number;
-  title: String;
-  link: string;
+  title: string;
+  url: string;
+  status: string;
 }

@@ -116,23 +116,6 @@ export function Sidebar({ visible }: any) {
                   </Link>
                 )
               )}
-              {/* <SidebarMenu isHover={isHover} title="Comercio de bienes" />
-              <Link href={"/saim"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <div></div>
-                  </ListItemPrefix>
-                  Analytics
-                </ListItem>
-              </Link>
-              <Link href={"/saim"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <div></div>
-                  </ListItemPrefix>
-                  Analytics
-                </ListItem>
-              </Link> */}
             </List>
           </AccordionBody>
         </Accordion>
@@ -176,24 +159,26 @@ export function Sidebar({ visible }: any) {
             </Typography>
           </ListItem>
         </Link>
-        {/* <ListItem>
-          <ListItemPrefix>
-            <Image
-              src={"/images/logo/sied-white.svg"}
-              width={600}
-              height={600}
-              draggable={false}
-              alt=""
-              className="w-10 h-10 text-white duration-700 group-hover:h-7 group-hover:w-7"
-            />
-          </ListItemPrefix>
-          <Typography
-            color="white"
-            className="mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100"
-          >
-            SIED
-          </Typography>
-        </ListItem> */}
+        <Link href={"/dashboard/sied"}>
+          <ListItem className="focus:bg-transparent">
+            <ListItemPrefix>
+              <Image
+                src={"/images/logo/sied-white.svg"}
+                width={600}
+                height={600}
+                draggable={false}
+                alt=""
+                className="w-10 h-10 text-white duration-700 group-hover:h-7 group-hover:w-7"
+              />
+            </ListItemPrefix>
+            <Typography
+              color="white"
+              className="mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100"
+            >
+              SIED
+            </Typography>
+          </ListItem>
+        </Link>
       </List>
     </div>
   );

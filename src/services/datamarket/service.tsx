@@ -1,10 +1,99 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import DataMarket from "@/src/models/datamarket";
+import { notifications } from "@mantine/notifications";
+
+interface DatamarketProps {
+  datamarket: any;
+  handleOpen: () => void;
+  updateDatamarkets: () => void;
+}
+
+export function createDatamarket({
+  datamarket,
+  handleOpen,
+  updateDatamarkets,
+}: DatamarketProps) {
+  return axios
+    .post(`${process.env.NEXT_PUBLIC_API_URL}/datamarket`, datamarket)
+    .then((res) => {
+      if (res.status === 201) {
+        notifications.show({
+          id: "saim",
+          autoClose: 5000,
+          withCloseButton: false,
+          title: "Datamarketo creado",
+          message: "El datamarketo ha sido creado correctamente.",
+          color: "green",
+          loading: false,
+        });
+        handleOpen();
+        updateDatamarkets();
+      } else {
+        notifications.show({
+          id: "saim",
+          autoClose: 5000,
+          withCloseButton: false,
+          title: "Error",
+          message: "El datamarketo no se ha creado correctamente.",
+          color: "red",
+          loading: false,
+        });
+      }
+    });
+}
+
+export function updateDatamarket({
+  datamarket,
+  handleOpen,
+  updateDatamarkets,
+}: DatamarketProps) {
+  return axios
+    .patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/datamarket/${datamarket.id}`,
+      datamarket
+    )
+    .then((res) => {
+      if (res.status === 200) {
+        notifications.show({
+          id: "saim",
+          autoClose: 5000,
+          withCloseButton: false,
+          title: "Datamarketo editado",
+          message: "El datamarketo ha sido actualizado correctamente.",
+          color: "green",
+          loading: false,
+        });
+        handleOpen();
+        updateDatamarkets();
+      } else {
+        notifications.show({
+          id: "saim",
+          autoClose: 5000,
+          withCloseButton: false,
+          title: "Error",
+          message: "El datamarketo no se ha actualizado correctamente.",
+          color: "red",
+          loading: false,
+        });
+      }
+    });
+}
 
 export function useDataMarkets() {
   return useQuery({
     queryKey: ["datamarkets"],
+    queryFn: async () => {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/datamarket/active`;
+      const { data } = await axios.get(url);
+      return data.map((item: DataMarket) => item);
+    },
+  });
+}
+
+export function useAllDataMarkets() {
+  return useQuery({
+    queryKey: ["alldatamarkets"],
     queryFn: async () => {
       const url = `${process.env.NEXT_PUBLIC_API_URL}/datamarket`;
       const { data } = await axios.get(url);
