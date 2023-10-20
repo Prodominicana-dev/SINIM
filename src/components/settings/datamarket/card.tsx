@@ -18,7 +18,6 @@ export default function Card({
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
-
   const [deleteOpen, setDeleteOpen] = useState(false);
   const handleDeleteOpen = () => setDeleteOpen(!deleteOpen);
   const deleteCreateNotification = {
@@ -50,9 +49,10 @@ export default function Card({
 
   return (
     <>
-      <div className="grid items-center w-full h-24 grid-cols-4 p-5 text-center bg-white rounded-lg ring-2 ring-gray-100">
+      <div className="grid items-center w-full h-24 grid-cols-5 p-5 text-center bg-white rounded-lg ring-2 ring-gray-100">
         <div className="line-clamp-2">{datamarket.title}</div>
         <div className="line-clamp-1">{datamarket.url}</div>
+        <div className="line-clamp-1">{datamarket.category}</div>
         {datamarket.status === "active" ? <div>Activo</div> : <div>Oculto</div>}
         <div className="flex justify-center space-x-5 ">
           <button
@@ -94,7 +94,7 @@ export default function Card({
         update={updateDatamarkets}
         title={"¿Estás seguro de activar este Datamarket?"}
         message="El Datamarket será activado y cualquier persona podría verlo."
-        endpoint={`/datamarket/${datamarket.id}`}
+        endpoint={`/datamarket/active/${datamarket.id}`}
         createNotification={activeCreateNotification}
         errorNotification={activeErrorNotification}
       />

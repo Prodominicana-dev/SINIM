@@ -103,9 +103,10 @@ export default function Page() {
         </div>
       </div>
       <div className="w-full p-8 space-y-5">
-        <div className="grid items-center justify-between w-full h-24 grid-cols-4 p-5 font-bold text-center bg-white rounded-lg ring-2 ring-gray-100">
+        <div className="grid items-center justify-between w-full h-24 grid-cols-5 p-5 font-bold text-center bg-white rounded-lg ring-2 ring-gray-100">
           <div className="text-center">Título</div>
           <div>Url</div>
+          <div>Category</div>
           <div>Estado</div>
           <div>Acción</div>
         </div>

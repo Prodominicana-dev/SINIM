@@ -28,6 +28,8 @@ import { useSelectProducts } from "@/src/services/products/service";
 import ProductPopover from "../products/popover";
 import TextEditor from "../rich-editor";
 import Editor from "../rich-editor/config";
+import Category from "@/src/models/category";
+import { useSaimsCategory } from "@/src/services/saim/service";
 
 const animatedComponents = makeAnimated();
 
@@ -45,13 +47,8 @@ export default function SaimDialog({
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [description] = useState<any>("");
   const [title, setTitle] = useState("");
-  const categories = [
-    "Oportunidades",
-    "Actualizaciones",
-    "Amenazas",
-    "Obstáculos",
-  ];
-  const [category, onChange] = useState(categories[0]);
+  const { data: categories, isLoading } = useSaimsCategory();
+  const [category, setCategory] = useState<Category | null>(null);
   const [countries] = useAtom(countrySelect);
   const [products, setProducts] = useAtom(productSelect);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
@@ -66,6 +63,12 @@ export default function SaimDialog({
       openRef.current(); // solo se llama si openRef.current no es null
     }
   };
+
+  useEffect(() => {
+    if (categories) {
+      setCategory(categories[0]);
+    }
+  }, [categories]);
 
   const handleOpenProduct = () => {
     setOpenProduct(!openProduct);
@@ -90,7 +93,7 @@ export default function SaimDialog({
     if (saim) {
       editor1?.commands.insertContent(saim.description);
       setTitle(saim.title);
-      onChange(saim.category);
+      setCategory(saim.category);
       const saimCountries = saim.countries?.map((country: any) => {
         return { value: country, label: country.name };
       });
@@ -127,7 +130,7 @@ export default function SaimDialog({
       "description",
       editor1?.getHTML() !== undefined ? editor1?.getHTML() : ""
     );
-    data.append("category", category);
+    data.append("categoryId", category ? category.id.toString() : "");
     data.append("countries", JSON.stringify(countries));
     data.append("products", JSON.stringify(products));
     if (files.length > 0) {
@@ -243,13 +246,16 @@ export default function SaimDialog({
                     className="flex items-center h-5 p-0 hover:bg-transparent "
                     ripple={false}
                   >
-                    {category}
+                    {category?.name}
                   </Button>
                 </MenuHandler>
                 <MenuList className="w-40 z-[9999]">
-                  {categories.map((category) => (
-                    <MenuItem key={category} onClick={() => onChange(category)}>
-                      {category}
+                  {categories?.map((category: Category) => (
+                    <MenuItem
+                      key={category.id}
+                      onClick={() => setCategory(category)}
+                    >
+                      {category.name}
                     </MenuItem>
                   ))}
                 </MenuList>

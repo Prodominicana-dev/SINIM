@@ -38,7 +38,7 @@ export function useSied(id: number) {
   });
 }
 
-export default function useSieds() {
+export function useSieds() {
   return useQuery({
     queryKey: ["sieds"],
     queryFn: async () => {
@@ -61,5 +61,16 @@ export function useSiedsPage() {
     queryFn: ({ pageParam }) => fetchSiedsData(pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.meta.next,
+  });
+}
+
+export function useSiedsCategory() {
+  return useQuery({
+    queryKey: ["siedscategory"],
+    queryFn: async () => {
+      const siedEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/category/sied`;
+      const { data } = await axios.get(siedEndpoint);
+      return data;
+    },
   });
 }

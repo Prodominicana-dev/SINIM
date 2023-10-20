@@ -5,11 +5,12 @@ import {
   DialogBody,
   Input,
 } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Datamarket from "@/src/models/datamarket";
 import {
   createDatamarket,
   updateDatamarket,
+  useDataMarketsCategories,
 } from "@/src/services/datamarket/service";
 
 export default function DatamarketDialog({
@@ -26,12 +27,22 @@ export default function DatamarketDialog({
   const [datamarketTitle, setDatamarketTitle] = useState<any>(
     datamarket?.title
   );
+  console.log(datamarket);
   const [datamarketUrl, setDatamarketUrl] = useState<any>(datamarket?.url);
+  const [datamarketCategory, setDatamarketCategory] = useState(
+    datamarket?.category
+  );
+  const { data } = useDataMarketsCategories();
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   const handleDatamarketSubmit = async () => {
     const _datamarket = {
       id: datamarket?.id || 0,
       title: datamarketTitle,
+      category: datamarketCategory,
       url: datamarketUrl,
     };
 
@@ -60,6 +71,19 @@ export default function DatamarketDialog({
               onChange={(e) => setDatamarketUrl(e.target.value)}
               defaultValue={datamarket?.url || ""}
             />
+            <Input
+              list="categories"
+              crossOrigin={""}
+              label="Catetogoria"
+              onChange={(e) => setDatamarketCategory(e.target.value)}
+              defaultValue={datamarket?.category || ""}
+              value={datamarketCategory}
+            />
+            <datalist id="categories">
+              {data?.map((value: any, index: any) => (
+                <option key={index} value={value.category} />
+              ))}
+            </datalist>
             <Button className="bg-navy" onClick={handleDatamarketSubmit}>
               {datamarket ? "Actualizar" : "Guardar"}
             </Button>

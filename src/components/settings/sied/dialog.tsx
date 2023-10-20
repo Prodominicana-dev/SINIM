@@ -22,6 +22,8 @@ import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import TextEditor from "../rich-editor";
 import Editor from "../rich-editor/config";
+import { useSiedsCategory } from "@/src/services/sied/service";
+import Category from "@/src/models/category";
 
 export default function SiedDialog({
   sied,
@@ -37,13 +39,8 @@ export default function SiedDialog({
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [description] = useState<any>("");
   const [title, setTitle] = useState("");
-  const categories = [
-    "Oportunidades",
-    "Actualizaciones",
-    "Amenazas",
-    "Obstáculos",
-  ];
-  const [category, onChange] = useState(categories[0]);
+  const { data: categories, isLoading } = useSiedsCategory();
+  const [category, setCategory] = useState<Category | null>(null);
   const [refresh, setRefresh] = useState(false);
 
   const openRef = useRef<() => void>(null);
@@ -62,9 +59,15 @@ export default function SiedDialog({
     if (sied) {
       editor1?.commands.insertContent(sied.description);
       setTitle(sied.title);
-      onChange(sied.category);
+      setCategory(sied.category);
     }
   }, [sied]);
+
+  useEffect(() => {
+    if (categories) {
+      setCategory(categories[0]);
+    }
+  }, [categories]);
 
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
@@ -81,7 +84,7 @@ export default function SiedDialog({
       "description",
       editor1?.getHTML() !== undefined ? editor1?.getHTML() : ""
     );
-    data.append("category", category);
+    data.append("categoryId", category ? category.id.toString() : "");
     if (files.length > 0) {
       data.append("file", files[0]);
     }
@@ -189,15 +192,22 @@ export default function SiedDialog({
                     className="flex items-center h-5 p-0 hover:bg-transparent "
                     ripple={false}
                   >
-                    {category}
+                    {category?.name}
                   </Button>
                 </MenuHandler>
                 <MenuList className="w-40 z-[9999]">
-                  {categories.map((category) => (
-                    <MenuItem key={category} onClick={() => onChange(category)}>
-                      {category}
-                    </MenuItem>
-                  ))}
+                  {categories ? (
+                    categories.map((category: Category) => (
+                      <MenuItem
+                        key={category.id}
+                        onClick={() => setCategory(category)}
+                      >
+                        {category.name}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem>Loading...</MenuItem>
+                  )}
                 </MenuList>
               </Menu>
             </div>

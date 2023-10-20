@@ -12,7 +12,12 @@ import React from "react";
 import { Select } from "@mantine/core";
 import { Button } from "@material-tailwind/react";
 import Header from "@/src/components/settings/header";
-import useSieds, { useSiedsPage } from "@/src/services/sied/service";
+import {
+  useSiedsPage,
+  useSieds,
+  useSiedsCategory,
+} from "@/src/services/sied/service";
+import Category from "@/src/models/category";
 
 export default function Page() {
   const [data, setData] = useState<Sied[]>([]);
@@ -22,6 +27,7 @@ export default function Page() {
   const [open, setOpen] = React.useState(false);
   const [refresh, setRefresh] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [filterSieds, setFilterSieds] = useState([]);
   const [status, setStatus] = useState("");
 
   const handleOpen = () => {
@@ -39,7 +45,7 @@ export default function Page() {
   const pagination = useSiedsPage();
 
   useEffect(() => {
-    refetch().then((res) => {
+    refetch().then((res: any) => {
       setData(res.data);
     });
     pagination.refetch();
@@ -58,7 +64,8 @@ export default function Page() {
       category === "Todos"
         ? data
         : data.filter(
-            (sied) => sied.category.toLowerCase() === category.toLowerCase()
+            (sied) =>
+              sied.category.name.toLowerCase() === category.toLowerCase()
           );
 
     let filteredBySearch;
@@ -95,12 +102,18 @@ export default function Page() {
     filterData();
   }, [search, category]);
 
-  const filterSieds = [
-    "Todos",
-    "Oportunidades",
-    "Actualizaciones",
-    "Amenazas",
-    "Obstáculos",
+  const { data: categories, isLoading } = useSiedsCategory();
+  useEffect(() => {
+    if (!isLoading) {
+      const names = categories.map((category: Category) => category.name);
+      names.unshift("Todos");
+      setFilterSieds(names);
+    }
+  }, [categories, isLoading]);
+
+  const statusSaims = [
+    { label: "Publicados", value: "active" },
+    { label: "Ocultos", value: "deleted" },
   ];
   const statusSieds = [
     { label: "Publicados", value: "active" },
@@ -120,7 +133,7 @@ export default function Page() {
     } else {
       const SiedByCategory = data.filter(
         (sied) =>
-          sied.category.toLowerCase() === categoryToFilter.toLowerCase() &&
+          sied.category.name.toLowerCase() === categoryToFilter.toLowerCase() &&
           sied.status.toLowerCase() === statusToFilter.toLowerCase()
       );
       setCategory(categoryToFilter);
@@ -137,7 +150,8 @@ export default function Page() {
         ? data.filter(
             (sied) =>
               sied.status.toLowerCase() === statusToFilter.toLowerCase() &&
-              sied.category.toLowerCase() === categoryToFilter.toLowerCase()
+              sied.category.name.toLowerCase() ===
+                categoryToFilter.toLowerCase()
           )
         : data.filter(
             (sied) => sied.status.toLowerCase() === statusToFilter.toLowerCase()

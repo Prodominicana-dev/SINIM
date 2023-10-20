@@ -63,3 +63,14 @@ export function useSaimsPage() {
     getNextPageParam: (lastPage) => lastPage.meta.next,
   });
 }
+
+export function useSaimsCategory() {
+  return useQuery({
+    queryKey: ["saimscategory"],
+    queryFn: async () => {
+      const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/category/saim`;
+      const { data } = await axios.get(saimEndpoint);
+      return data;
+    },
+  });
+}

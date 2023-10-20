@@ -97,7 +97,7 @@ export default function SCard({
         />
       </CardHeader>
       <CardBody className="text-center">
-        <div className="text-gray-500">{data.category}</div>
+        <div className="text-gray-500">{data.category.name}</div>
         <div className="flex items-center justify-center w-full h-16 mb-2 ">
           <span className="text-lg font-bold line-clamp-2">{data.title}</span>
         </div>

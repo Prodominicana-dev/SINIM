@@ -14,8 +14,13 @@ export function createDatamarket({
   handleOpen,
   updateDatamarkets,
 }: DatamarketProps) {
+  const _datamarket = {
+    title: datamarket.title,
+    category: datamarket.category,
+    url: datamarket.url,
+  };
   return axios
-    .post(`${process.env.NEXT_PUBLIC_API_URL}/datamarket`, datamarket)
+    .post(`${process.env.NEXT_PUBLIC_API_URL}/datamarket`, _datamarket)
     .then((res) => {
       if (res.status === 201) {
         notifications.show({

@@ -1,15 +1,16 @@
-import country from "./country";
-import product from "./product";
+import Category from "./category";
+import Country from "./country";
+import Product from "./product";
 
 export default interface Sied {
   id: number;
   title: string;
   description: string;
-  category: string;
+  category: Category;
   image: string;
   date: Date;
   status: string;
   published: boolean;
-  countries: country[];
-  products: product[];
+  countries: Country[];
+  products: Product[];
 }

@@ -12,7 +12,11 @@ import React from "react";
 import { Select } from "@mantine/core";
 import { Button } from "@material-tailwind/react";
 import Header from "@/src/components/settings/header";
-import useSaims, { useSaimsPage } from "@/src/services/saim/service";
+import useSaims, {
+  useSaimsCategory,
+  useSaimsPage,
+} from "@/src/services/saim/service";
+import Category from "@/src/models/category";
 
 export default function Page() {
   const [data, setData] = useState<Saim[]>([]);
@@ -23,7 +27,7 @@ export default function Page() {
   const [refresh, setRefresh] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [status, setStatus] = useState("");
-
+  const [filterSaims, setFilterSaims] = useState([]);
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -58,7 +62,8 @@ export default function Page() {
       category === "Todos"
         ? data
         : data.filter(
-            (saim) => saim.category.toLowerCase() === category.toLowerCase()
+            (saim) =>
+              saim.category.name.toLowerCase() === category.toLowerCase()
           );
 
     let filteredBySearch;
@@ -95,13 +100,15 @@ export default function Page() {
     filterData();
   }, [search, category]);
 
-  const filterSaims = [
-    "Todos",
-    "Oportunidades",
-    "Actualizaciones",
-    "Amenazas",
-    "Obstáculos",
-  ];
+  const { data: categories, isLoading } = useSaimsCategory();
+  useEffect(() => {
+    if (!isLoading) {
+      const names = categories.map((category: Category) => category.name);
+      names.unshift("Todos");
+      setFilterSaims(names);
+    }
+  }, [categories, isLoading]);
+
   const statusSaims = [
     { label: "Publicados", value: "active" },
     { label: "Ocultos", value: "deleted" },
@@ -120,7 +127,7 @@ export default function Page() {
     } else {
       const SaimByCategory = data.filter(
         (saim) =>
-          saim.category.toLowerCase() === categoryToFilter.toLowerCase() &&
+          saim.category.name.toLowerCase() === categoryToFilter.toLowerCase() &&
           saim.status.toLowerCase() === statusToFilter.toLowerCase()
       );
       setCategory(categoryToFilter);
@@ -137,7 +144,8 @@ export default function Page() {
         ? data.filter(
             (saim) =>
               saim.status.toLowerCase() === statusToFilter.toLowerCase() &&
-              saim.category.toLowerCase() === categoryToFilter.toLowerCase()
+              saim.category.name.toLowerCase() ===
+                categoryToFilter.toLowerCase()
           )
         : data.filter(
             (saim) => saim.status.toLowerCase() === statusToFilter.toLowerCase()
