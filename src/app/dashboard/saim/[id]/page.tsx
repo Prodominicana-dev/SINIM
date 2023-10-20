@@ -13,7 +13,7 @@ export default function Page({ params }: { params: { id: number } }) {
   return (
     <div className="flex justify-center h-[40rem]">
       <div className="w-10/12 sm:w-8/12">
-        <div className="text-base text-neutral-500">{data.category}</div>
+        <div className="text-base text-neutral-500">{data.category.name}</div>
         <div className="my-2 text-xl font-bold text-black sm:text-3xl">
           {data.title}
         </div>

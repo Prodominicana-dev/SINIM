@@ -49,7 +49,7 @@ export default function Modal({ id }: any) {
       </DialogHeader>
       <DialogBody className="flex justify-center h-[100vm] overflow-y-auto">
         <div className="w-10/12 sm:w-8/12">
-          <div className="text-base text-neutral-500">{data.category}</div>
+          <div className="text-base text-neutral-500">{data.category.name}</div>
           <div className="my-2 text-xl font-bold text-black sm:text-3xl">
             {data.title}
           </div>

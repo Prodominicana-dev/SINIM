@@ -20,7 +20,7 @@ export default function SiedCard(data: Sied) {
           />
         </CardHeader>
         <CardBody>
-          <div className="text-gray-500">{data.category}</div>
+          <div className="text-gray-500">{data.category.name}</div>
           <div className="mb-2 text-xl font-bold line-clamp-2">
             {data.title}
           </div>

@@ -60,7 +60,8 @@ export default function Page() {
   const handleFilter = (selectedCategory: string) => {
     // Filtrar datos por categoría y actualizar el estado
     const SiedByCategory = data.filter(
-      (sied) => sied.category.toLowerCase() === selectedCategory.toLowerCase()
+      (sied) =>
+        sied.category.name.toLowerCase() === selectedCategory.toLowerCase()
     );
 
     const selectedFilter = siedFilters.find(
@@ -82,17 +83,12 @@ export default function Page() {
       category === "Todos"
         ? data
         : data.filter(
-            (sied) => sied.category.toLowerCase() === category.toLowerCase()
+            (sied) =>
+              sied.category.name.toLowerCase() === category.toLowerCase()
           );
 
-    const filteredBySearch = filteredByCategory.filter(
-      (sied) =>
-        sied.title.toLowerCase().includes(search.toLowerCase()) ||
-        sied.products.some(
-          (product) =>
-            product.name.toLowerCase().includes(search.toLowerCase()) ||
-            product.code.toLowerCase().includes(search.toLowerCase())
-        )
+    const filteredBySearch = filteredByCategory.filter((sied) =>
+      sied.title.toLowerCase().includes(search.toLowerCase())
     );
 
     setFilteredData(filteredBySearch);

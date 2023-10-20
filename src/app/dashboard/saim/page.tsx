@@ -61,7 +61,8 @@ export default function Page() {
   const handleFilter = (selectedCategory: string) => {
     // Filtrar datos por categoría y actualizar el estado
     const SaimByCategory = data.filter(
-      (saim) => saim.category.toLowerCase() === selectedCategory.toLowerCase()
+      (saim) =>
+        saim.category.name.toLowerCase() === selectedCategory.toLowerCase()
     );
 
     const selectedFilter = saimFilters.find(
@@ -83,7 +84,8 @@ export default function Page() {
       category === "Todos"
         ? data
         : data.filter(
-            (saim) => saim.category.toLowerCase() === category.toLowerCase()
+            (saim) =>
+              saim.category.name.toLowerCase() === category.toLowerCase()
           );
 
     const filteredBySearch = filteredByCategory.filter(

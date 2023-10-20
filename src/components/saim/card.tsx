@@ -1,8 +1,4 @@
-import {
-  Card,
-  CardBody,
-  CardHeader,
-} from "@material-tailwind/react";
+import { Card, CardBody, CardHeader } from "@material-tailwind/react";
 import React from "react";
 import Image from "next/image";
 import { format } from "date-fns";
@@ -24,7 +20,7 @@ export default function SaimCard(data: Saim) {
           />
         </CardHeader>
         <CardBody>
-          <div className="text-gray-500">{data.category}</div>
+          <div className="text-gray-500">{data.category.name}</div>
           <div className="mb-2 text-xl font-bold line-clamp-2">
             {data.title}
           </div>
