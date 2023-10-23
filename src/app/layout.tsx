@@ -2,6 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ReactNode } from "react";
+import { useUsers } from "../services/users/service";
 
 const inter = Inter({ subsets: ["latin"] });
 

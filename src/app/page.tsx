@@ -1,13 +1,10 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import Card from "@/src/components/home/card";
 import Background from "@/src/components/home/background";
 import InfoTool from "@/src/components/home/infoTool";
-import { useEffect, useState } from "react";
-import config from "@/public/config.json";
-import AccessToken from "../components/token/getAccessToken";
+import { useState } from "react";
 
 export default function Home() {
   const sinim = {
@@ -87,7 +84,7 @@ export default function Home() {
   //const tools = config.tools;
   const [tool, setTool] = useState(sinim);
 
-  const changeTool = (t) => {
+  const changeTool = (t: any) => {
     setTool(t);
   };
 
