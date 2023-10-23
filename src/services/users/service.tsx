@@ -17,6 +17,7 @@ export function useUsers() {
 }
 
 export function useUsersPermissions(id: String) {
+  if(!id) return { data: null }
   return useQuery({
     queryKey: ["users"],
     queryFn: async () => {
