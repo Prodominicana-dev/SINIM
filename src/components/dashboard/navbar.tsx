@@ -61,8 +61,9 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
 
   useEffect(() => {
     if(!isLoading){
-      if(path.includes('/dashboard/settings/saim') && !user){
-        return router.push('/login?returnTo=/dashboard/settings/saim')
+      if((path.includes('/dashboard/settings/saim') || path.includes('/dashboard/settings/rami') || 
+      path.includes('/dashboard/settings/datamarket') || path.includes('/dashboard/settings/sied')) && !user){
+        return router.push(`/login?returnTo=${pathname}`)
       }
     }
   }, [user, isLoading])
