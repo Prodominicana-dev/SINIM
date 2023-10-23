@@ -12,8 +12,11 @@ import axios from "axios";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useAtom } from "jotai";
-import { countryAtom, productAtom } from "@/src/state/states";
 import { useEffect, useState } from "react";
+import { useCountries } from "@/src/services/countries/service";
+import Country from "@/src/models/country";
+import Product from "@/src/models/product";
+import { useProducts } from "@/src/services/products/service";
 
 const animatedComponents = makeAnimated();
 
@@ -25,8 +28,16 @@ interface SuscribeProps {
 
 export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
   const { user, error, isLoading } = useUser();
-  const [countries] = useAtom(countryAtom);
-  const [products] = useAtom(productAtom);
+  const {
+    data: countries,
+    isLoading: isCountriesLoading,
+    isError: isCountriesError,
+  } = useCountries();
+  const {
+    data: products,
+    isLoading: isProductsLoading,
+    isError: isProductsError,
+  } = useProducts();
   const [sCountries, setSCountries] = useState<any>([]);
   const [sProducts, setSProducts] = useState<any>([]);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
@@ -34,14 +45,14 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
 
   useEffect(() => {
     if (countries) {
-      const country = countries.map((country) => ({
+      const country = countries.map((country: Country) => ({
         value: country.id.toString(),
         label: country.name,
       }));
       setSCountries(country);
     }
     if (products) {
-      const product = products.map((product) => ({
+      const product = products.map((product: Product) => ({
         value: product.id.toString(),
         label: `${product.name} - ${product.code}`,
       }));

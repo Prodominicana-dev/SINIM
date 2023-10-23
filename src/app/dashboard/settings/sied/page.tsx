@@ -1,6 +1,6 @@
 "use client";
 import Sied from "@/src/models/sied";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import {
   PlusIcon,
   AdjustmentsHorizontalIcon,
@@ -8,7 +8,6 @@ import {
 } from "@heroicons/react/24/solid";
 import SCard from "@/src/components/settings/sied/card";
 import SiedDialog from "@/src/components/settings/sied/dialog";
-import React from "react";
 import { Select } from "@mantine/core";
 import { Button } from "@material-tailwind/react";
 import Header from "@/src/components/settings/header";
@@ -24,7 +23,7 @@ export default function Page() {
   const [filteredData, setFilteredData] = useState<Sied[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Todos");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [filterSieds, setFilterSieds] = useState([]);
@@ -55,7 +54,7 @@ export default function Page() {
     setFilteredData(data);
   }, [data, setFilteredData]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
@@ -75,11 +74,7 @@ export default function Page() {
       filteredBySearch = filteredByCategory.filter(
         (sied) =>
           sied.title.toLowerCase().includes(search.toLowerCase()) ||
-          sied.products.some(
-            (product) =>
-              product.name.toLowerCase().includes(search.toLowerCase()) ||
-              product.code.toLowerCase().includes(search.toLowerCase())
-          )
+          sied.category.name.toLowerCase().includes(search.toLowerCase())
       );
     } else {
       // Si se ha seleccionado un estado, filtrar por estado y búsqueda
@@ -87,11 +82,7 @@ export default function Page() {
         (sied) =>
           sied.status.toLowerCase() === status.toLowerCase() &&
           (sied.title.toLowerCase().includes(search.toLowerCase()) ||
-            sied.products.some(
-              (product) =>
-                product.name.toLowerCase().includes(search.toLowerCase()) ||
-                product.code.toLowerCase().includes(search.toLowerCase())
-            ))
+            sied.category.name.toLowerCase().includes(search.toLowerCase()))
       );
     }
 

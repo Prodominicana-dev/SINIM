@@ -11,16 +11,17 @@ import {
   TabsBody,
   TabsHeader,
 } from "@material-tailwind/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useAtom } from "jotai";
-import { countrySelect, productSelect } from "@/src/state/states";
 import TextEditor from "../rich-editor";
 import Editor from "../rich-editor/config";
+import { useSelectProducts } from "@/src/services/products/service";
+import { useSelectCountries } from "@/src/services/countries/service";
 
 const animatedComponents = makeAnimated();
 
@@ -35,8 +36,17 @@ export default function RamiCreateDialog({
   updateRami: () => void;
   title: string;
 }) {
-  const [countries] = useAtom(countrySelect);
-  const [products] = useAtom(productSelect);
+  const {
+    data: products,
+    isLoading: isProductsSelectLoading,
+    isError: isProductsSelectError,
+  }: any = useSelectProducts();
+
+  const {
+    data: countries,
+    isLoading: isCountriesSelectLoading,
+    isError: isCountriesSelectError,
+  }: any = useSelectCountries();
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
   const [ramiData, setRamiData] = useState<any>([]);

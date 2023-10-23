@@ -10,7 +10,7 @@ import {
   MenuList,
   MenuItem,
 } from "@material-tailwind/react";
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { format } from "date-fns";
@@ -192,7 +192,7 @@ export default function SiedDialog({
                     className="flex items-center h-5 p-0 hover:bg-transparent "
                     ripple={false}
                   >
-                    {category?.name}
+                    {category ? category.name : "Categoría"}
                   </Button>
                 </MenuHandler>
                 <MenuList className="w-40 z-[9999]">

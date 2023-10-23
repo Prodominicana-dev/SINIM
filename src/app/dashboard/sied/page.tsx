@@ -1,11 +1,10 @@
 "use client";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import Sied from "@/src/models/sied";
 import Feed from "@/src/components/sied/feed";
-import { useAtom } from "jotai";
-import { siedAtom } from "@/src/state/states";
 import SiedCard from "@/src/components/sied/card";
+import { useActiveSieds } from "@/src/services/sied/service";
 
 export default function Page() {
   const siedFilters = [
@@ -40,7 +39,7 @@ export default function Page() {
         "Acceda a los obstáculos identificados en los mercados internacionales, manteniéndose informado acerca de los desafíos que pueden impactar sus objetivos comerciales.",
     },
   ];
-  const [data, setData] = useAtom(siedAtom);
+  const { data, isLoading, isError } = useActiveSieds();
   const [filteredData, setFilteredData] = useState<Sied[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(siedFilters[0].name);
@@ -48,19 +47,18 @@ export default function Page() {
   const [categoryDescription, setCategoryDescription] = useState(
     siedFilters[0].description
   );
-
   useEffect(() => {
     setFilteredData(data);
   }, [data]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
   const handleFilter = (selectedCategory: string) => {
     // Filtrar datos por categoría y actualizar el estado
     const SiedByCategory = data.filter(
-      (sied) =>
+      (sied: Sied) =>
         sied.category.name.toLowerCase() === selectedCategory.toLowerCase()
     );
 
@@ -82,13 +80,15 @@ export default function Page() {
     const filteredByCategory =
       category === "Todos"
         ? data
-        : data.filter(
-            (sied) =>
+        : data?.filter(
+            (sied: Sied) =>
               sied.category.name.toLowerCase() === category.toLowerCase()
           );
 
-    const filteredBySearch = filteredByCategory.filter((sied) =>
-      sied.title.toLowerCase().includes(search.toLowerCase())
+    const filteredBySearch = filteredByCategory?.filter(
+      (sied: Sied) =>
+        sied.title.toLowerCase().includes(search.toLowerCase()) ||
+        sied.category.name.toLowerCase().includes(search.toLowerCase())
     );
 
     setFilteredData(filteredBySearch);
@@ -97,7 +97,6 @@ export default function Page() {
   useEffect(() => {
     filterData();
   }, [search, category]);
-
   return (
     <div className="w-full h-full">
       <div className="relative w-full sm:h-4/6">

@@ -13,11 +13,11 @@ import {
   Card,
 } from "@material-tailwind/react";
 import Image from "next/image";
-import React from "react";
 import SaimDialog from "./dialog";
 import HideButton from "../hide";
 import ActiveButton from "../active";
 import DeleteButton from "../delete";
+import { useState } from "react";
 
 export default function SCard({
   data,
@@ -26,21 +26,21 @@ export default function SCard({
   data: Saim;
   update: () => void;
 }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(!open);
   };
-  const [hideOpen, setHideOpen] = React.useState(false);
+  const [hideOpen, setHideOpen] = useState(false);
   const handleHideOpen = () => {
     setHideOpen(!hideOpen);
   };
 
-  const [activeOpen, setActiveOpen] = React.useState(false);
+  const [activeOpen, setActiveOpen] = useState(false);
   const handleActiveOpen = () => {
     setActiveOpen(!activeOpen);
   };
 
-  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const handleDeleteOpen = () => {
     setDeleteOpen(!deleteOpen);
   };

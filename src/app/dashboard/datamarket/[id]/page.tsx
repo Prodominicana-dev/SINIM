@@ -1,6 +1,5 @@
 "use client";
 import { useDataMarket } from "@/src/services/datamarket/service";
-import React from "react";
 
 export default function Page({ params }: { params: { id: number } }) {
   const { data, isLoading, isError }: any = useDataMarket(params.id);

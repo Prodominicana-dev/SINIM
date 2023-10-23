@@ -1,15 +1,29 @@
 "use client";
-import { countryAtom, productAtom, ramiAtom } from "@/src/state/states";
 import { Select } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import { useAtom } from "jotai";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useRamis } from "@/src/services/ramis/service";
+import Rami from "@/src/models/rami";
+import { useProducts } from "@/src/services/products/service";
+import { useCountries } from "@/src/services/countries/service";
+import Country from "@/src/models/country";
+import country from "@/src/models/country";
+import Product from "@/src/models/product";
 
 export default function Page() {
-  const [countries, setCountries] = useAtom(countryAtom);
-  const [products, setProducts] = useAtom(productAtom);
-  const [ramis, setRamis] = useAtom(ramiAtom);
+  const {
+    data: products,
+    isLoading: isProductsLoading,
+    isError: isProductsError,
+  } = useProducts();
+
+  const {
+    data: countries,
+    isLoading: isCountriesLoading,
+    isError: isCountriesError,
+  } = useCountries();
+  const { data: ramis, isLoading, isError } = useRamis();
   const [countriesSelect, setCountriesSelect] = useState<any>([]);
   const [productSelect, setProductSelect] = useState<any>([]);
   const [originalCountriesSelect, setOriginalCountriesSelect] = useState<any>(
@@ -22,11 +36,11 @@ export default function Page() {
 
   useEffect(() => {
     if (countries && ramis) {
-      const countryidRamis = ramis.map((rami) => rami.countryId);
+      const countryidRamis = ramis.map((rami: Rami) => rami.countryId);
 
       const country = countries
-        .filter((country) => countryidRamis.includes(country.id)) // Utiliza filter en lugar de map
-        .map((country) => ({
+        .filter((country: Country) => countryidRamis.includes(country.id)) // Utiliza filter en lugar de map
+        .map((country: country) => ({
           value: country.id.toString(),
           label: country.name,
         }));
@@ -34,10 +48,10 @@ export default function Page() {
       setCountriesSelect(country);
     }
     if (products && ramis) {
-      const productidRamis = ramis.map((rami) => rami.productId);
+      const productidRamis = ramis.map((rami: Rami) => rami.productId);
       const product = products
-        .filter((product) => productidRamis.includes(product.id)) // Utiliza filter en lugar de map
-        .map((product) => ({
+        .filter((product: Product) => productidRamis.includes(product.id)) // Utiliza filter en lugar de map
+        .map((product: Product) => ({
           value: product.id.toString(),
           label: `${product.name} - ${product.code}`,
         }));
@@ -57,12 +71,12 @@ export default function Page() {
     setSelectedProduct(value);
 
     const countryidRamis = ramis
-      .filter((rami) => rami.productId === Number(value))
-      .map((rami) => rami.countryId);
+      .filter((rami: Rami) => rami.productId === Number(value))
+      .map((rami: Rami) => rami.countryId);
 
     const countryOptions = countries
-      .filter((country) => countryidRamis.includes(country.id))
-      .map((country) => ({
+      .filter((country: Country) => countryidRamis.includes(country.id))
+      .map((country: country) => ({
         value: country.id.toString(),
         label: country.name,
       }));
@@ -80,12 +94,12 @@ export default function Page() {
 
     // Filtrar los productos basados en los Rami que tienen el país seleccionado
     const productidRamis = ramis
-      .filter((rami) => rami.countryId === Number(value))
-      .map((rami) => rami.productId);
+      .filter((rami: Rami) => rami.countryId === Number(value))
+      .map((rami: Rami) => rami.productId);
 
     const productOptions = products
-      .filter((product) => productidRamis.includes(product.id))
-      .map((product) => ({
+      .filter((product: Product) => productidRamis.includes(product.id))
+      .map((product: Product) => ({
         value: product.id.toString(),
         label: `${product.name} - ${product.code}`,
       }));
@@ -95,7 +109,7 @@ export default function Page() {
   // Función para manejar la búsqueda
   const handleSearch = () => {
     const rami = ramis.find(
-      (rami) =>
+      (rami: Rami) =>
         rami.productId === Number(selectedProduct) &&
         rami.countryId === Number(selectedCountry)
     );

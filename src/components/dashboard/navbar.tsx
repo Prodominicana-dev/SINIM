@@ -1,10 +1,6 @@
 "use client";
-import React, { useEffect } from "react";
-import {
-  Navbar,
-  Typography,
-  IconButton,
-} from "@material-tailwind/react";
+import { Fragment, useEffect, useState } from "react";
+import { Navbar, Typography, IconButton } from "@material-tailwind/react";
 
 import UserProfile from "./userprofile";
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
@@ -25,7 +21,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
   const currentPath = pathname.toLowerCase();
   const currentRoute = routes.find((route) => currentPath.includes(route.path));
   const title = currentRoute ? currentRoute.title : "SINIM";
-  const [suscribeOpen, setSuscribeOpen] = React.useState(false);
+  const [suscribeOpen, setSuscribeOpen] = useState(false);
   const { user, error, isLoading } = useUser();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const callbackUrl = `${baseUrl}/dashboard/saim#suscribe`;
@@ -53,7 +49,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
             <Bars3Icon className="w-10" />
           </button>
         </div>
-        <Typography className="w-6/12 text-3xl pt-3 font-medium text-center font-custom">
+        <Typography className="w-6/12 text-3xl pt-3 font-medium text-left lg:text-center font-custom">
           {title}
         </Typography>
 
@@ -70,7 +66,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
           ) : null}
           <UserProfile />
         </div>
-        <React.Fragment>
+        <Fragment>
           <IconButton
             variant="text"
             className="w-6 h-6 ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
@@ -83,7 +79,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
               <Bars3Icon className="text-black w-7" />
             )}
           </IconButton>
-        </React.Fragment>
+        </Fragment>
       </div>
       {suscribeOpen && user ? (
         <Suscribe

@@ -73,22 +73,6 @@ export default function SidebarMenu({
               </ListItem>
             </Link>
           ))}
-          {/* <Link href={"/saim"}>
-            <ListItem>
-              <ListItemPrefix>
-                <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />
-              </ListItemPrefix>
-              Analytics
-            </ListItem>
-          </Link>
-          <Link href={"/saim"}>
-            <ListItem>
-              <ListItemPrefix>
-                <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />
-              </ListItemPrefix>
-              Analytics
-            </ListItem>
-          </Link> */}
         </List>
       </AccordionBody>
     </Accordion>

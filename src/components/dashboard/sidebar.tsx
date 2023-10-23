@@ -1,6 +1,6 @@
 "use client";
 // @ts-ignore
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Typography,
   List,
@@ -14,14 +14,11 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useHover } from "usehooks-ts";
 import Image from "next/image";
 import Link from "next/link";
-import { useAtom } from "jotai";
-import { datamarketAtom } from "@/src/state/states";
 import SidebarMenu from "./sidebarMenu";
 import { useDataMarketsCategories } from "@/src/services/datamarket/service";
 
 export function Sidebar({ visible }: any) {
-  const [open, setOpen] = React.useState(0);
-  const datamarket = useAtom(datamarketAtom);
+  const [open, setOpen] = useState(0);
   const { data, isLoading, isError }: any = useDataMarketsCategories();
   const hoverRef = useRef(null);
   const isHover = useHover(hoverRef);

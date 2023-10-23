@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "@/src/components/settings/rami/card";
 import Header from "@/src/components/settings/header";
-import {useRamisSettings} from "@/src/services/ramis/service";
+import { useRamisSettings } from "@/src/services/ramis/service";
 import { nfd } from "unorm";
 import RamiCreateDialog from "@/src/components/settings/rami/dialogCreate";
 
@@ -12,7 +12,7 @@ export default function Page() {
   const [ramis, setRamis] = useState<any[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState("");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
 
   const [currentPageData, setCurrentPageData] = useState<any[]>([]);

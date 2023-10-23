@@ -1,5 +1,4 @@
 import { Card, CardBody, CardHeader } from "@material-tailwind/react";
-import React from "react";
 import Image from "next/image";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";

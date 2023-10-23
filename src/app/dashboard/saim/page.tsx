@@ -1,11 +1,10 @@
 "use client";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import SaimCard from "../../../components/saim/card";
 import Saim from "@/src/models/saim";
 import Feed from "@/src/components/saim/feed";
-import { useAtom } from "jotai";
-import { saimAtom } from "@/src/state/states";
+import { useActiveSaims } from "@/src/services/saim/service";
 
 export default function Page() {
   const saimFilters = [
@@ -40,7 +39,7 @@ export default function Page() {
         "Acceda a los obstáculos identificados en los mercados internacionales, manteniéndose informado acerca de los desafíos que pueden impactar sus objetivos comerciales.",
     },
   ];
-  const [data, setData] = useAtom(saimAtom);
+  const { data, isLoading, isError } = useActiveSaims();
   const [filteredData, setFilteredData] = useState<Saim[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(saimFilters[0].name);
@@ -50,18 +49,17 @@ export default function Page() {
   );
 
   useEffect(() => {
-    console.log(data);
     setFilteredData(data);
   }, [data]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
   const handleFilter = (selectedCategory: string) => {
     // Filtrar datos por categoría y actualizar el estado
     const SaimByCategory = data.filter(
-      (saim) =>
+      (saim: Saim) =>
         saim.category.name.toLowerCase() === selectedCategory.toLowerCase()
     );
 
@@ -83,13 +81,13 @@ export default function Page() {
     const filteredByCategory =
       category === "Todos"
         ? data
-        : data.filter(
-            (saim) =>
+        : data?.filter(
+            (saim: Saim) =>
               saim.category.name.toLowerCase() === category.toLowerCase()
           );
 
-    const filteredBySearch = filteredByCategory.filter(
-      (saim) =>
+    const filteredBySearch = filteredByCategory?.filter(
+      (saim: Saim) =>
         saim.title.toLowerCase().includes(search.toLowerCase()) ||
         saim.products.some(
           (product) =>

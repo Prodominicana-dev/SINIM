@@ -1,6 +1,6 @@
 "use client";
 import Saim from "@/src/models/saim";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import {
   PlusIcon,
   AdjustmentsHorizontalIcon,
@@ -8,7 +8,6 @@ import {
 } from "@heroicons/react/24/solid";
 import SCard from "@/src/components/settings/saim/card";
 import SaimDialog from "@/src/components/settings/saim/dialog";
-import React from "react";
 import { Select } from "@mantine/core";
 import { Button } from "@material-tailwind/react";
 import Header from "@/src/components/settings/header";
@@ -23,7 +22,7 @@ export default function Page() {
   const [filteredData, setFilteredData] = useState<Saim[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Todos");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [status, setStatus] = useState("");
@@ -53,7 +52,7 @@ export default function Page() {
     setFilteredData(data);
   }, [data, setFilteredData]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 

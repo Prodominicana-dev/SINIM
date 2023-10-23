@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 export default function Page() {
   return (
     <div className="w-full sm:px-10 py-5 h-[88vh] flex items-center justify-center">

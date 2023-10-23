@@ -1,5 +1,5 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import { useState } from "react";
 import DeleteButton from "../delete";
 import RamiEditDialog from "./dialogEdit";
 
@@ -10,11 +10,11 @@ export default function Card({
   rami: any;
   updateRamis: () => void;
 }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const handleDeleteOpen = () => setDeleteOpen(!deleteOpen);
   const deleteCreateNotification = {
     title: "RAMI eliminado",

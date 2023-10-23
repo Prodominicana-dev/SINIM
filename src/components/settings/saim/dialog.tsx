@@ -10,7 +10,7 @@ import {
   MenuList,
   MenuItem,
 } from "@material-tailwind/react";
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { format } from "date-fns";
@@ -22,14 +22,13 @@ import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { useAtom } from "jotai";
-import { countrySelect, productSelect } from "@/src/state/states";
-import { useSelectProducts } from "@/src/services/products/service";
 import ProductPopover from "../products/popover";
 import TextEditor from "../rich-editor";
 import Editor from "../rich-editor/config";
 import Category from "@/src/models/category";
 import { useSaimsCategory } from "@/src/services/saim/service";
+import { useSelectCountries } from "@/src/services/countries/service";
+import { useSelectProducts } from "@/src/services/products/service";
 
 const animatedComponents = makeAnimated();
 
@@ -49,10 +48,20 @@ export default function SaimDialog({
   const [title, setTitle] = useState("");
   const { data: categories, isLoading } = useSaimsCategory();
   const [category, setCategory] = useState<Category | null>(null);
-  const [countries] = useAtom(countrySelect);
-  const [products, setProducts] = useAtom(productSelect);
+  const {
+    data: productsSelect,
+    isLoading: isProductsSelectLoading,
+    isError: isProductsSelectError,
+  }: any = useSelectProducts();
+
+  const {
+    data: countries,
+    isLoading: isCountriesSelectLoading,
+    isError: isCountriesSelectError,
+  }: any = useSelectCountries();
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
+  const [products, setProducts] = useState<any>([]);
   const [openProduct, setOpenProduct] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const { refetch } = useSelectProducts();
@@ -63,6 +72,10 @@ export default function SaimDialog({
       openRef.current(); // solo se llama si openRef.current no es null
     }
   };
+
+  useEffect(() => {
+    setProducts(productsSelect);
+  }, [productsSelect]);
 
   useEffect(() => {
     if (categories) {
@@ -246,18 +259,22 @@ export default function SaimDialog({
                     className="flex items-center h-5 p-0 hover:bg-transparent "
                     ripple={false}
                   >
-                    {category?.name}
+                    {category ? category.name : "Categoría"}
                   </Button>
                 </MenuHandler>
                 <MenuList className="w-40 z-[9999]">
-                  {categories?.map((category: Category) => (
-                    <MenuItem
-                      key={category.id}
-                      onClick={() => setCategory(category)}
-                    >
-                      {category.name}
-                    </MenuItem>
-                  ))}
+                  {!isLoading ? (
+                    categories?.map((category: Category) => (
+                      <MenuItem
+                        key={category.id}
+                        onClick={() => setCategory(category)}
+                      >
+                        {category.name}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem>Loading...</MenuItem>
+                  )}
                 </MenuList>
               </Menu>
             </div>

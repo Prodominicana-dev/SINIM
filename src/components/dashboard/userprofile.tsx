@@ -1,4 +1,3 @@
-import React from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import {
   Button,
@@ -10,16 +9,14 @@ import {
   MenuList,
 } from "@material-tailwind/react";
 import Link from "next/link";
-import {
-  ChevronDownIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/solid";
+import { ChevronDownIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { usePathname } from "next/navigation";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
+import { createElement, useState } from "react";
 
 export default function UserProfile() {
   const { user, error, isLoading } = useUser();
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const pathname = usePathname();
   const callbackUrl = `${baseUrl}${pathname}`;
@@ -86,7 +83,7 @@ export default function UserProfile() {
                         : ""
                     }`}
                   >
-                    {React.createElement(icon, {
+                    {createElement(icon, {
                       className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
                       strokeWidth: 2,
                     })}
