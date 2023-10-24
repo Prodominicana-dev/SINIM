@@ -111,7 +111,7 @@ export default function Page() {
     { label: "Ocultos", value: "deleted" },
   ];
 
-  const handleFilter = (selectedCategory: string) => {
+  const handleFilter = (selectedCategory: string | null) => {
     const statusToFilter = status || "active";
     const categoryToFilter = selectedCategory || "Todos";
 
@@ -132,7 +132,7 @@ export default function Page() {
     }
   };
 
-  const handleStatus = (selectedStatus: string) => {
+  const handleStatus = (selectedStatus: string | null) => {
     const statusToFilter = selectedStatus || "active";
     const categoryToFilter = category || "Todos";
 
@@ -198,7 +198,7 @@ export default function Page() {
               defaultValue="Todos"
               searchable={false}
               value={category}
-              onChange={(e: string) => handleFilter(e)}
+              onChange={(e: string | null) => handleFilter(e)}
             />
           </div>
           <div className="flex flex-col w-2/12 space-y-2">
@@ -211,7 +211,7 @@ export default function Page() {
               placeholder="Estado"
               searchable={false}
               value={status}
-              onChange={(e: string) => handleStatus(e)}
+              onChange={(e: string | null) => handleStatus(e)}
             />
           </div>
           <div className="flex items-end justify-end">
