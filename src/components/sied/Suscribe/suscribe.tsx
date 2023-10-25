@@ -6,17 +6,14 @@ import {
   Dialog,
   DialogBody,
   Input,
+  Spinner,
   Typography,
 } from "@material-tailwind/react";
 import axios from "axios";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { useCountries } from "@/src/services/countries/service";
-import Country from "@/src/models/country";
-import Product from "@/src/models/product";
-import { useProducts } from "@/src/services/products/service";
+import { set } from "date-fns";
 
 const animatedComponents = makeAnimated();
 
@@ -26,39 +23,19 @@ interface SuscribeProps {
   email: string;
 }
 
-export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
+export default function SiedSubscribe({ open, handleOpen, email }: SuscribeProps) {
   const { user, error, isLoading } = useUser();
-  const {
-    data: countries,
-    isLoading: isCountriesLoading,
-    isError: isCountriesError,
-  } = useCountries();
-  const {
-    data: products,
-    isLoading: isProductsLoading,
-    isError: isProductsError,
-  } = useProducts();
-  const [sCountries, setSCountries] = useState<any>([]);
-  const [sProducts, setSProducts] = useState<any>([]);
-  const [selectedCountries, setSelectedCountries] = useState<any>([]);
-  const [selectedProducts, setSelectedProducts] = useState<any>([]);
+  const [selectCategories, setSelectecCategories] = useState<any[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<any[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (countries) {
-      const country = countries.map((country: Country) => ({
-        value: country.id.toString(),
-        label: country.name,
-      }));
-      setSCountries(country);
-    }
-    if (products) {
-      const product = products.map((product: Product) => ({
-        value: product.id.toString(),
-        label: `${product.name} - ${product.code}`,
-      }));
-      setSProducts(product);
-    }
-  }, [countries, products]);
+    const getCategories = async () => {
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/category/select/sied`).then((res) => {
+        setSelectecCategories(res.data);
+    });}
+    getCategories();
+  }, [selectCategories])
 
   useEffect(() => {
     const getData = async () => {
@@ -66,46 +43,33 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
         `${process.env.NEXT_PUBLIC_API_URL}/suscriber/${user?.email}/sied`
       );
       if (data) {
-        const countries = data.suscriber_countries.map((c: any) => ({
-          value: c.country.id.toString(),
-          label: c.country.name,
+        const categories = data.suscriber_category.map((c: any) => ({
+          value: c.category.id,
+          label: c.category.name,
         }));
-        setSelectedCountries(countries);
-
-        const products = data.suscriber_products.map((p: any) => ({
-          value: p.product.id.toString(),
-          label: `${p.product.name} - ${p.product.code}`,
-        }));
-        setSelectedProducts(products);
+        setSelectedCategories(categories);
       }
+      
     };
     getData();
   }, [user?.email]);
 
-  const handleProductOnChange = (value: any) => {
-    setSelectedProducts(value);
-  };
-
-  const handleCountryOnChange = (value: any) => {
-    setSelectedCountries(value);
-  };
+  
 
   const handleSuscribe = async () => {
-    const productsId = selectedProducts.map((product: any) =>
-      Number(product.value)
-    );
-    const countriesId = selectedCountries.map((country: any) =>
-      Number(country.value)
-    );
+    setIsLoaded(true);
+    const categoriesId = selectedCategories.map((category: any) => {
+     return category.value
+    })
     const data = {
       email: email,
-      countries: countriesId,
-      products: productsId,
+      categories: categoriesId,
       name: user?.name,
       platform: "sied",
     };
+    console.log(data)
     await axios
-      .patch(`${process.env.NEXT_PUBLIC_API_URL}/suscriber`, data)
+      .patch(`${process.env.NEXT_PUBLIC_API_URL}/suscriber/sied`, data)
       .then((res) => {
         if (res.status === 200) {
           notifications.show({
@@ -116,8 +80,7 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
             withCloseButton: false,
           });
           handleOpen();
-          setSelectedCountries([]);
-          setSelectedProducts([]);
+          setIsLoaded(false);
         }
       });
   };
@@ -128,14 +91,13 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
         <DialogBody>
           <div className="flex flex-col items-center justify-center w-full space-y-4 h-36">
             <Typography className="w-11/12 text-xl font-bold text-center text-black sm:w-10/12 sm:text-2xl md:text-4xl">
-              ¡Suscríbete a Nuestras Alertas!
+              ¡Suscríbete a nuestras alertas de IED!
             </Typography>
             <Typography
               className="w-11/12 text-xs font-thin text-center text-gray-500 sm:w-10/12 sm:text-sm"
               variant="lead"
             >
-              ¡Deja que te mantengamos al día con las tendencias más recientes
-              en comercio internacional!
+              ¡Deja que te mantengamos al día con las tendencias más recientes!
             </Typography>
           </div>
           <div className="flex flex-col items-center justify-center w-full space-y-4 h-82">
@@ -153,36 +115,28 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
                 closeMenuOnSelect={false}
                 components={animatedComponents}
                 isMulti
-                placeholder="Seleccione los países de interés.."
-                onChange={handleCountryOnChange}
-                value={selectedCountries}
-                options={sCountries}
-              />
-            </div>
-
-            <div className="w-10/12">
-              <Select
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                isMulti
-                placeholder="Seleccione los productos de interés.."
-                onChange={handleProductOnChange}
-                value={selectedProducts}
-                options={sProducts}
+                placeholder="Seleccione las categorías de su interés..."
+                onChange={(e : any) => {
+                  // Setear solo el value de e en selectedCategories
+                  setSelectedCategories(e);
+                }}
+                options={selectCategories}
+                value={selectedCategories}
               />
             </div>
           </div>
           <div className="flex justify-center w-full pt-4">
             <button
               onClick={handleSuscribe}
-              className="w-10/12 p-2 rounded-lg text-lg font-bold text-white bg-gradient-to-r from-purple-600 hover:from-purple-700  hover:via-purple-500 hover:to-sky-500 duration-700 from-[20%] via-purple-400 to-sky-400"
+              disabled={isLoaded}
+              className="w-10/12 p-2 rounded-lg text-lg font-bold text-white bg-gradient-to-r from-purple-600 hover:from-purple-700  hover:via-purple-500 hover:to-sky-500 duration-700 from-[20%] via-purple-400 to-sky-400 flex justify-center items-center"
             >
-              Suscribirse
+              { !isLoaded ? "Suscribirse" : (<Spinner className="text-white"/>)}
             </button>
           </div>
           <div className="flex justify-center w-full pt-4">
             <Typography className="w-11/12 text-[10px] text-center sm:text-xs text-gray-500">
-              ¡Asegúrate de seleccionar los productos y países de tu interés!
+              ¡Asegúrate de seleccionar las categorías de tu interés!
             </Typography>
           </div>
         </DialogBody>

@@ -8,9 +8,7 @@ import { usePathname } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Suscribe from "../saim/Suscribe/suscribe";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { set } from "date-fns";
-import { useEffectOnce } from "usehooks-ts";
+import SiedSubscribe from "../sied/Suscribe/suscribe";
 
 
 
@@ -20,20 +18,24 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
     { path: "saim", title: "ALERTAS COMERCIALES" },
     { path: "sied", title: "ALERTAS DE IED" },
     { path: "datamarket", title: "Data Market" },
-    // Puedes agregar más rutas aquí cuando necesites
   ];
   const pathname = usePathname();
   const currentPath = pathname.toLowerCase();
   const currentRoute = routes.find((route) => currentPath.includes(route.path));
   const title = currentRoute ? currentRoute.title : "SINIM";
   const [suscribeOpen, setSuscribeOpen] = useState(false);
-  const [permissions, setPermissions] = useState<any[]>([]);
+  const [suscribeSied, setSuscribeSied] = useState(false);
   const { user, error, isLoading } = useUser();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const callbackUrl = `${baseUrl}/dashboard/saim#suscribe`;
+  const saimCallbackUrl = `${baseUrl}/dashboard/saim#suscribe`;
+  const siedCallbackUrl = `${baseUrl}/dashboard/sied`;
   const handleSuscribeOpen = () => {
-    if (!user) return router.push(`/api/auth/login?returnTo=${callbackUrl}`);
+    if (!user) return router.push(`/api/auth/login?returnTo=${saimCallbackUrl}`);
     setSuscribeOpen(!suscribeOpen);
+  };
+  const handleSiedSuscribeOpen = () => {
+    if (!user) return router.push(`/api/auth/login?returnTo=${siedCallbackUrl}`);
+    setSuscribeSied(!suscribeSied);
   };
   const router = useRouter();
   if(isLoading) return <></>  
@@ -54,15 +56,25 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
 
         <div className="hidden w-4/12 lg:flex lg:flex-row lg:space-x-4 lg:justify-end">
           {pathname === "/dashboard/saim" ? (
-            <>
+            <div>
               <button
                 onClick={handleSuscribeOpen}
                 className="h-12 font-semibold duration-300 rounded-md w-36 ring-2 ring-navy hover:bg-navy hover:text-white text-navy "
               >
                 Suscríbete
               </button>
+            </div>
+          ) : (<></>)}
+          {pathname === "/dashboard/sied" ? (
+            <>
+              <button
+                onClick={handleSiedSuscribeOpen}
+                className="h-12 font-semibold duration-300 rounded-md w-36 ring-2 ring-navy hover:bg-navy hover:text-white text-navy "
+              >
+                Suscríbete
+              </button>
             </>
-          ) : null}
+          ) : (<></>)}
           <UserProfile />
         </div>
         <Fragment>
@@ -85,6 +97,14 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
           open={suscribeOpen}
           handleOpen={handleSuscribeOpen}
           email={user.email ?? ""}
+        />
+      ) : null}
+
+      {suscribeSied && user ? (
+        <SiedSubscribe
+        open={suscribeSied} 
+        handleOpen={handleSiedSuscribeOpen}
+        email={user.email ?? ""}
         />
       ) : null}
     </Navbar>
