@@ -92,7 +92,6 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
 }
 
 export function hasAllPermissions(permissions: string[], permissionsToCheck: string[]): boolean {
-  console.log(permissions)
   // Verifica que cada permiso requerido esté presente en los permisos del usuario
   for (const requiredPermission of permissionsToCheck) {
     if (!permissions.includes(requiredPermission)) {

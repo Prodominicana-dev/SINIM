@@ -8,9 +8,12 @@ import UserDialog from "@/src/components/settings/users/dialog";
 import User from "@/src/models/user";
 import { useUsers } from "@/src/services/users/service";
 import Settings from "@/src/components/validate/settings";
+import { useAtom } from "jotai";
+import { tokenAtom } from "@/src/state/states";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = useUsers();
+  const [token, setToken] = useAtom(tokenAtom);
   const [user, setUser] = useState<User[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState("");
