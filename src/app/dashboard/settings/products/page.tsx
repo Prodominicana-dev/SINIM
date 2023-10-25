@@ -7,6 +7,13 @@ import Product from "@/src/models/product";
 import ProductDialog from "@/src/components/settings/products/dialog";
 import { useAllProducts } from "@/src/services/products/service";
 import { nfd } from "unorm";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import axios from "axios";
+import { hasAllPermissions } from "@/src/components/dashboard/navbar";
+import Loading from "@/src/components/dashboard/loading";
+import Login from "@/src/components/validate/login";
+import AccessDenied from "@/src/components/validate/accessDenied";
+import Settings from "@/src/components/validate/settings";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = useAllProducts();
@@ -15,7 +22,6 @@ export default function Page() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
-
   const [currentPageData, setCurrentPageData] = useState<any[]>([]);
   const [nextButton, setNextButton] = useState(false);
   const [prevButton, setPrevButton] = useState(true);
@@ -77,9 +83,15 @@ export default function Page() {
   const updateProducts = () => {
     setRefresh(!refresh);
   };
+
+ // 
+
+ 
   return (
     <>
-      <Header
+      <Settings
+      permissionsList={["create:saim", "update:saim", "delete:saim", "create:ramis", "update:ramis", "delete:ramis"]}>
+<Header
         title="Gestión de productos"
         message="Tu centro de operaciones personal para productos. Agrega, edita y oculta información clave al instante. Toma el control de tus productos."
       />
@@ -141,6 +153,7 @@ export default function Page() {
           updateProducts={updateProducts}
         />
       ) : null}
+      </Settings>
     </>
   );
 }

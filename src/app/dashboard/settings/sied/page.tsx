@@ -17,6 +17,13 @@ import {
   useSiedsCategory,
 } from "@/src/services/sied/service";
 import Category from "@/src/models/category";
+import Login from "@/src/components/validate/login";
+import { hasAllPermissions } from "@/src/components/dashboard/navbar";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import axios from "axios";
+import Loading from "@/src/components/dashboard/loading";
+import AccessDenied from "@/src/components/validate/accessDenied";
+import Settings from "@/src/components/validate/settings";
 
 export default function Page() {
   const [data, setData] = useState<Sied[]>([]);
@@ -156,10 +163,15 @@ export default function Page() {
     setFilterOpen(!filterOpen);
   };
 
-  const isVisible = filterOpen ? "visible" : "hidden";
 
+  const isVisible = filterOpen ? "visible" : "hidden";
+  
   return (
-    <div>
+    <>
+      <Settings
+        permissionsList={["create:sied", "update:sied", "delete:sied"]}
+      >
+<div>
       <div className="flex flex-col items-center justify-center w-full h-full">
         <Header
           title="Gestión de Alertas de IED"
@@ -252,5 +264,8 @@ export default function Page() {
         <SiedDialog open={open} handleOpen={handleOpen} update={update} />
       </div>
     </div>
+      </Settings>
+    </>
+    
   );
 }

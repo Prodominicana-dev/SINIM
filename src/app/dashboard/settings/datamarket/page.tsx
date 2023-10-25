@@ -7,6 +7,13 @@ import { nfd } from "unorm";
 import Card from "@/src/components/settings/datamarket/card";
 import DatamarketDialog from "@/src/components/settings/datamarket/dialog";
 import Datamarket from "@/src/models/datamarket";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import axios from "axios";
+import { hasAllPermissions } from "@/src/components/dashboard/navbar";
+import Loading from "@/src/components/dashboard/loading";
+import Login from "@/src/components/validate/login";
+import AccessDenied from "@/src/components/validate/accessDenied";
+import Settings from "@/src/components/validate/settings";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = useAllDataMarkets();
@@ -15,7 +22,6 @@ export default function Page() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
-
   const [currentPageData, setCurrentPageData] = useState<any[]>([]);
   const [nextButton, setNextButton] = useState(false);
   const [prevButton, setPrevButton] = useState(true);
@@ -79,9 +85,13 @@ export default function Page() {
   const updateDatamarkets = () => {
     setRefresh(!refresh);
   };
+
   return (
     <>
-      <Header
+      <Settings
+      permissionsList={["create:datamarket", "update:datamarket", "delete:datamarket"]}
+      >
+<Header
         title="Gestión de Datamarket"
         message="Tu centro de operaciones personal para Datamarket. Agrega, edita y oculta información clave al instante. Toma el control de tus Datamarket."
       />
@@ -148,6 +158,8 @@ export default function Page() {
           updateDatamarkets={updateDatamarkets}
         />
       ) : null}
+      </Settings>
+      
     </>
   );
 }

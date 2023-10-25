@@ -6,6 +6,13 @@ import Header from "@/src/components/settings/header";
 import { useRamisSettings } from "@/src/services/ramis/service";
 import { nfd } from "unorm";
 import RamiCreateDialog from "@/src/components/settings/rami/dialogCreate";
+import Loading from "@/src/components/dashboard/loading";
+import Login from "@/src/components/validate/login";
+import { hasAllPermissions } from "@/src/components/dashboard/navbar";
+import axios from "axios";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import AccessDenied from "@/src/components/validate/accessDenied";
+import Settings from "@/src/components/validate/settings";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = useRamisSettings();
@@ -14,7 +21,6 @@ export default function Page() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
-
   const [currentPageData, setCurrentPageData] = useState<any[]>([]);
   const [nextButton, setNextButton] = useState(false);
   const [prevButton, setPrevButton] = useState(true);
@@ -87,9 +93,11 @@ export default function Page() {
   useEffect(() => {
     setRamis(data);
   }, [data]);
-
+  
   return (
     <>
+     <Settings
+     permissionsList={["create:ramis", "update:ramis", "delete:ramis"]}>
       <Header
         title="Gestión de los RAMI"
         message="Tu centro de operaciones personal para los RAMI. Agrega, edita y oculta información clave al instante. Toma el control de tus RAMIS."
@@ -153,6 +161,8 @@ export default function Page() {
           title={"Crear RAMI"}
         />
       ) : null}
+     </Settings>
+      
     </>
   );
 }

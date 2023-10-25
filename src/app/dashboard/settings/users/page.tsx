@@ -7,6 +7,7 @@ import Card from "@/src/components/settings/users/card";
 import UserDialog from "@/src/components/settings/users/dialog";
 import User from "@/src/models/user";
 import { useUsers } from "@/src/services/users/service";
+import Settings from "@/src/components/validate/settings";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = useUsers();
@@ -77,7 +78,10 @@ export default function Page() {
   };
   return (
     <>
-      <Header
+      <Settings 
+      permissionsList={["create:users", "update:users", "delete:users"]}
+      >
+<Header
         title="Gestión de Usuarios"
         message="Tu centro de operaciones personal de usuarios. Agrega, edita y oculta información clave al instante. Toma el control de tus usuarios."
       />
@@ -124,6 +128,7 @@ export default function Page() {
           </button>
         </div>
       </div>
+      </Settings>
     </>
   );
 }

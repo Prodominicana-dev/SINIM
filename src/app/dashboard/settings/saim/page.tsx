@@ -9,13 +9,15 @@ import {
 import SCard from "@/src/components/settings/saim/card";
 import SaimDialog from "@/src/components/settings/saim/dialog";
 import { Select } from "@mantine/core";
-import { Button } from "@material-tailwind/react";
+import { Button, Spinner } from "@material-tailwind/react";
 import Header from "@/src/components/settings/header";
 import useSaims, {
   useSaimsCategory,
   useSaimsPage,
 } from "@/src/services/saim/service";
 import Category from "@/src/models/category";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import Settings from "@/src/components/validate/settings";
 
 export default function Page() {
   const [data, setData] = useState<Saim[]>([]);
@@ -27,6 +29,8 @@ export default function Page() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [status, setStatus] = useState("");
   const [filterSaims, setFilterSaims] = useState([]);
+
+
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -158,101 +162,108 @@ export default function Page() {
     setFilterOpen(!filterOpen);
   };
 
+  // 
   const isVisible = filterOpen ? "visible" : "hidden";
-
-  return (
-    <div>
-      <div className="flex flex-col items-center justify-center w-full h-full">
-        <Header
-          title="Gestión de Alertas Comerciales"
-          message="Tu centro de operaciones personal para alertas comerciales. Agrega, edita y oculta información clave al instante. Toma el control de tus alertas."
-        />
-        <div className="w-full h-16">
-          <div className="flex flex-row flex-wrap justify-end w-full h-full p-8 space-x-8">
-            <input
-              type="text"
-              className="w-56 h-10 px-5 rounded-full ring-2 ring-gray-300"
-              placeholder="Buscar..."
-              value={search}
-              onChange={handleSearchChange}
-            />
-
-            <Button
-              onClick={handleFilterOpen}
-              className="flex items-center h-10 gap-3 text-black duration-100 bg-white rounded-full shadow-none ring-gray-300 ring-2 hover:ring hover:shadow-none w-36"
-            >
-              <AdjustmentsHorizontalIcon className="w-5 h-5" />
-              Filtrar
-            </Button>
+  return(
+    <>
+  <Settings
+    permissionsList={["create:saim", "update:saim", "delete:saim"]}
+  >
+      <div>
+        <div className="flex flex-col items-center justify-center w-full h-full">
+          <Header
+            title="Gestión de Alertas Comerciales"
+            message="Tu centro de operaciones personal para alertas comerciales. Agrega, edita y oculta información clave al instante. Toma el control de tus alertas."
+          />
+          <div className="w-full h-16">
+            <div className="flex flex-row flex-wrap justify-end w-full h-full p-8 space-x-8">
+              <input
+                type="text"
+                className="w-56 h-10 px-5 rounded-full ring-2 ring-gray-300"
+                placeholder="Buscar..."
+                value={search}
+                onChange={handleSearchChange}
+              />
+  
+              <Button
+                onClick={handleFilterOpen}
+                className="flex items-center h-10 gap-3 text-black duration-100 bg-white rounded-full shadow-none ring-gray-300 ring-2 hover:ring hover:shadow-none w-36"
+              >
+                <AdjustmentsHorizontalIcon className="w-5 h-5" />
+                Filtrar
+              </Button>
+            </div>
           </div>
-        </div>
-
-        <div
-          className={`${isVisible} flex flex-row w-full px-8 pt-8 pb-4 space-x-8 justify-end`}
-        >
-          <div className="flex flex-col w-2/12 space-y-2">
-            <label className="">Categorías</label>
-            <Select
-              className="w-full"
-              size="md"
-              radius="md"
-              data={filterSaims}
-              defaultValue="Todos"
-              searchable={false}
-              value={category}
-              onChange={(e: string) => handleFilter(e)}
-            />
-          </div>
-          <div className="flex flex-col w-2/12 space-y-2">
-            <label className="">Estado</label>
-            <Select
-              className="w-full"
-              size="md"
-              radius="md"
-              data={statusSaims}
-              placeholder="Estado"
-              searchable={false}
-              value={status}
-              onChange={(e: string) => handleStatus(e)}
-            />
-          </div>
-          <div className="flex items-end justify-end">
-            <button
-              className="flex items-center justify-center w-10 h-10 text-white duration-300 bg-red-600 rounded-lg hover:bg-red-700"
-              onClick={() => {
-                setFilterOpen(false);
-                setCategory("Todos");
-                setStatus("");
-                setSearch("");
-              }}
-            >
-              <XMarkIcon className="w-6 h-6 text-white" />
-            </button>
-          </div>
-        </div>
-        {/* SAIMS */}
-        <div className="grid w-full h-full grid-cols-1 gap-10 px-8 py-4 sm:grid-cols-2 lg:grid-cols-4 ">
-          <button
-            className="flex items-center justify-center w-full duration-300 border-2 border-black border-dashed cursor-pointer h-[28rem] rounded-3xl hover:bg-gray-200"
-            onClick={handleOpen}
+  
+          <div
+            className={`${isVisible} flex flex-row w-full px-8 pt-8 pb-4 space-x-8 justify-end`}
           >
-            <PlusIcon className="w-16 h-16 text-black" />
-          </button>
-          {/* {search === "" && category === "Todos" && status === "active" ? (
-            <SettingsFeed queryI={pagination} update={update} />
-          ) : (
-            filteredData?.map((saim) => {
-              return (
-                <SCard key={saim.id} data={saim} update={update} />
-              );
-            })
-          )} */}
-          {filteredData?.map((saim) => {
-            return <SCard key={saim.id} data={saim} update={update} />;
-          })}
+            <div className="flex flex-col w-2/12 space-y-2">
+              <label className="">Categorías</label>
+              <Select
+                className="w-full"
+                size="md"
+                radius="md"
+                data={filterSaims}
+                defaultValue="Todos"
+                searchable={false}
+                value={category}
+                onChange={(e: string) => handleFilter(e)}
+              />
+            </div>
+            <div className="flex flex-col w-2/12 space-y-2">
+              <label className="">Estado</label>
+              <Select
+                className="w-full"
+                size="md"
+                radius="md"
+                data={statusSaims}
+                placeholder="Estado"
+                searchable={false}
+                value={status}
+                onChange={(e: string) => handleStatus(e)}
+              />
+            </div>
+            <div className="flex items-end justify-end">
+              <button
+                className="flex items-center justify-center w-10 h-10 text-white duration-300 bg-red-600 rounded-lg hover:bg-red-700"
+                onClick={() => {
+                  setFilterOpen(false);
+                  setCategory("Todos");
+                  setStatus("");
+                  setSearch("");
+                }}
+              >
+                <XMarkIcon className="w-6 h-6 text-white" />
+              </button>
+            </div>
+          </div>
+          {/* SAIMS */}
+          <div className="grid w-full h-full grid-cols-1 gap-10 px-8 py-4 sm:grid-cols-2 lg:grid-cols-4 ">
+            <button
+              className="flex items-center justify-center w-full duration-300 border-2 border-black border-dashed cursor-pointer h-[28rem] rounded-3xl hover:bg-gray-200"
+              onClick={handleOpen}
+            >
+              <PlusIcon className="w-16 h-16 text-black" />
+            </button>
+            {/* {search === "" && category === "Todos" && status === "active" ? (
+              <SettingsFeed queryI={pagination} update={update} />
+            ) : (
+              filteredData?.map((saim) => {
+                return (
+                  <SCard key={saim.id} data={saim} update={update} />
+                );
+              })
+            )} */}
+            {filteredData?.map((saim) => {
+              return <SCard key={saim.id} data={saim} update={update} />;
+            })}
+          </div>
+          <SaimDialog open={open} handleOpen={handleOpen} update={update} />
         </div>
-        <SaimDialog open={open} handleOpen={handleOpen} update={update} />
       </div>
-    </div>
-  );
+  </Settings>
+    </>
+  )
+  
 }
