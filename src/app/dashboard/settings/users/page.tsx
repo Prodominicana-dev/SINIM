@@ -81,56 +81,56 @@ export default function Page() {
   };
   return (
     <>
-      <Settings 
-      permissionsList={["create:users", "update:users", "delete:users"]}
+      <Settings
+        permissionsList={["create:users", "update:users", "delete:users"]}
       >
-<Header
-        title="Gestión de Usuarios"
-        message="Tu centro de operaciones personal de usuarios. Agrega, edita y oculta información clave al instante. Toma el control de tus usuarios."
-      />
-      <div className="w-full h-16">
-        <div className="flex flex-row flex-wrap justify-end w-full h-full p-8 space-x-8">
-          <input
-            type="text"
-            className="h-10 px-5 rounded-full w-72 ring-2 ring-gray-300"
-            placeholder="Buscar..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-      </div>
-      <div className="w-full p-8 space-y-5">
-        <div className="grid items-center justify-between w-full h-24 grid-cols-4 p-5 font-bold text-center bg-white rounded-lg ring-2 ring-gray-100">
-          <div></div>
-          <div className="text-center">Nombre</div>
-          <div>Correo</div>
-          <div>Roles</div>
-        </div>
-
-        {currentPageData?.map((user: any, key: number) => {
-          return <Card key={key} user={user} updateUsers={updateUsers} />;
-        })}
-
-        <div className="flex flex-row items-center justify-end w-full py-4 space-x-3">
-          <button
-            className={`text-black w-32 h-8 text-center bg-gray-300 rounded-lg`}
-            disabled={currentPage === 1 ? true : false}
-            onClick={prevPage}
-          >
-            Anterior
-          </button>
-          <div className="flex items-center justify-center w-12 h-12 text-black bg-white rounded-full ring-1 ring-gray-300">
-            {currentPage}/{totalPages}
+        <Header
+          title="Gestión de Usuarios"
+          message="Tu centro de operaciones personal de usuarios. Agrega, edita y oculta información clave al instante. Toma el control de tus usuarios."
+        />
+        <div className="w-full h-16">
+          <div className="flex flex-row flex-wrap justify-end w-full h-full p-8 space-x-8">
+            <input
+              type="text"
+              className="h-10 px-5 rounded-full w-72 ring-2 ring-gray-300"
+              placeholder="Buscar..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
-          <button
-            className={`text-black w-32 h-8 text-center bg-gray-300 rounded-lg`}
-            disabled={currentPage === totalPages ? true : false}
-            onClick={nextPage}
-          >
-            Siguiente
-          </button>
         </div>
-      </div>
+        <div className="w-full p-8 space-y-5">
+          <div className="grid items-center justify-between w-full h-24 grid-cols-4 p-5 font-bold text-center bg-white rounded-lg ring-2 ring-gray-100">
+            <div></div>
+            <div className="text-center">Nombre</div>
+            <div>Correo</div>
+            <div>Roles</div>
+          </div>
+
+          {currentPageData?.map((user: any, key: number) => {
+            return <Card key={key} user={user} updateUsers={updateUsers} />;
+          })}
+
+          <div className="flex flex-row items-center justify-end w-full py-4 space-x-3">
+            <button
+              className={`text-black w-32 h-8 text-center bg-gray-300 rounded-lg`}
+              disabled={currentPage === 1 ? true : false}
+              onClick={prevPage}
+            >
+              Anterior
+            </button>
+            <div className="flex items-center justify-center w-12 h-12 text-black bg-white rounded-full ring-1 ring-gray-300">
+              {currentPage}/{totalPages}
+            </div>
+            <button
+              className={`text-black w-32 h-8 text-center bg-gray-300 rounded-lg`}
+              disabled={currentPage === totalPages ? true : false}
+              onClick={nextPage}
+            >
+              Siguiente
+            </button>
+          </div>
+        </div>
       </Settings>
     </>
   );
