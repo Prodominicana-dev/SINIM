@@ -117,7 +117,7 @@ export default function Page() {
     { label: "Ocultos", value: "deleted" },
   ];
 
-  const handleFilter = (selectedCategory: string) => {
+  const handleFilter = (selectedCategory: string | null) => {
     const statusToFilter = status || "active";
     const categoryToFilter = selectedCategory || "Todos";
 
@@ -138,7 +138,7 @@ export default function Page() {
     }
   };
 
-  const handleStatus = (selectedStatus: string) => {
+  const handleStatus = (selectedStatus: string | null) => {
     const statusToFilter = selectedStatus || "active";
     const categoryToFilter = category || "Todos";
 
@@ -194,50 +194,50 @@ export default function Page() {
               </Button>
             </div>
           </div>
-  
-          <div
-            className={`${isVisible} flex flex-row w-full px-8 pt-8 pb-4 space-x-8 justify-end`}
-          >
-            <div className="flex flex-col w-2/12 space-y-2">
-              <label className="">Categorías</label>
-              <Select
-                className="w-full"
-                size="md"
-                radius="md"
-                data={filterSaims}
-                defaultValue="Todos"
-                searchable={false}
-                value={category}
-                onChange={(e: string) => handleFilter(e)}
-              />
-            </div>
-            <div className="flex flex-col w-2/12 space-y-2">
-              <label className="">Estado</label>
-              <Select
-                className="w-full"
-                size="md"
-                radius="md"
-                data={statusSaims}
-                placeholder="Estado"
-                searchable={false}
-                value={status}
-                onChange={(e: string) => handleStatus(e)}
-              />
-            </div>
-            <div className="flex items-end justify-end">
-              <button
-                className="flex items-center justify-center w-10 h-10 text-white duration-300 bg-red-600 rounded-lg hover:bg-red-700"
-                onClick={() => {
-                  setFilterOpen(false);
-                  setCategory("Todos");
-                  setStatus("");
-                  setSearch("");
-                }}
-              >
-                <XMarkIcon className="w-6 h-6 text-white" />
-              </button>
-            </div>
+
+        <div
+          className={`${isVisible} flex flex-row w-full px-8 pt-8 pb-4 space-x-8 justify-end`}
+        >
+          <div className="flex flex-col w-2/12 space-y-2">
+            <label className="">Categorías</label>
+            <Select
+              className="w-full"
+              size="md"
+              radius="md"
+              data={filterSaims}
+              defaultValue="Todos"
+              searchable={false}
+              value={category}
+              onChange={(e: string | null) => handleFilter(e)}
+            />
           </div>
+          <div className="flex flex-col w-2/12 space-y-2">
+            <label className="">Estado</label>
+            <Select
+              className="w-full"
+              size="md"
+              radius="md"
+              data={statusSaims}
+              placeholder="Estado"
+              searchable={false}
+              value={status}
+              onChange={(e: string | null) => handleStatus(e)}
+            />
+          </div>
+          <div className="flex items-end justify-end">
+            <button
+              className="flex items-center justify-center w-10 h-10 text-white duration-300 bg-red-600 rounded-lg hover:bg-red-700"
+              onClick={() => {
+                setFilterOpen(false);
+                setCategory("Todos");
+                setStatus("");
+                setSearch("");
+              }}
+            >
+              <XMarkIcon className="w-6 h-6 text-white" />
+            </button>
+          </div>
+        </div>
           {/* SAIMS */}
           <div className="grid w-full h-full grid-cols-1 gap-10 px-8 py-4 sm:grid-cols-2 lg:grid-cols-4 ">
             <button
