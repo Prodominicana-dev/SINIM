@@ -24,7 +24,7 @@ export default function UserProfile() {
     {
       label: "Perfil",
       icon: UserCircleIcon,
-      link: "/profile",
+      link: "/dashboard/profile",
     },
     {
       label: "Cerrar sesion",
