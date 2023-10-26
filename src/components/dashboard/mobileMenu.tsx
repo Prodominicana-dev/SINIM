@@ -280,7 +280,7 @@ export default function MobileMenu({ isOpen, onClose }: any) {
               </button>
             </>
           ) : null}
-          <Link href={user ? `/api/auth/logout?returnTo=${encodeURIComponent(callbackUrl)}` : `/api/auth/login?returnTo=${callbackUrl}`}
+          <Link href={user ? `/api/auth/logout?returnTo=${callbackUrl}` : `/api/auth/login?returnTo=${callbackUrl}` }
             className="flex items-center justify-center w-full h-12 p-4 text-white rounded-xl bg-navy">
                 {user ? "Cerrar sesión" : "Iniciar sesión"}
           </Link>
