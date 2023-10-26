@@ -1,14 +1,6 @@
 import {
   XMarkIcon,
-  UserCircleIcon,
-  ChartBarIcon,
-  RectangleStackIcon,
-  BellAlertIcon,
-  ExclamationCircleIcon,
-  ArrowLeftOnRectangleIcon,
   ChevronDownIcon,
-  PresentationChartBarIcon,
-  ChevronRightIcon,
   CogIcon,
 } from "@heroicons/react/24/outline";
 import {
@@ -57,6 +49,8 @@ export default function MobileMenu({ isOpen, onClose }: any) {
     { href: "/dashboard/settings/rami", icon: <RamiIcon color="navy" />, text: "RAMI" },
     { href: "/dashboard/settings/saim", icon: <SaimIcon color="navy" />, text: "Alertas Comerciales" },
     { href: "/dashboard/settings/sied", icon: <SiedIcon color="navy" />, text: "Alertas de IED" },
+    { href: "/dashboard/settings/products", icon: <SiedIcon color="navy" />, text: "Productos" },
+    { href: "/dashboard/settings/users", icon: <SiedIcon color="navy" />, text: "Usuarios" },
   ];
   const {user, isLoading: userLoading} = useUser();
   const saimCallbackUrl = `${baseUrl}/dashboard/saim`;
