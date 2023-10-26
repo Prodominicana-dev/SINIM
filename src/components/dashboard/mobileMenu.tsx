@@ -9,6 +9,7 @@ import {
   ChevronDownIcon,
   PresentationChartBarIcon,
   ChevronRightIcon,
+  CogIcon,
 } from "@heroicons/react/24/outline";
 import {
   Typography,
@@ -22,7 +23,7 @@ import {
   ListItem,
   ListItemPrefix,
 } from "@material-tailwind/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Suscribe from "../saim/Suscribe/suscribe";
 import { usePathname, useRouter } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
@@ -36,6 +37,10 @@ import SaimIcon from "../svg/saim";
 import SiedIcon from "../svg/sied";
 import SiedSubscribe from "../sied/Suscribe/suscribe";
 import Login from "../validate/login";
+import { useAtom } from "jotai";
+import { tokenAtom } from "@/src/state/states";
+import axios from "axios";
+import { hasAnyPermission, } from "./navbar";
 
 export default function MobileMenu({ isOpen, onClose }: any) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -45,13 +50,15 @@ export default function MobileMenu({ isOpen, onClose }: any) {
     { href: "/dashboard/rami", icon: <RamiIcon color="navy" />, text: "RAMI" },
     { href: "/dashboard/saim", icon: <SaimIcon color="navy" />, text: "Alertas Comerciales" },
     { href: "/dashboard/sied", icon: <SiedIcon color="navy" />, text: "Alertas de IED" },
-    // {
-    //   href: `/api/auth/logout?returnTo=${encodeURIComponent(callbackUrl)}`,
-    //   icon: <ArrowLeftOnRectangleIcon />,
-    //   text: "Cerrar sesión",
-    // },
   ];
-  const { user, error, isLoading: userLoading } = useUser();
+
+  const navigationConfigOptions = [
+    { href: "/dashboard/settings/datamarket", icon: <DataMarketIcon color="navy" />, text: "Datamarket" },
+    { href: "/dashboard/settings/rami", icon: <RamiIcon color="navy" />, text: "RAMI" },
+    { href: "/dashboard/settings/saim", icon: <SaimIcon color="navy" />, text: "Alertas Comerciales" },
+    { href: "/dashboard/settings/sied", icon: <SiedIcon color="navy" />, text: "Alertas de IED" },
+  ];
+  const {user, isLoading: userLoading} = useUser();
   const saimCallbackUrl = `${baseUrl}/dashboard/saim`;
   const siedCallbackUrl = `${baseUrl}/dashboard/sied`;
   const [suscribeSied, setSuscribeSied] = useState(false);
@@ -69,6 +76,36 @@ export default function MobileMenu({ isOpen, onClose }: any) {
 
   const [open, setOpen] = useState(0);
   const handleOpen = (value : number) => setOpen(open === value ? 0 : value);
+  
+    const [permissions, setPermissions] = useState<any[]>([]);
+    const [hasPermission, setHasPermission] = useState(false);
+    const [dataLoaded, setDataLoaded] = useState(false);
+    const [token, setToken] = useAtom(tokenAtom)
+    const permissionList = ["create:ramis", "create:saim", "create:sied", "create:datamarket", "create:users", "update:ramis", "update:saim", "update:sied", "update:datamarket", "update:users", "delete:ramis", "delete:saim", "delete:sied", "delete:datamarket", "delete:users"]
+    
+    useEffect(() => {
+        let permis : any = []
+        let hasPermis = false
+        if(user && token){
+          const url = `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}/permissions`;
+          const getPermissions = async () => {
+           await axios.get(url, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }).then((res) => {
+              res.data.forEach((permission: any) => {
+               permis.push(permission.permission_name)
+              })
+              hasPermis = hasAnyPermission(permis, permissionList)
+            });
+            setPermissions(permis)
+            setHasPermission(hasPermis)
+            setDataLoaded(true)
+          }
+          getPermissions();
+        }
+      }, [user, token]);
   return (
     <Fragment>
       <Drawer
@@ -79,9 +116,11 @@ export default function MobileMenu({ isOpen, onClose }: any) {
       >
         <div className="flex flex-col items-center justify-between bg-[url('/images/logo/accountLog.jpg')]">
           <div className="flex flex-row items-center justify-between w-full px-4 pt-2">
-            <Typography variant="h5" color="white">
-              SINIM
-            </Typography>
+            <Link href={"/"}>
+              <Typography variant="h5" color="white">
+                SINIM
+              </Typography>
+            </Link>
             <IconButton variant="text" color="blue-gray" onClick={onClose}>
               <XMarkIcon className="w-6 h-6 text-white" />
             </IconButton>
@@ -134,11 +173,13 @@ export default function MobileMenu({ isOpen, onClose }: any) {
                     <DataMarketMenu 
                       title={datamarket.category}
                       data={datamarket.data}
+                      onClose={onClose}
                       key={key}/>
                   ) : (
                     <Link
                       href={`/dashboard/datamarket/${datamarket.data[0].id}`}
                       key={key}
+                      onClick={onClose}
                     >
                       <ListItem>
                         <ListItemPrefix>
@@ -156,7 +197,7 @@ export default function MobileMenu({ isOpen, onClose }: any) {
           </AccordionBody>
         </Accordion>
         {navigationOptions.map((option: any, key: number) =>(
-          <Link href={option.href}>
+          <Link href={option.href} onClick={onClose}>
                 <ListItem className="focus:bg-transparent">
                   <ListItemPrefix> 
                     {option.icon}
@@ -169,6 +210,48 @@ export default function MobileMenu({ isOpen, onClose }: any) {
                 </ListItem>
               </Link>
         ))}
+        { hasPermission && dataLoaded ? (
+          <Accordion
+          open={open === 2}
+          icon={
+            <ChevronDownIcon
+              strokeWidth={2.5}
+              className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
+            />
+          }
+        >
+          <ListItem className="p-0" selected={open === 2}>
+            <AccordionHeader onClick={() => handleOpen(2)} className="p-3 border-b-0">
+              <ListItemPrefix>
+              <CogIcon className="w-8 h-8 text-navy" strokeWidth={1} />
+              </ListItemPrefix>
+              <Typography className="mr-auto font-normal text-navy">
+                Configuración
+              </Typography>
+            </AccordionHeader>
+          </ListItem>
+          <AccordionBody className="py-1">
+          <List className="p-0 text-navy">
+            {navigationConfigOptions.map((option: any, key: number) =>(
+            <Link
+              href={option.href}
+              key={key}
+              onClick={onClose}
+            >
+              <ListItem>
+                <ListItemPrefix>
+                  <div></div>
+                </ListItemPrefix>
+                {option.text}
+              </ListItem>
+            </Link>))}
+            
+                  
+            </List>
+          </AccordionBody>
+        </Accordion>
+        ) : null}
+        
        </div>
         <div className="p-2 space-y-4">
           {pathname === "/dashboard/saim" ? (

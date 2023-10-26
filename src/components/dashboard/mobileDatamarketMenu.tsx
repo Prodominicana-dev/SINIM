@@ -15,11 +15,13 @@ import { useEffect, useState } from "react";
 interface sidebarMenuProps {
   title: string;
   data: DataMarket[];
+  onClose: () => void;
 }
 
 export default function DataMarketMenu({
   title,
   data,
+  onClose
 }: sidebarMenuProps) {
   const [open, setOpen] = useState(0);
   const handleOpen = (value: any) => {
@@ -58,7 +60,7 @@ export default function DataMarketMenu({
       <AccordionBody className="py-1">
         <List className="p-0 text-navy">
           {data?.map((datamarket: any, key: number) => (
-            <Link href={`/dashboard/datamarket/${datamarket.id}`} key={key}>
+            <Link href={`/dashboard/datamarket/${datamarket.id}`} key={key} onClick={onClose}>
               <ListItem>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />

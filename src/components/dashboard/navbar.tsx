@@ -121,4 +121,14 @@ export function hasAllPermissions(permissions: string[], permissionsToCheck: str
   return true; // Todos los permisos requeridos están presentes
 }
 
+// Verifica si de todos los permisos que tiene el usuario, al menos tiene 1 de los permisos requeridos
+export function hasAnyPermission(permissions: string[], permissionsToCheck: string[]): boolean {
+  for (const requiredPermission of permissionsToCheck) {
+    if (permissions.includes(requiredPermission)) {
+      console.log(requiredPermission)
+     return true; // Si uno de los permisos requeridos está presente, retorna true
+    }
+  }
+  return false; // Ninguno de los permisos requeridos está presente
+}
 
