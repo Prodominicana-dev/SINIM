@@ -12,10 +12,15 @@ import Link from "next/link";
 import { ChevronDownIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { usePathname } from "next/navigation";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
-import { createElement, useState } from "react";
+import { createElement, useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { tokenAtom, userAtom } from "@/src/state/states";
+import axios from "axios";
 
 export default function UserProfile() {
   const { user, error, isLoading } = useUser();
+  const [name, setName] = useAtom(userAtom);
+  const [token, setToken] = useAtom(tokenAtom);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const pathname = usePathname();
@@ -45,6 +50,23 @@ export default function UserProfile() {
       </Button>
     );
 
+    useEffect(() => {
+      if(user && token){
+        const url = `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}`;
+        const getUserData = () => {
+        axios.get(url, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }).then((res) => {
+            setName(res.data.user_metadata?.given_name && res.data.user_metadata?.family_name  ? 
+                `${res.data.user_metadata.given_name} ${res.data.user_metadata.family_name}` : user?.name ? user?.name : '');
+          });
+        }
+        getUserData();
+      }
+  }, [user, token]);
+
   return (
     <>
       <div className="hidden lg:block">
@@ -60,7 +82,7 @@ export default function UserProfile() {
                 size="sm"
                 src={user.picture as string}
               />
-              <Typography className="capitalize">{user.name}</Typography>
+              <Typography className="capitalize">{name ? name : user.name}</Typography>
               <ChevronDownIcon
                 strokeWidth={2.5}
                 className={`h-3 w-3 transition-transform ${

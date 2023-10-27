@@ -9,6 +9,8 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import Suscribe from "../saim/Suscribe/suscribe";
 import { useRouter } from "next/navigation";
 import SiedSubscribe from "../sied/Suscribe/suscribe";
+import { useAtom } from "jotai";
+import { userAtom } from "@/src/state/states";
 
 
 
@@ -33,6 +35,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
     if (!user) return router.push(`/api/auth/login?returnTo=${saimCallbackUrl}`);
     setSuscribeOpen(!suscribeOpen);
   };
+  
   const handleSiedSuscribeOpen = () => {
     if (!user) return router.push(`/api/auth/login?returnTo=${siedCallbackUrl}`);
     setSuscribeSied(!suscribeSied);

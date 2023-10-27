@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogBody,
   Input,
+  Spinner,
   Typography,
 } from "@material-tailwind/react";
 import axios from "axios";
@@ -41,6 +42,7 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
   const [sProducts, setSProducts] = useState<any>([]);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (countries) {
@@ -90,6 +92,7 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
   };
 
   const handleSuscribe = async () => {
+    setIsLoaded(true);
     const productsId = selectedProducts.map((product: any) =>
       Number(product.value)
     );
@@ -104,7 +107,7 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
       platform: "saim",
     };
     await axios
-      .patch(`${process.env.NEXT_PUBLIC_API_URL}/suscriber`, data)
+      .patch(`${process.env.NEXT_PUBLIC_API_URL}/suscriber/saim`, data)
       .then((res) => {
         if (res.status === 200) {
           notifications.show({
@@ -117,6 +120,7 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
           handleOpen();
           setSelectedCountries([]);
           setSelectedProducts([]);
+          setIsLoaded(false);
         }
       });
   };
@@ -172,11 +176,12 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
             </div>
           </div>
           <div className="flex justify-center w-full pt-4">
-            <button
+          <button
               onClick={handleSuscribe}
-              className="w-10/12 p-2 rounded-lg text-lg font-bold text-white bg-gradient-to-r from-purple-600 hover:from-purple-700  hover:via-purple-500 hover:to-sky-500 duration-700 from-[20%] via-purple-400 to-sky-400"
+              disabled={isLoaded}
+              className="w-10/12 p-2 rounded-lg text-lg font-bold text-white bg-gradient-to-r from-purple-600 hover:from-purple-700  hover:via-purple-500 hover:to-sky-500 duration-700 from-[20%] via-purple-400 to-sky-400 flex justify-center items-center"
             >
-              Suscribirse
+              { !isLoaded ? "Suscribirse" : (<Spinner className="text-white"/>)}
             </button>
           </div>
           <div className="flex justify-center w-full pt-4">
