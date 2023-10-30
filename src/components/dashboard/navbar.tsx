@@ -12,11 +12,9 @@ import SiedSubscribe from "../sied/Suscribe/suscribe";
 import { useAtom } from "jotai";
 import { userAtom } from "@/src/state/states";
 
-
-
 export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
   const routes = [
-    { path: "rami", title: "REQUISITO DE ACCESO A MERCADOS INTERNACIONALES" },
+    { path: "rami", title: "RAMI" },
     { path: "saim", title: "ALERTAS COMERCIALES" },
     { path: "sied", title: "ALERTAS DE IED" },
     { path: "datamarket", title: "Data Market" },
@@ -32,16 +30,18 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
   const saimCallbackUrl = `${baseUrl}/dashboard/saim#suscribe`;
   const siedCallbackUrl = `${baseUrl}/dashboard/sied`;
   const handleSuscribeOpen = () => {
-    if (!user) return router.push(`/api/auth/login?returnTo=${saimCallbackUrl}`);
+    if (!user)
+      return router.push(`/api/auth/login?returnTo=${saimCallbackUrl}`);
     setSuscribeOpen(!suscribeOpen);
   };
-  
+
   const handleSiedSuscribeOpen = () => {
-    if (!user) return router.push(`/api/auth/login?returnTo=${siedCallbackUrl}`);
+    if (!user)
+      return router.push(`/api/auth/login?returnTo=${siedCallbackUrl}`);
     setSuscribeSied(!suscribeSied);
   };
   const router = useRouter();
-  if(isLoading) return <></>  
+  if (isLoading) return <></>;
   return (
     <Navbar
       color="white"
@@ -53,7 +53,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
             <Bars3Icon className="w-10" />
           </button>
         </div>
-        <Typography className="w-6/12 pt-3 text-3xl font-medium text-left lg:text-center font-custom">
+        <Typography className="w-6/12 pt-3 text-xl sm:text-2xl lg:text-3xl font-medium text-left lg:text-center font-custom">
           {title}
         </Typography>
 
@@ -67,7 +67,9 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
                 Suscríbete
               </button>
             </div>
-          ) : (<></>)}
+          ) : (
+            <></>
+          )}
           {pathname === "/dashboard/sied" ? (
             <>
               <button
@@ -77,7 +79,9 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
                 Suscríbete
               </button>
             </>
-          ) : (<></>)}
+          ) : (
+            <></>
+          )}
           <UserProfile />
         </div>
         <Fragment>
@@ -105,16 +109,19 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
 
       {suscribeSied && user ? (
         <SiedSubscribe
-        open={suscribeSied} 
-        handleOpen={handleSiedSuscribeOpen}
-        email={user.email ?? ""}
+          open={suscribeSied}
+          handleOpen={handleSiedSuscribeOpen}
+          email={user.email ?? ""}
         />
       ) : null}
     </Navbar>
   );
 }
 
-export function hasAllPermissions(permissions: string[], permissionsToCheck: string[]): boolean {
+export function hasAllPermissions(
+  permissions: string[],
+  permissionsToCheck: string[]
+): boolean {
   // Verifica que cada permiso requerido esté presente en los permisos del usuario
   for (const requiredPermission of permissionsToCheck) {
     if (!permissions.includes(requiredPermission)) {
@@ -125,13 +132,15 @@ export function hasAllPermissions(permissions: string[], permissionsToCheck: str
 }
 
 // Verifica si de todos los permisos que tiene el usuario, al menos tiene 1 de los permisos requeridos
-export function hasAnyPermission(permissions: string[], permissionsToCheck: string[]): boolean {
+export function hasAnyPermission(
+  permissions: string[],
+  permissionsToCheck: string[]
+): boolean {
   for (const requiredPermission of permissionsToCheck) {
     if (permissions.includes(requiredPermission)) {
-      console.log(requiredPermission)
-     return true; // Si uno de los permisos requeridos está presente, retorna true
+      console.log(requiredPermission);
+      return true; // Si uno de los permisos requeridos está presente, retorna true
     }
   }
   return false; // Ninguno de los permisos requeridos está presente
 }
-

@@ -18,9 +18,11 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import { createTw } from "react-pdf-tailwind";
+import Html from "react-pdf-html";
 
 export default function page() {
   const { data, isLoading, isError }: any = useRami(1);
+  console.log(data);
   const [ramiData, setRamiData] = useState<any>([]);
   useEffect(() => {
     if (!isLoading) {
@@ -115,13 +117,80 @@ export default function page() {
 }
 
 function SectionRami({ title, desc }: any) {
+  const html = `<html>
+  <body>
+    <style>
+      .my-heading4 {
+        background: darkgreen;
+        color: white;
+      }
+      pre {
+        background-color: #eee;
+        padding: 10px;
+      }
+    </style>
+    <h1>Heading 1</h1>
+    <h2 style="background-color: pink">Heading 2</h2>
+    <h3>Heading 3</h3>
+    <h4 class="my-heading4">Heading 4</h4>
+    <p>
+      Paragraph with <strong>bold</strong>, <i>italic</i>, <u>underline</u>,
+      <s>strikethrough</s>,
+      <strong><u><s><i>and all of the above</i></s></u></strong>
+    </p>
+    <p>
+      <a href="http://google.com">link</a>
+    </p>
+    <hr />
+    <ul>
+      <li>Unordered item</li>
+      <li>Unordered item</li>
+    </ul>
+    <ol>
+      <li>Ordered item</li>
+      <li>Ordered item</li>
+    </ol>
+    <br /><br /><br /><br /><br />
+    Text outside of any tags
+    <table>
+      <thead>
+        <tr>
+          <th>Column 1</th>
+          <th>Column 2</th>
+          <th>Column 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Foo</td>
+          <td>Bar</td>
+          <td>Foobar</td>
+        </tr>
+        <tr>
+          <td colspan="2">Foo</td>
+          <td>Bar</td>
+        </tr>
+        <tr>
+          <td>Some longer thing</td>
+          <td>Even more content than before!</td>
+          <td>Even more content than before!</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="width: 200px; height: 200px; background: pink"></div>
+    <pre>
+function myCode() {
+  const foo = 'bar';
+}
+</pre>
+  </body>
+</html>
+`;
   return (
-    <div>
-      <div className="inline-block mb-3 text-2xl font-semibold text-transparent bg-gradient-to-r from-purple-700 to-sky-500 bg-clip-text">
-        {title}
-      </div>
-      <div dangerouslySetInnerHTML={{ __html: desc }}></div>
-    </div>
+    <View>
+      <Text style={tw("text-2xl font-semibold text-black")}>{title}</Text>
+      <Html>{desc}</Html>
+    </View>
   );
 }
 
@@ -142,39 +211,44 @@ const PDFDocument = ({ ramiData, data }: any) => {
   return (
     <PDFViewer width={1920} height={1080}>
       <Document>
-        <Page size="A4">
-          <View
-            style={tw(
-              `flex flex-col items-center justify-between w-full p-5 text-white rounded-lg sm:flex-row sm:h-64 lg:h-96 bg-gradient-to-tr from-purple-700 to-sky-500 sm:rounded-xl lg:rounded-3xl sm:p-8`
-            )}
-          >
-            <View style={tw(`flex flex-col w-full leading-normal sm:w-6/12`)}>
-              <Text style={tw(`text-xs sm:text-sm lg:text-lg`)}>Exporta</Text>
-              <Text style={tw(`text-2xl lg:text-6xl`)}>
-                {data.product.name}
-              </Text>
-              <Text style={tw(`mb-2 text-sm lg:text-lg lg:pt-3 sm:my-0`)}>
-                {data.product.code}
-              </Text>
-            </View>
+        <Page size="LETTER">
+          <View style={tw(`px-10 pt-10`)}>
             <View
               style={tw(
-                `flex flex-col justify-between w-full p-3 rounded-lg bg-white/25 sm:w-5/12 h-52 sm:h-full sm:p-5`
+                `flex font-thin items-center justify-between w-full text-white flex-row h-80 bg-purple-600 rounded-3xl p-5`
               )}
             >
-              <View>
-                <Text style={tw(`text-xs lg:text-sm`)}>Destino</Text>
-                <Text style={tw(`text-lg lg:text-4xl`)}>
-                  {data.country.name}
-                </Text>
+              <View style={tw(`flex flex-col w-full leading-normal sm:w-6/12`)}>
+                <Text style={tw(`text-lg`)}>Exporta</Text>
+                <View>
+                  <Text style={tw(`text-6xl`)}>{data.product.name}</Text>
+                </View>
+                <Text style={tw(`text-lg pt-3`)}>{data.product.code}</Text>
               </View>
-              <Image
-                src={`https://flagcdn.com/${data.country.abbreviation}.svg`}
+              <View
                 style={tw(
-                  `object-cover w-full h-32 rounded-md lg:rounded-lg sm:h-24 lg:h-52`
+                  `flex flex-col justify-between w-full p-3 rounded-lg bg-[rgba(255,255,255,0.25)] sm:w-5/12 h-52 sm:h-full sm:p-5`
                 )}
-              />
+              >
+                <View>
+                  <Text style={tw(`text-xs`)}>Destino</Text>
+                  <Text style={tw(`text-xl`)}>{data.country.name}</Text>
+                </View>
+                <Image
+                  src={`https://flagcdn.com/w1280/${data.country.abbreviation}.png`}
+                  style={tw(
+                    `object-cover w-full h-32 rounded-md lg:rounded-lg sm:h-24 lg:h-52`
+                  )}
+                />
+              </View>
             </View>
+          </View>
+          <View style={tw(`p-10`)}>
+            {ramiData.map(({ label, value, desc, key }: any) => (
+              <View key={key}>
+                <SectionRami title={label} desc={desc} key={key} />
+              </View>
+            ))}
           </View>
         </Page>
       </Document>
