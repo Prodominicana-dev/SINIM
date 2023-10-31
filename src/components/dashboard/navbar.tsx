@@ -41,7 +41,6 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
     setSuscribeSied(!suscribeSied);
   };
   const router = useRouter();
-  if (isLoading) return <></>;
   return (
     <Navbar
       color="white"
@@ -53,7 +52,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
             <Bars3Icon className="w-10" />
           </button>
         </div>
-        <Typography className="w-6/12 pt-3 text-xl sm:text-2xl lg:text-3xl font-medium text-left lg:text-center font-custom">
+        <Typography className="w-6/12 pt-3 text-xl font-medium text-left sm:text-2xl lg:text-3xl lg:text-center font-custom">
           {title}
         </Typography>
 
@@ -82,7 +81,8 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
           ) : (
             <></>
           )}
-          <UserProfile />
+          {isLoading ? (<></>) : (<UserProfile />)}
+          
         </div>
         <Fragment>
           <IconButton
