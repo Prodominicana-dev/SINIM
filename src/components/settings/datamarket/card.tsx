@@ -49,11 +49,11 @@ export default function Card({
 
   return (
     <>
-      <div className="grid items-center w-full h-24 grid-cols-5 p-5 text-center bg-white rounded-lg ring-2 ring-gray-100">
+      <div className="grid items-center w-full h-24 grid-cols-3 p-5 text-center bg-white rounded-lg sm:grid-cols-5 ring-2 ring-gray-100">
         <div className="line-clamp-2">{datamarket.title}</div>
-        <div className="line-clamp-1">{datamarket.url}</div>
-        <div className="line-clamp-1">{datamarket.category}</div>
-        {datamarket.status === "active" ? <div>Activo</div> : <div>Oculto</div>}
+        <div className="hidden truncate line-clamp-1 sm:block">{datamarket.url}</div>
+        <div className="hidden line-clamp-1 sm:block">{datamarket.category}</div>
+        <div>{datamarket.status === "active" ? <div>Activo</div> : <div>Oculto</div>}</div>
         <div className="flex justify-center space-x-5 ">
           <button
             onClick={handleOpen}
