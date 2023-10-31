@@ -18,6 +18,7 @@ import useSaims, {
 import Category from "@/src/models/category";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Settings from "@/src/components/validate/settings";
+import NotFound from "@/src/components/validate/notFound";
 
 export default function Page() {
   const [data, setData] = useState<Saim[]>([]);
@@ -29,6 +30,7 @@ export default function Page() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [status, setStatus] = useState("");
   const [filterSaims, setFilterSaims] = useState([]);
+  const [total, setTotal] = useState(0);
 
   const handleOpen = () => {
     setOpen(!open);
@@ -40,6 +42,7 @@ export default function Page() {
   const { data: d, refetch } = useSaims();
   useEffect(() => {
     setData(d);
+    setTotal(d?.length);
   }, [d]);
 
   const pagination = useSaimsPage();
@@ -47,9 +50,10 @@ export default function Page() {
   useEffect(() => {
     refetch().then((res) => {
       setData(res.data);
+      setTotal(res.data?.length);
     });
     pagination.refetch();
-  }, [refresh, refetch, pagination]);
+  }, [refresh, refetch]);
 
   useEffect(() => {
     setFilteredData(data);
@@ -94,7 +98,8 @@ export default function Page() {
             ))
       );
     }
-
+    setTotal(filteredBySearch?.length);
+    console.log(filteredBySearch?.length)
     setFilteredData(filteredBySearch);
   };
 
@@ -126,6 +131,8 @@ export default function Page() {
       );
       setCategory(categoryToFilter);
       setFilteredData(SaimByCategory);
+      setTotal(SaimByCategory?.length);
+      
     } else {
       const SaimByCategory = data.filter(
         (saim) =>
@@ -134,6 +141,7 @@ export default function Page() {
       );
       setCategory(categoryToFilter);
       setFilteredData(SaimByCategory);
+      setTotal(SaimByCategory?.length);
     }
   };
 
@@ -155,6 +163,7 @@ export default function Page() {
     setStatus(statusToFilter);
     console.log(SaimByStatus);
     setFilteredData(SaimByStatus);
+    setTotal(SaimByStatus?.length);
   };
 
   const handleFilterOpen = () => {
@@ -172,11 +181,12 @@ export default function Page() {
               title="Gestión de Alertas Comerciales"
               message="Tu centro de operaciones personal para alertas comerciales. Agrega, edita y oculta información clave al instante. Toma el control de tus alertas."
             />
-            <div className="w-full h-16">
-              <div className="flex flex-row justify-end w-full h-full p-8 space-x-8 sm:flex-wrap">
+            <div className="flex flex-col w-full p-4 space-y-2 sm:p-8 sm:space-y-0 sm:flex-row ">
+            <div className="flex items-center justify-start w-full text-xl font-semibold text-center text-black sm:text-left sm:w-4/12">Cantidad de alertas comerciales: {total}</div>
+              <div className="flex flex-col justify-end w-full h-full space-y-2 sm:w-8/12 sm:space-y-0 sm:space-x-8 sm:flex-row sm:flex-wrap">
                 <input
                   type="text"
-                  className="w-full h-10 px-5 rounded-full sm:w-56 ring-2 ring-gray-300"
+                  className="w-full h-10 px-5 rounded-full sm:80 lg:w-56 ring-2 ring-gray-300"
                   placeholder="Buscar..."
                   value={search}
                   onChange={handleSearchChange}
@@ -184,7 +194,7 @@ export default function Page() {
 
                 <Button
                   onClick={handleFilterOpen}
-                  className="flex items-center h-10 gap-3 text-black duration-100 bg-white rounded-full shadow-none ring-gray-300 ring-2 hover:ring hover:shadow-none w-36"
+                  className="flex items-center w-full h-10 gap-3 text-black duration-100 bg-white rounded-full shadow-none ring-gray-300 ring-2 hover:ring hover:shadow-none sm:w-60 lg:w-36"
                 >
                   <AdjustmentsHorizontalIcon className="w-5 h-5" />
                   Filtrar
@@ -193,9 +203,9 @@ export default function Page() {
             </div>
 
             <div
-              className={`${isVisible} flex flex-row w-full px-8 pt-8 pb-4 space-x-8 justify-end`}
+              className={`${isVisible} flex sm:flex-row flex-col w-full px-4 sm:px-8 pb-4 sm:space-x-8 space-y-2 sm:space-y-0 justify-center sm:justify-end`}
             >
-              <div className="flex flex-col w-2/12 space-y-2">
+              <div className="flex flex-col w-full space-y-2 sm:w-2/12">
                 <label className="">Categorías</label>
                 <Select
                   className="w-full"
@@ -208,7 +218,7 @@ export default function Page() {
                   onChange={(e: string | null) => handleFilter(e)}
                 />
               </div>
-              <div className="flex flex-col w-2/12 space-y-2">
+              <div className="flex flex-col w-full space-y-2 sm:w-2/12">
                 <label className="">Estado</label>
                 <Select
                   className="w-full"
@@ -236,26 +246,25 @@ export default function Page() {
               </div>
             </div>
             {/* SAIMS */}
-            <div className="grid w-full h-full grid-cols-1 gap-10 px-8 py-4 pt-10 sm:grid-cols-2 lg:grid-cols-4">
+            {filteredData?.length === 0 ? (<NotFound />) : (
+              <>
+                          <div className="grid w-full h-full grid-cols-1 gap-10 px-8 py-4 pt-10 sm:grid-cols-2 lg:grid-cols-4">
+
               <button
                 className="flex items-center justify-center w-full duration-300 border-2 border-black border-dashed cursor-pointer h-[28rem] rounded-3xl hover:bg-gray-200"
                 onClick={handleOpen}
               >
                 <PlusIcon className="w-16 h-16 text-black" />
               </button>
-              {/* {search === "" && category === "Todos" && status === "active" ? (
-              <SettingsFeed queryI={pagination} update={update} />
-            ) : (
-              filteredData?.map((saim) => {
-                return (
-                  <SCard key={saim.id} data={saim} update={update} />
-                );
-              })
-            )} */}
               {filteredData?.map((saim) => {
                 return <SCard key={saim.id} data={saim} update={update} />;
               })}
-            </div>
+              </div>
+              </>
+            )}
+
+              
+            
             <SaimDialog open={open} handleOpen={handleOpen} update={update} />
           </div>
         </div>
