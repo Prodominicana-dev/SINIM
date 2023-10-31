@@ -9,6 +9,7 @@ import {
   TabPanel,
   TabsBody,
   TabsHeader,
+  Tooltip,
 } from "@material-tailwind/react";
 import { useCallback, useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
@@ -16,6 +17,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRami } from "@/src/services/ramis/service";
 import DownloadPDF from "../downloadPDF";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 
 export default function Modal({ id }: any) {
   const { data, isLoading, isError }: any = useRami(id);
@@ -111,11 +113,20 @@ export default function Modal({ id }: any) {
                   {data.product.code}
                 </div>
               </div>
-              <div className="self-end absolute sm:relative sm:self-start sm:pt-5">
-                <DownloadPDF ramiData={ramiData} data={data} />
+              <div className="flex flex-col space-y-1 sm:space-y-0 p-2 sm:p-0 sm:flex-row sm:space-x-3 self-end absolute sm:relative sm:self-start sm:pt-5">
+                <Tooltip content={"Descargar PDF"}>
+                  <DownloadPDF ramiData={ramiData} data={data} />
+                </Tooltip>
+                <Tooltip content={"Compartir"}>
+                  <button className="bg-white/25 hover:bg-white/50 duration-300 shadow-lg p-4 lg:p-5 flex w-5 h-5 lg:w-10 lg:h-10 justify-center items-center rounded-full">
+                    <div>
+                      <ArrowTopRightOnSquareIcon className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
+                    </div>
+                  </button>
+                </Tooltip>
               </div>
             </div>
-            <div className="flex flex-col justify-between w-full p-3 rounded-lg bg-white/25 sm:w-5/12 h-52 sm:h-full sm:p-5">
+            <div className="flex flex-col justify-between w-full p-3 mt-3 rounded-lg bg-white/25 sm:w-5/12 h-52 sm:h-full sm:p-5">
               <div>
                 <div className="text-xs lg:text-sm">Destino</div>
                 <div className="text-lg lg:text-4xl">{data.country.name}</div>
