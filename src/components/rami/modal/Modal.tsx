@@ -15,6 +15,7 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRami } from "@/src/services/ramis/service";
+import DownloadPDF from "../downloadPDF";
 
 export default function Modal({ id }: any) {
   const { data, isLoading, isError }: any = useRami(id);
@@ -102,11 +103,16 @@ export default function Modal({ id }: any) {
       <DialogBody className="flex justify-center h-[100vm] overflow-y-auto">
         <div className="w-11/12">
           <div className="flex flex-col items-center justify-between w-full p-5 text-white rounded-lg sm:flex-row sm:h-64 lg:h-96 bg-gradient-to-tr from-purple-700 to-sky-500 sm:rounded-xl lg:rounded-3xl sm:p-8">
-            <div className="flex flex-col w-full leading-normal sm:w-6/12">
-              <div className="text-xs sm:text-sm lg:text-lg">Exporta</div>
-              <div className="text-2xl lg:text-6xl">{data.product.name}</div>
-              <div className="mb-2 text-sm lg:text-lg lg:pt-3 sm:my-0">
-                {data.product.code}
+            <div className="flex flex-col justify-center h-full w-full leading-normal sm:w-6/12">
+              <div className="basis-7/12 flex flex-col justify-end">
+                <div className="text-xs sm:text-sm lg:text-lg">Exporta</div>
+                <div className="text-2xl lg:text-6xl">{data.product.name}</div>
+                <div className="mb-2 text-sm lg:text-lg lg:pt-3 sm:my-0">
+                  {data.product.code}
+                </div>
+              </div>
+              <div className="self-end absolute sm:relative sm:self-start sm:pt-5">
+                <DownloadPDF ramiData={ramiData} data={data} />
               </div>
             </div>
             <div className="flex flex-col justify-between w-full p-3 rounded-lg bg-white/25 sm:w-5/12 h-52 sm:h-full sm:p-5">
