@@ -173,10 +173,10 @@ export default function Page() {
               message="Tu centro de operaciones personal para alertas comerciales. Agrega, edita y oculta información clave al instante. Toma el control de tus alertas."
             />
             <div className="w-full h-16">
-              <div className="flex flex-row sm:flex-wrap justify-end w-full h-full p-8 space-x-8">
+              <div className="flex flex-row justify-end w-full h-full p-8 space-x-8 sm:flex-wrap">
                 <input
                   type="text"
-                  className="w-full sm:w-56 h-10 px-5 rounded-full ring-2 ring-gray-300"
+                  className="w-full h-10 px-5 rounded-full sm:w-56 ring-2 ring-gray-300"
                   placeholder="Buscar..."
                   value={search}
                   onChange={handleSearchChange}
@@ -236,7 +236,7 @@ export default function Page() {
               </div>
             </div>
             {/* SAIMS */}
-            <div className="grid w-full h-full grid-cols-1 gap-10 px-8 py-4 sm:grid-cols-2 lg:grid-cols-4 pt-10">
+            <div className="grid w-full h-full grid-cols-1 gap-10 px-8 py-4 pt-10 sm:grid-cols-2 lg:grid-cols-4">
               <button
                 className="flex items-center justify-center w-full duration-300 border-2 border-black border-dashed cursor-pointer h-[28rem] rounded-3xl hover:bg-gray-200"
                 onClick={handleOpen}
