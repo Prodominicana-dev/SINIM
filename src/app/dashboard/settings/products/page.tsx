@@ -14,6 +14,7 @@ import Loading from "@/src/components/dashboard/loading";
 import Login from "@/src/components/validate/login";
 import AccessDenied from "@/src/components/validate/accessDenied";
 import Settings from "@/src/components/validate/settings";
+import NotFound from "@/src/components/validate/notFound";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = useAllProducts();
@@ -22,6 +23,7 @@ export default function Page() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
+  const [total, setTotal] = useState(0);
   const [currentPageData, setCurrentPageData] = useState<any[]>([]);
   const [nextButton, setNextButton] = useState(false);
   const [prevButton, setPrevButton] = useState(true);
@@ -57,6 +59,7 @@ export default function Page() {
         filteredProducts.length / itemsPerPage
       );
       setTotalPages(filteredTotalPages);
+      setTotal(filteredProducts?.length);
       if (currentPage > filteredTotalPages) {
         setCurrentPage(1);
       }
@@ -64,11 +67,13 @@ export default function Page() {
     }
     const normalTotalPages = Math.ceil(products?.length / itemsPerPage);
     setTotalPages(normalTotalPages);
+    setTotal(products?.length);
     setCurrentPageData(products?.slice(startIndex, endIndex));
   }, [products, data, currentPage, search]);
 
   useEffect(() => {
     setProducts(data);
+    setTotal(data?.length);
   }, [data]);
 
   //const pagination = useSaimsPage();
@@ -76,6 +81,7 @@ export default function Page() {
   useEffect(() => {
     refetch().then((res) => {
       setProducts(res.data);
+      setTotal(res.data?.length);
     });
     //pagination.refetch();
   }, [refresh, refetch]);
@@ -95,27 +101,30 @@ export default function Page() {
         title="Gestión de productos"
         message="Tu centro de operaciones personal para productos. Agrega, edita y oculta información clave al instante. Toma el control de tus productos."
       />
-      <div className="w-full h-16">
-        <div className="flex flex-row flex-wrap justify-end w-full h-full p-8 space-x-8">
+      <div className="flex flex-col w-full p-4 space-y-2 sm:p-8 sm:space-y-0 sm:flex-row">
+      <div className="flex items-center justify-start w-full text-xl font-semibold text-center text-black sm:text-left sm:w-4/12">Cantidad de productos: {total}</div>
+        <div className="flex flex-col justify-end w-full h-full space-y-2 sm:space-y-0 sm:space-x-8 sm:flex-wrap sm:flex-row">
           <button
             onClick={handleOpen}
-            className={`text-white w-44 text-center bg-navy rounded-lg hover:shadow-lg font-semibold duration-300 hover:text-white/80`}
+            className={`text-white w-full sm:w-44 text-center h-10 bg-navy rounded-lg hover:shadow-lg font-semibold duration-300 hover:text-white/80`}
           >
             Crear Productos
           </button>
           <input
             type="text"
-            className="h-10 px-5 rounded-full w-72 ring-2 ring-gray-300"
+            className="w-full h-10 px-5 rounded-full sm:w-72 ring-2 ring-gray-300"
             placeholder="Buscar..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
       </div>
-      <div className="w-full p-8 space-y-5">
-        <div className="grid items-center justify-between w-full h-24 grid-cols-4 p-5 font-bold text-center bg-white rounded-lg ring-2 ring-gray-100">
+      <div className="w-full p-4 space-y-5 sm:p-8">
+      {currentPageData?.length === 0 ? (<NotFound />) : (
+        <>
+        <div className="grid items-center justify-between w-full h-24 grid-cols-3 p-5 font-bold text-center bg-white rounded-lg sm:grid-cols-4 ring-2 ring-gray-100">
           <div className="text-center">Nombre</div>
-          <div>Código</div>
+          <div className="hidden sm:block">Código</div>
           <div>Estado</div>
           <div>Acción</div>
         </div>
@@ -145,6 +154,9 @@ export default function Page() {
             Siguiente
           </button>
         </div>
+        </>
+      )}
+        
       </div>
       {open ? (
         <ProductDialog
