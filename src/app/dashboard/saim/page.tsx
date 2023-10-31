@@ -5,6 +5,7 @@ import SaimCard from "../../../components/saim/card";
 import Saim from "@/src/models/saim";
 import Feed from "@/src/components/saim/feed";
 import { useActiveSaims } from "@/src/services/saim/service";
+import NotFound from "@/src/components/validate/notFound";
 
 export default function Page() {
   const saimFilters = [
@@ -153,7 +154,9 @@ export default function Page() {
       </div>
       {search === "" && category === "Todos" ? (
         <Feed />
-      ) : (
+      ) : (<>
+      {filteredData?.length === 0 ? (<NotFound />) : (
+        <>
         <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filteredData?.map((saim) => {
             return (
@@ -162,7 +165,11 @@ export default function Page() {
               </div>
             );
           })}
-        </div>
+        </div></>
+      )}
+        
+      </>
+        
       )}
     </div>
   );

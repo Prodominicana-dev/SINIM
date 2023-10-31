@@ -5,6 +5,7 @@ import { useIntersection } from "@mantine/hooks";
 import SaimCard from "./card";
 import Saim from "@/src/models/saim";
 import { useActiveSaimsPage } from "@/src/services/saim/service";
+import NotFound from "../validate/notFound";
 
 export default function Feed() {
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data } =
@@ -22,7 +23,9 @@ export default function Feed() {
   const _allSaim = data?.pages.map((page) => page.data).flat();
 
   return (
-    <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <>
+    {_allSaim?.length === 0 ? (<NotFound />) : (<>
+      <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {_allSaim?.map((saim: Saim, i: number) => {
         if (i === _allSaim.length - 1)
           return (
@@ -37,5 +40,9 @@ export default function Feed() {
         );
       })}
     </div>
+    </>)}
+    
+    </>
+    
   );
 }

@@ -5,6 +5,7 @@ import { useIntersection } from "@mantine/hooks";
 import SiedCard from "./card";
 import Sied from "@/src/models/sied";
 import { useActiveSiedsPage } from "@/src/services/sied/service";
+import NotFound from "../validate/notFound";
 
 export default function Feed() {
   const { fetchNextPage, hasNextPage, isFetchingNextPage, data } =
@@ -22,6 +23,10 @@ export default function Feed() {
   const _allSied = data?.pages.map((page) => page.data).flat();
 
   return (
+
+    <>
+    {_allSied?.length === 0 ? (<NotFound />) : (<>
+    
     <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {_allSied?.map((sied: Sied, i: number) => {
         if (i === _allSied.length - 1)
@@ -37,5 +42,8 @@ export default function Feed() {
         );
       })}
     </div>
+    </>)}
+    </>
+    
   );
 }

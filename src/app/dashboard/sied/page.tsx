@@ -5,6 +5,7 @@ import Sied from "@/src/models/sied";
 import Feed from "@/src/components/sied/feed";
 import SiedCard from "@/src/components/sied/card";
 import { useActiveSieds } from "@/src/services/sied/service";
+import NotFound from "@/src/components/validate/notFound";
 
 export default function Page() {
   const siedFilters = [
@@ -148,6 +149,8 @@ export default function Page() {
       {search === "" && category === "Todos" ? (
         <Feed />
       ) : (
+        <>
+        {filteredData?.length === 0 ? (<NotFound />) : (<>
         <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filteredData?.map((sied) => {
             return (
@@ -157,6 +160,8 @@ export default function Page() {
             );
           })}
         </div>
+        </>)}
+        </>
       )}
     </div>
   );
