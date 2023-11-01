@@ -184,6 +184,11 @@ export function Sidebar({ visible }: any) {
               url={"/dashboard/settings/users"}
               iconUrl={"/images/logo/sied-white.svg"}
             />
+            <SidebarItem
+              title={"Fuentes externas"}
+              url={"/dashboard/settings/partners"}
+              iconUrl={"/images/logo/sied-white.svg"}
+            />
           </>
         ) : null}
       </List>
@@ -234,7 +239,7 @@ function SidebarItem({ title, url, iconUrl }: any) {
         </ListItemPrefix>
         <Typography
           color="white"
-          className="mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100 invisible group-hover:visible"
+          className="invisible mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100 group-hover:visible"
         >
           {title}
         </Typography>

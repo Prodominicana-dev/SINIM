@@ -51,6 +51,7 @@ export default function MobileMenu({ isOpen, onClose }: any) {
     { href: "/dashboard/settings/sied", icon: <SiedIcon color="navy" />, text: "Alertas de IED" },
     { href: "/dashboard/settings/products", icon: <SiedIcon color="navy" />, text: "Productos" },
     { href: "/dashboard/settings/users", icon: <SiedIcon color="navy" />, text: "Usuarios" },
+    { href: "/dashboard/settings/partners", icon: <SiedIcon color="navy" />, text: "Fuentes externas"}
   ];
   const {user, isLoading: userLoading} = useUser();
   const saimCallbackUrl = `${baseUrl}/dashboard/saim`;
