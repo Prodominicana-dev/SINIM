@@ -22,6 +22,8 @@ import TextEditor from "../rich-editor";
 import Editor from "../rich-editor/config";
 import { useSelectProducts } from "@/src/services/products/service";
 import { useSelectCountries } from "@/src/services/countries/service";
+import { useRamis } from "@/src/services/ramis/service";
+import Rami from "@/src/models/rami";
 
 const animatedComponents = makeAnimated();
 
@@ -47,6 +49,13 @@ export default function RamiCreateDialog({
     isLoading: isCountriesSelectLoading,
     isError: isCountriesSelectError,
   }: any = useSelectCountries();
+  const {
+    data: ramis,
+    isLoading: isRamisLoading,
+    isError: isRamisError,
+  } = useRamis();
+  const [countriesSelect, setCountriesSelect] = useState<any>([]);
+  const [productSelect, setProductSelect] = useState<any>([]);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
   const [ramiData, setRamiData] = useState<any>([]);
@@ -133,6 +142,47 @@ export default function RamiCreateDialog({
       editor: recursos,
     },
   ];
+
+  useEffect(() => {
+    if (countries && ramis) {
+      setCountriesSelect(countries);
+    }
+    if (products && ramis) {
+      setProductSelect(products);
+    }
+  }, [ramis, countries, products, open]);
+
+  const handleProductChange = (product: any) => {
+    const countriesWithProduct = ramis
+      .filter((rami: Rami) => rami.productId === product.value.id)
+      .map((rami: Rami) => rami.countryId);
+
+    // console.log(countriesWithProduct);
+
+    const updatedCountries = countries.filter(
+      (country: any) =>
+        !countriesWithProduct.some(
+          (selectedCountry: any) => selectedCountry === country.value.id
+        )
+    );
+    setSelectedProducts(product);
+    setCountriesSelect(updatedCountries);
+  };
+
+  const handleCountryChange = (country: any) => {
+    const productsWithCountries = ramis
+      .filter((rami: Rami) => rami.countryId === country.value.id)
+      .map((rami: Rami) => rami.productId);
+
+    const updatedProducts = products.filter(
+      (product: any) =>
+        !productsWithCountries.some(
+          (selectedProduct: any) => selectedProduct === product.value.id
+        )
+    );
+    setSelectedCountries(country);
+    setProductSelect(updatedProducts);
+  };
 
   useEffect(() => {
     setRamiData(ramidata);
@@ -233,9 +283,9 @@ export default function RamiCreateDialog({
                   components={animatedComponents}
                   isMulti={false}
                   placeholder="Seleccione el país..."
-                  onChange={(e) => setSelectedCountries(e)}
+                  onChange={(e) => handleCountryChange(e)}
                   value={selectedCountries}
-                  options={countries}
+                  options={countriesSelect}
                   className="z-[9999] "
                 />
               </div>
@@ -248,9 +298,9 @@ export default function RamiCreateDialog({
                   components={animatedComponents}
                   isMulti={false}
                   placeholder="Seleccione el producto..."
-                  onChange={(e) => setSelectedProducts(e)}
+                  onChange={(e) => handleProductChange(e)}
                   value={selectedProducts}
-                  options={products}
+                  options={productSelect}
                   className="z-[9999] "
                 />
               </div>
@@ -300,6 +350,10 @@ export default function RamiCreateDialog({
 
 function UnderlineTabs({ data }: any) {
   const [activeTab, setActiveTab] = useState("salida");
+
+  useEffect(() => {
+    setActiveTab("salida");
+  }, []);
 
   return (
     <Tabs value={activeTab}>

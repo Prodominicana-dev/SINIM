@@ -18,10 +18,11 @@ import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import TextEditor from "../rich-editor";
-import { useRami } from "@/src/services/ramis/service";
+import { useRami, useRamis } from "@/src/services/ramis/service";
 import Editor from "../rich-editor/config";
 import { useSelectProducts } from "@/src/services/products/service";
 import { useSelectCountries } from "@/src/services/countries/service";
+import Rami from "@/src/models/rami";
 
 const animatedComponents = makeAnimated();
 
@@ -49,6 +50,13 @@ export default function RamiEditDialog({
     isLoading: isCountriesSelectLoading,
     isError: isCountriesSelectError,
   }: any = useSelectCountries();
+  const {
+    data: ramis,
+    isLoading: isRamisLoading,
+    isError: isRamisError,
+  } = useRamis();
+  const [countriesSelect, setCountriesSelect] = useState<any>([]);
+  const [productSelect, setProductSelect] = useState<any>([]);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
   const { data, isLoading, isError } = useRami(rami?.id);
@@ -139,6 +147,47 @@ export default function RamiEditDialog({
     ];
     setRamiData(ramidata);
   });
+
+  useEffect(() => {
+    if (countries && ramis) {
+      setCountriesSelect(countries);
+    }
+    if (products && ramis) {
+      setProductSelect(products);
+    }
+  }, [ramis, countries, products, open]);
+
+  const handleProductChange = (product: any) => {
+    const countriesWithProduct = ramis
+      .filter((rami: Rami) => rami.productId === product.value.id)
+      .map((rami: Rami) => rami.countryId);
+
+    // console.log(countriesWithProduct);
+
+    const updatedCountries = countries.filter(
+      (country: any) =>
+        !countriesWithProduct.some(
+          (selectedCountry: any) => selectedCountry === country.value.id
+        )
+    );
+    setSelectedProducts(product);
+    setCountriesSelect(updatedCountries);
+  };
+
+  const handleCountryChange = (country: any) => {
+    const productsWithCountries = ramis
+      .filter((rami: Rami) => rami.countryId === country.value.id)
+      .map((rami: Rami) => rami.productId);
+
+    const updatedProducts = products.filter(
+      (product: any) =>
+        !productsWithCountries.some(
+          (selectedProduct: any) => selectedProduct === product.value.id
+        )
+    );
+    setSelectedCountries(country);
+    setProductSelect(updatedProducts);
+  };
 
   useEffect(() => {
     if (!isLoading) {
@@ -289,9 +338,9 @@ export default function RamiEditDialog({
                   components={animatedComponents}
                   isMulti={false}
                   placeholder="Seleccione el país..."
-                  onChange={(e) => setSelectedCountries(e)}
+                  onChange={(e) => handleCountryChange(e)}
                   value={selectedCountries}
-                  options={countries}
+                  options={countriesSelect}
                   className="z-[9999] "
                 />
               </div>
@@ -304,9 +353,9 @@ export default function RamiEditDialog({
                   components={animatedComponents}
                   isMulti={false}
                   placeholder="Seleccione el producto..."
-                  onChange={(e) => setSelectedProducts(e)}
+                  onChange={(e) => handleProductChange(e)}
                   value={selectedProducts}
-                  options={products}
+                  options={productSelect}
                   className="z-[9999] "
                 />
               </div>
