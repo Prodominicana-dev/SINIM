@@ -186,6 +186,7 @@ export function Sidebar({ visible }: any) {
           url={isConfig ? "/dashboard/settings/sied" : "/dashboard/sied"}
           iconUrl={"/images/logo/sied-white.svg"}
         />
+        
         {isConfig ? (
           <>
             <SidebarItem
@@ -198,13 +199,13 @@ export function Sidebar({ visible }: any) {
               url={"/dashboard/settings/users"}
               iconUrl={"/images/logo/sied-white.svg"}
             />
-            <SidebarItem
-              title={"Fuentes externas"}
-              url={"/dashboard/settings/partners"}
-              iconUrl={"/images/logo/sied-white.svg"}
-            />
           </>
         ) : null}
+        <SidebarItem
+          title={"Fuentes externas"}
+          url={isConfig ? "/dashboard/settings/partners" : "/dashboard/partners"}
+          iconUrl={"/images/logo/sied-white.svg"}
+        />
       </List>
       <div
         className={`p-4 absolute bottom-4 left-4 self-center  z-0 ${

@@ -42,6 +42,7 @@ export default function MobileMenu({ isOpen, onClose }: any) {
     { href: "/dashboard/rami", icon: <RamiIcon color="navy" />, text: "RAMI" },
     { href: "/dashboard/saim", icon: <SaimIcon color="navy" />, text: "Alertas Comerciales" },
     { href: "/dashboard/sied", icon: <SiedIcon color="navy" />, text: "Alertas de IED" },
+    { href: "/dashboard/partners", icon: <SiedIcon color="navy" />, text: "Fuentes externas" },
   ];
 
   const navigationConfigOptions = [
