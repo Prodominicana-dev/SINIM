@@ -14,6 +14,8 @@ import { useDataMarkets } from "@/src/services/datamarket/service";
 import MobileMenu from "@/src/components/dashboard/mobileMenu";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import axios from "axios";
+import { getCookie, setCookie } from "typescript-cookie";
+import { generateToken } from "@/src/services/auth/service";
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -38,33 +40,32 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
   }, [datamarket]);
 
   useEffect(() => {
-    if(!isLoading){
-      var options = {
-        method: 'POST',
-        url: `${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`,
-        headers: {'content-type': 'application/x-www-form-urlencoded'},
-        data: new URLSearchParams({
-          grant_type: 'client_credentials',
-          client_id: `${process.env.API_CLIENT_ID}`,
-          client_secret: `${process.env.API_CLIENT_SECRET}`,
-          audience: `${process.env.API_IDENTIFIER}`
-        })
+    const _sidebarOpen = getCookie("sidebarOpen");
+    if (!_sidebarOpen) {
+      setCookie("sidebarOpen", true, { expires: 1 });
+    }
+    setSidebarOpen(_sidebarOpen === "true");
+  }, [sidebarOpen]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const getToken = async () => {
+        const token = await generateToken();
+        setCookie("authToken", token, { expires: 1 });
+        setAuth0Token(token);
       };
-      axios.request(options).then(function (response) {
-        const {access_token} = response.data
-        setAuth0Token(access_token)
-      }).catch(function (error) {
-        console.error(error);
-      });
+      getToken();
     }
   }, [user, isLoading]);
 
   const toggleSidebar = () => {
+    setCookie("sidebarOpen", !sidebarOpen, { expires: 1 });
     setSidebarOpen(!sidebarOpen);
   };
 
-  const openDrawer = () => setOpenNav(true);
-  const closeDrawer = () => setOpenNav(false);
+  const toogleOpenDrawer = () => {
+    setOpenNav(!openNav);
+  };
 
   return (
     <div className="flex w-full h-screen bg-white">
@@ -75,14 +76,14 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
         <NavbarDashboard
           toggleSidebar={toggleSidebar}
           openNav={openNav}
-          openDrawer={openDrawer}
+          openDrawer={toogleOpenDrawer}
         />
         {children}
       </div>
       {modal}
       <Notifications zIndex={9999} />
 
-      <MobileMenu isOpen={openNav} onClose={closeDrawer} />
+      <MobileMenu isOpen={openNav} onClose={toogleOpenDrawer} />
     </div>
   );
 }

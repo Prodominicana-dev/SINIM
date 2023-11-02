@@ -19,6 +19,7 @@ import Link from "next/link";
 import SidebarMenu from "./sidebarMenu";
 import { useDataMarketsCategories } from "@/src/services/datamarket/service";
 import { useRouter, usePathname } from "next/navigation";
+import { getCookie, setCookie } from "typescript-cookie";
 
 export function Sidebar({ visible }: any) {
   const [open, setOpen] = useState(0);
@@ -33,17 +34,30 @@ export function Sidebar({ visible }: any) {
     : path.substring(path.lastIndexOf("/"));
 
   useEffect(() => {
-    if (isConfig) {
-      return router.push(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings${lastPath}`
-      );
+    const config = getCookie("isConfig");
+    if (!config) {
+      setCookie("isConfig", false, { expires: 1 });
     }
-    return router.push(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard${
-        lastPath.includes("datamarket") ? "/datamarket/1" : lastPath
-      }`
-    );
+    setIsConfig(config === "true");
   }, [isConfig]);
+
+  const handleIsConfig = () => {
+    setCookie("isConfig", !isConfig, { expires: 1 });
+    setIsConfig(!isConfig);
+  };
+
+  // useEffect(() => {
+  //   if (isConfig) {
+  //     return router.push(
+  //       `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings${lastPath}`
+  //     );
+  //   }
+  //   return router.push(
+  //     `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard${
+  //       lastPath.includes("datamarket") ? "/datamarket/1" : lastPath
+  //     }`
+  //   );
+  // }, [isConfig]);
 
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
@@ -202,7 +216,7 @@ export function Sidebar({ visible }: any) {
             isConfig ? "bg-sky-500" : "bg-white"
           }`}
           onClick={() => {
-            setIsConfig(!isConfig);
+            handleIsConfig();
           }}
         >
           <CogIcon

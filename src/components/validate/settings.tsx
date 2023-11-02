@@ -7,6 +7,7 @@ import AccessDenied from "@/src/components/validate/accessDenied";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { tokenAtom } from "@/src/state/states";
+import { getPermissions } from "@/src/services/auth/service";
 
 export default function Settings({
   children,
@@ -26,24 +27,17 @@ export default function Settings({
     let hasPermis = false;
     if (user && token) {
       const url = `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}/permissions`;
-      const getPermissions = async () => {
-        await axios
-          .get(url, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((res) => {
-            res.data.forEach((permission: any) => {
-              permis.push(permission.permission_name);
-            });
-            hasPermis = hasAllPermissions(permis, permissionsList);
-          });
+      const _getPermissions = async () => {
+        const { data } = await getPermissions(token, url);
+        data.forEach((permission: any) => {
+          permis.push(permission.permission_name);
+        });
+        hasPermis = hasAllPermissions(permis, permissionsList);
         setPermissions(permis);
         setHasPermission(hasPermis);
         setDataLoaded(true);
       };
-      getPermissions();
+      _getPermissions();
     }
   }, [user, token]);
   if (userLoading && !dataLoaded) return <Loading />;
