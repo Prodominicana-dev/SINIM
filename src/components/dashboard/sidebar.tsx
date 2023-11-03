@@ -109,7 +109,7 @@ export function Sidebar({ visible }: any) {
             icon={
               <ChevronDownIcon
                 strokeWidth={2.5}
-                className={`mx-auto h-4 w-4 transition-transform opacity-0 group-hover:opacity-100 invisible group-hover:visible text-white ${
+                className={`mx-auto h-4 w-4 transition-transform opacity-0 group-hover:opacity-100 hidden group-hover:flex text-white ${
                   open === 1 ? "rotate-180" : ""
                 }`}
               />
@@ -132,7 +132,7 @@ export function Sidebar({ visible }: any) {
                 </ListItemPrefix>
                 <Typography
                   color="white"
-                  className="mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100"
+                  className="mr-auto font-normal duration-300 hidden group-hover:flex opacity-0 group-hover:opacity-100"
                 >
                   DataMarket
                 </Typography>
@@ -186,7 +186,14 @@ export function Sidebar({ visible }: any) {
           url={isConfig ? "/dashboard/settings/sied" : "/dashboard/sied"}
           iconUrl={"/images/logo/sied-white.svg"}
         />
-        
+
+        <SidebarItem
+          title={"Fuentes externas"}
+          url={
+            isConfig ? "/dashboard/settings/partners" : "/dashboard/partners"
+          }
+          iconUrl={"/images/logo/sied-white.svg"}
+        />
         {isConfig ? (
           <>
             <SidebarItem
@@ -201,11 +208,6 @@ export function Sidebar({ visible }: any) {
             />
           </>
         ) : null}
-        <SidebarItem
-          title={"Fuentes externas"}
-          url={isConfig ? "/dashboard/settings/partners" : "/dashboard/partners"}
-          iconUrl={"/images/logo/sied-white.svg"}
-        />
       </List>
       <div
         className={`p-4 absolute bottom-4 left-4 self-center  z-0 ${
@@ -254,7 +256,7 @@ function SidebarItem({ title, url, iconUrl }: any) {
         </ListItemPrefix>
         <Typography
           color="white"
-          className="invisible mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100 group-hover:visible"
+          className="hidden mr-auto font-normal duration-300 opacity-0 group-hover:opacity-100 group-hover:flex"
         >
           {title}
         </Typography>

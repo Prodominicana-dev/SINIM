@@ -8,45 +8,46 @@ import { useActiveSieds } from "@/src/services/sied/service";
 import NotFound from "@/src/components/validate/notFound";
 
 export default function Page() {
-  const siedFilters = [
+  const iedFilters = [
     {
-      name: "Todos",
-      title: "¡Explora todas nuestras alertas!",
+      name: "Todas",
+      title: "¡Explora todas nuestras alertas de IED!",
       description:
-        "Bienvenido a la sección de Alertas Comerciales del SINIM, donde los exportadores encontrarán una amplia gama de información acerca de las oportunidades, tendencias y desafíos del comercio internacional.",
+        "Bienvenido a la sección de Alertas de Inversión Extranjera Directa (IED), donde los inversores encontrarán información valiosa sobre oportunidades, tendencias, normativas y amenazas en el ámbito de la inversión extranjera.",
     },
     {
       name: "Oportunidades",
-      title: "Descubra nuevas oportunidades de negocio",
+      title: "Descubre nuevas oportunidades de inversión",
       description:
-        "Explore oportunidades emergentes, tendencias y nichos de mercado que pueden impulsar su crecimiento internacional.",
+        "Explora oportunidades emergentes, tendencias y nichos de mercado que pueden impulsar tu inversión extranjera directa.",
     },
     {
-      name: "Actualizaciones",
-      title: "Explore las novedades más recientes en su industria",
+      name: "Normativas",
+      title: "Mantente al día con las normativas en IED",
       description:
-        "Potencie su competitividad al mantenerse actualizado en las regulaciones, políticas y tendencias del comercio internacional.",
+        "Potencia tu conocimiento al mantenerse actualizado sobre regulaciones, políticas y tendencias en el ámbito de la inversión extranjera directa.",
     },
     {
       name: "Amenazas",
-      title: "Esté al pendiente de las amenazas potenciales",
+      title: "Identifica amenazas potenciales en la IED",
       description:
-        "Manténgase al tanto de las amenazas potenciales y tome medidas preventivas para garantizar la seguridad y el éxito de sus exportaciones. ",
+        "Mantente informado sobre las amenazas potenciales y toma medidas preventivas para asegurar el éxito de tu inversión extranjera directa.",
     },
     {
-      name: "Obstáculos",
-      title: "Eluda los obstáculos presentes en el comercio global",
+      name: "Tendencias",
+      title: "Explora las tendencias en IED por región",
       description:
-        "Acceda a los obstáculos identificados en los mercados internacionales, manteniéndose informado acerca de los desafíos que pueden impactar sus objetivos comerciales.",
+        "Accede a información detallada sobre las tendencias de inversión extranjera directa en diferentes regiones del mundo, identificando oportunidades y desafíos emergentes.",
     },
   ];
+
   const { data, isLoading, isError } = useActiveSieds();
   const [filteredData, setFilteredData] = useState<Sied[]>([]);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState(siedFilters[0].name);
-  const [categoryTitle, setCategoryTitle] = useState(siedFilters[0].title);
+  const [category, setCategory] = useState(iedFilters[0].name);
+  const [categoryTitle, setCategoryTitle] = useState(iedFilters[0].title);
   const [categoryDescription, setCategoryDescription] = useState(
-    siedFilters[0].description
+    iedFilters[0].description
   );
   useEffect(() => {
     setFilteredData(data);
@@ -63,7 +64,7 @@ export default function Page() {
         sied.category.name.toLowerCase() === selectedCategory.toLowerCase()
     );
 
-    const selectedFilter = siedFilters.find(
+    const selectedFilter = iedFilters.find(
       (filter) => filter.name.toLowerCase() === selectedCategory.toLowerCase()
     );
 
@@ -114,7 +115,7 @@ export default function Page() {
         <div className="absolute inset-0 bg-black border-0 opacity-60"></div>
         <div className="relative flex flex-col items-center justify-center w-full h-full px-5 sm:px-0">
           <div className="gap-3 sm:gap-5 lg:gap-10 my-10 text-[14px] sm:text-lg flex flex-row justify-center items-center flex-wrap lg:flex-nowrap sm:w-8/12">
-            {siedFilters.map((filter) => (
+            {iedFilters.map((filter) => (
               <button
                 key={filter.name}
                 onClick={() => handleFilter(filter.name)}
@@ -150,17 +151,21 @@ export default function Page() {
         <Feed />
       ) : (
         <>
-        {filteredData?.length === 0 ? (<NotFound />) : (<>
-        <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {filteredData?.map((sied) => {
-            return (
-              <div key={sied.id}>
-                <SiedCard {...sied} />
+          {filteredData?.length === 0 ? (
+            <NotFound />
+          ) : (
+            <>
+              <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {filteredData?.map((sied) => {
+                  return (
+                    <div key={sied.id}>
+                      <SiedCard {...sied} />
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
-        </>)}
+            </>
+          )}
         </>
       )}
     </div>

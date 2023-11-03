@@ -154,22 +154,24 @@ export default function Page() {
       </div>
       {search === "" && category === "Todos" ? (
         <Feed />
-      ) : (<>
-      {filteredData?.length === 0 ? (<NotFound />) : (
+      ) : (
         <>
-        <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {filteredData?.map((saim) => {
-            return (
-              <div key={saim.id}>
-                <SaimCard {...saim} />
+          {filteredData?.length === 0 ? (
+            <NotFound />
+          ) : (
+            <>
+              <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {filteredData?.map((saim) => {
+                  return (
+                    <div key={saim.id}>
+                      <SaimCard {...saim} />
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div></>
-      )}
-        
-      </>
-        
+            </>
+          )}
+        </>
       )}
     </div>
   );
