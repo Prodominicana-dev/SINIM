@@ -15,10 +15,7 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
-import Saim from "@/src/models/saim";
-import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from "@mantine/dropzone";
+import { Dropzone, IMAGE_MIME_TYPE, FileWithPath, PDF_MIME_TYPE } from "@mantine/dropzone";
 import { Group } from "@mantine/core";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
@@ -27,13 +24,13 @@ import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
 
-export default function PartnerDialog({
-  source,
+export default function PostDialog({
+  post,
   open,
   handleOpen,
   update,
 }: {
-  source?: any;
+  post?: any;
   open: boolean;
   handleOpen: () => void;
   update: () => void;
@@ -53,13 +50,13 @@ export default function PartnerDialog({
   };
 
   useEffect(() => {
-    if(source){
-      setTitle(source.title);
-      setCategory({label: source.type === "nacional" ? "Nacional" : "Internacional", value: source.type});
-      setDescription(source.description);
-      setUrl(source.url);
+    if(post){
+      setTitle(post.title);
+      setCategory({label: post.type === "nacional" ? "Nacional" : "Internacional", value: post.type});
+      setDescription(post.description);
+      setUrl(post.url);
     }
-  }, [source]);
+  }, [post]);
 
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
@@ -78,26 +75,9 @@ export default function PartnerDialog({
     if (files.length > 0) {
       data.append("file", files[0]);
     }
-    if(source){
-      console.log("ajksajksjk")
-      return axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/partner/${source.id}`, data).then((res) => {
-        notifications.show({
-          id: "partner",
-          autoClose: 5000,
-          withCloseButton: false,
-          title: "Fuente de información actualizada",
-          message: "La fuente de información ha sido actualizada correctamente.",
-          color: "green",
-          loading: false,
-        });
-        handleOpen();
-        setFiles([]);
-        setTitle("");
-        update();
-      });
-      
-      
-    }
+
+    console.log(data)
+    
       return await axios
         .post(`${process.env.NEXT_PUBLIC_API_URL}/partner`, data)
         .then((res) => {
@@ -198,11 +178,11 @@ export default function PartnerDialog({
                       className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
                     />
                   </div>
-                ) : source ? 
+                ) : post ? 
                   (
                     <div className="flex justify-center w-full h-full">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_API_URL}/data/partner/${source?.id}/img/${source?.image}`}
+                        src={`${process.env.NEXT_PUBLIC_API_URL}/data/partner/${post?.id}/pdf/${post?.image}`}
                         width={1920}
                         height={1080}
                         alt="saim-image"
@@ -219,20 +199,20 @@ export default function PartnerDialog({
                   onDrop={handleDrop}
                   onReject={(e) => {
                     notifications.show({
-                      id: "saim",
+                      id: "post",
                       autoClose: 5000,
                       withCloseButton: false,
-                      title: "¿Estás loco o qué?",
-                      message: "La imagen no puede pasar de 5MB.",
+                      title: "Error",
+                      message: "El documento no puede pasar de 10 MB.",
                       color: "red",
                       loading: false,
                     });
                   }}
                   activateOnClick={false}
-                  accept={IMAGE_MIME_TYPE}
+                  accept={PDF_MIME_TYPE}
                   maxFiles={1}
                   multiple={false}
-                  maxSize={5 * 1024 * 1024}
+                  maxSize={10 * 1024 * 1024}
                   styles={{ inner: { pointerEvents: "all" } }}
                   className="w-full bg-transparent border-0 group-hover:bg-transparent"
                 >
@@ -251,17 +231,17 @@ export default function PartnerDialog({
             <div className="flex justify-end w-full h-12 my-5 space-x-3">
               <Button
                 disabled={
-                  source ?
-                      title === "" ||
-                      category === undefined ||
-                      description === "" ||
-                      url === ""  
-                      :
+                  post ?
                       title === "" ||
                       category === undefined ||
                       description === "" ||
                       url === "" ||
                       files.length === 0 
+                      :
+                      title === "" ||
+                      category === undefined ||
+                      description === "" ||
+                      url === ""
                 }
                 onClick={() => handleSubmit()}
                 color="green"
