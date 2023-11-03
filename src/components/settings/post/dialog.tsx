@@ -6,6 +6,7 @@ import {
   Button,
   IconButton,
   Input,
+  Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
@@ -19,6 +20,8 @@ import {
 import { Autocomplete, Group } from "@mantine/core";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
+import { CloudArrowUpIcon, DocumentIcon } from "@heroicons/react/24/outline";
+import Category from "../../../models/category";
 
 export default function PostDialog({
   post,
@@ -32,8 +35,8 @@ export default function PostDialog({
   update: () => void;
 }) {
   const [files, setFiles] = useState<FileWithPath[]>([]);
-  const [description, setDescription] = useState<any>("");
-  const [url, setUrl] = useState<any>("");
+  const [type, setType] = useState<any>("");
+  const [language, setLanguage] = useState<any>("");
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<any>();
   const [categories] = useState<any[]>([
@@ -51,29 +54,22 @@ export default function PostDialog({
   useEffect(() => {
     if (post) {
       setTitle(post.title);
-      setCategory({
-        label: post.type === "nacional" ? "Nacional" : "Internacional",
-        value: post.type,
-      });
-      setDescription(post.description);
-      setUrl(post.url);
+      setCategory(post.category);
+      setType(post.type);
+      setLanguage(post.language);
     }
   }, [post]);
 
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
   };
-  const isHovering =
-    files.length > 0
-      ? "group-hover:bg-black/30"
-      : "text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300";
 
   const handleSubmit = async () => {
     const data = new FormData();
     data.append("title", title);
-    data.append("type", category.value);
-    data.append("description", description);
-    data.append("url", url);
+    data.append("category", category);
+    data.append("type", type);
+    data.append("language", language);
     if (files.length > 0) {
       data.append("file", files[0]);
     }
@@ -136,9 +132,9 @@ export default function PostDialog({
         </IconButton>
       </DialogHeader>
 
-      <DialogBody className=" justify-center h-[100vh] overflow-y-auto">
+      <DialogBody className=" justify-center h-[100vh] overflow-y-auto text-black">
         <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="w-full text-2xl font-bold text-left text-black sm:w-10/12">
+          <div className="w-full text-2xl font-bold text-left  sm:w-10/12">
             Agregar publicacion
           </div>
           <div className="w-full space-y-4 sm:w-10/12">
@@ -153,6 +149,7 @@ export default function PostDialog({
             <div className="w-full">
               <Autocomplete
                 label="Categoria"
+                onChange={(e) => setCategory(e)}
                 placeholder="Categoria"
                 data={["React", "Angular", "Vue", "Svelte"]}
                 styles={{ dropdown: { zIndex: 9999 } }}
@@ -162,6 +159,7 @@ export default function PostDialog({
               <div className="w-full sm:w-6/12">
                 <Autocomplete
                   label="Tipo"
+                  onChange={(e) => setType(e)}
                   placeholder="Tipo"
                   data={["React", "Angular", "Vue", "Svelte"]}
                   styles={{ dropdown: { zIndex: 9999 } }}
@@ -170,6 +168,7 @@ export default function PostDialog({
               <div className="w-full sm:w-6/12">
                 <Autocomplete
                   label="Idioma"
+                  onChange={(e) => setLanguage(e)}
                   placeholder="Idioma"
                   data={["React", "Angular", "Vue", "Svelte"]}
                   styles={{ dropdown: { zIndex: 9999 } }}
@@ -178,37 +177,7 @@ export default function PostDialog({
             </div>
 
             <div className="relative w-full my-5 h-80 group">
-              <div
-                className="absolute inset-0 z-0 cursor-pointer "
-                onClick={handleClickSelectFile}
-              >
-                {/* ImagePreview */}
-                {files.length > 0 ? (
-                  <div className="flex justify-center w-full h-full">
-                    <Image
-                      src={URL.createObjectURL(files[0])}
-                      width={1920}
-                      height={1080}
-                      alt="card-image"
-                      className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
-                    />
-                  </div>
-                ) : post ? (
-                  <div className="flex justify-center w-full h-full">
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_API_URL}/data/post/${post?.id}/pdf/${post?.image}`}
-                      width={1920}
-                      height={1080}
-                      alt="saim-image"
-                      className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
-                )}
-              </div>
-
-              <div className="flex items-center justify-center w-full h-full text-base text-black">
+              <div className="flex items-center border-2 border-black border-dashed rounded-xl justify-center w-full h-full text-base text-black">
                 <Dropzone
                   openRef={openRef}
                   onDrop={handleDrop}
@@ -229,16 +198,27 @@ export default function PostDialog({
                   multiple={false}
                   maxSize={10 * 1024 * 1024}
                   styles={{ inner: { pointerEvents: "all" } }}
-                  className="w-full bg-transparent border-0 group-hover:bg-transparent"
+                  className="w-full bg-transparent  group-hover:bg-transparent"
                 >
-                  <Group justify="center">
+                  <div className="flex justify-center items-center flex-col gap-4 h-full">
+                    {files.length > 0 ? (
+                      <div className="flex flex-col justify-center items-center">
+                        <DocumentIcon className="w-24" />
+                        <Typography>{files[0].name}</Typography>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col justify-center items-center">
+                        <CloudArrowUpIcon className="w-24" />
+                        <Typography>Solo se aceptan archivos PDF</Typography>
+                      </div>
+                    )}
                     <Button
                       onClick={handleClickSelectFile}
-                      className={`${isHovering} bg-transparent border-[1px] hover:shadow-none `}
+                      className={`text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300 bg-transparent border-[1px] hover:shadow-none `}
                     >
-                      Subir imagen
+                      Subir archivo
                     </Button>
-                  </Group>
+                  </div>
                 </Dropzone>
               </div>
             </div>
@@ -249,13 +229,13 @@ export default function PostDialog({
                   post
                     ? title === "" ||
                       category === undefined ||
-                      description === "" ||
-                      url === "" ||
+                      type === "" ||
+                      language === "" ||
                       files.length === 0
                     : title === "" ||
                       category === undefined ||
-                      description === "" ||
-                      url === ""
+                      type === "" ||
+                      language === ""
                 }
                 onClick={() => handleSubmit()}
                 color="green"
