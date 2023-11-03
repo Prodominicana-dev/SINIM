@@ -5,24 +5,20 @@ import {
   DialogBody,
   Button,
   IconButton,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
   Input,
-  Textarea,
 } from "@material-tailwind/react";
 import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { Dropzone, IMAGE_MIME_TYPE, FileWithPath, PDF_MIME_TYPE } from "@mantine/dropzone";
-import { Group } from "@mantine/core";
+import {
+  Dropzone,
+  IMAGE_MIME_TYPE,
+  FileWithPath,
+  PDF_MIME_TYPE,
+} from "@mantine/dropzone";
+import { Autocomplete, Group } from "@mantine/core";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
-
-const animatedComponents = makeAnimated();
 
 export default function PostDialog({
   post,
@@ -40,7 +36,10 @@ export default function PostDialog({
   const [url, setUrl] = useState<any>("");
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<any>();
-  const [categories] = useState<any[]>([{label: "Nacional", value: "nacional"}, {label: "Internacional", value: "internacional"}]);
+  const [categories] = useState<any[]>([
+    { label: "Nacional", value: "nacional" },
+    { label: "Internacional", value: "internacional" },
+  ]);
 
   const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
@@ -50,9 +49,12 @@ export default function PostDialog({
   };
 
   useEffect(() => {
-    if(post){
+    if (post) {
       setTitle(post.title);
-      setCategory({label: post.type === "nacional" ? "Nacional" : "Internacional", value: post.type});
+      setCategory({
+        label: post.type === "nacional" ? "Nacional" : "Internacional",
+        value: post.type,
+      });
       setDescription(post.description);
       setUrl(post.url);
     }
@@ -76,36 +78,36 @@ export default function PostDialog({
       data.append("file", files[0]);
     }
 
-    console.log(data)
-    
-      return await axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/partner`, data)
-        .then((res) => {
-          if (res.status === 200) {
-            notifications.show({
-              id: "partner",
-              autoClose: 5000,
-              withCloseButton: false,
-              title: "Fuente de información agregada",
-              message: "La fuente de información ha sido creada correctamente.",
-              color: "green",
-              loading: false,
-            });
-            handleOpen();
-            setFiles([]);
-            setTitle("");
-            update();
-          }
+    console.log(data);
+
+    return await axios
+      .post(`${process.env.NEXT_PUBLIC_API_URL}/post`, data)
+      .then((res) => {
+        if (res.status === 200) {
           notifications.show({
-            id: "partner",
+            id: "post",
             autoClose: 5000,
             withCloseButton: false,
-            title: "Error",
-            message: "La fuente de información no se ha creado correctamente.",
+            title: "Fuente de información agregada",
+            message: "La publicación ha sido creada correctamente.",
             color: "green",
             loading: false,
           });
+          handleOpen();
+          setFiles([]);
+          setTitle("");
+          update();
+        }
+        notifications.show({
+          id: "post",
+          autoClose: 5000,
+          withCloseButton: false,
+          title: "Error",
+          message: "La publicación no se ha creado correctamente.",
+          color: "green",
+          loading: false,
         });
+      });
   };
 
   return (
@@ -117,7 +119,7 @@ export default function PostDialog({
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0.9, y: -100 },
       }}
-      className="flex flex-col sm:h-screen 2xl:h-[90vh] overflow-scroll"
+      className="flex flex-col sm:h-screen 2xl:h-[90vh] "
     >
       <DialogHeader className="justify-end">
         <IconButton
@@ -135,33 +137,46 @@ export default function PostDialog({
       </DialogHeader>
 
       <DialogBody className=" justify-center h-[100vh] overflow-y-auto">
-      
         <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="w-full text-2xl font-bold text-left text-black sm:w-8/12">Agregar fuente externa</div>
-          <div className="w-full space-y-4 sm:w-8/12">
+          <div className="w-full text-2xl font-bold text-left text-black sm:w-10/12">
+            Agregar publicacion
+          </div>
+          <div className="w-full space-y-4 sm:w-10/12">
             <div className="w-full">
-              <Input label="Título" crossOrigin={""} value={title} onChange={(e) => setTitle(e.target.value)}/>
+              <Input
+                label="Título"
+                crossOrigin={""}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="w-full">
+              <Autocomplete
+                label="Categoria"
+                placeholder="Categoria"
+                data={["React", "Angular", "Vue", "Svelte"]}
+                styles={{ dropdown: { zIndex: 9999 } }}
+              />
             </div>
             <div className="flex flex-col w-full space-y-4 sm:space-y-0 sm:space-x-4 sm:flex-row">
               <div className="w-full sm:w-6/12">
-              <Select
-                closeMenuOnSelect={true}
-                components={animatedComponents}
-                isMulti={false}
-                placeholder="Categoría..."
-                onChange={(e) => setCategory(e)}
-                value={category}
-                options={categories}
-              />
+                <Autocomplete
+                  label="Tipo"
+                  placeholder="Tipo"
+                  data={["React", "Angular", "Vue", "Svelte"]}
+                  styles={{ dropdown: { zIndex: 9999 } }}
+                />
               </div>
-            <div className="w-full sm:w-6/12">
-            <Input label="Enlace" crossOrigin={""} value={url} onChange={(e) => setUrl(e.target.value)}/>
+              <div className="w-full sm:w-6/12">
+                <Autocomplete
+                  label="Idioma"
+                  placeholder="Idioma"
+                  data={["React", "Angular", "Vue", "Svelte"]}
+                  styles={{ dropdown: { zIndex: 9999 } }}
+                />
+              </div>
             </div>
-              
-            </div>
-            <div className="w-full">
-              <Textarea label="Descripción" value={description} onChange={(e) => setDescription(e.target.value)}/>
-            </div>
+
             <div className="relative w-full my-5 h-80 group">
               <div
                 className="absolute inset-0 z-0 cursor-pointer "
@@ -178,19 +193,19 @@ export default function PostDialog({
                       className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
                     />
                   </div>
-                ) : post ? 
-                  (
-                    <div className="flex justify-center w-full h-full">
-                      <Image
-                        src={`${process.env.NEXT_PUBLIC_API_URL}/data/partner/${post?.id}/pdf/${post?.image}`}
-                        width={1920}
-                        height={1080}
-                        alt="saim-image"
-                        className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
-                      />
-                    </div>
-                  )
-                 : (<div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>)}
+                ) : post ? (
+                  <div className="flex justify-center w-full h-full">
+                    <Image
+                      src={`${process.env.NEXT_PUBLIC_API_URL}/data/post/${post?.id}/pdf/${post?.image}`}
+                      width={1920}
+                      height={1080}
+                      alt="saim-image"
+                      className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
+                )}
               </div>
 
               <div className="flex items-center justify-center w-full h-full text-base text-black">
@@ -231,14 +246,13 @@ export default function PostDialog({
             <div className="flex justify-end w-full h-12 my-5 space-x-3">
               <Button
                 disabled={
-                  post ?
-                      title === "" ||
+                  post
+                    ? title === "" ||
                       category === undefined ||
                       description === "" ||
                       url === "" ||
-                      files.length === 0 
-                      :
-                      title === "" ||
+                      files.length === 0
+                    : title === "" ||
                       category === undefined ||
                       description === "" ||
                       url === ""
