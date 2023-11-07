@@ -27,28 +27,26 @@ export default function DatamarketDialog({
   const [datamarketTitle, setDatamarketTitle] = useState<any>(
     datamarket?.title
   );
-  console.log(datamarket);
   const [datamarketUrl, setDatamarketUrl] = useState<any>(datamarket?.url);
   const [datamarketCategory, setDatamarketCategory] = useState(
     datamarket?.category
   );
   const { data } = useDataMarketsCategories();
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   const handleDatamarketSubmit = async () => {
-    const _datamarket = {
-      id: datamarket?.id || 0,
+    const data: { [key: string]: any } = {
       title: datamarketTitle,
       category: datamarketCategory,
       url: datamarketUrl,
     };
 
-    const action = _datamarket.id !== 0 ? updateDatamarket : createDatamarket;
+    if (datamarket) {
+      data["id"] = datamarket.id;
+    }
 
-    action({ datamarket: _datamarket, handleOpen, updateDatamarkets });
+    const action = datamarket ? updateDatamarket : createDatamarket;
+
+    action({ datamarket: data, handleOpen, updateDatamarkets });
   };
 
   return (

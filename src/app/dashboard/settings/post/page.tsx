@@ -205,7 +205,7 @@ export default function Page() {
                 <div>Acción</div>
               </div>
               {currentPageData?.map((post: any, key: number) => {
-                return <Card key={key} post={post} update={updatePosts} />;
+                return <Card key={key} post={post} updatePosts={updatePosts} />;
               })}
 
               <div className="flex flex-row items-center w-full py-4 space-x-3 sm:justify-end">
@@ -236,7 +236,7 @@ export default function Page() {
           <PostDialog
             open={open}
             handleOpen={handleOpen}
-            update={updatePosts}
+            updatePosts={updatePosts}
           />
         </>
       ) : null}

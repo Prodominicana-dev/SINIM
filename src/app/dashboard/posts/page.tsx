@@ -1,8 +1,15 @@
 "use client";
 import { Select } from "@mantine/core";
 import Card from "@/src/components/post/card";
+import { usePosts } from "@/src/services/post/service";
+import Post from "@/src/models/post";
 
 export default function Page() {
+  const {
+    data: posts,
+    isLoading: isPostsLoading,
+    isError: isPostsError,
+  } = usePosts();
   return (
     <div className="w-full h-full">
       <div className="relative w-full h-[60vh] sm:h-[50vh]">
@@ -64,12 +71,13 @@ export default function Page() {
         </div>
       </div>
       <div className="grid grid-cols-1 place-items-center gap-8 p-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {posts?.map((post: Post) => {
+          return (
+            <div key={post.id}>
+              <Card {...post} />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

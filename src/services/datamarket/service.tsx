@@ -14,13 +14,8 @@ export function createDatamarket({
   handleOpen,
   updateDatamarkets,
 }: DatamarketProps) {
-  const _datamarket = {
-    title: datamarket.title,
-    category: datamarket.category,
-    url: datamarket.url,
-  };
   return axios
-    .post(`${process.env.NEXT_PUBLIC_API_URL}/datamarket`, _datamarket)
+    .post(`${process.env.NEXT_PUBLIC_API_URL}/datamarket`, datamarket)
     .then((res) => {
       if (res.status === 201) {
         notifications.show({
@@ -28,7 +23,7 @@ export function createDatamarket({
           autoClose: 5000,
           withCloseButton: false,
           title: "Datamarketo creado",
-          message: "El datamarketo ha sido creado correctamente.",
+          message: "El datamarket ha sido creado correctamente.",
           color: "green",
           loading: false,
         });
@@ -40,7 +35,7 @@ export function createDatamarket({
           autoClose: 5000,
           withCloseButton: false,
           title: "Error",
-          message: "El datamarketo no se ha creado correctamente.",
+          message: "El datamarket no se ha creado correctamente.",
           color: "red",
           loading: false,
         });
@@ -65,7 +60,7 @@ export function updateDatamarket({
           autoClose: 5000,
           withCloseButton: false,
           title: "Datamarketo editado",
-          message: "El datamarketo ha sido actualizado correctamente.",
+          message: "El datamarket ha sido actualizado correctamente.",
           color: "green",
           loading: false,
         });
@@ -77,7 +72,7 @@ export function updateDatamarket({
           autoClose: 5000,
           withCloseButton: false,
           title: "Error",
-          message: "El datamarketo no se ha actualizado correctamente.",
+          message: "El datamarket no se ha actualizado correctamente.",
           color: "red",
           loading: false,
         });

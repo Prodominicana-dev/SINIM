@@ -3,19 +3,16 @@ import { useState } from "react";
 import DeleteButton from "../delete";
 import PostDialog from "./dialog";
 
-
-
 export default function Card({
   post,
-  update,
+  updatePosts,
 }: {
-    post: any;
-    update: () => void;
+  post: any;
+  updatePosts: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const handleClose = () => setOpen(false);
-  
 
   const [deleteOpen, setDeleteOpen] = useState(false);
   const handleDeleteOpen = () => setDeleteOpen(!deleteOpen);
@@ -57,21 +54,21 @@ export default function Card({
       <DeleteButton
         open={deleteOpen}
         handleOpen={handleDeleteOpen}
-        update={update}
+        update={updatePosts}
         title={"¿Estás seguro de eliminar esta fuente?"}
         message="La fuente será eliminada y no podrá ser recuperada."
         endpoint={`/partner/${post.id}`}
         createNotification={deleteCreateNotification}
         errorNotification={deleteErrorNotification}
       />
-       {open ? (
+      {open ? (
         <>
-        <PostDialog 
-        post={post}
-        open={open}
-        handleOpen={handleOpen}
-        update={update}
-        />
+          <PostDialog
+            post={post}
+            open={open}
+            handleOpen={handleOpen}
+            updatePosts={updatePosts}
+          />
         </>
       ) : null}
     </>

@@ -201,11 +201,11 @@ export function Sidebar({ visible }: any) {
               url={"/dashboard/settings/products"}
               iconUrl={"/images/logo/sied-white.svg"}
             />
-            <SidebarItem
+            {/* <SidebarItem
               title={"Usuarios"}
               url={"/dashboard/settings/users"}
               iconUrl={"/images/logo/sied-white.svg"}
-            />
+            /> */}
           </>
         ) : null}
       </List>

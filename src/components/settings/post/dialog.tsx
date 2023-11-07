@@ -22,28 +22,24 @@ import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import { CloudArrowUpIcon, DocumentIcon } from "@heroicons/react/24/outline";
 import Category from "../../../models/category";
+import { createPost, updatePost } from "@/src/services/post/service";
 
 export default function PostDialog({
   post,
   open,
   handleOpen,
-  update,
+  updatePosts,
 }: {
   post?: any;
   open: boolean;
   handleOpen: () => void;
-  update: () => void;
+  updatePosts: () => void;
 }) {
+  const [title, setTitle] = useState(post?.title);
+  const [category, setCategory] = useState(post?.category);
+  const [type, setType] = useState(post?.type);
+  const [language, setLanguage] = useState(post?.language);
   const [files, setFiles] = useState<FileWithPath[]>([]);
-  const [type, setType] = useState<any>("");
-  const [language, setLanguage] = useState<any>("");
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState<any>();
-  const [categories] = useState<any[]>([
-    { label: "Nacional", value: "nacional" },
-    { label: "Internacional", value: "internacional" },
-  ]);
-
   const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
     if (openRef.current) {
@@ -73,37 +69,9 @@ export default function PostDialog({
     if (files.length > 0) {
       data.append("file", files[0]);
     }
-
-    console.log(data);
-
-    return await axios
-      .post(`${process.env.NEXT_PUBLIC_API_URL}/post`, data)
-      .then((res) => {
-        if (res.status === 200) {
-          notifications.show({
-            id: "post",
-            autoClose: 5000,
-            withCloseButton: false,
-            title: "Fuente de información agregada",
-            message: "La publicación ha sido creada correctamente.",
-            color: "green",
-            loading: false,
-          });
-          handleOpen();
-          setFiles([]);
-          setTitle("");
-          update();
-        }
-        notifications.show({
-          id: "post",
-          autoClose: 5000,
-          withCloseButton: false,
-          title: "Error",
-          message: "La publicación no se ha creado correctamente.",
-          color: "green",
-          loading: false,
-        });
-      });
+    post
+      ? updatePost({ post: data, handleOpen, updatePosts, id: post.id })
+      : createPost({ post: data, handleOpen, updatePosts });
   };
 
   return (
@@ -135,7 +103,7 @@ export default function PostDialog({
       <DialogBody className=" justify-center h-[100vh] overflow-y-auto text-black">
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="w-full text-2xl font-bold text-left  sm:w-10/12">
-            Agregar publicacion
+            {post ? "Editar Publicación" : "Agregar Publicación"}
           </div>
           <div className="w-full space-y-4 sm:w-10/12">
             <div className="w-full">
@@ -151,6 +119,7 @@ export default function PostDialog({
                 label="Categoria"
                 onChange={(e) => setCategory(e)}
                 placeholder="Categoria"
+                defaultValue={post?.category}
                 data={["React", "Angular", "Vue", "Svelte"]}
                 styles={{ dropdown: { zIndex: 9999 } }}
               />
@@ -161,6 +130,7 @@ export default function PostDialog({
                   label="Tipo"
                   onChange={(e) => setType(e)}
                   placeholder="Tipo"
+                  defaultValue={post?.type}
                   data={["React", "Angular", "Vue", "Svelte"]}
                   styles={{ dropdown: { zIndex: 9999 } }}
                 />
@@ -170,6 +140,7 @@ export default function PostDialog({
                   label="Idioma"
                   onChange={(e) => setLanguage(e)}
                   placeholder="Idioma"
+                  defaultValue={post?.language}
                   data={["React", "Angular", "Vue", "Svelte"]}
                   styles={{ dropdown: { zIndex: 9999 } }}
                 />
@@ -201,10 +172,12 @@ export default function PostDialog({
                   className="w-full bg-transparent  group-hover:bg-transparent"
                 >
                   <div className="flex justify-center items-center flex-col gap-4 h-full">
-                    {files.length > 0 ? (
+                    {post || files.length > 0 ? (
                       <div className="flex flex-col justify-center items-center">
                         <DocumentIcon className="w-24" />
-                        <Typography>{files[0].name}</Typography>
+                        <Typography>
+                          {files.length > 0 ? files[0].name : post?.pdf}
+                        </Typography>
                       </div>
                     ) : (
                       <div className="flex flex-col justify-center items-center">
@@ -230,12 +203,12 @@ export default function PostDialog({
                     ? title === "" ||
                       category === undefined ||
                       type === "" ||
-                      language === "" ||
-                      files.length === 0
+                      language === ""
                     : title === "" ||
                       category === undefined ||
                       type === "" ||
-                      language === ""
+                      language === "" ||
+                      files.length === 0
                 }
                 onClick={() => handleSubmit()}
                 color="green"
