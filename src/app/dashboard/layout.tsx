@@ -13,9 +13,10 @@ import "@mantine/notifications/styles.css";
 import { useDataMarkets } from "@/src/services/datamarket/service";
 import MobileMenu from "@/src/components/dashboard/mobileMenu";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import axios from "axios";
 import { getCookie, setCookie } from "typescript-cookie";
 import { generateToken } from "@/src/services/auth/service";
+
+import { Provider } from "jotai";
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -92,7 +93,9 @@ export default function RootLayout(props: RootLayoutProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider>
-        <RootLayoutComponent {...props} />
+        <Provider>
+          <RootLayoutComponent {...props} />
+        </Provider>
       </MantineProvider>
     </QueryClientProvider>
   );
