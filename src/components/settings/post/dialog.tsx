@@ -7,6 +7,7 @@ import {
   IconButton,
   Input,
   Typography,
+  Spinner,
 } from "@material-tailwind/react";
 import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
@@ -40,6 +41,7 @@ export default function PostDialog({
   const [type, setType] = useState(post?.type);
   const [language, setLanguage] = useState(post?.language);
   const [files, setFiles] = useState<FileWithPath[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
     if (openRef.current) {
@@ -61,6 +63,7 @@ export default function PostDialog({
   };
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     const data = new FormData();
     data.append("title", title);
     data.append("category", category);
@@ -70,8 +73,12 @@ export default function PostDialog({
       data.append("file", files[0]);
     }
     post
-      ? updatePost({ post: data, handleOpen, updatePosts, id: post.id })
-      : createPost({ post: data, handleOpen, updatePosts });
+      ? updatePost({ post: data, handleOpen, updatePosts, id: post.id }).then(
+          () => setIsLoading(false)
+        )
+      : createPost({ post: data, handleOpen, updatePosts }).then(() =>
+          setIsLoading(false)
+        );
   };
 
   return (
@@ -102,7 +109,7 @@ export default function PostDialog({
 
       <DialogBody className=" justify-center h-[100vh] overflow-y-auto text-black">
         <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="w-full text-2xl font-bold text-left  sm:w-10/12">
+          <div className="w-full text-2xl font-bold text-left sm:w-10/12">
             {post ? "Editar Publicación" : "Agregar Publicación"}
           </div>
           <div className="w-full space-y-4 sm:w-10/12">
@@ -148,7 +155,7 @@ export default function PostDialog({
             </div>
 
             <div className="relative w-full my-5 h-80 group">
-              <div className="flex items-center border-2 border-black border-dashed rounded-xl justify-center w-full h-full text-base text-black">
+              <div className="flex items-center justify-center w-full h-full text-base text-black border-2 border-black border-dashed rounded-xl">
                 <Dropzone
                   openRef={openRef}
                   onDrop={handleDrop}
@@ -169,18 +176,18 @@ export default function PostDialog({
                   multiple={false}
                   maxSize={10 * 1024 * 1024}
                   styles={{ inner: { pointerEvents: "all" } }}
-                  className="w-full bg-transparent  group-hover:bg-transparent"
+                  className="w-full bg-transparent group-hover:bg-transparent"
                 >
-                  <div className="flex justify-center items-center flex-col gap-4 h-full">
+                  <div className="flex flex-col items-center justify-center h-full gap-4">
                     {post || files.length > 0 ? (
-                      <div className="flex flex-col justify-center items-center">
+                      <div className="flex flex-col items-center justify-center">
                         <DocumentIcon className="w-24" />
                         <Typography>
                           {files.length > 0 ? files[0].name : post?.pdf}
                         </Typography>
                       </div>
                     ) : (
-                      <div className="flex flex-col justify-center items-center">
+                      <div className="flex flex-col items-center justify-center">
                         <CloudArrowUpIcon className="w-24" />
                         <Typography>Solo se aceptan archivos PDF</Typography>
                       </div>
@@ -199,7 +206,7 @@ export default function PostDialog({
             <div className="flex justify-end w-full h-12 my-5 space-x-3">
               <Button
                 disabled={
-                  post
+                  (post
                     ? title === "" ||
                       category === undefined ||
                       type === "" ||
@@ -208,12 +215,12 @@ export default function PostDialog({
                       category === undefined ||
                       type === "" ||
                       language === "" ||
-                      files.length === 0
+                      files.length === 0) || isLoading
                 }
-                onClick={() => handleSubmit()}
+                onClick={!isLoading ? () => handleSubmit() : () => {}}
                 color="green"
               >
-                Guardar
+                {isLoading ? <Spinner /> : post ? "Actualizar" : "Guardar"}
               </Button>
             </div>
           </div>

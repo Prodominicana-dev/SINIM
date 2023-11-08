@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogBody,
   Input,
+  Spinner,
 } from "@material-tailwind/react";
 import { useState } from "react";
 import Product from "@/src/models/product";
@@ -22,8 +23,10 @@ export default function ProductDialog({
 }) {
   const [productName, setProductName] = useState<any>(product?.name);
   const [productCode, setProductCode] = useState<any>(product?.code);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleProductSubmit = async () => {
+    setIsLoading(true);
     const _product = {
       id: product?.id || 0,
       name: productName,
@@ -32,7 +35,9 @@ export default function ProductDialog({
 
     const action = _product.id !== 0 ? updateProduct : createProduct;
 
-    action({ product: _product, handleOpen, updateProducts });
+    action({ product: _product, handleOpen, updateProducts }).then(() => {
+      setIsLoading(false);
+    });
   };
 
   return (
@@ -55,8 +60,12 @@ export default function ProductDialog({
               onChange={(e) => setProductCode(e.target.value)}
               defaultValue={product?.code || ""}
             />
-            <Button className="bg-navy" onClick={handleProductSubmit}>
-              {product ? "Actualizar" : "Guardar"}
+            <Button
+              disabled={isLoading}
+              className="bg-navy"
+              onClick={!isLoading ? handleProductSubmit : () => {}}
+            >
+              {isLoading ? <Spinner /> : product ? "Actualizar" : "Guardar"}
             </Button>
           </div>
         </DialogBody>

@@ -10,6 +10,7 @@ import {
   TabPanel,
   TabsBody,
   TabsHeader,
+  Spinner,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
@@ -23,6 +24,7 @@ import Editor from "../rich-editor/config";
 import { useSelectProducts } from "@/src/services/products/service";
 import { useSelectCountries } from "@/src/services/countries/service";
 import Rami from "@/src/models/rami";
+import { set } from "date-fns";
 
 const animatedComponents = makeAnimated();
 
@@ -69,6 +71,7 @@ export default function RamiEditDialog({
   const [tradeAgreement, setTradeAgreement] = useState<any>("");
   const [tariffsImposed, setTariffsImposed] = useState<any>("");
   const [webResource, setWebResource] = useState<any>("");
+  const [isLoadin, setIsLoadin] = useState(false);
   const outputReq = Editor({
     placeholder: "Requisitos de exportacion...",
     content: data?.outputRequirement,
@@ -239,6 +242,7 @@ export default function RamiEditDialog({
   ]);
 
   const handleSubmit = async () => {
+    setIsLoadin(true);
     const data = {
       countryId: Number(selectedCountries.value.id),
       productId: Number(selectedProducts.value.id),
@@ -253,51 +257,56 @@ export default function RamiEditDialog({
     };
     console.log(data.outputRequirement);
     if (!rami) {
-      return await axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/rami`, data)
-        .then((res) => {
-          if (res.status < 300) {
-            notifications.show({
-              title: "RAMI creado correctamente",
-              message: "El RAMI se creó correctamente.",
-              color: "teal",
-              autoClose: 5000,
-            });
-            updateRami();
-            handleOpen();
-          } else {
-            notifications.show({
-              title: "Error creando el RAMI",
-              message: "Ha ocurrido un error, intenta nuevamente.",
-              color: "red",
-              autoClose: 5000,
-            });
-          }
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/rami`,
+        data
+      );
+      if (res.status < 300) {
+        notifications.show({
+          title: "RAMI creado correctamente",
+          message: "El RAMI se creó correctamente.",
+          color: "teal",
+          autoClose: 5000,
         });
-    } else {
-      return await axios
-        .put(`${process.env.NEXT_PUBLIC_API_URL}/rami/${rami.id}`, data)
-        .then((res) => {
-          console.log(res.data);
-          if (res.status === 200) {
-            notifications.show({
-              title: "RAMI actualizado correctamente",
-              message: "El RAMI se actualizó correctamente.",
-              color: "teal",
-              autoClose: 5000,
-            });
-            updateRami();
-            handleOpen();
-          } else {
-            notifications.show({
-              title: "Error actualizando el RAMI",
-              message: "Ha ocurrido un error, intenta nuevamente.",
-              color: "red",
-              autoClose: 5000,
-            });
-          }
-        });
+        updateRami();
+        handleOpen();
+        setIsLoadin(false);
+        return;
+      }
+      notifications.show({
+        title: "Error creando el RAMI",
+        message: "Ha ocurrido un error, intenta nuevamente.",
+        color: "red",
+        autoClose: 5000,
+      });
+      setIsLoadin(false);
+      return;
     }
+    const res = await axios.put(
+      `${process.env.NEXT_PUBLIC_API_URL}/rami/${rami.id}`,
+      data
+    );
+
+    if (res.status === 200) {
+      notifications.show({
+        title: "RAMI actualizado correctamente",
+        message: "El RAMI se actualizó correctamente.",
+        color: "teal",
+        autoClose: 5000,
+      });
+      updateRami();
+      handleOpen();
+      setIsLoadin(false);
+      return;
+    }
+    notifications.show({
+      title: "Error actualizando el RAMI",
+      message: "Ha ocurrido un error, intenta nuevamente.",
+      color: "red",
+      autoClose: 5000,
+    });
+    setIsLoadin(false);
+    return;
   };
 
   return (
@@ -389,11 +398,12 @@ export default function RamiEditDialog({
                   labelingCertifications === "" ||
                   tradeAgreement === "" ||
                   tariffsImposed === "" ||
-                  webResource === ""
+                  webResource === "" ||
+                  isLoadin
                 }
-                onClick={handleSubmit}
+                onClick={!isLoadin ? handleSubmit : () => {}}
               >
-                Guardar
+                {isLoadin ? <Spinner /> : "Actualizar"}
               </Button>
             </div>
           </div>

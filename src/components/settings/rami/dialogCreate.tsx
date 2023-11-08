@@ -10,6 +10,7 @@ import {
   TabPanel,
   TabsBody,
   TabsHeader,
+  Spinner,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
@@ -67,6 +68,7 @@ export default function RamiCreateDialog({
   const [tradeAgreement, setTradeAgreement] = useState<any>("");
   const [tariffsImposed, setTariffsImposed] = useState<any>("");
   const [webResource, setWebResource] = useState<any>("");
+  const [isLoading, setIsLoading] = useState(false);
   const outputReq = Editor({
     placeholder: "Requisitos de exportacion...",
     content: outputRequirement,
@@ -209,6 +211,7 @@ export default function RamiCreateDialog({
   ]);
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     const data = {
       countryId: Number(selectedCountries.value.id),
       productId: Number(selectedProducts.value.id),
@@ -222,27 +225,30 @@ export default function RamiCreateDialog({
       webResource: webResource,
     };
     console.log(data.outputRequirement);
-    return await axios
-      .post(`${process.env.NEXT_PUBLIC_API_URL}/rami`, data)
-      .then((res) => {
-        if (res.status < 300) {
-          notifications.show({
-            title: "RAMI creado correctamente",
-            message: "El RAMI se creó correctamente.",
-            color: "teal",
-            autoClose: 5000,
-          });
-          updateRami();
-          handleOpen();
-        } else {
-          notifications.show({
-            title: "Error creando el RAMI",
-            message: "Ha ocurrido un error, intenta nuevamente.",
-            color: "red",
-            autoClose: 5000,
-          });
-        }
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/rami`,
+      data
+    );
+    if (res.status < 300) {
+      notifications.show({
+        title: "RAMI creado correctamente",
+        message: "El RAMI se creó correctamente.",
+        color: "teal",
+        autoClose: 5000,
       });
+      updateRami();
+      handleOpen();
+      setIsLoading(false);
+      return;
+    }
+    notifications.show({
+      title: "Error creando el RAMI",
+      message: "Ha ocurrido un error, intenta nuevamente.",
+      color: "red",
+      autoClose: 5000,
+    });
+    setIsLoading(false);
+    return;
   };
 
   return (
@@ -334,11 +340,12 @@ export default function RamiCreateDialog({
                   labelingCertifications === "" ||
                   tradeAgreement === "" ||
                   tariffsImposed === "" ||
-                  webResource === ""
+                  webResource === "" ||
+                  isLoading
                 }
-                onClick={handleSubmit}
+                onClick={!isLoading ? handleSubmit : () => {}}
               >
-                Guardar
+                {isLoading ? <Spinner /> : "Guardar"}
               </Button>
             </div>
           </div>

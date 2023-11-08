@@ -9,6 +9,7 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
+  Spinner,
 } from "@material-tailwind/react";
 import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
@@ -65,6 +66,7 @@ export default function SaimDialog({
   const [openProduct, setOpenProduct] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const { refetch } = useSelectProducts();
+  const [isLoadin, setIsLoadin] = useState(false);
 
   const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
@@ -131,6 +133,7 @@ export default function SaimDialog({
       : "text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300";
 
   const handleSubmit = async (published?: boolean) => {
+    setIsLoadin(true);
     const products = selectedProducts.map((product: any) => {
       return product.value;
     });
@@ -151,70 +154,78 @@ export default function SaimDialog({
     }
     if (published) data.append("published", published.toString());
     if (!saim) {
-      return await axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/saim`, data)
-        .then((res) => {
-          if (res.status === 200) {
-            notifications.show({
-              id: "saim",
-              autoClose: 5000,
-              withCloseButton: false,
-              title: "Alerta Comercial creada",
-              message: "La Alerta Comercial ha sido creada correctamente.",
-              color: "green",
-              loading: false,
-            });
-            handleOpen();
-            setFiles([]);
-            editor1?.commands.clearContent();
-            setTitle("");
-            setSelectedCountries([]);
-            setSelectedProducts([]);
-            update();
-          }
-          notifications.show({
-            id: "saim",
-            autoClose: 5000,
-            withCloseButton: false,
-            title: "Error",
-            message: "La Alerta Comercial no se ha creado correctamente.",
-            color: "green",
-            loading: false,
-          });
-        });
-    }
-    await axios
-      .put(`${process.env.NEXT_PUBLIC_API_URL}/saim/${saim.id}`, data)
-      .then((res) => {
-        if (res.status === 200) {
-          notifications.show({
-            id: "saim",
-            autoClose: 5000,
-            withCloseButton: false,
-            title: "Alerta Comercial editado",
-            message: "La Alerta Comercial ha sido modificada correctamente.",
-            color: "green",
-            loading: false,
-          });
-          handleOpen();
-          setFiles([]);
-          editor1?.commands.clearContent();
-          setTitle("");
-          setSelectedCountries([]);
-          setSelectedProducts([]);
-          // Editar el SAIM editado en el estado
-          update();
-        }
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/saim`,
+        data
+      );
+      if (res.status === 200) {
         notifications.show({
           id: "saim",
           autoClose: 5000,
           withCloseButton: false,
-          title: "Error",
-          message: "Hubo un error editando la Alerta Comercial.",
+          title: "Alerta Comercial creada",
+          message: "La Alerta Comercial ha sido creada correctamente.",
           color: "green",
           loading: false,
         });
+        handleOpen();
+        setFiles([]);
+        editor1?.commands.clearContent();
+        setTitle("");
+        setSelectedCountries([]);
+        setSelectedProducts([]);
+        update();
+        setIsLoadin(false);
+        return;
+      }
+      notifications.show({
+        id: "saim",
+        autoClose: 5000,
+        withCloseButton: false,
+        title: "Error",
+        message: "La Alerta Comercial no se ha creado correctamente.",
+        color: "green",
+        loading: false,
       });
+      setIsLoadin(false);
+      return;
+    }
+    const res = await axios.put(
+      `${process.env.NEXT_PUBLIC_API_URL}/saim/${saim.id}`,
+      data
+    );
+    if (res.status === 200) {
+      notifications.show({
+        id: "saim",
+        autoClose: 5000,
+        withCloseButton: false,
+        title: "Alerta Comercial editada",
+        message: "La Alerta Comercial ha sido modificada correctamente.",
+        color: "green",
+        loading: false,
+      });
+      handleOpen();
+      setFiles([]);
+      editor1?.commands.clearContent();
+      setTitle("");
+      setSelectedCountries([]);
+      setSelectedProducts([]);
+      // Editar el SAIM editado en el estado
+      update();
+      setIsLoadin(false);
+      return;
+    }
+    notifications.show({
+      id: "saim",
+      autoClose: 5000,
+      withCloseButton: false,
+      title: "Error",
+      message: "Hubo un error editando la Alerta Comercial.",
+      color: "green",
+      loading: false,
+    });
+    setIsLoadin(false);
+    return;
   };
 
   return (
@@ -402,44 +413,54 @@ export default function SaimDialog({
             </div>
 
             <div className="flex justify-end w-full h-12 my-5 space-x-3">
-              <Button
-                disabled={
-                  !saim
-                    ? title === "" ||
-                      editor1?.isEmpty ||
-                      files.length === 0 ||
-                      selectedCountries.length === 0 ||
-                      selectedProducts.length === 0
-                    : title === "" ||
-                      editor1?.isEmpty ||
-                      selectedCountries.length === 0 ||
-                      selectedProducts.length === 0
-                }
-                onClick={() => handleSubmit()}
-                color="green"
-              >
-                Guardar
-              </Button>
-              {saim?.published === false || !saim ? (
-                <Button
-                  disabled={
-                    !saim
-                      ? title === "" ||
-                        editor1?.isEmpty ||
-                        files.length === 0 ||
-                        selectedCountries.length === 0 ||
-                        selectedProducts.length === 0
-                      : title === "" ||
-                        editor1?.isEmpty ||
-                        selectedCountries.length === 0 ||
-                        selectedProducts.length === 0
-                  }
-                  onClick={() => handleSubmit(true)}
-                  color="green"
-                >
-                  Guardar y Publicar
-                </Button>
-              ) : null}
+              {isLoadin ? (
+                <>
+                  <Button disabled={isLoadin} color="green">
+                    <Spinner />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    disabled={
+                      !saim
+                        ? title === "" ||
+                          editor1?.isEmpty ||
+                          files.length === 0 ||
+                          selectedCountries.length === 0 ||
+                          selectedProducts.length === 0
+                        : title === "" ||
+                          editor1?.isEmpty ||
+                          selectedCountries.length === 0 ||
+                          selectedProducts.length === 0
+                    }
+                    onClick={() => handleSubmit()}
+                    color="green"
+                  >
+                    Guardar
+                  </Button>
+                  {saim?.published === false || !saim ? (
+                    <Button
+                      disabled={
+                        !saim
+                          ? title === "" ||
+                            editor1?.isEmpty ||
+                            files.length === 0 ||
+                            selectedCountries.length === 0 ||
+                            selectedProducts.length === 0
+                          : title === "" ||
+                            editor1?.isEmpty ||
+                            selectedCountries.length === 0 ||
+                            selectedProducts.length === 0
+                      }
+                      onClick={() => handleSubmit(true)}
+                      color="green"
+                    >
+                      Guardar y Publicar
+                    </Button>
+                  ) : null}
+                </>
+              )}
             </div>
           </div>
         </div>

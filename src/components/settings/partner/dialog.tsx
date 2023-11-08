@@ -11,11 +11,12 @@ import {
   MenuItem,
   Input,
   Textarea,
+  Spinner,
 } from "@material-tailwind/react";
 import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { es } from "date-fns/locale";
 import Saim from "@/src/models/saim";
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from "@mantine/dropzone";
@@ -43,7 +44,11 @@ export default function PartnerDialog({
   const [url, setUrl] = useState<any>("");
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<any>();
-  const [categories] = useState<any[]>([{label: "Nacional", value: "nacional"}, {label: "Internacional", value: "internacional"}]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [categories] = useState<any[]>([
+    { label: "Nacional", value: "nacional" },
+    { label: "Internacional", value: "internacional" },
+  ]);
 
   const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
@@ -53,9 +58,12 @@ export default function PartnerDialog({
   };
 
   useEffect(() => {
-    if(source){
+    if (source) {
       setTitle(source.title);
-      setCategory({label: source.type === "nacional" ? "Nacional" : "Internacional", value: source.type});
+      setCategory({
+        label: source.type === "nacional" ? "Nacional" : "Internacional",
+        value: source.type,
+      });
       setDescription(source.description);
       setUrl(source.url);
     }
@@ -70,6 +78,7 @@ export default function PartnerDialog({
       : "text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300";
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     const data = new FormData();
     data.append("title", title);
     data.append("type", category.value);
@@ -78,15 +87,19 @@ export default function PartnerDialog({
     if (files.length > 0) {
       data.append("file", files[0]);
     }
-    if(source){
-      console.log("ajksajksjk")
-      return axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/partner/${source.id}`, data).then((res) => {
+    if (source) {
+      const res = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/partner/${source.id}`,
+        data
+      );
+      if (res.status === 200) {
         notifications.show({
           id: "partner",
           autoClose: 5000,
           withCloseButton: false,
           title: "Fuente de información actualizada",
-          message: "La fuente de información ha sido actualizada correctamente.",
+          message:
+            "La fuente de información ha sido actualizada correctamente.",
           color: "green",
           loading: false,
         });
@@ -94,38 +107,31 @@ export default function PartnerDialog({
         setFiles([]);
         setTitle("");
         update();
-      });
-      
-      
+        setIsLoading(false);
+        return;
+      }
     }
-      return await axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/partner`, data)
-        .then((res) => {
-          if (res.status === 200) {
-            notifications.show({
-              id: "partner",
-              autoClose: 5000,
-              withCloseButton: false,
-              title: "Fuente de información agregada",
-              message: "La fuente de información ha sido creada correctamente.",
-              color: "green",
-              loading: false,
-            });
-            handleOpen();
-            setFiles([]);
-            setTitle("");
-            update();
-          }
-          notifications.show({
-            id: "partner",
-            autoClose: 5000,
-            withCloseButton: false,
-            title: "Error",
-            message: "La fuente de información no se ha creado correctamente.",
-            color: "green",
-            loading: false,
-          });
-        });
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/partner`,
+      data
+    );
+    if (res.status === 200) {
+      notifications.show({
+        id: "partner",
+        autoClose: 5000,
+        withCloseButton: false,
+        title: "Fuente de información agregada",
+        message: "La fuente de información ha sido creada correctamente.",
+        color: "green",
+        loading: false,
+      });
+      handleOpen();
+      setFiles([]);
+      setTitle("");
+      update();
+      setIsLoading(false);
+      return;
+    }
   };
 
   return (
@@ -155,32 +161,46 @@ export default function PartnerDialog({
       </DialogHeader>
 
       <DialogBody className=" justify-center h-[100vh] overflow-y-auto">
-      
         <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="w-full text-2xl font-bold text-left text-black sm:w-8/12">Agregar fuente externa</div>
+          <div className="w-full text-2xl font-bold text-left text-black sm:w-8/12">
+            Agregar fuente externa
+          </div>
           <div className="w-full space-y-4 sm:w-8/12">
             <div className="w-full">
-              <Input label="Título" crossOrigin={""} value={title} onChange={(e) => setTitle(e.target.value)}/>
+              <Input
+                label="Título"
+                crossOrigin={""}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </div>
             <div className="flex flex-col w-full space-y-4 sm:space-y-0 sm:space-x-4 sm:flex-row">
               <div className="w-full sm:w-6/12">
-              <Select
-                closeMenuOnSelect={true}
-                components={animatedComponents}
-                isMulti={false}
-                placeholder="Categoría..."
-                onChange={(e) => setCategory(e)}
-                value={category}
-                options={categories}
-              />
+                <Select
+                  closeMenuOnSelect={true}
+                  components={animatedComponents}
+                  isMulti={false}
+                  placeholder="Categoría..."
+                  onChange={(e) => setCategory(e)}
+                  value={category}
+                  options={categories}
+                />
               </div>
-            <div className="w-full sm:w-6/12">
-            <Input label="Enlace" crossOrigin={""} value={url} onChange={(e) => setUrl(e.target.value)}/>
-            </div>
-              
+              <div className="w-full sm:w-6/12">
+                <Input
+                  label="Enlace"
+                  crossOrigin={""}
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                />
+              </div>
             </div>
             <div className="w-full">
-              <Textarea label="Descripción" value={description} onChange={(e) => setDescription(e.target.value)}/>
+              <Textarea
+                label="Descripción"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </div>
             <div className="relative w-full my-5 h-80 group">
               <div
@@ -198,19 +218,19 @@ export default function PartnerDialog({
                       className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
                     />
                   </div>
-                ) : source ? 
-                  (
-                    <div className="flex justify-center w-full h-full">
-                      <Image
-                        src={`${process.env.NEXT_PUBLIC_API_URL}/data/partner/${source?.id}/img/${source?.image}`}
-                        width={1920}
-                        height={1080}
-                        alt="saim-image"
-                        className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
-                      />
-                    </div>
-                  )
-                 : (<div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>)}
+                ) : source ? (
+                  <div className="flex justify-center w-full h-full">
+                    <Image
+                      src={`${process.env.NEXT_PUBLIC_API_URL}/data/partner/${source?.id}/img/${source?.image}`}
+                      width={1920}
+                      height={1080}
+                      alt="saim-image"
+                      className="object-cover h-full duration-500 rounded-md group-hover:blur-sm"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex justify-center w-full h-full border-2 border-black border-dashed rounded-xl"></div>
+                )}
               </div>
 
               <div className="flex items-center justify-center w-full h-full text-base text-black">
@@ -251,22 +271,21 @@ export default function PartnerDialog({
             <div className="flex justify-end w-full h-12 my-5 space-x-3">
               <Button
                 disabled={
-                  source ?
-                      title === "" ||
+                  (source
+                    ? title === "" ||
                       category === undefined ||
                       description === "" ||
-                      url === ""  
-                      :
-                      title === "" ||
+                      url === ""
+                    : title === "" ||
                       category === undefined ||
                       description === "" ||
                       url === "" ||
-                      files.length === 0 
+                      files.length === 0) || isLoading
                 }
-                onClick={() => handleSubmit()}
+                onClick={!isLoading ? () => handleSubmit() : () => {}}
                 color="green"
               >
-                Guardar
+                {isLoading ? <Spinner /> : source ? "Actualizar" : "Guardar"}
               </Button>
             </div>
           </div>

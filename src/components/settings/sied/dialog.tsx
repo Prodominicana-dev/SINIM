@@ -13,7 +13,7 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { es } from "date-fns/locale";
 import Sied from "@/src/models/sied";
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from "@mantine/dropzone";
@@ -42,6 +42,7 @@ export default function SiedDialog({
   const { data: categories, isLoading } = useSiedsCategory();
   const [category, setCategory] = useState<Category | null>(null);
   const [refresh, setRefresh] = useState(false);
+  const [isLoadin, setIsLoadin] = useState(false);
 
   const openRef = useRef<() => void>(null);
   const handleClickSelectFile = () => {
@@ -78,6 +79,7 @@ export default function SiedDialog({
       : "text-black border-black group-hover:border-black/70 group-hover:text-black/70 duration-300";
 
   const handleSubmit = async (published?: boolean) => {
+    setIsLoadin(true);
     const data = new FormData();
     data.append("title", title);
     data.append(
@@ -90,66 +92,74 @@ export default function SiedDialog({
     }
     if (published) data.append("published", published.toString());
     if (!sied) {
-      return await axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/sied`, data)
-        .then((res) => {
-          if (res.status === 200) {
-            notifications.show({
-              id: "sied",
-              autoClose: 5000,
-              withCloseButton: false,
-              title: "Alerta de IED creada",
-              message: "La Alerta de IED ha sido creada correctamente.",
-              color: "green",
-              loading: false,
-            });
-            handleOpen();
-            setFiles([]);
-            editor1?.commands.clearContent();
-            setTitle("");
-            update();
-          }
-          notifications.show({
-            id: "sied",
-            autoClose: 5000,
-            withCloseButton: false,
-            title: "Error",
-            message: "La Alerta de IED no se ha creado correctamente.",
-            color: "green",
-            loading: false,
-          });
-        });
-    }
-    await axios
-      .put(`${process.env.NEXT_PUBLIC_API_URL}/sied/${sied.id}`, data)
-      .then((res) => {
-        if (res.status === 200) {
-          notifications.show({
-            id: "sied",
-            autoClose: 5000,
-            withCloseButton: false,
-            title: "Alerta de IED editado",
-            message: "La Alerta de IED ha sido modificada correctamente.",
-            color: "green",
-            loading: false,
-          });
-          handleOpen();
-          setFiles([]);
-          editor1?.commands.clearContent();
-          setTitle("");
-          // Editar el SAIM editado en el estado
-          update();
-        }
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/sied`,
+        data
+      );
+      if (res.status === 200) {
         notifications.show({
           id: "sied",
           autoClose: 5000,
           withCloseButton: false,
-          title: "Error",
-          message: "Hubo un error editando la Alerta de IED.",
+          title: "Alerta de IED creada",
+          message: "La Alerta de IED ha sido creada correctamente.",
           color: "green",
           loading: false,
         });
+        handleOpen();
+        setFiles([]);
+        editor1?.commands.clearContent();
+        setTitle("");
+        update();
+        setIsLoadin(false);
+        return;
+      }
+      notifications.show({
+        id: "sied",
+        autoClose: 5000,
+        withCloseButton: false,
+        title: "Error",
+        message: "La Alerta de IED no se ha creado correctamente.",
+        color: "green",
+        loading: false,
       });
+      setIsLoadin(false);
+      return;
+    }
+    const res = await axios.put(
+      `${process.env.NEXT_PUBLIC_API_URL}/sied/${sied.id}`,
+      data
+    );
+    if (res.status === 200) {
+      notifications.show({
+        id: "sied",
+        autoClose: 5000,
+        withCloseButton: false,
+        title: "Alerta de IED editado",
+        message: "La Alerta de IED ha sido modificada correctamente.",
+        color: "green",
+        loading: false,
+      });
+      handleOpen();
+      setFiles([]);
+      editor1?.commands.clearContent();
+      setTitle("");
+      // Editar el SAIM editado en el estado
+      update();
+      setIsLoadin(false);
+      return;
+    }
+    notifications.show({
+      id: "sied",
+      autoClose: 5000,
+      withCloseButton: false,
+      title: "Error",
+      message: "Hubo un error editando la Alerta de IED.",
+      color: "green",
+      loading: false,
+    });
+    setIsLoadin(false);
+    return;
   };
 
   return (

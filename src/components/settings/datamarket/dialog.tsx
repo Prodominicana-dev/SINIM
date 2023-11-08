@@ -4,6 +4,7 @@ import {
   DialogHeader,
   DialogBody,
   Input,
+  Spinner,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import Datamarket from "@/src/models/datamarket";
@@ -32,8 +33,10 @@ export default function DatamarketDialog({
     datamarket?.category
   );
   const { data } = useDataMarketsCategories();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDatamarketSubmit = async () => {
+    setIsLoading(true);
     const data: { [key: string]: any } = {
       title: datamarketTitle,
       category: datamarketCategory,
@@ -46,7 +49,9 @@ export default function DatamarketDialog({
 
     const action = datamarket ? updateDatamarket : createDatamarket;
 
-    action({ datamarket: data, handleOpen, updateDatamarkets });
+    action({ datamarket: data, handleOpen, updateDatamarkets }).then(() => {
+      setIsLoading(false);
+    });
   };
 
   return (
@@ -72,7 +77,7 @@ export default function DatamarketDialog({
             <Input
               list="categories"
               crossOrigin={""}
-              label="Catetogoria"
+              label="Catetogoría"
               onChange={(e) => setDatamarketCategory(e.target.value)}
               defaultValue={datamarket?.category || ""}
               value={datamarketCategory}
@@ -82,8 +87,12 @@ export default function DatamarketDialog({
                 <option key={index} value={value.category} />
               ))}
             </datalist>
-            <Button className="bg-navy" onClick={handleDatamarketSubmit}>
-              {datamarket ? "Actualizar" : "Guardar"}
+            <Button
+              className="bg-navy"
+              disabled={isLoading}
+              onClick={!isLoading ? handleDatamarketSubmit : () => {}}
+            >
+              {isLoading ? <Spinner /> : datamarket ? "Actualizar" : "Guardar"}
             </Button>
           </div>
         </DialogBody>
