@@ -15,7 +15,7 @@ export function usePosts() {
     queryFn: async () => {
       const url = `${process.env.NEXT_PUBLIC_API_URL}/post`;
       const { data } = await axios.get(url);
-      return data.map((item: any) => item);
+      return data;
     },
   });
 }

@@ -58,49 +58,54 @@ export default function Page() {
   };
 
   useEffect(() => {
-    setPosts(data);
-    setTotal(data?.length || 0);
-    setTotalPages(Math.ceil(data?.length / itemsPerPage));
+    setPosts(data?.posts);
+    setTotal(data?.posts.length || 0);
+    setTotalPages(Math.ceil(data?.posts.length / itemsPerPage));
   }, [data]);
 
   useEffect(() => {
     refetch().then((res) => {
       setPosts(res.data);
-      setTotal(data?.length || 0);
-      setTotalPages(Math.ceil(data?.length / itemsPerPage));
+      setTotal(data?.posts.length || 0);
+      setTotalPages(Math.ceil(data?.posts.length / itemsPerPage));
     });
   }, [refresh, refetch]);
 
   useEffect(() => {
     // Filtros iniciales
-    let filteredRamis = posts;
-    // Filtrar por país si se ha proporcionado una búsqueda de país
-    if (titleSearch) {
-      const titleSearchLower = titleSearch.toLowerCase();
-      filteredRamis = filteredRamis.filter((source) => {
-        const title = nfd(source.title.toLowerCase());
-        return title.includes(titleSearchLower);
-      });
+    if (posts) {
+      let filteredPosts = posts;
+
+      // Filtrar por país si se ha proporcionado una búsqueda de país
+      if (titleSearch) {
+        const titleSearchLower = titleSearch.toLowerCase();
+        filteredPosts = filteredPosts.filter((source) => {
+          const title = nfd(source.title.toLowerCase());
+          return title.includes(titleSearchLower);
+        });
+      }
+
+      if (categorySearch.value) {
+        filteredPosts = filteredPosts.filter((source) => {
+          const category = nfd(source.type.toLowerCase());
+          return category === categorySearch.value;
+        });
+      }
+
+      // Actualizar los totales y la página actual
+      const filteredTotalPages = Math.ceil(
+        filteredPosts?.length / itemsPerPage
+      );
+      setTotalPages(filteredTotalPages);
+      setTotal(filteredPosts?.length);
+
+      if (currentPage > filteredTotalPages) {
+        setCurrentPage(1);
+      }
+
+      // Actualizar los datos de la página actual
+      setCurrentPageData(filteredPosts?.slice(startIndex, endIndex));
     }
-
-    if (categorySearch.value) {
-      filteredRamis = filteredRamis.filter((source) => {
-        const category = nfd(source.type.toLowerCase());
-        return category === categorySearch.value;
-      });
-    }
-
-    // Actualizar los totales y la página actual
-    const filteredTotalPages = Math.ceil(filteredRamis?.length / itemsPerPage);
-    setTotalPages(filteredTotalPages);
-    setTotal(filteredRamis?.length);
-
-    if (currentPage > filteredTotalPages) {
-      setCurrentPage(1);
-    }
-
-    // Actualizar los datos de la página actual
-    setCurrentPageData(filteredRamis?.slice(startIndex, endIndex));
   }, [posts, currentPage, titleSearch, categorySearch]);
 
   useEffect(() => {

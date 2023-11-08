@@ -263,6 +263,12 @@ export function Sidebar({ visible }: any) {
           }
           iconUrl={"/images/logo/sied-white.svg"}
         />
+
+        <SidebarItem
+          title={"Publicaciones"}
+          url={isConfig ? "/dashboard/settings/posts" : "/dashboard/posts"}
+          iconUrl={"/images/logo/sied-white.svg"}
+        />
         {isConfig ? (
           <>
             <SidebarItem
