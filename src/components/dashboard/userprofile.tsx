@@ -40,31 +40,37 @@ export default function UserProfile() {
   const closeMenu = () => setIsMenuOpen(false);
   if (!user)
     return (
-      <Button className="bg-navy">
-        <Link
-          href={`/api/auth/login?returnTo=${encodeURIComponent(callbackUrl)}`}
-          prefetch
-        >
-          Inicia sesion
-        </Link>
-      </Button>
+      <Link
+        href={`/api/auth/login?returnTo=${baseUrl}${pathname}`}
+        className="flex items-center justify-center h-12 text-white rounded-lg shadow-sm w-36 bg-navy"
+      >
+        Iniciar sesión
+      </Link>
     );
 
-    useEffect(() => {
-      if(user && token){
-        const url = `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}`;
-        const getUserData = () => {
-        axios.get(url, {
+  useEffect(() => {
+    if (user && token) {
+      const url = `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}`;
+      const getUserData = () => {
+        axios
+          .get(url, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }).then((res) => {
-            setName(res.data.user_metadata?.given_name && res.data.user_metadata?.family_name  ? 
-                `${res.data.user_metadata.given_name} ${res.data.user_metadata.family_name}` : user?.name ? user?.name : '');
+          })
+          .then((res) => {
+            setName(
+              res.data.user_metadata?.given_name &&
+                res.data.user_metadata?.family_name
+                ? `${res.data.user_metadata.given_name} ${res.data.user_metadata.family_name}`
+                : user?.name
+                ? user?.name
+                : ""
+            );
           });
-        }
-        getUserData();
-      }
+      };
+      getUserData();
+    }
   }, [user, token]);
 
   return (
@@ -82,7 +88,9 @@ export default function UserProfile() {
                 size="sm"
                 src={user.picture as string}
               />
-              <Typography className="capitalize">{name ? name : user.name}</Typography>
+              <Typography className="capitalize">
+                {name ? name : user.name}
+              </Typography>
               <ChevronDownIcon
                 strokeWidth={2.5}
                 className={`h-3 w-3 transition-transform ${

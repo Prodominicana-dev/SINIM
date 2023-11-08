@@ -93,6 +93,28 @@ export function Sidebar({ visible }: any) {
     setIsConfig(!isConfig);
   };
 
+  useEffect(() => {
+    if (path.includes("settings") && !isConfig) {
+      // dividir la url en un array por cada /
+      // obtener el ultimo elemento del array
+      const url = path.split("/").pop();
+      return url === "datamarket" ||
+        url === "products" ||
+        url === "users" ||
+        url === "settings"
+        ? router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`)
+        : router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/${url}`);
+    }
+    const url = path.split("/").pop();
+    if (isConfig) {
+      return url === "dashboard" || url === "settings"
+        ? router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings`)
+        : router.push(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/${url}`
+          );
+    }
+  }, [isConfig]);
+
   // useEffect(() => {
   //   if (isConfig) {
   //     return router.push(
