@@ -20,6 +20,11 @@ import SidebarMenu from "./sidebarMenu";
 import { useDataMarketsCategories } from "@/src/services/datamarket/service";
 import { useRouter, usePathname } from "next/navigation";
 import { getCookie, setCookie } from "typescript-cookie";
+import { useAtom } from "jotai";
+import { tokenAtom } from "@/src/state/states";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import axios from "axios";
+import { hasAnyPermission } from "./navbar";
 
 export function Sidebar({ visible }: any) {
   const [open, setOpen] = useState(0);
@@ -28,7 +33,49 @@ export function Sidebar({ visible }: any) {
   const isHover = useHover(hoverRef);
   const [isConfig, setIsConfig] = useState(false);
   const path = usePathname();
+  const { user, isLoading: userLoading } = useUser();
   const router = useRouter();
+  const [hasPermission, setHasPermission] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [token] = useAtom(tokenAtom);
+  const permissionList = [
+    "create:ramis",
+    "create:saim",
+    "create:sied",
+    "create:datamarket",
+    "create:users",
+    "update:ramis",
+    "update:saim",
+    "update:sied",
+    "update:datamarket",
+    "update:users",
+    "delete:ramis",
+    "delete:saim",
+    "delete:sied",
+    "delete:datamarket",
+    "delete:users",
+  ];
+
+  useEffect(() => {
+    let permis: any = [];
+    if (user && token) {
+      const url = `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}/permissions`;
+      const getPermissions = async () => {
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        res.data.forEach((permission: any) => {
+          permis.push(permission.permission_name);
+        });
+        setHasPermission(hasAnyPermission(permis, permissionList));
+        setDataLoaded(true);
+      };
+      getPermissions();
+    }
+  }, [user, token]);
+
   const lastPath = path.includes("datamarket")
     ? "/datamarket"
     : path.substring(path.lastIndexOf("/"));
@@ -132,7 +179,7 @@ export function Sidebar({ visible }: any) {
                 </ListItemPrefix>
                 <Typography
                   color="white"
-                  className="mr-auto font-normal duration-300 hidden group-hover:flex opacity-0 group-hover:opacity-100"
+                  className="hidden mr-auto font-normal duration-300 opacity-0 group-hover:flex group-hover:opacity-100"
                 >
                   DataMarket
                 </Typography>
@@ -209,33 +256,40 @@ export function Sidebar({ visible }: any) {
           </>
         ) : null}
       </List>
-      <div
-        className={`p-4 absolute bottom-4 left-4 self-center  z-0 ${
-          visible ? "opacity-100 duration-1000" : "opacity-0 duration-200"
-        }`}
-      >
-        <Button
-          className={`flex justify-center items-center space-x-3 bg-white p-2 w-14 group-hover:h-full  rounded-full duration-700 text-navy group-hover:w-56  ${
-            isConfig ? "bg-sky-500" : "bg-white"
-          }`}
-          onClick={() => {
-            handleIsConfig();
-          }}
-        >
-          <CogIcon
-            className={`w-10 duration-300 ${
-              isConfig ? "text-white" : "text-navy"
-            }`}
-          />
+
+      {hasPermission && dataLoaded ? (
+        <>
           <div
-            className={`group-hover:block hidden duration-700 ${
-              isConfig ? "text-white" : "text-navy"
+            className={`p-4 absolute bottom-4 left-4 self-center  z-0 ${
+              visible ? "opacity-100 duration-1000" : "opacity-0 duration-200"
             }`}
           >
-            Configuracion
+            <Button
+              className={`flex justify-center items-center space-x-3 bg-white p-2 w-14 group-hover:h-full  rounded-full duration-700 text-navy group-hover:w-56  ${
+                isConfig ? "bg-sky-500" : "bg-white"
+              }`}
+              onClick={() => {
+                handleIsConfig();
+              }}
+            >
+              <CogIcon
+                className={`w-10 duration-300 ${
+                  isConfig ? "text-white" : "text-navy"
+                }`}
+              />
+              <div
+                className={`group-hover:block hidden duration-700 ${
+                  isConfig ? "text-white" : "text-navy"
+                }`}
+              >
+                Configuracion
+              </div>
+            </Button>
           </div>
-        </Button>
-      </div>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
