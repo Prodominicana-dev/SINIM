@@ -9,6 +9,7 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
+  Spinner,
 } from "@material-tailwind/react";
 import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
@@ -307,30 +308,42 @@ export default function SiedDialog({
             </div>
 
             <div className="flex justify-end w-full h-12 my-5 space-x-3">
-              <Button
-                disabled={
-                  !sied
-                    ? title === "" || editor1?.isEmpty || files.length === 0
-                    : title === "" || editor1?.isEmpty
-                }
-                onClick={() => handleSubmit()}
-                color="green"
-              >
-                Guardar
-              </Button>
-              {sied?.published === false || !sied ? (
-                <Button
-                  disabled={
-                    !sied
-                      ? title === "" || editor1?.isEmpty || files.length === 0
-                      : title === "" || editor1?.isEmpty
-                  }
-                  onClick={() => handleSubmit(true)}
-                  color="green"
-                >
-                  Guardar y Publicar
-                </Button>
-              ) : null}
+              {isLoadin ? (
+                <>
+                  <Button disabled={isLoadin} color="green">
+                    <Spinner />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    disabled={
+                      !sied
+                        ? title === "" || editor1?.isEmpty || files.length === 0
+                        : title === "" || editor1?.isEmpty
+                    }
+                    onClick={() => handleSubmit()}
+                    color="green"
+                  >
+                    Guardar
+                  </Button>
+                  {sied?.published === false || !sied ? (
+                    <Button
+                      disabled={
+                        !sied
+                          ? title === "" ||
+                            editor1?.isEmpty ||
+                            files.length === 0
+                          : title === "" || editor1?.isEmpty
+                      }
+                      onClick={() => handleSubmit(true)}
+                      color="green"
+                    >
+                      Guardar y Publicar
+                    </Button>
+                  ) : null}
+                </>
+              )}
             </div>
           </div>
         </div>
