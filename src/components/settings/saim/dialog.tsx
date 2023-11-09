@@ -47,6 +47,7 @@ export default function SaimDialog({
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [description] = useState<any>("");
   const [title, setTitle] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
   const { data: categories, isLoading } = useSaimsCategory();
   const [category, setCategory] = useState<Category | null>(null);
   const {
@@ -100,7 +101,7 @@ export default function SaimDialog({
   };
 
   const editor1 = Editor({
-    placeholder: "Contenido de la alerta de IED",
+    placeholder: "Contenido de la alerta comercial",
     content: saim?.description,
   });
 
@@ -149,6 +150,7 @@ export default function SaimDialog({
     data.append("categoryId", category ? category.id.toString() : "");
     data.append("countries", JSON.stringify(countries));
     data.append("products", JSON.stringify(products));
+    data.append("isPublic", isPublic ? "true" : "false");
     if (files.length > 0) {
       data.append("file", files[0]);
     }
@@ -298,6 +300,26 @@ export default function SaimDialog({
             />
             <div className="text-xs font-light text-neutral-500">
               {format(Date.now(), "dd MMMM yyyy", { locale: es })}
+            </div>
+
+            <div className="my-3">
+              <Menu placement="bottom-start">
+                <MenuHandler>
+                  <Button
+                    variant="text"
+                    className="flex items-center h-5 p-0 hover:bg-transparent "
+                    ripple={false}
+                  >
+                    {isPublic ? "Público" : "Privado"}
+                  </Button>
+                </MenuHandler>
+                <MenuList className="w-40 z-[9999]">
+                  <MenuItem onClick={() => setIsPublic(true)}>Publico</MenuItem>
+                  <MenuItem onClick={() => setIsPublic(false)}>
+                    Privado
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </div>
 
             <div className=" relative w-full h-[32rem] group my-5">

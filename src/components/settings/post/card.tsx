@@ -17,13 +17,13 @@ export default function Card({
   const [deleteOpen, setDeleteOpen] = useState(false);
   const handleDeleteOpen = () => setDeleteOpen(!deleteOpen);
   const deleteCreateNotification = {
-    title: "Fuente eliminada",
-    message: "La fuente de información ha sido eliminada exitosamente.",
+    title: "Publicación eliminada",
+    message: "La publicación ha sido eliminada exitosamente.",
     color: "green",
   };
 
   const deleteErrorNotification = {
-    title: "Error eliminando la fuente",
+    title: "Error eliminando la publicación",
     message: "Ha ocurrido un error, intenta nuevamente.",
     color: "red",
   };
@@ -55,9 +55,9 @@ export default function Card({
         open={deleteOpen}
         handleOpen={handleDeleteOpen}
         update={updatePosts}
-        title={"¿Estás seguro de eliminar esta fuente?"}
-        message="La fuente será eliminada y no podrá ser recuperada."
-        endpoint={`/partner/${post.id}`}
+        title={"¿Estás seguro de eliminar esta publicación?"}
+        message="La publicación será eliminada y no podrá ser recuperada."
+        endpoint={`/post/${post.id}`}
         createNotification={deleteCreateNotification}
         errorNotification={deleteErrorNotification}
       />

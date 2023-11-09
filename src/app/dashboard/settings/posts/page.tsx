@@ -17,7 +17,7 @@ import { usePosts } from "@/src/services/post/service";
 
 export default function Page() {
   const { data, isLoading, isError, refetch } = usePosts();
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [titleSearch, setTitleSearch] = useState("");
   const [categorySearch, setCategorySearch] = useState<any>({
@@ -42,7 +42,7 @@ export default function Page() {
   );
   const [endIndex] = useState(currentPage * itemsPerPage);
   const [totalPages, setTotalPages] = useState(
-    Math.ceil(data?.length / itemsPerPage)
+    Math.ceil(data?.posts.length / itemsPerPage)
   );
 
   const nextPage = () => {
@@ -65,7 +65,7 @@ export default function Page() {
 
   useEffect(() => {
     refetch().then((res) => {
-      setPosts(res.data);
+      setPosts(res.data.posts);
       setTotal(data?.posts.length || 0);
       setTotalPages(Math.ceil(data?.posts.length / itemsPerPage));
     });
@@ -79,14 +79,14 @@ export default function Page() {
       // Filtrar por país si se ha proporcionado una búsqueda de país
       if (titleSearch) {
         const titleSearchLower = titleSearch.toLowerCase();
-        filteredPosts = filteredPosts.filter((source) => {
+        filteredPosts = filteredPosts.filter((source: any) => {
           const title = nfd(source.title.toLowerCase());
           return title.includes(titleSearchLower);
         });
       }
 
       if (categorySearch.value) {
-        filteredPosts = filteredPosts.filter((source) => {
+        filteredPosts = filteredPosts.filter((source: any) => {
           const category = nfd(source.type.toLowerCase());
           return category === categorySearch.value;
         });
@@ -106,12 +106,14 @@ export default function Page() {
       // Actualizar los datos de la página actual
       setCurrentPageData(filteredPosts?.slice(startIndex, endIndex));
     }
-  }, [posts, currentPage, titleSearch, categorySearch]);
+  }, [currentPage, titleSearch, categorySearch]);
 
   useEffect(() => {
-    setStartIndex((currentPage - 1) * itemsPerPage);
-    const endIndex = startIndex + itemsPerPage;
-    setCurrentPageData(posts?.slice(startIndex, endIndex));
+    if (posts) {
+      setStartIndex((currentPage - 1) * itemsPerPage);
+      const endIndex = startIndex + itemsPerPage;
+      setCurrentPageData(posts?.slice(startIndex, endIndex));
+    }
   }, [posts, currentPage]);
 
   const updatePosts = () => {
