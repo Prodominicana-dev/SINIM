@@ -81,8 +81,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
           ) : (
             <></>
           )}
-          {isLoading ? (<></>) : (<UserProfile />)}
-          
+          {isLoading ? <></> : <UserProfile />}
         </div>
         <Fragment>
           <IconButton
@@ -138,7 +137,6 @@ export function hasAnyPermission(
 ): boolean {
   for (const requiredPermission of permissionsToCheck) {
     if (permissions.includes(requiredPermission)) {
-      console.log(requiredPermission);
       return true; // Si uno de los permisos requeridos está presente, retorna true
     }
   }

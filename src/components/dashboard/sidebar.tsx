@@ -81,16 +81,20 @@ export function Sidebar({ visible }: any) {
     : path.substring(path.lastIndexOf("/"));
 
   useEffect(() => {
-    const config = getCookie("isConfig");
-    if (!config) {
-      setCookie("isConfig", false, { expires: 1 });
+    const hasConfigLocalStorage = localStorage.getItem("isConfig");
+    if (hasConfigLocalStorage === null) {
+      localStorage.setItem("isConfig", "false");
+      setIsConfig(false);
+    } else {
+      const isConfig = hasConfigLocalStorage === "true";
+      setIsConfig(isConfig);
     }
-    setIsConfig(config === "true");
-  }, [isConfig]);
+  }, []);
 
   const handleIsConfig = () => {
-    setCookie("isConfig", !isConfig, { expires: 1 });
-    setIsConfig(!isConfig);
+    const newIsConfig = !isConfig;
+    localStorage.setItem("isConfig", newIsConfig.toString());
+    setIsConfig(newIsConfig);
   };
 
   useEffect(() => {
@@ -109,24 +113,19 @@ export function Sidebar({ visible }: any) {
     if (isConfig) {
       return url === "dashboard" || url === "settings"
         ? router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings`)
+        : Number(url) > 0
+        ? path.includes("saim")
+          ? router.push(
+              `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/saim`
+            )
+          : router.push(
+              `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/rami`
+            )
         : router.push(
             `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/${url}`
           );
     }
   }, [isConfig]);
-
-  // useEffect(() => {
-  //   if (isConfig) {
-  //     return router.push(
-  //       `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings${lastPath}`
-  //     );
-  //   }
-  //   return router.push(
-  //     `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard${
-  //       lastPath.includes("datamarket") ? "/datamarket/1" : lastPath
-  //     }`
-  //   );
-  // }, [isConfig]);
 
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);

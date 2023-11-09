@@ -116,7 +116,7 @@ export default function MobileMenu({ isOpen, onClose }: any) {
   const [permissions, setPermissions] = useState<any[]>([]);
   const [hasPermission, setHasPermission] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [token, setToken] = useAtom(tokenAtom);
+  const [token] = useAtom(tokenAtom);
   const permissionList = [
     "create:ramis",
     "create:saim",
