@@ -81,21 +81,23 @@ export function Sidebar({ visible }: any) {
     : path.substring(path.lastIndexOf("/"));
 
   useEffect(() => {
-    const config = getCookie("isConfig");
-    if (!config) {
-      setCookie("isConfig", false, { expires: 1 });
+    const hasConfigLocalStorage = localStorage.getItem("isConfig");
+    if (hasConfigLocalStorage === null) {
+      localStorage.setItem("isConfig", "false");
+      setIsConfig(false);
+    } else {
+      const isConfig = hasConfigLocalStorage === "true";
+      setIsConfig(isConfig);
     }
-    setIsConfig(config === "true");
-    console.log(config);
-  }, [isConfig]);
+  }, []);
 
   const handleIsConfig = () => {
-    setCookie("isConfig", !isConfig, { expires: 1 });
-    setIsConfig(!isConfig);
+    const newIsConfig = !isConfig;
+    localStorage.setItem("isConfig", newIsConfig.toString());
+    setIsConfig(newIsConfig);
   };
 
   useEffect(() => {
-    console.log(isConfig);
     if (path.includes("settings") && !isConfig) {
       // dividir la url en un array por cada /
       // obtener el ultimo elemento del array
@@ -109,13 +111,16 @@ export function Sidebar({ visible }: any) {
     }
     const url = path.split("/").pop();
     if (isConfig) {
-      console.log(isConfig, url);
       return url === "dashboard" || url === "settings"
         ? router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings`)
         : Number(url) > 0
-        ? router.push(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/rami`
-          )
+        ? path.includes("saim")
+          ? router.push(
+              `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/saim`
+            )
+          : router.push(
+              `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/rami`
+            )
         : router.push(
             `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/${url}`
           );
