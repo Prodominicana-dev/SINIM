@@ -14,7 +14,9 @@ export default function Card(post: Post) {
           <Image
             width={1920}
             height={1080}
-            src={`${process.env.NEXT_PUBLIC_API_URL}/data/post/${post.id}/img/${post.pdf}`}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/data/post/${post.id}/img/${
+              post.pdf?.split(".")[0] + "-1.png"
+            }`}
             alt="image"
             className="object-cover w-64 h-72 rounded-lg shadow-md"
           />
