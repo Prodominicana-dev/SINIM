@@ -11,6 +11,7 @@ export default interface Sied {
   date: Date;
   status: string;
   published: boolean;
+  isPublic: boolean;
   countries: Country[];
   products: Product[];
 }

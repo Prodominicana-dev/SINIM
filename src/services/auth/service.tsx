@@ -25,3 +25,7 @@ export async function getPermissions(token: string, url: string) {
     },
   });
 }
+
+export async function getDomains(url: string) {
+  return await axios.get(url);
+}

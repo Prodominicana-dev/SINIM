@@ -11,6 +11,7 @@ export default interface Saim {
   date: Date;
   status: string;
   published: boolean;
+  isPublic: boolean;
   countries: country[];
   products: product[];
 }

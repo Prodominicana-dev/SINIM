@@ -19,7 +19,6 @@ import Link from "next/link";
 import SidebarMenu from "./sidebarMenu";
 import { useDataMarketsCategories } from "@/src/services/datamarket/service";
 import { useRouter, usePathname } from "next/navigation";
-import { getCookie, setCookie } from "typescript-cookie";
 import { useAtom } from "jotai";
 import { tokenAtom } from "@/src/state/states";
 import { useUser } from "@auth0/nextjs-auth0/client";

@@ -49,6 +49,18 @@ export default function Page() {
     saimFilters[0].description
   );
 
+  const [canSeeSaims, setCanSeeSaims] = useState(false);
+  useEffect(() => {
+    if (
+      localStorage.getItem("saim") &&
+      localStorage.getItem("saim") === "true"
+    ) {
+      setCanSeeSaims(true);
+    } else {
+      setCanSeeSaims(false);
+    }
+  }, []);
+
   useEffect(() => {
     setFilteredData(data);
   }, [data]);
@@ -161,13 +173,17 @@ export default function Page() {
           ) : (
             <>
               <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {filteredData?.map((saim) => {
-                  return (
+                {filteredData?.map((saim) =>
+                  canSeeSaims ? (
                     <div key={saim.id}>
                       <SaimCard {...saim} />
                     </div>
-                  );
-                })}
+                  ) : saim.isPublic ? (
+                    <div key={saim.id}>
+                      <SaimCard {...saim} />
+                    </div>
+                  ) : null
+                )}
               </div>
             </>
           )}

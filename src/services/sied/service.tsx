@@ -27,6 +27,20 @@ export function useActiveSiedsPage() {
   });
 }
 
+export function usePublicSiedsPage() {
+  const fetchActiveSiedsData = async (pageParam: any) => {
+    const siedEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/sied/page/public/${pageParam}`;
+    const { data } = await axios.get(siedEndpoint);
+    return data;
+  };
+  return useInfiniteQuery({
+    queryKey: ["publicSieds"],
+    queryFn: ({ pageParam }) => fetchActiveSiedsData(pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.meta.next,
+  });
+}
+
 export function useSied(id: number) {
   return useQuery({
     queryKey: ["sied", id],

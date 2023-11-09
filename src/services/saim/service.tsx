@@ -27,6 +27,20 @@ export function useActiveSaimsPage() {
   });
 }
 
+export function usePublicSaimsPage() {
+  const fetchActiveSaimsData = async (pageParam: any) => {
+    const saimEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/saim/page/public/${pageParam}`;
+    const { data } = await axios.get(saimEndpoint);
+    return data;
+  };
+  return useInfiniteQuery({
+    queryKey: ["publicSaims"],
+    queryFn: ({ pageParam }) => fetchActiveSaimsData(pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.meta.next,
+  });
+}
+
 export function useSaim(id: number) {
   return useQuery({
     queryKey: ["saim", id],

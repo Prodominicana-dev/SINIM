@@ -49,6 +49,19 @@ export default function Page() {
   const [categoryDescription, setCategoryDescription] = useState(
     iedFilters[0].description
   );
+
+  const [canSeeSieds, setCanSeeSieds] = useState(false);
+  useEffect(() => {
+    if (
+      localStorage.getItem("sied") &&
+      localStorage.getItem("sied") === "true"
+    ) {
+      setCanSeeSieds(true);
+    } else {
+      setCanSeeSieds(false);
+    }
+  }, []);
+
   useEffect(() => {
     setFilteredData(data);
   }, [data]);
@@ -156,13 +169,17 @@ export default function Page() {
           ) : (
             <>
               <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {filteredData?.map((sied) => {
-                  return (
+                {filteredData?.map((sied) =>
+                  canSeeSieds ? (
                     <div key={sied.id}>
                       <SiedCard {...sied} />
                     </div>
-                  );
-                })}
+                  ) : sied.isPublic ? (
+                    <div key={sied.id}>
+                      <SiedCard {...sied} />
+                    </div>
+                  ) : null
+                )}
               </div>
             </>
           )}

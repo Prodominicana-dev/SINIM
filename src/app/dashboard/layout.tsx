@@ -14,9 +14,10 @@ import { useDataMarkets } from "@/src/services/datamarket/service";
 import MobileMenu from "@/src/components/dashboard/mobileMenu";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { getCookie, setCookie } from "typescript-cookie";
-import { generateToken } from "@/src/services/auth/service";
+import { generateToken, getDomains } from "@/src/services/auth/service";
 
 import { Provider } from "jotai";
+import axios from "axios";
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -41,28 +42,70 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
   }, [datamarket]);
 
   useEffect(() => {
-    const _sidebarOpen = getCookie("sidebarOpen");
-    if (!_sidebarOpen) {
-      setCookie("sidebarOpen", true, { expires: 1 });
+    const sidebarOpen = localStorage.getItem("sidebarOpen");
+    if (sidebarOpen === null) {
+      localStorage.setItem("sidebarOpen", "true");
+      setSidebarOpen(true);
+    } else {
+      setSidebarOpen(sidebarOpen === "true");
     }
-    setSidebarOpen(_sidebarOpen === "true");
-  }, [sidebarOpen]);
+  }, []);
+
+  const toggleSidebar = () => {
+    const newSidebarOpen = !sidebarOpen;
+    localStorage.setItem("sidebarOpen", newSidebarOpen.toString());
+    setSidebarOpen(newSidebarOpen);
+  };
+
+  useEffect(() => {
+    if (!user) {
+      localStorage.setItem("sied", "false");
+      localStorage.setItem("saim", "false");
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!isLoading) {
       const getToken = async () => {
         const token = await generateToken();
-        setCookie("authToken", token, { expires: 1 });
+        setCookie("authToken", token, {
+          expires: 1,
+        });
         setAuth0Token(token);
       };
+      const getDomainsP = async () => {
+        let saimDomains: any[] = [];
+        let siedDomains: any[] = [];
+        const domains = await getDomains(
+          `${process.env.NEXT_PUBLIC_API_URL}/reserved-domains`
+        );
+        siedDomains = domains.data.sied;
+        saimDomains = domains.data.saim;
+        // Comprobar si el correo del usuario esta en la lista de dominios, si esta en la de sied colocar en localStorage que puede ver sied y si esta tambien en la de saim colocar en localStorage que puede ver saim
+        if (user) {
+          const email = user.email;
+          const sied = siedDomains.find((domain: any) =>
+            email?.includes(domain)
+          );
+          const saim = saimDomains.find((domain: any) =>
+            email?.includes(domain)
+          );
+          if (sied) {
+            localStorage.setItem("sied", "true");
+          }
+          if (saim) {
+            localStorage.setItem("saim", "true");
+          }
+        }
+        if (!user) {
+          localStorage.setItem("sied", "false");
+          localStorage.setItem("saim", "false");
+        }
+      };
       getToken();
+      getDomainsP();
     }
   }, [user, isLoading]);
-
-  const toggleSidebar = () => {
-    setCookie("sidebarOpen", !sidebarOpen, { expires: 1 });
-    setSidebarOpen(!sidebarOpen);
-  };
 
   const toogleOpenDrawer = () => {
     setOpenNav(!openNav);
