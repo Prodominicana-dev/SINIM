@@ -86,6 +86,7 @@ export function Sidebar({ visible }: any) {
       setCookie("isConfig", false, { expires: 1 });
     }
     setIsConfig(config === "true");
+    console.log(config);
   }, [isConfig]);
 
   const handleIsConfig = () => {
@@ -94,6 +95,7 @@ export function Sidebar({ visible }: any) {
   };
 
   useEffect(() => {
+    console.log(isConfig);
     if (path.includes("settings") && !isConfig) {
       // dividir la url en un array por cada /
       // obtener el ultimo elemento del array
@@ -107,26 +109,18 @@ export function Sidebar({ visible }: any) {
     }
     const url = path.split("/").pop();
     if (isConfig) {
+      console.log(isConfig, url);
       return url === "dashboard" || url === "settings"
         ? router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings`)
+        : Number(url) > 0
+        ? router.push(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/rami`
+          )
         : router.push(
             `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/${url}`
           );
     }
   }, [isConfig]);
-
-  // useEffect(() => {
-  //   if (isConfig) {
-  //     return router.push(
-  //       `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings${lastPath}`
-  //     );
-  //   }
-  //   return router.push(
-  //     `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard${
-  //       lastPath.includes("datamarket") ? "/datamarket/1" : lastPath
-  //     }`
-  //   );
-  // }, [isConfig]);
 
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
