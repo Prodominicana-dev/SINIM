@@ -9,7 +9,7 @@ export default function SaimCard(data: Saim) {
   return (
     <Link prefetch href={`/dashboard/saim/${data.id}`}>
       <Card className="w-full mt-6 cursor-pointer group h-80">
-        <CardHeader color="blue-gray" className="relative ">
+        <CardHeader color="white" className="relative ">
           <Image
             width={1920}
             height={1080}

@@ -6,6 +6,8 @@ import Feed from "@/src/components/sied/feed";
 import SiedCard from "@/src/components/sied/card";
 import { useActiveSieds } from "@/src/services/sied/service";
 import NotFound from "@/src/components/validate/notFound";
+import { Spinner } from "@material-tailwind/react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Page() {
   const iedFilters = [
@@ -49,6 +51,7 @@ export default function Page() {
   const [categoryDescription, setCategoryDescription] = useState(
     iedFilters[0].description
   );
+  const { user, isLoading: isUserLoading } = useUser();
 
   const [canSeeSieds, setCanSeeSieds] = useState(false);
   useEffect(() => {
@@ -112,6 +115,13 @@ export default function Page() {
   useEffect(() => {
     filterData();
   }, [search, category]);
+
+  if (isUserLoading)
+    return (
+      <div className="w-full h-[90vh] flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
   return (
     <div className="w-full h-full">
       <div className="relative w-full sm:h-4/6">
@@ -152,7 +162,7 @@ export default function Page() {
             <MagnifyingGlassIcon className="w-5 mx-2 text-gray-500" />
             <input
               placeholder="Buscar..."
-              className="w-10/12 text-blue-500 outline-none"
+              className="w-10/12 text-blue-500 bg-white outline-none"
               name="search"
               value={search}
               onChange={handleSearchChange}

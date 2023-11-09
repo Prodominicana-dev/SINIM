@@ -12,6 +12,7 @@ import NotFound from "../validate/notFound";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Feed() {
+  const { user, isLoading } = useUser();
   const {
     fetchNextPage,
     hasNextPage,
@@ -41,7 +42,7 @@ export default function Feed() {
     } else {
       setCanSeeSaims(false);
     }
-  }, []);
+  }, [user, isLoading]);
 
   useEffect(() => {
     if (dataAll && data) {
