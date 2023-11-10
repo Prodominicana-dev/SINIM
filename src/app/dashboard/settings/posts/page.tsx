@@ -19,7 +19,7 @@ export default function Page() {
   const { data, isLoading, isError, refetch } = usePosts();
   const [posts, setPosts] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [titleSearch, setTitleSearch] = useState("");
+  const [search, setSearch] = useState("");
   const [categorySearch, setCategorySearch] = useState<any>({
     label: "Categoría...",
     value: "",
@@ -77,18 +77,19 @@ export default function Page() {
       let filteredPosts = posts;
 
       // Filtrar por país si se ha proporcionado una búsqueda de país
-      if (titleSearch) {
-        const titleSearchLower = titleSearch.toLowerCase();
+      if (search) {
+        const searchLower = search.toLowerCase();
         filteredPosts = filteredPosts.filter((source: any) => {
           const title = nfd(source.title.toLowerCase());
-          return title.includes(titleSearchLower);
-        });
-      }
-
-      if (categorySearch.value) {
-        filteredPosts = filteredPosts.filter((source: any) => {
-          const category = nfd(source.type.toLowerCase());
-          return category === categorySearch.value;
+          const category = nfd(source.category.toLowerCase());
+          const type = nfd(source.type.toLowerCase());
+          const language = nfd(source.language.toLowerCase());
+          return (
+            title.includes(searchLower) ||
+            category.includes(searchLower) ||
+            type.includes(searchLower) ||
+            language.includes(searchLower)
+          );
         });
       }
 
@@ -106,7 +107,7 @@ export default function Page() {
       // Actualizar los datos de la página actual
       setCurrentPageData(filteredPosts?.slice(startIndex, endIndex));
     }
-  }, [currentPage, titleSearch, categorySearch]);
+  }, [currentPage, search, categorySearch]);
 
   useEffect(() => {
     if (posts) {
@@ -166,29 +167,14 @@ export default function Page() {
             type="text"
             className="w-full px-2 rounded-lg sm:px-5 h-9 sm:w-72 ring-1 ring-gray-300"
             placeholder="Buscar por título..."
-            value={titleSearch}
-            onChange={(e) => setTitleSearch(e.target.value)}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
-          <div className="w-full sm:w-72">
-            <Select
-              closeMenuOnSelect={true}
-              components={animatedComponents}
-              isMulti={false}
-              placeholder={
-                categorySearch.label === ""
-                  ? "Categoría..."
-                  : categorySearch.label
-              }
-              value={categorySearch.label}
-              onChange={(e) => setCategorySearch(e)}
-              options={categories}
-            />
-          </div>
           <div className="flex items-end justify-end -order-last sm:order-none">
             <button
               className="flex items-center justify-center w-10 h-10 text-white duration-300 bg-red-600 rounded-lg hover:bg-red-700"
               onClick={() => {
-                setTitleSearch("");
+                setSearch("");
                 setCategorySearch({ label: "", value: "" });
                 setIsVisible(false);
               }}
@@ -203,12 +189,11 @@ export default function Page() {
             <NotFound />
           ) : (
             <>
-              <div className="grid items-center justify-between w-full h-24 grid-cols-3 p-5 font-bold text-center bg-white rounded-lg sm:grid-cols-4 lg:grid-cols-6 ring-2 ring-gray-100">
+              <div className="grid items-center justify-between w-full h-24 grid-cols-3 p-5 font-bold text-center bg-white rounded-lg sm:grid-cols-4 lg:grid-cols-5 ring-2 ring-gray-100">
                 <div className="text-center">Título</div>
                 <div className="hidden sm:block">Categoría</div>
                 <div className="hidden lg:block">Tipo</div>
                 <div>Idioma</div>
-                <div className="hidden lg:block">Archivo</div>
                 <div>Acción</div>
               </div>
               {currentPageData?.map((post: any, key: number) => {

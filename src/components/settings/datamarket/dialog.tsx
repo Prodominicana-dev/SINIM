@@ -77,7 +77,7 @@ export default function DatamarketDialog({
             <Input
               list="categories"
               crossOrigin={""}
-              label="Catetogoría"
+              label="Categoría"
               onChange={(e) => setDatamarketCategory(e.target.value)}
               defaultValue={datamarket?.category || ""}
               value={datamarketCategory}

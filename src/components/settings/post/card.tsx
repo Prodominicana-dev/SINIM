@@ -2,6 +2,7 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import DeleteButton from "../delete";
 import PostDialog from "./dialog";
+import { Tooltip } from "@material-tailwind/react";
 
 export default function Card({
   post,
@@ -30,12 +31,19 @@ export default function Card({
 
   return (
     <>
-      <div className="grid items-center w-full h-24 grid-cols-3 p-5 text-center bg-white rounded-lg sm:grid-cols-4 lg:grid-cols-6 ring-2 ring-gray-100">
-        <div>{post.title}</div>
-        <div className="hidden sm:block">{post.category}</div>
-        <div className="hidden truncate line-clamp-1 lg:block">{post.type}</div>
-        <div>{post.language}</div>
-        <div className="hidden lg:block">{post.pdf}</div>
+      <div className="grid items-center w-full h-24 grid-cols-3 p-5 text-center bg-white rounded-lg sm:grid-cols-4 lg:grid-cols-5 ring-2 ring-gray-100">
+        <div className="truncate line-clamp-1">
+          <Tooltip content={post.title}>{post.title}</Tooltip>
+        </div>
+        <div className="hidden truncate line-clamp-1 sm:block">
+          <Tooltip content={post.category}>{post.category}</Tooltip>
+        </div>
+        <div className="hidden truncate line-clamp-1 lg:block">
+          <Tooltip content={post.type}>{post.type}</Tooltip>
+        </div>
+        <div>
+          <Tooltip content={post.language}>{post.language}</Tooltip>
+        </div>
         <div className="flex justify-center space-x-5 ">
           <button
             onClick={handleOpen}
