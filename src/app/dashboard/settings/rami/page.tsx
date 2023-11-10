@@ -58,7 +58,7 @@ export default function Page() {
     // Filtrar por producto si se ha proporcionado una búsqueda de producto
     if (productSearch) {
       const productSearchLower = productSearch.toLowerCase();
-      filteredRamis = filteredRamis.filter((rami) => {
+      filteredRamis = filteredRamis?.filter((rami) => {
         const productName = nfd(rami.product.name.toLowerCase());
         const productCode = nfd(rami.product.code.toLowerCase());
         return (
@@ -71,21 +71,21 @@ export default function Page() {
     // Filtrar por país si se ha proporcionado una búsqueda de país
     if (countrySearch) {
       const countrySearchLower = countrySearch.toLowerCase();
-      filteredRamis = filteredRamis.filter((rami) => {
+      filteredRamis = filteredRamis?.filter((rami) => {
         const countryName = nfd(rami.country.name.toLowerCase());
         return countryName.includes(countrySearchLower);
       });
     }
 
     // Actualizar los totales y la página actual
-    const filteredTotalPages = Math.ceil(filteredRamis.length / itemsPerPage);
+    const filteredTotalPages = Math.ceil(filteredRamis?.length / itemsPerPage);
     setTotalPages(filteredTotalPages);
-    setTotal(filteredRamis.length);
+    setTotal(filteredRamis?.length);
 
     // Actualizar los datos de la página actual
     const newStartIndex = (currentPage - 1) * itemsPerPage;
     const newEndIndex = newStartIndex + itemsPerPage;
-    setCurrentPageData(filteredRamis.slice(newStartIndex, newEndIndex));
+    setCurrentPageData(filteredRamis?.slice(newStartIndex, newEndIndex));
 
     if (!productSearch && !countrySearch) {
       // Si no hay filtros, forzar una actualización completa de la página

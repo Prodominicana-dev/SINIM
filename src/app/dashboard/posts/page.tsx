@@ -30,13 +30,13 @@ export default function Page() {
 
   useEffect(() => {
     if (!selectedCategory) {
-      setCategories(data.categories);
+      setCategories(data?.categories);
     }
     if (!selectedLanguage) {
-      setLanguages(data.languages);
+      setLanguages(data?.languages);
     }
     if (!selectedType) {
-      setTypes(data.types);
+      setTypes(data?.types);
     }
   }, [selectedCategory, selectedLanguage, selectedType]);
 
@@ -69,7 +69,7 @@ export default function Page() {
   };
 
   const uniqueTypes = (filteredData: any) =>
-    filteredData.reduce((types: any, post: any) => {
+    filteredData?.reduce((types: any, post: any) => {
       if (!types.includes(post.type)) {
         types.push(post.type);
       }
@@ -77,7 +77,7 @@ export default function Page() {
     }, []);
 
   const uniqueCategories = (filteredData: any) =>
-    filteredData.reduce((categories: any, post: any) => {
+    filteredData?.reduce((categories: any, post: any) => {
       if (!categories.includes(post.category)) {
         categories.push(post.category);
       }
@@ -85,7 +85,7 @@ export default function Page() {
     }, []);
 
   const uniqueLanguages = (filteredData: any) =>
-    filteredData.reduce((languages: any, post: any) => {
+    filteredData?.reduce((languages: any, post: any) => {
       if (!languages.includes(post.language)) {
         languages.push(post.language);
       }
@@ -94,7 +94,7 @@ export default function Page() {
 
   const handleCategoryChange = (value: any) => {
     setSelectedCategory(value);
-    const filteredData = data.posts.filter(
+    const filteredData = data?.posts.filter(
       (post: any) => post.category === value
     );
     setTypes(uniqueTypes(filteredData));
@@ -103,14 +103,14 @@ export default function Page() {
 
   const handleTypeChange = (value: any) => {
     setSelectedType(value);
-    const filteredData = data.posts.filter((post: any) => post.type === value);
+    const filteredData = data?.posts.filter((post: any) => post.type === value);
     setCategories(uniqueCategories(filteredData));
     setLanguages(uniqueLanguages(filteredData));
   };
 
   const handleLanguageChange = (value: any) => {
     setSelectedLanguage(value);
-    const filteredData = data.posts.filter(
+    const filteredData = data?.posts.filter(
       (post: any) => post.language === value
     );
     setCategories(uniqueCategories(filteredData));
