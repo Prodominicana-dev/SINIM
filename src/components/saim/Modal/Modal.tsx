@@ -3,24 +3,19 @@ import {
   Dialog,
   DialogHeader,
   DialogBody,
-  DialogFooter,
-  Button,
-  Typography,
   IconButton,
 } from "@material-tailwind/react";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { data } from "autoprefixer";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useRouter } from "next/navigation";
-import useSaim from "@/src/services/saim/useSaim";
-import Saim from "@/src/models/saim";
+import { useSaim } from "@/src/services/saim/service";
 
 export default function Modal({ id }: any) {
-  const { data, isLoading, isError } = useSaim(id);
-  const [open, setOpen] = React.useState(true);
+  const { data, isLoading, isError }: any = useSaim(id);
+  const [open, setOpen] = useState(true);
   const router = useRouter();
   const handleOpen = useCallback(() => {
     setOpen(!open);
@@ -54,7 +49,7 @@ export default function Modal({ id }: any) {
       </DialogHeader>
       <DialogBody className="flex justify-center h-[100vm] overflow-y-auto">
         <div className="w-10/12 sm:w-8/12">
-          <div className="text-base text-neutral-500">{data.category}</div>
+          <div className="text-base text-neutral-500">{data.category.name}</div>
           <div className="my-2 text-xl font-bold text-black sm:text-3xl">
             {data.title}
           </div>
@@ -69,7 +64,7 @@ export default function Modal({ id }: any) {
             className="object-cover w-full my-5 rounded-lg"
           />
           <div
-            className="pb-10 text-lg text-justify text-black"
+            className="pb-10 font-normal text-justify text-black"
             dangerouslySetInnerHTML={{ __html: data.description }}
           ></div>
         </div>

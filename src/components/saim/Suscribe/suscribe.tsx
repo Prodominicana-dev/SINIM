@@ -1,59 +1,59 @@
-
-"use client"
+"use client";
 
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { notifications } from "@mantine/notifications";
 import {
-  Button,
   Dialog,
-  DialogHeader,
   DialogBody,
-  DialogFooter,
   Input,
+  Spinner,
   Typography,
 } from "@material-tailwind/react";
 import axios from "axios";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { useRouter } from "next/navigation";
-import { useAtom } from "jotai";
-import {
-  countryAtom,
-  countrySelect,
-  productAtom,
-  productSelect,
-} from "@/src/state/states";
 import { useEffect, useState } from "react";
+import { useCountries } from "@/src/services/countries/service";
+import { useProducts } from "@/src/services/products/service";
+import Country from "@/src/models/country";
+import Product from "@/src/models/product";
 
 const animatedComponents = makeAnimated();
 
 interface SuscribeProps {
-
-    open: boolean, handleOpen: () => void, email: string
-
+  open: boolean;
+  handleOpen: () => void;
+  email: string;
 }
 
 export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
   const { user, error, isLoading } = useUser();
-  const router = useRouter();
-  const option = ["SAIM", "SAIM 2", "SAIM 3"];
-  const [countries] = useAtom(countryAtom);
-  const [products] = useAtom(productAtom);
+  const {
+    data: countries,
+    isLoading: isCountriesLoading,
+    isError: isCountriesError,
+  } = useCountries();
+  const {
+    data: products,
+    isLoading: isProductsLoading,
+    isError: isProductsError,
+  } = useProducts();
   const [sCountries, setSCountries] = useState<any>([]);
   const [sProducts, setSProducts] = useState<any>([]);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (countries) {
-      const country = countries.map((country) => ({
+      const country = countries.map((country: Country) => ({
         value: country.id.toString(),
         label: country.name,
       }));
       setSCountries(country);
     }
     if (products) {
-      const product = products.map((product) => ({
+      const product = products.map((product: Product) => ({
         value: product.id.toString(),
         label: `${product.name} - ${product.code}`,
       }));
@@ -62,7 +62,6 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
   }, [countries, products]);
 
   useEffect(() => {
-    
     const getData = async () => {
       const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/suscriber/${user?.email}/saim`
@@ -93,6 +92,7 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
   };
 
   const handleSuscribe = async () => {
+    setIsLoaded(true);
     const productsId = selectedProducts.map((product: any) =>
       Number(product.value)
     );
@@ -107,7 +107,7 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
       platform: "saim",
     };
     await axios
-      .patch(`${process.env.NEXT_PUBLIC_API_URL}/suscriber`, data)
+      .patch(`${process.env.NEXT_PUBLIC_API_URL}/suscriber/saim`, data)
       .then((res) => {
         if (res.status === 200) {
           notifications.show({
@@ -120,6 +120,7 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
           handleOpen();
           setSelectedCountries([]);
           setSelectedProducts([]);
+          setIsLoaded(false);
         }
       });
   };
@@ -175,11 +176,12 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
             </div>
           </div>
           <div className="flex justify-center w-full pt-4">
-            <button
+          <button
               onClick={handleSuscribe}
-              className="w-10/12 p-2 rounded-lg text-lg font-bold text-white bg-gradient-to-r from-purple-600 hover:from-purple-700  hover:via-purple-500 hover:to-sky-500 duration-700 from-[20%] via-purple-400 to-sky-400"
+              disabled={isLoaded}
+              className="w-10/12 p-2 rounded-lg text-lg font-bold text-white bg-gradient-to-r from-purple-600 hover:from-purple-700  hover:via-purple-500 hover:to-sky-500 duration-700 from-[20%] via-purple-400 to-sky-400 flex justify-center items-center"
             >
-              Suscribirse
+              { !isLoaded ? "Suscribirse" : (<Spinner className="text-white"/>)}
             </button>
           </div>
           <div className="flex justify-center w-full pt-4">

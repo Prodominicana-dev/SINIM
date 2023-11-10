@@ -1,20 +1,11 @@
 "use client";
-import { XMarkIcon } from "@heroicons/react/24/solid";
-import {
-  Dialog,
-  DialogHeader,
-  IconButton,
-  DialogBody,
-} from "@material-tailwind/react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import Image from "next/image";
-import getSaim from "@/src/services/saim/useSaim";
-import { useEffect, useState } from "react";
-import Saim from "@/src/models/saim";
+import { useSaim } from "@/src/services/saim/service";
 
 export default function Page({ params }: { params: { id: number } }) {
-  const { data, isLoading, isError } = getSaim(params.id);
+  const { data, isLoading, isError }: any = useSaim(params.id);
 
   if (!data) {
     return <div>No existe</div>;
@@ -22,7 +13,7 @@ export default function Page({ params }: { params: { id: number } }) {
   return (
     <div className="flex justify-center h-[40rem]">
       <div className="w-10/12 sm:w-8/12">
-        <div className="text-base text-neutral-500">{data.category}</div>
+        <div className="text-base text-neutral-500">{data.category.name}</div>
         <div className="my-2 text-xl font-bold text-black sm:text-3xl">
           {data.title}
         </div>

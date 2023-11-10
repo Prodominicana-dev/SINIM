@@ -1,18 +1,8 @@
 import { atom } from "jotai";
-import Sector from "../models/sector";
-import Saim from "../models/saim";
-import product from "../models/product";
-import Country from "../models/country";
-import Rami from "../models/rami";
+import DataMarket from "../models/datamarket";
 
-export const ramiAtom = atom<Rami[]>([]);
+export const datamarketAtom = atom<DataMarket[]>([]);
 
-export const saimAtom = atom<Saim[]>([]);
+export const tokenAtom = atom<string | null>(null);
 
-export const productAtom = atom<product[]>([]);
-
-export const productSelect = atom([]);
-
-export const countryAtom = atom<Country[]>([]);
-
-export const countrySelect = atom([]);
+export const userAtom = atom<any>(null);

@@ -1,4 +1,3 @@
-import React from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import {
   Button,
@@ -10,19 +9,19 @@ import {
   MenuList,
 } from "@material-tailwind/react";
 import Link from "next/link";
-import {
-  ChevronDownIcon,
-  InboxArrowDownIcon,
-  LifebuoyIcon,
-  PowerIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/solid";
+import { ChevronDownIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { usePathname } from "next/navigation";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
+import { createElement, useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { tokenAtom, userAtom } from "@/src/state/states";
+import axios from "axios";
 
 export default function UserProfile() {
   const { user, error, isLoading } = useUser();
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [name, setName] = useAtom(userAtom);
+  const [token, setToken] = useAtom(tokenAtom);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const pathname = usePathname();
   const callbackUrl = `${baseUrl}${pathname}`;
@@ -30,7 +29,7 @@ export default function UserProfile() {
     {
       label: "Perfil",
       icon: UserCircleIcon,
-      link: "/profile",
+      link: "/dashboard/profile",
     },
     {
       label: "Cerrar sesion",
@@ -41,15 +40,38 @@ export default function UserProfile() {
   const closeMenu = () => setIsMenuOpen(false);
   if (!user)
     return (
-      <Button className="bg-navy">
-        <Link
-          href={`/api/auth/login?returnTo=${encodeURIComponent(callbackUrl)}`}
-          prefetch
-        >
-          Inicia sesion
-        </Link>
-      </Button>
+      <Link
+        href={`/api/auth/login?returnTo=${baseUrl}${pathname}`}
+        className="flex items-center justify-center h-12 text-white rounded-lg shadow-sm w-36 bg-navy"
+      >
+        Iniciar sesión
+      </Link>
     );
+
+  useEffect(() => {
+    if (user && token) {
+      const url = `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}`;
+      const getUserData = () => {
+        axios
+          .get(url, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            setName(
+              res.data.user_metadata?.given_name &&
+                res.data.user_metadata?.family_name
+                ? `${res.data.user_metadata.given_name} ${res.data.user_metadata.family_name}`
+                : user?.name
+                ? user?.name
+                : ""
+            );
+          });
+      };
+      getUserData();
+    }
+  }, [user, token]);
 
   return (
     <>
@@ -59,14 +81,16 @@ export default function UserProfile() {
             <Button
               variant="text"
               color="blue-gray"
-              className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
+              className="flex items-center h-12 gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
             >
               <Avatar
                 variant="circular"
                 size="sm"
                 src={user.picture as string}
               />
-              <Typography className="capitalize">{user.name}</Typography>
+              <Typography className="capitalize">
+                {name ? name : user.name}
+              </Typography>
               <ChevronDownIcon
                 strokeWidth={2.5}
                 className={`h-3 w-3 transition-transform ${
@@ -89,7 +113,7 @@ export default function UserProfile() {
                         : ""
                     }`}
                   >
-                    {React.createElement(icon, {
+                    {createElement(icon, {
                       className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
                       strokeWidth: 2,
                     })}

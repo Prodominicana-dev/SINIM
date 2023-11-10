@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Typography,
-} from "@material-tailwind/react";
-import React from "react";
+import { Card, CardBody, CardHeader } from "@material-tailwind/react";
 import Image from "next/image";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -15,7 +9,7 @@ export default function SaimCard(data: Saim) {
   return (
     <Link prefetch href={`/dashboard/saim/${data.id}`}>
       <Card className="w-full mt-6 cursor-pointer group h-80">
-        <CardHeader color="blue-gray" className="relative ">
+        <CardHeader color="white" className="relative ">
           <Image
             width={1920}
             height={1080}
@@ -25,7 +19,7 @@ export default function SaimCard(data: Saim) {
           />
         </CardHeader>
         <CardBody>
-          <div className="text-gray-500">{data.category}</div>
+          <div className="text-gray-500">{data.category.name}</div>
           <div className="mb-2 text-xl font-bold line-clamp-2">
             {data.title}
           </div>

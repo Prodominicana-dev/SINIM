@@ -1,46 +1,49 @@
 "use client";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import SaimCard from "../../../components/saim/card";
 import Saim from "@/src/models/saim";
 import Feed from "@/src/components/saim/feed";
-import { useAtom } from "jotai";
-import { saimAtom } from "@/src/state/states";
+import { useActiveSaims } from "@/src/services/saim/service";
+import NotFound from "@/src/components/validate/notFound";
+import { Spinner } from "@material-tailwind/react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Page() {
   const saimFilters = [
     {
       name: "Todos",
-      title: "¡Explora Todas Nuestras Alertas!",
+      title: "¡Explora todas nuestras alertas!",
       description:
-        "Bienvenido a la sección de alertas para exportadores en diversos mercados. Aquí encontrarás una amplia gama de información valiosa para ayudarte a navegar por los desafíos y oportunidades del comercio internacional. ¡Sumérgete en nuestras alertas y mantente al tanto de lo que está sucediendo en el mundo del comercio exterior!",
+        "Bienvenido a la sección de Alertas Comerciales del SINIM, donde los exportadores encontrarán una amplia gama de información acerca de las oportunidades, tendencias y desafíos del comercio internacional.",
     },
     {
       name: "Oportunidades",
-      title: "Descubra Nuevas Oportunidades de Negocio",
+      title: "Descubra nuevas oportunidades de negocio",
       description:
-        "Explore oportunidades emergentes, tendencias y nichos de mercado que pueden impulsar su crecimiento empresarial.",
+        "Explore oportunidades emergentes, tendencias y nichos de mercado que pueden impulsar su crecimiento internacional.",
     },
     {
       name: "Actualizaciones",
-      title: "Explore las Novedades más Recientes en su Industria",
+      title: "Explore las novedades más recientes en su industria",
       description:
-        "Mantenga una ventaja competitiva al estar informado sobre las últimas actualizaciones en regulaciones, políticas y tendencias relevantes para su industria.",
+        "Potencie su competitividad al mantenerse actualizado en las regulaciones, políticas y tendencias del comercio internacional.",
     },
     {
       name: "Amenazas",
-      title: "Esté al Pendiente de las Amenazas Potenciales",
+      title: "Esté al pendiente de las amenazas potenciales",
       description:
-        "Manténgase al tanto de las amenazas potenciales y tome medidas preventivas para garantizar la seguridad y el éxito de su empresa. ",
+        "Manténgase al tanto de las amenazas potenciales y tome medidas preventivas para garantizar la seguridad y el éxito de sus exportaciones. ",
     },
     {
       name: "Obstáculos",
-      title: "Descubra Estrategias para Sortear los Obstáculos",
+      title: "Eluda los obstáculos presentes en el comercio global",
       description:
-        "Aprenda a eludir obstáculos y encontrar atajos inteligentes en su búsqueda hacia el logro de sus objetivos.",
+        "Acceda a los obstáculos identificados en los mercados internacionales, manteniéndose informado acerca de los desafíos que pueden impactar sus objetivos comerciales.",
     },
   ];
-  const [data, setData] = useAtom(saimAtom);
+  const { data: dataSaim, isLoading, isError } = useActiveSaims();
+  const [data, setData] = useState<Saim[]>([]);
   const [filteredData, setFilteredData] = useState<Saim[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(saimFilters[0].name);
@@ -48,19 +51,43 @@ export default function Page() {
   const [categoryDescription, setCategoryDescription] = useState(
     saimFilters[0].description
   );
+  const { user, isLoading: isUserLoading } = useUser();
+  const [canSeeSaims, setCanSeeSaims] = useState(false);
+  useEffect(() => {
+    if (
+      localStorage.getItem("saim") &&
+      localStorage.getItem("saim") === "true"
+    ) {
+      setCanSeeSaims(true);
+    } else {
+      setCanSeeSaims(false);
+    }
+  }, [user, isUserLoading]);
 
   useEffect(() => {
-    setFilteredData(data);
-  }, [data]);
+    setData(dataSaim);
+  }, [dataSaim]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    if (!data) return;
+    if (!canSeeSaims) {
+      const publicData: Saim[] = data
+        ?.map((saim: Saim | null) => (saim && saim.isPublic ? saim : null))
+        .filter(Boolean) as Saim[];
+      return setFilteredData(publicData);
+    }
+    setFilteredData(data);
+  }, [data, canSeeSaims]);
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
   const handleFilter = (selectedCategory: string) => {
     // Filtrar datos por categoría y actualizar el estado
     const SaimByCategory = data.filter(
-      (saim) => saim.category.toLowerCase() === selectedCategory.toLowerCase()
+      (saim: Saim) =>
+        saim.category.name.toLowerCase() === selectedCategory.toLowerCase()
     );
 
     const selectedFilter = saimFilters.find(
@@ -81,12 +108,13 @@ export default function Page() {
     const filteredByCategory =
       category === "Todos"
         ? data
-        : data.filter(
-            (saim) => saim.category.toLowerCase() === category.toLowerCase()
+        : data?.filter(
+            (saim: Saim) =>
+              saim.category.name.toLowerCase() === category.toLowerCase()
           );
 
-    const filteredBySearch = filteredByCategory.filter(
-      (saim) =>
+    const filteredBySearch = filteredByCategory?.filter(
+      (saim: Saim) =>
         saim.title.toLowerCase().includes(search.toLowerCase()) ||
         saim.products.some(
           (product) =>
@@ -102,6 +130,12 @@ export default function Page() {
     filterData();
   }, [search, category]);
 
+  if (isUserLoading)
+    return (
+      <div className="w-full h-[90vh] flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
   return (
     <div className="w-full h-full">
       <div className="relative w-full sm:h-4/6">
@@ -142,7 +176,7 @@ export default function Page() {
             <MagnifyingGlassIcon className="w-5 mx-2 text-gray-500" />
             <input
               placeholder="Buscar..."
-              className="w-10/12 text-blue-500 outline-none"
+              className="w-10/12 text-blue-500 bg-white outline-none"
               name="search"
               value={search}
               onChange={handleSearchChange}
@@ -153,15 +187,27 @@ export default function Page() {
       {search === "" && category === "Todos" ? (
         <Feed />
       ) : (
-        <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {filteredData?.map((saim) => {
-            return (
-              <div key={saim.id}>
-                <SaimCard {...saim} />
+        <>
+          {filteredData?.length === 0 ? (
+            <NotFound />
+          ) : (
+            <>
+              <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {filteredData?.map((saim) =>
+                  canSeeSaims ? (
+                    <div key={saim.id}>
+                      <SaimCard {...saim} />
+                    </div>
+                  ) : saim.isPublic ? (
+                    <div key={saim.id}>
+                      <SaimCard {...saim} />
+                    </div>
+                  ) : null
+                )}
               </div>
-            );
-          })}
-        </div>
+            </>
+          )}
+        </>
       )}
     </div>
   );

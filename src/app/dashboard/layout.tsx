@@ -1,207 +1,115 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { datamarketAtom, tokenAtom } from "@/src/state/states";
+import { ReactNode, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { Sidebar } from "@/src/components/dashboard/sidebar";
 import { NavbarDashboard } from "@/src/components/dashboard/navbar";
-import useSaims from "@/src/services/saim/useSaims";
-import useCountries from "@/src/services/countries/useCountries";
-import Saim from "@/src/models/saim";
 import { useAtom } from "jotai";
-import { useProducts } from "@/src/services/products/useProducts";
 import "@mantine/core/styles.css";
 import "@mantine/tiptap/styles.css";
 import "@mantine/notifications/styles.css";
-import {
-  XMarkIcon,
-  UserCircleIcon,
-  ChartBarIcon,
-  RectangleStackIcon,
-  BellAlertIcon,
-  ExclamationCircleIcon,
-  ArrowLeftOnRectangleIcon,
-} from "@heroicons/react/24/outline";
-import {
-  Navbar,
-  Collapse,
-  Typography,
-  IconButton,
-  Drawer,
-  Button,
-  Avatar,
-} from "@material-tailwind/react";
-import {
-  countryAtom,
-  countrySelect,
-  productAtom,
-  productSelect,
-  ramiAtom,
-  saimAtom,
-} from "@/src/state/states";
-import { useSelectProducts } from "@/src/services/products/useSelectProducts";
-import useSelectCountries from "@/src/services/countries/useSelectCountries";
-import useRamis from "@/src/services/ramis/useRamis";
-import useActiveSaims from "@/src/services/saim/useActiveSaim";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import Suscribe from "@/src/components/saim/Suscribe/suscribe";
-import Image from "next/image";
+import { useDataMarkets } from "@/src/services/datamarket/service";
+import MobileMenu from "@/src/components/dashboard/mobileMenu";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { getCookie, setCookie } from "typescript-cookie";
+import { generateToken, getDomains } from "@/src/services/auth/service";
+
+import { Provider } from "jotai";
+import axios from "axios";
 
 interface RootLayoutProps {
-  children: React.ReactNode;
-  modal: React.ReactNode;
+  children: ReactNode;
+  modal: ReactNode;
 }
 const queryClient = new QueryClient();
 
-function NavigationLink({ option, isActive, onClose }: any) {
-  const linkClasses = `flex flex-row items-center justify-start w-full p-4 gap-3 text-center bg-transparent shadow-none h-12 rounded-lg ${
-    isActive ? "bg-navy/90 text-white" : "text-navy"
-  }`;
-
-  const iconClasses = `w-4 h-4 ${isActive ? "text-white" : "text-navy"}`;
-  const textClasses = isActive
-    ? "text-white font-normal"
-    : "text-black font-thin";
-
-  return (
-    <Link href={option.href} className={linkClasses} onClick={onClose}>
-      {option.icon && <option.icon.type className={iconClasses} />}
-      <p className={textClasses}>{option.text}</p>
-    </Link>
-  );
-}
-
-function NavigationDrawer({ isOpen, onClose }: any) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const pathname = usePathname();
-  const callbackUrl = `${baseUrl}${pathname}`;
-  const navigationOptions = [
-    { href: "#", icon: <UserCircleIcon />, text: "Perfíl" },
-    { href: "#", icon: <ChartBarIcon />, text: "DataMarket" },
-    { href: "/dashboard/rami", icon: <RectangleStackIcon />, text: "RAMI" },
-    { href: "/dashboard/saim", icon: <BellAlertIcon />, text: "SAIM" },
-    { href: "#", icon: <ExclamationCircleIcon />, text: "SIED" },
-    {
-      href: `/api/auth/logout?returnTo=${encodeURIComponent(callbackUrl)}`,
-      icon: <ArrowLeftOnRectangleIcon />,
-      text: "Cerrar sesión",
-    },
-  ];
-  const { user, error, isLoading } = useUser();
-  const [suscribeOpen, setSuscribeOpen] = React.useState(false);
-  const handleSuscribeOpen = () => {
-    setSuscribeOpen(!suscribeOpen);
-  };
-  return (
-    <React.Fragment>  
-    <Drawer open={isOpen} onClose={onClose} placement="right" className="z-[9999] h-screen flex flex-col justify-between">
-      <div className="flex flex-col items-center justify-between bg-[url('/images/logo/accountLog.jpg')]">
-        <div className="flex flex-row items-center justify-between w-full px-4 pt-2">
-        <Typography variant="h5" color="white">
-          SINIM
-        </Typography>
-        <IconButton variant="text" color="blue-gray" onClick={onClose}>
-          <XMarkIcon className="w-6 h-6 text-white" />
-        </IconButton>
-        </div>
-        <div className="w-full p-4 space-y-4">
-        {user ? (<>
-        <Avatar variant="circular" size="lg" className="" src={user.picture as string} />
-        <Typography className="font-thin text-white">{user.name}</Typography>
-        </>) : (<>
-        
-        </>)}
-        </div>
-
-      </div>
-      <div className="flex flex-col gap-4 p-2 h-4/6">
-        {navigationOptions.map((option, index) => (
-          <NavigationLink
-            key={index}
-            option={option}
-            onClose={onClose}
-            isActive={pathname.includes(option.text.toLowerCase())}
-          />
-        ))}
-      </div>
-      <div className="p-2">
-      {pathname === "/dashboard/saim" ? (
-        <><button onClick={() => {
-          handleSuscribeOpen();
-          onClose();
-         }} className="w-full flex justify-center items-center text-white rounded-xl p-4 h-12 bg-gradient-to-tr from-purple-500 from-[15%] via-sky-600 to-sky-400">Suscríbete</button></>
-      ) : null}
-      </div>
-      {suscribeOpen && user ? (<Suscribe open={suscribeOpen} handleOpen={handleSuscribeOpen} email={user.email ?? ""} />) : null}
-    </Drawer>
-    </React.Fragment>  
-
-  );
-}
-
 function RootLayoutComponent({ children, modal }: RootLayoutProps) {
-  const { user, error, isLoading } = useUser();
+  const { user, isLoading } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [, setRamis] = useAtom(ramiAtom);
-  const [, setSaims] = useAtom(saimAtom);
-  const [, setProduct] = useAtom(productAtom);
-  const [, setCountry] = useAtom(countryAtom);
-  const [, setProductSelect] = useAtom(productSelect);
-  const [, setCountrySelect] = useAtom(countrySelect);
-  const [openNav, setOpenNav] = React.useState(false);
+  const [, setDataMarket] = useAtom(datamarketAtom);
+  const [auth0Token, setAuth0Token] = useAtom(tokenAtom);
+  const [openNav, setOpenNav] = useState(false);
   const {
-    data: saims,
-    isLoading: isSaimsLoading,
-    isError: isSaimsError,
-  } = useActiveSaims();
-
-  const {
-    data: products,
-    isLoading: isProductsLoading,
-    isError: isProductsError,
-  } = useProducts();
-
-  const {
-    data: countries,
-    isLoading: isCountriesLoading,
-    isError: isCountriesError,
-  } = useCountries();
-
-  const {
-    data: productsSelect,
-    isLoading: isProductsSelectLoading,
-    isError: isProductsSelectError,
-  } = useSelectProducts();
-
-  const {
-    data: countriesSelect,
-    isLoading: isCountriesSelectLoading,
-    isError: isCountriesSelectError,
-  } = useSelectCountries();
-
-  const {
-    data: ramis,
-    isLoading: isRamisLoading,
-    isError: isRamisError,
-  } = useRamis();
+    data: datamarket,
+    isLoading: isDataMarketLoading,
+    isError: isDataMarketError,
+  }: any = useDataMarkets();
 
   useEffect(() => {
-    setRamis(ramis);
-    setSaims(saims);
-    setProduct(products);
-    setCountry(countries);
-    setProductSelect(productsSelect);
-    setCountrySelect(countriesSelect);
-  }, [saims, products, countries, ramis, productsSelect, countriesSelect, setCountry, setCountrySelect, setProduct, setProductSelect, setRamis, setSaims]);
+    setDataMarket(datamarket);
+  }, [datamarket]);
+
+  useEffect(() => {
+    const sidebarOpen = localStorage.getItem("sidebarOpen");
+    if (sidebarOpen === null) {
+      localStorage.setItem("sidebarOpen", "true");
+      setSidebarOpen(true);
+    } else {
+      setSidebarOpen(sidebarOpen === "true");
+    }
+  }, []);
 
   const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
+    const newSidebarOpen = !sidebarOpen;
+    localStorage.setItem("sidebarOpen", newSidebarOpen.toString());
+    setSidebarOpen(newSidebarOpen);
   };
 
-  const openDrawer = () => setOpenNav(true);
-  const closeDrawer = () => setOpenNav(false);
+  useEffect(() => {
+    if (!user) {
+      localStorage.setItem("sied", "false");
+      localStorage.setItem("saim", "false");
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const getToken = async () => {
+        const token = await generateToken();
+        setCookie("authToken", token, {
+          expires: 1,
+        });
+        setAuth0Token(token);
+      };
+      const getDomainsP = async () => {
+        let saimDomains: any[] = [];
+        let siedDomains: any[] = [];
+        const domains = await getDomains(
+          `${process.env.NEXT_PUBLIC_API_URL}/reserved-domains`
+        );
+        siedDomains = domains.data.sied;
+        saimDomains = domains.data.saim;
+        // Comprobar si el correo del usuario esta en la lista de dominios, si esta en la de sied colocar en localStorage que puede ver sied y si esta tambien en la de saim colocar en localStorage que puede ver saim
+        if (user) {
+          const email = user.email;
+          const sied = siedDomains.find((domain: any) =>
+            email?.includes(domain)
+          );
+          const saim = saimDomains.find((domain: any) =>
+            email?.includes(domain)
+          );
+          if (sied) {
+            localStorage.setItem("sied", "true");
+          }
+          if (saim) {
+            localStorage.setItem("saim", "true");
+          }
+        }
+        if (!user) {
+          localStorage.setItem("sied", "false");
+          localStorage.setItem("saim", "false");
+        }
+      };
+      getToken();
+      getDomainsP();
+    }
+  }, [user, isLoading]);
+
+  const toogleOpenDrawer = () => {
+    setOpenNav(!openNav);
+  };
 
   return (
     <div className="flex w-full h-screen bg-white">
@@ -212,14 +120,14 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
         <NavbarDashboard
           toggleSidebar={toggleSidebar}
           openNav={openNav}
-          openDrawer={openDrawer}
+          openDrawer={toogleOpenDrawer}
         />
         {children}
       </div>
       {modal}
       <Notifications zIndex={9999} />
 
-      <NavigationDrawer isOpen={openNav} onClose={closeDrawer} />
+      <MobileMenu isOpen={openNav} onClose={toogleOpenDrawer} />
     </div>
   );
 }
@@ -228,7 +136,9 @@ export default function RootLayout(props: RootLayoutProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider>
-        <RootLayoutComponent {...props} />
+        <Provider>
+          <RootLayoutComponent {...props} />
+        </Provider>
       </MantineProvider>
     </QueryClientProvider>
   );
