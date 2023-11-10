@@ -118,33 +118,36 @@ export default function page() {
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-1 place-items-center sm:gap-8 sm:p-8 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          {partners?.length === 0 ? (
-            <NotFound />
-          ) : (
-            <>
-              {titleSearch === "" && categorySearch.label === "" ? (
-                <>
+
+        {partners?.length === 0 ? (
+          <NotFound />
+        ) : (
+          <>
+            {titleSearch === "" && categorySearch.label === "" ? (
+              <>
+                <div className="grid grid-cols-1 place-items-center sm:gap-8 sm:p-8 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                   {partners?.map((partner) => (
                     <Card partner={partner} />
                   ))}
-                </>
-              ) : (
-                <>
-                  {partnersFiltered?.length === 0 ? (
-                    <NotFound />
-                  ) : (
-                    <>
+                </div>
+              </>
+            ) : (
+              <>
+                {partnersFiltered?.length === 0 ? (
+                  <NotFound />
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 place-items-center sm:gap-8 sm:p-8 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
                       {partnersFiltered?.map((partner) => (
                         <Card partner={partner} />
                       ))}
-                    </>
-                  )}
-                </>
-              )}
-            </>
-          )}
-        </div>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+          </>
+        )}
       </div>
     </>
   );
