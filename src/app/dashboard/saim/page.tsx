@@ -42,7 +42,8 @@ export default function Page() {
         "Acceda a los obstáculos identificados en los mercados internacionales, manteniéndose informado acerca de los desafíos que pueden impactar sus objetivos comerciales.",
     },
   ];
-  const { data, isLoading, isError } = useActiveSaims();
+  const { data: dataSaim, isLoading, isError } = useActiveSaims();
+  const [data, setData] = useState<Saim[]>([]);
   const [filteredData, setFilteredData] = useState<Saim[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(saimFilters[0].name);
@@ -61,11 +62,22 @@ export default function Page() {
     } else {
       setCanSeeSaims(false);
     }
-  }, []);
+  }, [user, isUserLoading]);
 
   useEffect(() => {
+    setData(dataSaim);
+  }, [dataSaim]);
+
+  useEffect(() => {
+    if (!data) return;
+    if (!canSeeSaims) {
+      const publicData: Saim[] = data
+        ?.map((saim: Saim | null) => (saim && saim.isPublic ? saim : null))
+        .filter(Boolean) as Saim[];
+      return setFilteredData(publicData);
+    }
     setFilteredData(data);
-  }, [data]);
+  }, [data, canSeeSaims]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);

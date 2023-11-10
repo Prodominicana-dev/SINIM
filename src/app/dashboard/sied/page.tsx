@@ -43,7 +43,8 @@ export default function Page() {
     },
   ];
 
-  const { data, isLoading, isError } = useActiveSieds();
+  const { data: dataSied, isLoading, isError } = useActiveSieds();
+  const [data, setData] = useState<Sied[]>([]);
   const [filteredData, setFilteredData] = useState<Sied[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(iedFilters[0].name);
@@ -63,11 +64,22 @@ export default function Page() {
     } else {
       setCanSeeSieds(false);
     }
-  }, []);
+  }, [user, isUserLoading]);
 
   useEffect(() => {
+    setData(dataSied);
+  }, [dataSied]);
+
+  useEffect(() => {
+    if (!data) return;
+    if (!canSeeSieds) {
+      const publicData: Sied[] = data
+        ?.map((sied: Sied | null) => (sied && sied.isPublic ? sied : null))
+        .filter(Boolean) as Sied[];
+      return setFilteredData(publicData);
+    }
     setFilteredData(data);
-  }, [data]);
+  }, [data, canSeeSieds]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
