@@ -7,7 +7,7 @@ import React from "react";
 export default function Card({ partner }: { partner: any }) {
   return (
     <>
-      <div className="flex flex-col items-center justify-between p-4 space-y-3 rounded-lg shadow-lg w-72 xl:w-80 h-[30rem]">
+      <div className="flex flex-col items-center justify-between p-4 space-y-3 rounded-lg shadow-lg w-full h-[30rem]">
         <div className="flex flex-col items-center justify-center space-y-4">
           <Image
             width={1920}

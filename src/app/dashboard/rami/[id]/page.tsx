@@ -66,7 +66,7 @@ export default function Page({ params }: { params: { id: number } }) {
 
   return (
     <div className="flex justify-center h-[100vm] overflow-y-auto">
-      <div className="w-8/12">
+      <div className="w-9/12">
         <div className="flex flex-col items-center justify-between w-full p-5 text-white rounded-lg sm:flex-row sm:h-64 lg:h-96 bg-gradient-to-tr from-purple-700 to-sky-500 sm:rounded-xl lg:rounded-3xl sm:p-8">
           <div className="flex flex-col w-full leading-normal sm:w-6/12">
             <div className="text-xs sm:text-sm lg:text-lg">Exporta</div>

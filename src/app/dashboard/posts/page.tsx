@@ -29,6 +29,18 @@ export default function Page() {
   }, [data, isLoading]);
 
   useEffect(() => {
+    if (!selectedCategory) {
+      setCategories(data.categories);
+    }
+    if (!selectedLanguage) {
+      setLanguages(data.languages);
+    }
+    if (!selectedType) {
+      setTypes(data.types);
+    }
+  }, [selectedCategory, selectedLanguage, selectedType]);
+
+  useEffect(() => {
     if (data) {
       setPosts(filteredPosts());
     }
@@ -122,27 +134,27 @@ export default function Page() {
             autoPlay
             loop
             muted
-            className="w-full h-full object-cover"
+            className="object-cover w-full h-full"
             src="/videos/datamarket.mp4"
             typeof="video/mp4"
           ></video>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-tr from-purple-700/80 to-sky-500/80  border-0"></div>
-        <div className="relative h-full flex flex-col items-center justify-center px-5 sm:px-0 w-full">
-          <div className="w-10/12 sm:w-8/12 lg:w-6/12 xl:w-4/12 text-center text-white text-4xl sm:text-5xl font-bold">
+        <div className="absolute inset-0 border-0 bg-gradient-to-tr from-purple-700/80 to-sky-500/80"></div>
+        <div className="relative flex flex-col items-center justify-center w-full h-full px-5 sm:px-0">
+          <div className="w-10/12 text-4xl font-bold text-center text-white sm:w-8/12 lg:w-6/12 xl:w-4/12 sm:text-5xl">
             Explora nuestras publicaciones
           </div>
-          <div className="w-10/12 sm:w-8/12 lg:w-6/12 xl:w-4/12 mt-4 text-center text-white text-xs sm:text-sm">
+          <div className="w-10/12 mt-4 text-xs text-center text-white sm:w-8/12 lg:w-6/12 xl:w-4/12 sm:text-sm">
             Descubre documentos relacionados con inversión y exportación y
             utiliza nuestros filtros para encontrar exactamente lo que
             necesitas.
           </div>
-          <div className="sm:flex my-5 sm:w-8/12 lg:w-6/12 xl:w-5/12 space-y-5 sm:space-y-0 sm:space-x-5">
+          <div className="my-5 space-y-5 sm:flex sm:w-8/12 lg:w-6/12 xl:w-5/12 sm:space-y-0 sm:space-x-5">
             <Select
               className="w-full"
               size={"lg"}
               radius="md"
-              placeholder="Categoria"
+              placeholder={"Categoría..."}
               data={categories ? categories : []}
               searchable
               clearable
@@ -154,7 +166,7 @@ export default function Page() {
               className="w-full"
               size={"lg"}
               radius="md"
-              placeholder="Tipo"
+              placeholder="Tipo..."
               data={types ? types : []}
               searchable
               clearable
@@ -166,7 +178,7 @@ export default function Page() {
               className="w-full"
               size={"lg"}
               radius="md"
-              placeholder="Idioma"
+              placeholder="Idioma..."
               clearable
               data={languages ? languages : []}
               searchable
@@ -174,19 +186,26 @@ export default function Page() {
               nothingFoundMessage="Nothing found..."
               onChange={handleLanguageChange}
             />
-            {selectedCategory || selectedType || selectedLanguage ? (
+            {/* {selectedCategory || selectedType || selectedLanguage ? (
               <IconButton
-                className="p-6 w-full bg-red-600 hover:bg-red-700 duration-700"
-                onClick={handleClearFilters}
+                className="w-full p-6 duration-700 bg-red-600 hover:bg-red-700"
+                onClick={() => {
+                  setSelectedCategory("");
+                  setSelectedType("");
+                  setSelectedLanguage("");
+                  setCategories(data.categories);
+                  setTypes(data.types);
+                  setLanguages(data.languages);
+                }}
               >
                 <XMarkIcon className="w-8 text-white" />
               </IconButton>
-            ) : null}
+            ) : null} */}
           </div>
         </div>
       </div>
       {posts ? (
-        <div className="grid grid-cols-1 place-items-center gap-8 p-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <div className="grid grid-cols-1 gap-8 p-8 place-items-center sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           {posts?.map((post: Post) => {
             return (
               <div key={post.id}>
