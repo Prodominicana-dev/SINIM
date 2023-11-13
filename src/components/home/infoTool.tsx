@@ -3,8 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import TypeWriterEffect from "@/src/components/typewriter/typewritereffect";
 import { useState, useEffect } from "react";
+import React from "react";
 
-export default function InfoTool({ title, description, logo, link }) {
+export default function InfoTool({ title, description, logo, link }: any) {
   const [showDescription, setShowDescription] = useState(true);
 
   // Cuando la descripción cambie, establece showDescription en falso para reiniciar el efecto.

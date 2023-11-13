@@ -18,6 +18,7 @@ import SiedDialog from "./dialog";
 import HideButton from "../hide";
 import ActiveButton from "../active";
 import DeleteButton from "../delete";
+import React from "react";
 
 export default function SCard({
   data,

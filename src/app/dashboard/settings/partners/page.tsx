@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { useEffect, useState } from "react";
 import Header from "@/src/components/settings/header";
 import { nfd } from "unorm";
@@ -16,7 +16,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 export default function Page() {
-  const { data, isLoading, isError, refetch } = usePartners();
+  const { data, refetch } = usePartners();
   const [partners, setPartners] = useState<any[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [titleSearch, setTitleSearch] = useState("");
@@ -33,8 +33,6 @@ export default function Page() {
   const [currentPageData, setCurrentPageData] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [nextButton, setNextButton] = useState(false);
-  const [prevButton, setPrevButton] = useState(true);
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [startIndex, setStartIndex] = useState(

@@ -1,11 +1,12 @@
 "use client";
+import React from "react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import Image from "next/image";
 import { useSied } from "@/src/services/sied/service";
 
 export default function Page({ params }: { params: { id: number } }) {
-  const { data, isLoading, isError }: any = useSied(params.id);
+  const { data }: any = useSied(params.id);
 
   if (!data) {
     return <div>No existe</div>;

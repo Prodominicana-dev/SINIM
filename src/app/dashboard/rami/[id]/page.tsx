@@ -9,9 +9,10 @@ import {
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRami } from "@/src/services/ramis/service";
+import React from "react";
 
 export default function Page({ params }: { params: { id: number } }) {
-  const { data, isLoading, isError }: any = useRami(params.id);
+  const { data, isLoading }: any = useRami(params.id);
   const [ramiData, setRamiData] = useState<any>([]);
   useEffect(() => {
     if (!isLoading) {
@@ -95,7 +96,7 @@ export default function Page({ params }: { params: { id: number } }) {
             <UnderlineTabs data={ramiData} />
           </div>
           <div className="block sm:hidden">
-            {ramiData.map(({ label, value, desc, key }: any) => (
+            {ramiData.map(({ label, desc, key }: any) => (
               <div className="p-2" key={key}>
                 <SectionRami title={label} desc={desc} />
               </div>

@@ -16,6 +16,7 @@ import {
   useUserRoles,
 } from "@/src/services/users/service";
 import makeAnimated from "react-select/animated";
+import React from "react";
 
 export default function UserDialog({
   user,
@@ -30,8 +31,8 @@ export default function UserDialog({
   handleOpen: () => void;
   updateUser: () => void;
 }) {
-  const [userName, setUserName] = useState<any>(user?.nickname);
-  const [userEmail, setUserEmail] = useState<any>(user?.email);
+  const [, setUserName] = useState<any>(user?.nickname);
+  const [, setUserEmail] = useState<any>(user?.email);
   const [selectedRoles, setSelectedRoles] = useState<any>([]);
   const [rolesList, setRolesList] = useState<any>([]);
   const { data: userRoles } = useUserRoles(user?.user_id);

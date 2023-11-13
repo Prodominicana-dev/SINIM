@@ -12,22 +12,21 @@ import {
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useEffect, useState } from "react";
+import React from "react";
 import {
   Menu,
   MenuHandler,
   MenuList,
   MenuItem,
-  Button,
 } from "@material-tailwind/react";
 import Image from "next/image";
 import { useAtom } from "jotai";
 import { tokenAtom, userAtom } from "@/src/state/states";
 import axios from "axios";
-import { headers } from "@/next.config";
 import { notifications } from "@mantine/notifications";
 const countryCodes = require("country-codes-list");
 
-export default function page() {
+export default function Page() {
   const { user } = useUser();
   const [typeDocumentation, setTypeDocumentation] = useState("");
 
@@ -36,7 +35,7 @@ export default function page() {
     countryCode: "DO",
     countryCallingCode: "+1",
   });
-  const [myCountryCodesArray, setMyCountryCodesArray] = useState(() => {
+  const [myCountryCodesArray] = useState(() => {
     const myCountryCodesObject = countryCodes.customList(
       "countryCode",
       "+{countryCallingCode}"
@@ -136,7 +135,7 @@ export default function page() {
     setCreatedAt(user?.updated_at ? new Date(user?.updated_at) : new Date());
   }, [user]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async () => {
     setIsSubmitted(true);
     const data = {
       user_metadata: {
@@ -281,7 +280,7 @@ export default function page() {
                     </button>
                   </MenuHandler>
                   <MenuList className="max-h-[20rem] max-w-[12rem]">
-                    {myCountryCodesArray.map((country, index) => {
+                    {myCountryCodesArray.map((country) => {
                       return (
                         <MenuItem
                           key={country.countryCode}
@@ -289,7 +288,9 @@ export default function page() {
                           className="flex items-center gap-2"
                           onClick={() => setCountry(country)}
                         >
-                          <img
+                          <Image
+                            width={100}
+                            height={100}
                             src={`https://flagcdn.com/${country.countryCode.toLowerCase()}.svg`}
                             alt={country.countryCode}
                             className="object-cover w-5 h-5 rounded-full"

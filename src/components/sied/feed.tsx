@@ -9,18 +9,13 @@ import {
   usePublicSiedsPage,
 } from "@/src/services/sied/service";
 import NotFound from "../validate/notFound";
+import React from "react";
 
 export default function Feed() {
-  const {
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    data: dataAll,
-  } = useActiveSiedsPage();
+  const { fetchNextPage, hasNextPage, data: dataAll } = useActiveSiedsPage();
   const {
     fetchNextPage: fetchNextPagePublic,
     hasNextPage: hasNextPagePublic,
-    isFetchingNextPage: isFetchingNextPagePublic,
     data,
   } = usePublicSiedsPage();
   const containerRef = useRef<HTMLElement>(null);

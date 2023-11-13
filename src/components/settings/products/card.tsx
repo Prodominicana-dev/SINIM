@@ -8,6 +8,7 @@ import Product from "@/src/models/product";
 import ProductDialog from "./dialog";
 import HideButton from "../hide";
 import ActiveButton from "../active";
+import React from "react";
 
 export default function Card({
   product,

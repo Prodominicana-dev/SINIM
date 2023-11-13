@@ -1,8 +1,6 @@
 import { notifications } from "@mantine/notifications";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useAtom } from "jotai";
-import { tokenAtom } from "@/src/state/states";
 import { getCookie } from "typescript-cookie";
 
 const header = {
@@ -33,7 +31,6 @@ export function useUsers() {
 }
 
 export function useUsersPermissions(id: String) {
-  if (!id) return { data: null };
   return useQuery({
     queryKey: ["users"],
     queryFn: async () => {

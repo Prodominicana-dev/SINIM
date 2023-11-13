@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { Navbar, Typography, IconButton } from "@material-tailwind/react";
 
 import UserProfile from "./userprofile";
@@ -9,8 +9,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import Suscribe from "../saim/Suscribe/suscribe";
 import { useRouter } from "next/navigation";
 import SiedSubscribe from "../sied/Suscribe/suscribe";
-import { useAtom } from "jotai";
-import { userAtom } from "@/src/state/states";
+import React from "react";
 
 export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
   const routes = [
@@ -25,7 +24,7 @@ export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
   const title = currentRoute ? currentRoute.title : "SINIM";
   const [suscribeOpen, setSuscribeOpen] = useState(false);
   const [suscribeSied, setSuscribeSied] = useState(false);
-  const { user, error, isLoading } = useUser();
+  const { user, isLoading } = useUser();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const saimCallbackUrl = `${baseUrl}/dashboard/saim#suscribe`;
   const siedCallbackUrl = `${baseUrl}/dashboard/sied`;

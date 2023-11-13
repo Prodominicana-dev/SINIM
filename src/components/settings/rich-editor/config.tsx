@@ -13,54 +13,54 @@ import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
 
-export default function Editor({placeholder, content}: any) {
+export default function Editor({ placeholder, content }: any) {
   return useEditor({
     extensions: [
-        StarterKit.configure({
-          bulletList: {
-            HTMLAttributes: {
-              class: "text-black",
-            },
-          },
-        }),
-        Underline,
-        Link,
-        Highlight,
-        Table.configure({
+      StarterKit.configure({
+        bulletList: {
           HTMLAttributes: {
-            style:
-              "padding: 1.5rem; border-radius: 0.5rem; border-width: 2px;	border-color: rgb(243 244 246);",
+            class: "text-black",
           },
-          resizable: true,
-        }),
-        TableRow.configure({
-          HTMLAttributes: {
-            style: "border-width: 2px;	border-color: rgb(243 244 246);",
-          },
-        }),
-        TableCell.configure({
-          HTMLAttributes: {
-            style: "border-width: 2px;	border-color: rgb(243 244 246);",
-          },
-        }),
-        TableHeader.configure({
-          HTMLAttributes: {
-            style: "border-width: 2px;	border-color: rgb(243 244 246);",
-          },
-        }),
-        TextAlign.configure({ types: ["heading", "paragraph"] }),
-        Placeholder.configure({
-          placeholder: placeholder,
-        }),
-        Img.configure({
-          inline: true,
-          HTMLAttributes: {
-            class: "w-full h-auto",
-          },
-          allowBase64: true,
-        }),
-      ],
-      
+        },
+      }),
+      Underline,
+      Link,
+      Highlight,
+      Table.configure({
+        HTMLAttributes: {
+          style:
+            "padding: 1.5rem; border-radius: 0.5rem; border-width: 2px;	border-color: rgb(243 244 246);",
+        },
+        resizable: true,
+      }),
+      TableRow.configure({
+        HTMLAttributes: {
+          style: "border-width: 2px;	border-color: rgb(243 244 246);",
+        },
+      }),
+      TableCell.configure({
+        HTMLAttributes: {
+          style: "border-width: 2px;	border-color: rgb(243 244 246);",
+        },
+      }),
+      TableHeader.configure({
+        HTMLAttributes: {
+          style: "border-width: 2px;	border-color: rgb(243 244 246);",
+        },
+      }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({
+        placeholder: placeholder,
+      }),
+      Img.configure({
+        inline: true,
+        HTMLAttributes: {
+          class: "w-full h-auto",
+        },
+        allowBase64: true,
+      }),
+    ],
+
     content: content,
   });
 }

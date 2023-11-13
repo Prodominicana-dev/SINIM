@@ -9,6 +9,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "img.icons8.com",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
         hostname: "sinim.prodominicana.gob.do",
         pathname: "**",
       },

@@ -17,10 +17,9 @@ import {
 } from "@material-tailwind/react";
 import { Fragment, useEffect, useState } from "react";
 import Suscribe from "../saim/Suscribe/suscribe";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
-import Image from "next/image";
 import DataMarketIcon from "../svg/datamarket";
 import { useDataMarketsCategories } from "@/src/services/datamarket/service";
 import DataMarketMenu from "./mobileDatamarketMenu";
@@ -33,6 +32,7 @@ import { useAtom } from "jotai";
 import { tokenAtom } from "@/src/state/states";
 import axios from "axios";
 import { hasAnyPermission } from "./navbar";
+import React from "react";
 
 export default function MobileMenu({ isOpen, onClose }: any) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -94,17 +94,14 @@ export default function MobileMenu({ isOpen, onClose }: any) {
       text: "Fuentes externas",
     },
   ];
-  const { user, isLoading: userLoading } = useUser();
-  const saimCallbackUrl = `${baseUrl}/dashboard/saim`;
-  const siedCallbackUrl = `${baseUrl}/dashboard/sied`;
+  const { user } = useUser();
   const [suscribeSied, setSuscribeSied] = useState(false);
-  const router = useRouter();
   const handleSiedSuscribeOpen = () => {
     if (!user) return <Login />;
     setSuscribeSied(!suscribeSied);
   };
   const [suscribeOpen, setSuscribeOpen] = useState(false);
-  const { data, isLoading, isError }: any = useDataMarketsCategories();
+  const { data, isLoading }: any = useDataMarketsCategories();
   const handleSuscribeOpen = () => {
     if (!user) return <Login />;
     setSuscribeOpen(!suscribeOpen);
@@ -113,7 +110,6 @@ export default function MobileMenu({ isOpen, onClose }: any) {
   const [open, setOpen] = useState(0);
   const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
 
-  const [permissions, setPermissions] = useState<any[]>([]);
   const [hasPermission, setHasPermission] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [token] = useAtom(tokenAtom);
@@ -153,7 +149,6 @@ export default function MobileMenu({ isOpen, onClose }: any) {
             });
             hasPermis = hasAnyPermission(permis, permissionList);
           });
-        setPermissions(permis);
         setHasPermission(hasPermis);
         setDataLoaded(true);
       };

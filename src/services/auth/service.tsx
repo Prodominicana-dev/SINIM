@@ -1,6 +1,4 @@
 import axios from "axios";
-import React from "react";
-import { setCookie } from "typescript-cookie";
 
 export async function generateToken() {
   var options = {

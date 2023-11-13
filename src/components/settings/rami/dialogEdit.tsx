@@ -24,7 +24,7 @@ import Editor from "../rich-editor/config";
 import { useSelectProducts } from "@/src/services/products/service";
 import { useSelectCountries } from "@/src/services/countries/service";
 import Rami from "@/src/models/rami";
-import { set } from "date-fns";
+import React from "react";
 
 const animatedComponents = makeAnimated();
 
@@ -41,27 +41,14 @@ export default function RamiEditDialog({
   updateRami: () => void;
   title: string;
 }) {
-  const {
-    data: products,
-    isLoading: isProductsSelectLoading,
-    isError: isProductsSelectError,
-  }: any = useSelectProducts();
-
-  const {
-    data: countries,
-    isLoading: isCountriesSelectLoading,
-    isError: isCountriesSelectError,
-  }: any = useSelectCountries();
-  const {
-    data: ramis,
-    isLoading: isRamisLoading,
-    isError: isRamisError,
-  } = useRamis();
+  const { data: products }: any = useSelectProducts();
+  const { data: countries }: any = useSelectCountries();
+  const { data: ramis } = useRamis();
   const [countriesSelect, setCountriesSelect] = useState<any>([]);
   const [productSelect, setProductSelect] = useState<any>([]);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
-  const { data, isLoading, isError } = useRami(rami?.id);
+  const { data, isLoading } = useRami(rami?.id);
   const [ramiData, setRamiData] = useState<any>([]);
   const [outputRequirement, setOutputRequirement] = useState<any>("");
   const [importRequirement, setImportRequirement] = useState<any>("");
@@ -375,13 +362,11 @@ export default function RamiEditDialog({
                 <UnderlineTabs data={ramiData} />
               </div>
               <div className="block sm:hidden">
-                {ramiData.map(
-                  ({ label, value, editor }: any, index: number) => (
-                    <div className="p-2" key={index}>
-                      <SectionRami title={label} editor={editor} />
-                    </div>
-                  )
-                )}
+                {ramiData.map(({ label, editor }: any, index: number) => (
+                  <div className="p-2" key={index}>
+                    <SectionRami title={label} editor={editor} />
+                  </div>
+                ))}
               </div>
             </div>
 

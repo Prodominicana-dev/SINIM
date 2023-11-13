@@ -13,11 +13,10 @@ import "@mantine/notifications/styles.css";
 import { useDataMarkets } from "@/src/services/datamarket/service";
 import MobileMenu from "@/src/components/dashboard/mobileMenu";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { getCookie, setCookie } from "typescript-cookie";
+import { setCookie } from "typescript-cookie";
 import { generateToken, getDomains } from "@/src/services/auth/service";
-
+import React from "react";
 import { Provider } from "jotai";
-import axios from "axios";
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -29,17 +28,13 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
   const { user, isLoading } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [, setDataMarket] = useAtom(datamarketAtom);
-  const [auth0Token, setAuth0Token] = useAtom(tokenAtom);
+  const [, setAuth0Token] = useAtom(tokenAtom);
   const [openNav, setOpenNav] = useState(false);
-  const {
-    data: datamarket,
-    isLoading: isDataMarketLoading,
-    isError: isDataMarketError,
-  }: any = useDataMarkets();
+  const { data: datamarket }: any = useDataMarkets();
 
   useEffect(() => {
     setDataMarket(datamarket);
-  }, [datamarket]);
+  }, [datamarket, setDataMarket]);
 
   useEffect(() => {
     const sidebarOpen = localStorage.getItem("sidebarOpen");
@@ -105,7 +100,7 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
       getToken();
       getDomainsP();
     }
-  }, [user, isLoading]);
+  }, [user, isLoading, setAuth0Token]);
 
   const toogleOpenDrawer = () => {
     setOpenNav(!openNav);

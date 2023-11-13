@@ -1,16 +1,11 @@
-import {
-  EyeIcon,
-  EyeSlashIcon,
-  MinusIcon,
-  PencilSquareIcon,
-  PlusIcon,
-} from "@heroicons/react/24/outline";
+import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import User from "@/src/models/user";
 import UserDialog from "./dialog";
 import HideButton from "../hide";
 import ActiveButton from "../active";
 import { Avatar } from "@material-tailwind/react";
+import React from "react";
 
 export default function Card({
   user,
@@ -40,8 +35,7 @@ export default function Card({
   };
 
   const [activeOpen, setActiveOpen] = useState(false);
-  const handleActiveOpen = () => setActiveOpen(!deleteOpen);
-  const handleActiveClose = () => setActiveOpen(false);
+  const handleActiveClose = () => setActiveOpen(!activeOpen);
   const activeCreateNotification = {
     title: "Usero activado",
     message: "El Usuario ha sido activado exitosamente.",

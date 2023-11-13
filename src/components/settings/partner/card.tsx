@@ -2,19 +2,17 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import DeleteButton from "../delete";
 import PartnerDialog from "./dialog";
-
+import React from "react";
 
 export default function Card({
   source,
   update,
 }: {
-    source: any;
-    update: () => void;
+  source: any;
+  update: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
-  const handleClose = () => setOpen(false);
-  
 
   const [deleteOpen, setDeleteOpen] = useState(false);
   const handleDeleteOpen = () => setDeleteOpen(!deleteOpen);
@@ -34,8 +32,16 @@ export default function Card({
     <>
       <div className="grid items-center w-full h-24 grid-cols-3 p-5 text-center bg-white rounded-lg sm:grid-cols-4 ring-2 ring-gray-100">
         <div>{source.title}</div>
-        <div className="">{source.type === "nacional" ? "Nacional" : source.type === "internacional" ? "Internacional" : ""}</div>
-        <div className="hidden truncate line-clamp-1 sm:block">{source.url}</div>
+        <div className="">
+          {source.type === "nacional"
+            ? "Nacional"
+            : source.type === "internacional"
+            ? "Internacional"
+            : ""}
+        </div>
+        <div className="hidden truncate line-clamp-1 sm:block">
+          {source.url}
+        </div>
         <div className="flex justify-center space-x-5 ">
           <button
             onClick={handleOpen}
@@ -61,14 +67,14 @@ export default function Card({
         createNotification={deleteCreateNotification}
         errorNotification={deleteErrorNotification}
       />
-       {open ? (
+      {open ? (
         <>
-        <PartnerDialog 
-        source={source}
-        open={open}
-        handleOpen={handleOpen}
-        update={update}
-        />
+          <PartnerDialog
+            source={source}
+            open={open}
+            handleOpen={handleOpen}
+            update={update}
+          />
         </>
       ) : null}
     </>
