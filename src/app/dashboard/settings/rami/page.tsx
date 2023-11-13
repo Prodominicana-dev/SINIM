@@ -1,23 +1,17 @@
 "use client";
-
+import React from "react";
 import { useEffect, useState } from "react";
 import Card from "@/src/components/settings/rami/card";
 import Header from "@/src/components/settings/header";
 import { useRamisSettings } from "@/src/services/ramis/service";
 import { nfd } from "unorm";
 import RamiCreateDialog from "@/src/components/settings/rami/dialogCreate";
-import Loading from "@/src/components/dashboard/loading";
-import Login from "@/src/components/validate/login";
-import { hasAllPermissions } from "@/src/components/dashboard/navbar";
-import axios from "axios";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import AccessDenied from "@/src/components/validate/accessDenied";
 import Settings from "@/src/components/validate/settings";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import NotFound from "@/src/components/validate/notFound";
 
 export default function Page() {
-  const { data, isLoading, isError, refetch } = useRamisSettings();
+  const { data, refetch } = useRamisSettings();
   const [ramis, setRamis] = useState<any[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [productSearch, setProductSearch] = useState("");
@@ -27,14 +21,12 @@ export default function Page() {
   const [currentPageData, setCurrentPageData] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [nextButton, setNextButton] = useState(false);
-  const [prevButton, setPrevButton] = useState(true);
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
-  const [startIndex, setStartIndex] = useState(
-    (currentPage - 1) * itemsPerPage
-  );
-  const [endIndex] = useState(currentPage * itemsPerPage);
+  // const [startIndex, setStartIndex] = useState(
+  //   (currentPage - 1) * itemsPerPage
+  // );
+  // const [endIndex] = useState(currentPage * itemsPerPage);
   const [totalPages, setTotalPages] = useState(
     Math.ceil(data?.length / itemsPerPage)
   );
@@ -87,16 +79,11 @@ export default function Page() {
     const newEndIndex = newStartIndex + itemsPerPage;
     setCurrentPageData(filteredRamis?.slice(newStartIndex, newEndIndex));
 
-    if (!productSearch && !countrySearch) {
-      // Si no hay filtros, forzar una actualización completa de la página
-      setRefresh(!refresh);
-    }
-
     // Asegurarse de que el currentPage se mantenga dentro de los límites
     if (currentPage > filteredTotalPages) {
       setCurrentPage(1);
     }
-  }, [ramis, currentPage, productSearch, countrySearch, refresh]);
+  }, [ramis, currentPage, productSearch, countrySearch]);
 
   useEffect(() => {
     setRamis(data);

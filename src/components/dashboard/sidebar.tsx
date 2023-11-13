@@ -9,7 +9,6 @@ import {
   Accordion,
   AccordionHeader,
   AccordionBody,
-  Switch,
   Button,
 } from "@material-tailwind/react";
 import { ChevronDownIcon, CogIcon } from "@heroicons/react/24/outline";
@@ -24,15 +23,16 @@ import { tokenAtom } from "@/src/state/states";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import axios from "axios";
 import { hasAnyPermission } from "./navbar";
+import React from "react";
 
 export function Sidebar({ visible }: any) {
   const [open, setOpen] = useState(0);
-  const { data, isLoading, isError }: any = useDataMarketsCategories();
+  const { data, isLoading }: any = useDataMarketsCategories();
   const hoverRef = useRef(null);
   const isHover = useHover(hoverRef);
   const [isConfig, setIsConfig] = useState(false);
   const path = usePathname();
-  const { user, isLoading: userLoading } = useUser();
+  const { user } = useUser();
   const router = useRouter();
   const [hasPermission, setHasPermission] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -75,9 +75,9 @@ export function Sidebar({ visible }: any) {
     }
   }, [user, token]);
 
-  const lastPath = path.includes("datamarket")
-    ? "/datamarket"
-    : path.substring(path.lastIndexOf("/"));
+  // const lastPath = path.includes("datamarket")
+  //   ? "/datamarket"
+  //   : path.substring(path.lastIndexOf("/"));
 
   useEffect(() => {
     const hasConfigLocalStorage = localStorage.getItem("isConfig");

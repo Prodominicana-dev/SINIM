@@ -30,6 +30,7 @@ import Category from "@/src/models/category";
 import { useSaimsCategory } from "@/src/services/saim/service";
 import { useSelectCountries } from "@/src/services/countries/service";
 import { useSelectProducts } from "@/src/services/products/service";
+import React from "react";
 
 const animatedComponents = makeAnimated();
 
@@ -50,17 +51,8 @@ export default function SaimDialog({
   const [isPublic, setIsPublic] = useState(false);
   const { data: categories, isLoading } = useSaimsCategory();
   const [category, setCategory] = useState<Category | null>(null);
-  const {
-    data: productsSelect,
-    isLoading: isProductsSelectLoading,
-    isError: isProductsSelectError,
-  }: any = useSelectProducts();
-
-  const {
-    data: countries,
-    isLoading: isCountriesSelectLoading,
-    isError: isCountriesSelectError,
-  }: any = useSelectCountries();
+  const { data: productsSelect }: any = useSelectProducts();
+  const { data: countries }: any = useSelectCountries();
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
   const [selectedProducts, setSelectedProducts] = useState<any>([]);
   const [products, setProducts] = useState<any>([]);
@@ -357,7 +349,7 @@ export default function SaimDialog({
                 <Dropzone
                   openRef={openRef}
                   onDrop={handleDrop}
-                  onReject={(e) => {
+                  onReject={() => {
                     notifications.show({
                       id: "saim",
                       autoClose: 5000,

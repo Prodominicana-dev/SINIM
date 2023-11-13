@@ -14,7 +14,7 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import Sied from "@/src/models/sied";
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from "@mantine/dropzone";
@@ -25,6 +25,7 @@ import TextEditor from "../rich-editor";
 import Editor from "../rich-editor/config";
 import { useSiedsCategory } from "@/src/services/sied/service";
 import Category from "@/src/models/category";
+import React from "react";
 
 export default function SiedDialog({
   sied,
@@ -40,9 +41,8 @@ export default function SiedDialog({
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [description] = useState<any>("");
   const [title, setTitle] = useState("");
-  const { data: categories, isLoading } = useSiedsCategory();
+  const { data: categories } = useSiedsCategory();
   const [category, setCategory] = useState<Category | null>(null);
-  const [refresh, setRefresh] = useState(false);
   const [isLoadin, setIsLoadin] = useState(false);
 
   const openRef = useRef<() => void>(null);
@@ -268,7 +268,7 @@ export default function SiedDialog({
                 <Dropzone
                   openRef={openRef}
                   onDrop={handleDrop}
-                  onReject={(e) => {
+                  onReject={() => {
                     notifications.show({
                       id: "sied",
                       autoClose: 5000,

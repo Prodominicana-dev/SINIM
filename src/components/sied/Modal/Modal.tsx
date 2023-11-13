@@ -12,9 +12,10 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useRouter } from "next/navigation";
 import { useSied } from "@/src/services/sied/service";
+import React from "react";
 
 export default function Modal({ id }: any) {
-  const { data, isLoading, isError }: any = useSied(id);
+  const { data, isLoading }: any = useSied(id);
   const [open, setOpen] = useState(true);
   const router = useRouter();
   const handleOpen = useCallback(() => {

@@ -19,7 +19,7 @@ export default function DownloadPDF({ ramiData, data }: any) {
         document={<PDFDocument ramiData={ramiData} data={data} />}
         fileName={`Exporta ${data.product.name} a ${data.country.name}`}
       >
-        {({ blob, url, loading, error }) =>
+        {({ loading }) =>
           loading ? (
             <Spinner fill="white" className="w-4" />
           ) : (
@@ -80,7 +80,7 @@ const PDFDocument = ({ ramiData, data }: any) => {
           </View>
         </View>
         <View style={tw(`p-10`)}>
-          {ramiData.map(({ label, value, desc, key }: any) => (
+          {ramiData.map(({ label, desc, key }: any) => (
             <View key={key}>
               <SectionRami title={label} desc={desc} key={key} />
             </View>

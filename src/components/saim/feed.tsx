@@ -10,19 +10,14 @@ import {
 } from "@/src/services/saim/service";
 import NotFound from "../validate/notFound";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import React from "react";
 
 export default function Feed() {
   const { user, isLoading } = useUser();
-  const {
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    data: dataAll,
-  } = useActiveSaimsPage();
+  const { fetchNextPage, hasNextPage, data: dataAll } = useActiveSaimsPage();
   const {
     fetchNextPage: fetchNextPagePublic,
     hasNextPage: hasNextPagePublic,
-    isFetchingNextPage: isFetchingNextPagePublic,
     data,
   } = usePublicSaimsPage();
   const containerRef = useRef<HTMLElement>(null);

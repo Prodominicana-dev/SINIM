@@ -18,6 +18,7 @@ import HideButton from "../hide";
 import ActiveButton from "../active";
 import DeleteButton from "../delete";
 import { useState } from "react";
+import React from "react";
 
 export default function SCard({
   data,

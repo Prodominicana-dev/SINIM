@@ -8,14 +8,15 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Spinner } from "@material-tailwind/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { nfd } from "unorm";
+import React from "react";
 const animatedComponents = makeAnimated();
 
-export default function page() {
-  const { data, isLoading, isError, refetch } = usePartners();
+export default function Page() {
+  const { data, isLoading } = usePartners();
   const [partners, setPartners] = useState<any[]>([]);
   const [titleSearch, setTitleSearch] = useState("");
   const [categorySearch, setCategorySearch] = useState<any>({
@@ -126,8 +127,8 @@ export default function page() {
             {titleSearch === "" && categorySearch.label === "" ? (
               <>
                 <div className="grid grid-cols-1 place-items-center sm:gap-8 sm:p-8 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-                  {partners?.map((partner) => (
-                    <Card partner={partner} />
+                  {partners?.map((partner, key) => (
+                    <Card partner={partner} key={key} />
                   ))}
                 </div>
               </>
@@ -138,8 +139,8 @@ export default function page() {
                 ) : (
                   <>
                     <div className="grid grid-cols-1 place-items-center sm:gap-8 sm:p-8 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-                      {partnersFiltered?.map((partner) => (
-                        <Card partner={partner} />
+                      {partnersFiltered?.map((partner, key) => (
+                        <Card partner={partner} key={key} />
                       ))}
                     </div>
                   </>

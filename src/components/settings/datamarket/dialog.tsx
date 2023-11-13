@@ -6,13 +6,14 @@ import {
   Input,
   Spinner,
 } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Datamarket from "@/src/models/datamarket";
 import {
   createDatamarket,
   updateDatamarket,
   useDataMarketsCategories,
 } from "@/src/services/datamarket/service";
+import React from "react";
 
 export default function DatamarketDialog({
   datamarket,

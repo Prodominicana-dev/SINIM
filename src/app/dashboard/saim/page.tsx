@@ -8,6 +8,7 @@ import { useActiveSaims } from "@/src/services/saim/service";
 import NotFound from "@/src/components/validate/notFound";
 import { Spinner } from "@material-tailwind/react";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import React from "react";
 
 export default function Page() {
   const saimFilters = [
@@ -42,7 +43,7 @@ export default function Page() {
         "Acceda a los obstáculos identificados en los mercados internacionales, manteniéndose informado acerca de los desafíos que pueden impactar sus objetivos comerciales.",
     },
   ];
-  const { data: dataSaim, isLoading, isError } = useActiveSaims();
+  const { data: dataSaim } = useActiveSaims();
   const [data, setData] = useState<Saim[]>([]);
   const [filteredData, setFilteredData] = useState<Saim[]>([]);
   const [search, setSearch] = useState("");
@@ -146,7 +147,6 @@ export default function Page() {
             muted
             className="object-cover w-full h-full"
             src="/videos/rami.mp4"
-            typeof="video/mp4"
           ></video>
         </div>
         <div className="absolute inset-0 bg-black border-0 opacity-60"></div>

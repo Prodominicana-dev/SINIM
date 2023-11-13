@@ -1,10 +1,8 @@
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { notifications } from "@mantine/notifications";
-import {
-  Dialog,
-  DialogBody,
-} from "@material-tailwind/react";
+import { Dialog, DialogBody } from "@material-tailwind/react";
 import axios from "axios";
+import React from "react";
 
 interface Notificatione {
   title: string;

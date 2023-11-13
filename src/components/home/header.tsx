@@ -1,9 +1,16 @@
-"use client"
+"use client";
+import React from "react";
 
-export default function Header({title, message}: {title: string, message: string}) {
+export default function Header({
+  title,
+  message,
+}: {
+  title: string;
+  message: string;
+}) {
   return (
     <>
-         <div className="w-full h-[26rem] bg-gradient-to-r from-sky-600 from-[15%] via-green-400 to-green-500 flex flex-col justify-center items-center space-y-6">
+      <div className="w-full h-[26rem] bg-gradient-to-r from-sky-600 from-[15%] via-green-400 to-green-500 flex flex-col justify-center items-center space-y-6">
         <div className="text-3xl font-bold text-center text-white lg:text-5xl">
           {title}
         </div>
@@ -12,5 +19,5 @@ export default function Header({title, message}: {title: string, message: string
         </div>
       </div>
     </>
-  )
+  );
 }

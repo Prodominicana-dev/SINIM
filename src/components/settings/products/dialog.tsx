@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { useState } from "react";
 import Product from "@/src/models/product";
+import React from "react";
 
 export default function ProductDialog({
   product,
