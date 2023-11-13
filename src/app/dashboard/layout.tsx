@@ -56,6 +56,7 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
     if (!user) {
       localStorage.setItem("sied", "false");
       localStorage.setItem("saim", "false");
+      localStorage.setItem("isConfig", "false");
     }
   }, [user]);
 
