@@ -20,6 +20,8 @@ module.exports = withMT({
       colors: {
         navy: "#062381",
         mint: "#1AD25D",
+        "light-blue": "#0B256F",
+        "dark-blue": "#040E2C",
         "sky-blue": "rgba(41,151,242, 0.7)",
       },
       boxShadow: {
