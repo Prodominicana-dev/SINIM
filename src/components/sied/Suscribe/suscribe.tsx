@@ -13,7 +13,7 @@ import axios from "axios";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { useEffect, useState } from "react";
-import { set } from "date-fns";
+import React from "react";
 
 const animatedComponents = makeAnimated();
 
@@ -23,19 +23,26 @@ interface SuscribeProps {
   email: string;
 }
 
-export default function SiedSubscribe({ open, handleOpen, email }: SuscribeProps) {
-  const { user, error, isLoading } = useUser();
+export default function SiedSubscribe({
+  open,
+  handleOpen,
+  email,
+}: SuscribeProps) {
+  const { user } = useUser();
   const [selectCategories, setSelectecCategories] = useState<any[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<any[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const getCategories = async () => {
-      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/category/select/sied`).then((res) => {
-        setSelectecCategories(res.data);
-    });}
+      axios
+        .get(`${process.env.NEXT_PUBLIC_API_URL}/category/select/sied`)
+        .then((res) => {
+          setSelectecCategories(res.data);
+        });
+    };
     getCategories();
-  }, [selectCategories])
+  }, [selectCategories]);
 
   useEffect(() => {
     const getData = async () => {
@@ -49,25 +56,22 @@ export default function SiedSubscribe({ open, handleOpen, email }: SuscribeProps
         }));
         setSelectedCategories(categories);
       }
-      
     };
     getData();
   }, [user?.email]);
 
-  
-
   const handleSuscribe = async () => {
     setIsLoaded(true);
     const categoriesId = selectedCategories.map((category: any) => {
-     return category.value
-    })
+      return category.value;
+    });
     const data = {
       email: email,
       categories: categoriesId,
       name: user?.name,
       platform: "sied",
     };
-    console.log(data)
+    console.log(data);
     await axios
       .patch(`${process.env.NEXT_PUBLIC_API_URL}/suscriber/sied`, data)
       .then((res) => {
@@ -116,7 +120,7 @@ export default function SiedSubscribe({ open, handleOpen, email }: SuscribeProps
                 components={animatedComponents}
                 isMulti
                 placeholder="Seleccione las categorías de su interés..."
-                onChange={(e : any) => {
+                onChange={(e: any) => {
                   // Setear solo el value de e en selectedCategories
                   setSelectedCategories(e);
                 }}
@@ -131,7 +135,7 @@ export default function SiedSubscribe({ open, handleOpen, email }: SuscribeProps
               disabled={isLoaded}
               className="w-10/12 p-2 rounded-lg text-lg font-bold text-white bg-gradient-to-r from-purple-600 hover:from-purple-700  hover:via-purple-500 hover:to-sky-500 duration-700 from-[20%] via-purple-400 to-sky-400 flex justify-center items-center"
             >
-              { !isLoaded ? "Suscribirse" : (<Spinner className="text-white"/>)}
+              {!isLoaded ? "Suscribirse" : <Spinner className="text-white" />}
             </button>
           </div>
           <div className="flex justify-center w-full pt-4">

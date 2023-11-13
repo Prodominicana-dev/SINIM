@@ -11,6 +11,7 @@ import {
 } from "@material-tailwind/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import React from "react";
 
 interface sidebarMenuProps {
   title: string;
@@ -21,7 +22,7 @@ interface sidebarMenuProps {
 export default function DataMarketMenu({
   title,
   data,
-  onClose
+  onClose,
 }: sidebarMenuProps) {
   const [open, setOpen] = useState(0);
   const handleOpen = (value: any) => {
@@ -50,9 +51,7 @@ export default function DataMarketMenu({
           <ListItemPrefix>
             <div></div>
           </ListItemPrefix>
-          <Typography
-            className="mr-auto font-normal text-navy"
-          >
+          <Typography className="mr-auto font-normal text-navy">
             {title}
           </Typography>
         </AccordionHeader>
@@ -60,7 +59,11 @@ export default function DataMarketMenu({
       <AccordionBody className="py-1">
         <List className="p-0 text-navy">
           {data?.map((datamarket: any, key: number) => (
-            <Link href={`/dashboard/datamarket/${datamarket.id}`} key={key} onClick={onClose}>
+            <Link
+              href={`/dashboard/datamarket/${datamarket.id}`}
+              key={key}
+              onClick={onClose}
+            >
               <ListItem>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="w-5 h-3" />

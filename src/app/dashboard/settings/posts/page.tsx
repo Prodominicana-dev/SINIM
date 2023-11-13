@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { useEffect, useState } from "react";
 import Header from "@/src/components/settings/header";
 import { nfd } from "unorm";
@@ -11,12 +11,10 @@ import {
 import NotFound from "@/src/components/validate/notFound";
 import PostDialog from "@/src/components/settings/post/dialog";
 import Card from "@/src/components/settings/post/card";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 import { usePosts } from "@/src/services/post/service";
 
 export default function Page() {
-  const { data, isLoading, isError, refetch } = usePosts();
+  const { data, refetch } = usePosts();
   const [posts, setPosts] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState("");
@@ -24,17 +22,15 @@ export default function Page() {
     label: "Categoría...",
     value: "",
   });
-  const [categories] = useState<any[]>([
-    { label: "Nacional", value: "nacional" },
-    { label: "Internacional", value: "internacional" },
-  ]);
+  // const [categories] = useState<any[]>([
+  //   { label: "Nacional", value: "nacional" },
+  //   { label: "Internacional", value: "internacional" },
+  // ]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const [currentPageData, setCurrentPageData] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [nextButton, setNextButton] = useState(false);
-  const [prevButton, setPrevButton] = useState(true);
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [startIndex, setStartIndex] = useState(
@@ -125,8 +121,6 @@ export default function Page() {
     setIsVisible(!isVisible);
   };
   const filterVisible = isVisible ? `block` : `hidden`;
-
-  const animatedComponents = makeAnimated();
   return (
     <>
       <Settings

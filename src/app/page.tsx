@@ -5,6 +5,7 @@ import Card from "@/src/components/home/card";
 import Background from "@/src/components/home/background";
 import InfoTool from "@/src/components/home/infoTool";
 import { useState } from "react";
+import React from "react";
 
 export default function Home() {
   const sinim = {

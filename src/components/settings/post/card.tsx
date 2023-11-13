@@ -3,6 +3,7 @@ import { useState } from "react";
 import DeleteButton from "../delete";
 import PostDialog from "./dialog";
 import { Tooltip } from "@material-tailwind/react";
+import React from "react";
 
 export default function Card({
   post,
@@ -13,7 +14,6 @@ export default function Card({
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
-  const handleClose = () => setOpen(false);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
   const handleDeleteOpen = () => setDeleteOpen(!deleteOpen);

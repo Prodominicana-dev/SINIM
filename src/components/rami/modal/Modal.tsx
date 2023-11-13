@@ -18,9 +18,10 @@ import { useRouter } from "next/navigation";
 import { useRami } from "@/src/services/ramis/service";
 import DownloadPDF from "../downloadPDF";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import React from "react";
 
 export default function Modal({ id }: any) {
-  const { data, isLoading, isError }: any = useRami(id);
+  const { data, isLoading }: any = useRami(id);
   const [ramiData, setRamiData] = useState<any>([]);
   useEffect(() => {
     if (!isLoading) {
@@ -146,7 +147,7 @@ export default function Modal({ id }: any) {
               <UnderlineTabs data={ramiData} />
             </div>
             <div className="block sm:hidden">
-              {ramiData.map(({ label, value, desc, key }: any) => (
+              {ramiData.map(({ label, desc, key }: any) => (
                 <div className="p-2" key={key}>
                   <SectionRami title={label} desc={desc} />
                 </div>

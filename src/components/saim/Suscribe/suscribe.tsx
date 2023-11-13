@@ -17,6 +17,7 @@ import { useCountries } from "@/src/services/countries/service";
 import { useProducts } from "@/src/services/products/service";
 import Country from "@/src/models/country";
 import Product from "@/src/models/product";
+import React from "react";
 
 const animatedComponents = makeAnimated();
 
@@ -27,17 +28,9 @@ interface SuscribeProps {
 }
 
 export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
-  const { user, error, isLoading } = useUser();
-  const {
-    data: countries,
-    isLoading: isCountriesLoading,
-    isError: isCountriesError,
-  } = useCountries();
-  const {
-    data: products,
-    isLoading: isProductsLoading,
-    isError: isProductsError,
-  } = useProducts();
+  const { user } = useUser();
+  const { data: countries } = useCountries();
+  const { data: products } = useProducts();
   const [sCountries, setSCountries] = useState<any>([]);
   const [sProducts, setSProducts] = useState<any>([]);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
@@ -176,12 +169,12 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
             </div>
           </div>
           <div className="flex justify-center w-full pt-4">
-          <button
+            <button
               onClick={handleSuscribe}
               disabled={isLoaded}
               className="w-10/12 p-2 rounded-lg text-lg font-bold text-white bg-gradient-to-r from-purple-600 hover:from-purple-700  hover:via-purple-500 hover:to-sky-500 duration-700 from-[20%] via-purple-400 to-sky-400 flex justify-center items-center"
             >
-              { !isLoaded ? "Suscribirse" : (<Spinner className="text-white"/>)}
+              {!isLoaded ? "Suscribirse" : <Spinner className="text-white" />}
             </button>
           </div>
           <div className="flex justify-center w-full pt-4">

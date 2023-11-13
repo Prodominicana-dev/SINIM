@@ -18,13 +18,13 @@ import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import { useAtom } from "jotai";
 import TextEditor from "../rich-editor";
 import Editor from "../rich-editor/config";
 import { useSelectProducts } from "@/src/services/products/service";
 import { useSelectCountries } from "@/src/services/countries/service";
 import { useRamis } from "@/src/services/ramis/service";
 import Rami from "@/src/models/rami";
+import React from "react";
 
 const animatedComponents = makeAnimated();
 
@@ -39,22 +39,9 @@ export default function RamiCreateDialog({
   updateRami: () => void;
   title: string;
 }) {
-  const {
-    data: products,
-    isLoading: isProductsSelectLoading,
-    isError: isProductsSelectError,
-  }: any = useSelectProducts();
-
-  const {
-    data: countries,
-    isLoading: isCountriesSelectLoading,
-    isError: isCountriesSelectError,
-  }: any = useSelectCountries();
-  const {
-    data: ramis,
-    isLoading: isRamisLoading,
-    isError: isRamisError,
-  } = useRamis();
+  const { data: products }: any = useSelectProducts();
+  const { data: countries }: any = useSelectCountries();
+  const { data: ramis } = useRamis();
   const [countriesSelect, setCountriesSelect] = useState<any>([]);
   const [productSelect, setProductSelect] = useState<any>([]);
   const [selectedCountries, setSelectedCountries] = useState<any>([]);
@@ -317,13 +304,11 @@ export default function RamiCreateDialog({
                 <UnderlineTabs data={ramiData} />
               </div>
               <div className="block sm:hidden">
-                {ramiData.map(
-                  ({ label, value, editor }: any, index: number) => (
-                    <div className="p-2" key={index}>
-                      <SectionRami title={label} editor={editor} />
-                    </div>
-                  )
-                )}
+                {ramiData.map(({ label, editor }: any, index: number) => (
+                  <div className="p-2" key={index}>
+                    <SectionRami title={label} editor={editor} />
+                  </div>
+                ))}
               </div>
             </div>
 

@@ -10,20 +10,12 @@ import { useCountries } from "@/src/services/countries/service";
 import Country from "@/src/models/country";
 import country from "@/src/models/country";
 import Product from "@/src/models/product";
+import React from "react";
 
 export default function Page() {
-  const {
-    data: products,
-    isLoading: isProductsLoading,
-    isError: isProductsError,
-  } = useProducts();
-
-  const {
-    data: countries,
-    isLoading: isCountriesLoading,
-    isError: isCountriesError,
-  } = useCountries();
-  const { data: ramis, isLoading, isError } = useRamis();
+  const { data: products } = useProducts();
+  const { data: countries } = useCountries();
+  const { data: ramis } = useRamis();
   const [countriesSelect, setCountriesSelect] = useState<any>([]);
   const [productSelect, setProductSelect] = useState<any>([]);
   const [originalCountriesSelect, setOriginalCountriesSelect] = useState<any>(
@@ -127,7 +119,6 @@ export default function Page() {
             muted
             className="w-full h-full object-cover"
             src="/videos/connection.mp4"
-            typeof="video/mp4"
           ></video>
         </div>
         <div className="absolute inset-0 bg-navy/50 border-0"></div>

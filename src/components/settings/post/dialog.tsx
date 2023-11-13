@@ -11,19 +11,12 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import Image from "next/image";
-import {
-  Dropzone,
-  IMAGE_MIME_TYPE,
-  FileWithPath,
-  PDF_MIME_TYPE,
-} from "@mantine/dropzone";
-import { Autocomplete, Group } from "@mantine/core";
-import axios from "axios";
+import { Dropzone, FileWithPath, PDF_MIME_TYPE } from "@mantine/dropzone";
+import { Autocomplete } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { CloudArrowUpIcon, DocumentIcon } from "@heroicons/react/24/outline";
-import Category from "../../../models/category";
 import { createPost, updatePost } from "@/src/services/post/service";
+import React from "react";
 
 export default function PostDialog({
   post,
@@ -159,7 +152,7 @@ export default function PostDialog({
                 <Dropzone
                   openRef={openRef}
                   onDrop={handleDrop}
-                  onReject={(e) => {
+                  onReject={() => {
                     notifications.show({
                       id: "post",
                       autoClose: 5000,

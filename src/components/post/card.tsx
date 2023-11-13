@@ -1,6 +1,4 @@
 import Post from "@/src/models/post";
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -10,7 +8,6 @@ import {
   CardBody,
   CardFooter,
   Typography,
-  Tooltip,
 } from "@material-tailwind/react";
 
 export default function PostCard(post: Post) {

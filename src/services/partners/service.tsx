@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import Rami from "@/src/models/rami";
 
 export function usePartners() {
   return useQuery({
@@ -12,4 +11,3 @@ export function usePartners() {
     },
   });
 }
-

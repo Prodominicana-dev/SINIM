@@ -5,10 +5,6 @@ import {
   DialogBody,
   Button,
   IconButton,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
   Input,
   Textarea,
   Spinner,
@@ -16,15 +12,13 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { format, set } from "date-fns";
-import { es } from "date-fns/locale";
-import Saim from "@/src/models/saim";
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from "@mantine/dropzone";
 import { Group } from "@mantine/core";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import React from "react";
 
 const animatedComponents = makeAnimated();
 
@@ -237,7 +231,7 @@ export default function PartnerDialog({
                 <Dropzone
                   openRef={openRef}
                   onDrop={handleDrop}
-                  onReject={(e) => {
+                  onReject={() => {
                     notifications.show({
                       id: "saim",
                       autoClose: 5000,

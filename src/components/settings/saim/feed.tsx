@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
 import Saim from "@/src/models/saim";
 import SCard from "./card";
+import React from "react";
 
 export default function SettingsFeed({
   queryI,

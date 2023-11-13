@@ -1,4 +1,5 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
+import React from "react";
 import {
   Button,
   Avatar,
@@ -18,9 +19,9 @@ import { tokenAtom, userAtom } from "@/src/state/states";
 import axios from "axios";
 
 export default function UserProfile() {
-  const { user, error, isLoading } = useUser();
+  const { user, isLoading } = useUser();
   const [name, setName] = useAtom(userAtom);
-  const [token, setToken] = useAtom(tokenAtom);
+  const [token] = useAtom(tokenAtom);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const pathname = usePathname();
@@ -38,18 +39,9 @@ export default function UserProfile() {
     },
   ];
   const closeMenu = () => setIsMenuOpen(false);
-  if (!user)
-    return (
-      <Link
-        href={`/api/auth/login?returnTo=${baseUrl}${pathname}`}
-        className="flex items-center justify-center h-12 text-white rounded-lg shadow-sm w-36 bg-navy"
-      >
-        Iniciar sesión
-      </Link>
-    );
 
   useEffect(() => {
-    if (user && token) {
+    if (user && token && !isLoading) {
       const url = `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}`;
       const getUserData = () => {
         axios
@@ -71,7 +63,17 @@ export default function UserProfile() {
       };
       getUserData();
     }
-  }, [user, token]);
+  }, [user, token, isLoading]);
+  if (!user) {
+    return (
+      <Link
+        href={`/api/auth/login?returnTo=${baseUrl}${pathname}`}
+        className="flex items-center justify-center h-12 text-white rounded-lg shadow-sm w-36 bg-navy"
+      >
+        Iniciar sesión
+      </Link>
+    );
+  }
 
   return (
     <>

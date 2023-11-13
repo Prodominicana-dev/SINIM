@@ -5,8 +5,7 @@ import { usePosts } from "@/src/services/post/service";
 import Post from "@/src/models/post";
 import { useEffect, useState } from "react";
 import NotFound from "@/src/components/validate/notFound";
-import { IconButton } from "@material-tailwind/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import React from "react";
 
 export default function Page() {
   const [posts, setPosts] = useState([]);
@@ -16,7 +15,7 @@ export default function Page() {
   const [selectedType, setSelectedType] = useState("");
   const [languages, setLanguages] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState("");
-  const { data, isLoading, isError } = usePosts();
+  const { data, isLoading } = usePosts();
 
   useEffect(() => {
     if (!isLoading) {
@@ -117,14 +116,14 @@ export default function Page() {
     setTypes(uniqueTypes(filteredData));
   };
 
-  const handleClearFilters = () => {
-    setSelectedCategory("");
-    setSelectedType("");
-    setSelectedLanguage("");
-    setCategories(data.categories);
-    setTypes(data.types);
-    setLanguages(data.languages);
-  };
+  // const handleClearFilters = () => {
+  //   setSelectedCategory("");
+  //   setSelectedType("");
+  //   setSelectedLanguage("");
+  //   setCategories(data.categories);
+  //   setTypes(data.types);
+  //   setLanguages(data.languages);
+  // };
 
   return (
     <div className="w-full h-full">
@@ -136,7 +135,6 @@ export default function Page() {
             muted
             className="object-cover w-full h-full"
             src="/videos/datamarket.mp4"
-            typeof="video/mp4"
           ></video>
         </div>
         <div className="absolute inset-0 border-0 bg-gradient-to-tr from-purple-700/80 to-sky-500/80"></div>

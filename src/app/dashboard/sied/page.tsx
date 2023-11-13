@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { useState, useEffect, ChangeEvent } from "react";
 import Sied from "@/src/models/sied";
@@ -43,7 +44,7 @@ export default function Page() {
     },
   ];
 
-  const { data: dataSied, isLoading, isError } = useActiveSieds();
+  const { data: dataSied } = useActiveSieds();
   const [data, setData] = useState<Sied[]>([]);
   const [filteredData, setFilteredData] = useState<Sied[]>([]);
   const [search, setSearch] = useState("");
@@ -144,7 +145,6 @@ export default function Page() {
             muted
             className="object-cover w-full h-full"
             src="/videos/charts.mp4"
-            typeof="video/mp4"
           ></video>
         </div>
         <div className="absolute inset-0 bg-black border-0 opacity-60"></div>

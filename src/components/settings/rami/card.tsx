@@ -2,6 +2,7 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import DeleteButton from "../delete";
 import RamiEditDialog from "./dialogEdit";
+import React from "react";
 
 export default function Card({
   rami,

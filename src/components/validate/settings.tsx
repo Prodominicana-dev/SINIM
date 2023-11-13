@@ -1,5 +1,4 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
-import axios from "axios";
 import Login from "@/src/components/validate/login";
 import { hasAllPermissions } from "@/src/components/dashboard/navbar";
 import Loading from "@/src/components/dashboard/loading";
@@ -8,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { tokenAtom } from "@/src/state/states";
 import { getPermissions } from "@/src/services/auth/service";
+import React from "react";
 
 export default function Settings({
   children,
@@ -20,7 +20,7 @@ export default function Settings({
   const [permissions, setPermissions] = useState<any[]>([]);
   const [hasPermission, setHasPermission] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [token, setToken] = useAtom(tokenAtom);
+  const [token] = useAtom(tokenAtom);
 
   useEffect(() => {
     let permis: any = [];

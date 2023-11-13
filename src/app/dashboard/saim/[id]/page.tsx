@@ -3,9 +3,10 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import Image from "next/image";
 import { useSaim } from "@/src/services/saim/service";
+import React from "react";
 
 export default function Page({ params }: { params: { id: number } }) {
-  const { data, isLoading, isError }: any = useSaim(params.id);
+  const { data }: any = useSaim(params.id);
 
   if (!data) {
     return <div>No existe</div>;
