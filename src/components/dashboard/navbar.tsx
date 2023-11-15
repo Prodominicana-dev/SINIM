@@ -10,13 +10,16 @@ import Suscribe from "../saim/Suscribe/suscribe";
 import { useRouter } from "next/navigation";
 import SiedSubscribe from "../sied/Suscribe/suscribe";
 import React from "react";
+import { useAtom } from "jotai";
+import { datamarketTitleAtom } from "@/src/state/states";
 
 export function NavbarDashboard({ toggleSidebar, openDrawer, openNav }: any) {
+  const [datamarketTitle] = useAtom(datamarketTitleAtom);
   const routes = [
     { path: "rami", title: "RAMI" },
     { path: "saim", title: "ALERTAS COMERCIALES" },
     { path: "sied", title: "ALERTAS DE IED" },
-    { path: "datamarket", title: "Data Market" },
+    { path: "datamarket", title: datamarketTitle },
   ];
   const pathname = usePathname();
   const currentPath = pathname.toLowerCase();

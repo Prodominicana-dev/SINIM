@@ -120,12 +120,24 @@ export function Sidebar({ visible }: any) {
           ? router.push(
               `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/saim`
             )
-          : router.push(
+          : path.includes("rami")
+          ? router.push(
               `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/rami`
+            )
+          : router.push(
+              `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/datamarket`
             )
         : router.push(
             `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/${url}`
           );
+    }
+    if (url === "dashboard") {
+      return router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/`);
+    }
+    if (url === "settings" && isConfig) {
+      return router.push(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/settings/datamarket`
+      );
     }
   }, [isConfig]);
 
