@@ -22,7 +22,7 @@ export default function Card({
   const [deleteOpen, setDeleteOpen] = useState(false);
   const handleDeleteOpen = () => setDeleteOpen(!deleteOpen);
   const deleteCreateNotification = {
-    title: "Datamarketo ocultado",
+    title: "Datamarket ocultado",
     message: "El Datamarket ha sido ocultado exitosamente.",
     color: "green",
   };
@@ -37,7 +37,7 @@ export default function Card({
   const handleActiveOpen = () => setActiveOpen(!deleteOpen);
   const handleActiveClose = () => setActiveOpen(false);
   const activeCreateNotification = {
-    title: "Datamarketo activado",
+    title: "Datamarket activado",
     message: "El Datamarket ha sido activado exitosamente.",
     color: "green",
   };
