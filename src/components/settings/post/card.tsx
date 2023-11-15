@@ -8,9 +8,15 @@ import React from "react";
 export default function Card({
   post,
   updatePosts,
+  categories,
+  types,
+  languages,
 }: {
   post: any;
   updatePosts: () => void;
+  categories: any[];
+  types: any[];
+  languages: any[];
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
@@ -76,6 +82,9 @@ export default function Card({
             open={open}
             handleOpen={handleOpen}
             updatePosts={updatePosts}
+            categories={categories}
+            types={types}
+            languages={languages}
           />
         </>
       ) : null}
