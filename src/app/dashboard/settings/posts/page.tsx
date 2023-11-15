@@ -191,7 +191,16 @@ export default function Page() {
                 <div>Acción</div>
               </div>
               {currentPageData?.map((post: any, key: number) => {
-                return <Card key={key} post={post} updatePosts={updatePosts} />;
+                return (
+                  <Card
+                    key={key}
+                    post={post}
+                    updatePosts={updatePosts}
+                    categories={data?.categories}
+                    types={data?.types}
+                    languages={data?.languages}
+                  />
+                );
               })}
 
               <div className="flex flex-row items-center w-full py-4 space-x-3 sm:justify-end">
@@ -223,6 +232,9 @@ export default function Page() {
             open={open}
             handleOpen={handleOpen}
             updatePosts={updatePosts}
+            categories={data?.categories}
+            types={data?.types}
+            languages={data?.languages}
           />
         </>
       ) : null}

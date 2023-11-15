@@ -23,11 +23,17 @@ export default function PostDialog({
   open,
   handleOpen,
   updatePosts,
+  categories,
+  types,
+  languages,
 }: {
   post?: any;
   open: boolean;
   handleOpen: () => void;
   updatePosts: () => void;
+  categories: any[];
+  types: any[];
+  languages: any[];
 }) {
   const [title, setTitle] = useState(post?.title);
   const [category, setCategory] = useState(post?.category);
@@ -100,7 +106,7 @@ export default function PostDialog({
         </IconButton>
       </DialogHeader>
 
-      <DialogBody className=" justify-center h-[100vh] overflow-y-auto text-black">
+      <DialogBody className=" justify-center h-[100vh] overflow-y-auto no-scrollbar text-black">
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="w-full text-2xl font-bold text-left sm:w-10/12">
             {post ? "Editar Publicación" : "Agregar Publicación"}
@@ -120,7 +126,7 @@ export default function PostDialog({
                 onChange={(e) => setCategory(e)}
                 placeholder="Categoria"
                 defaultValue={post?.category}
-                data={["React", "Angular", "Vue", "Svelte"]}
+                data={categories}
                 styles={{ dropdown: { zIndex: 9999 } }}
               />
             </div>
@@ -131,7 +137,7 @@ export default function PostDialog({
                   onChange={(e) => setType(e)}
                   placeholder="Tipo"
                   defaultValue={post?.type}
-                  data={["React", "Angular", "Vue", "Svelte"]}
+                  data={types}
                   styles={{ dropdown: { zIndex: 9999 } }}
                 />
               </div>
@@ -141,7 +147,7 @@ export default function PostDialog({
                   onChange={(e) => setLanguage(e)}
                   placeholder="Idioma"
                   defaultValue={post?.language}
-                  data={["React", "Angular", "Vue", "Svelte"]}
+                  data={languages}
                   styles={{ dropdown: { zIndex: 9999 } }}
                 />
               </div>

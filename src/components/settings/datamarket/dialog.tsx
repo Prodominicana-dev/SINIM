@@ -90,7 +90,12 @@ export default function DatamarketDialog({
             </datalist>
             <Button
               className="bg-navy"
-              disabled={isLoading}
+              disabled={
+                isLoading ||
+                !datamarketTitle ||
+                !datamarketCategory ||
+                !datamarketUrl
+              }
               onClick={!isLoading ? handleDatamarketSubmit : () => {}}
             >
               {isLoading ? <Spinner /> : datamarket ? "Actualizar" : "Guardar"}
