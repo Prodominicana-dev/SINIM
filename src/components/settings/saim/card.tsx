@@ -178,7 +178,7 @@ export default function SCard({
           handleOpen={handleDeleteOpen}
           update={update}
           title={"¿Estás seguro de eliminar la Alerta Comercial?"}
-          message="La Alerta Comercial será eliminada y podrá ser recuperada."
+          message="La Alerta Comercial será eliminada y no podrá ser recuperada."
           endpoint={`/saim/d/${data.id}`}
           createNotification={deleteCreateNotification}
           errorNotification={deleteErrorNotification}

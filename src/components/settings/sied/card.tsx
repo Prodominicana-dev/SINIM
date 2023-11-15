@@ -168,7 +168,7 @@ export default function SCard({
           handleOpen={handleActiveOpen}
           update={update}
           title={"¿Estás seguro de activar la Alertas de IED?"}
-          message="La Alertas de IED se activará y podrá verla cualquier persona."
+          message="La Alerta de IED se activará y podrá verla cualquier persona."
           endpoint={`/sied/${data.id}`}
           createNotification={activeCreateNotification}
           errorNotification={activeErrorNotification}
@@ -178,7 +178,7 @@ export default function SCard({
           handleOpen={handleDeleteOpen}
           update={update}
           title={"¿Estás seguro de eliminar la Alertas de IED?"}
-          message="La Alertas de IED será eliminada y no podrá ser recuperada."
+          message="La Alerta de IED será eliminada y no podrá ser recuperada."
           endpoint={`/sied/d/${data.id}`}
           createNotification={deleteCreateNotification}
           errorNotification={deleteErrorNotification}
