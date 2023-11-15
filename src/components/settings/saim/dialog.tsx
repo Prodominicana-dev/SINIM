@@ -231,7 +231,7 @@ export default function SaimDialog({
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0.9, y: -100 },
       }}
-      className="flex flex-col h-screen overflow-scroll"
+      className="flex flex-col h-screen"
     >
       <DialogHeader className="justify-end">
         <IconButton
@@ -253,7 +253,7 @@ export default function SaimDialog({
         </IconButton>
       </DialogHeader>
 
-      <DialogBody className=" justify-center h-[100vh] overflow-y-auto">
+      <DialogBody className=" justify-center h-[100vh] overflow-y-auto no-scrollbar">
         <div className="flex justify-center ">
           <div className="w-full sm:w-8/12">
             <div className="w-full text-base text-black">
