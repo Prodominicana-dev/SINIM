@@ -1,10 +1,8 @@
 "use client";
 import { useDataMarket } from "@/src/services/datamarket/service";
 import { datamarketTitleAtom } from "@/src/state/states";
-import { set } from "date-fns";
 import { useAtom } from "jotai";
 import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: { id: number } }) {
   const { data }: any = useDataMarket(params.id);
