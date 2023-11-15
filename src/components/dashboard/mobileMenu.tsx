@@ -335,7 +335,7 @@ export default function MobileMenu({ isOpen, onClose }: any) {
                   </button>
                 </>
               ) : null}
-              <Link
+              <a
                 href={
                   user
                     ? `/api/auth/logout?returnTo=${callbackUrl}`
@@ -344,7 +344,7 @@ export default function MobileMenu({ isOpen, onClose }: any) {
                 className="flex items-center justify-center w-full h-12 p-4 text-white rounded-xl bg-navy"
               >
                 {user ? "Cerrar sesión" : "Iniciar sesión"}
-              </Link>
+              </a>
             </div>
           </List>
         </div>
