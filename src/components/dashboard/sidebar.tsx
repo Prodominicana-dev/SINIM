@@ -19,13 +19,14 @@ import SidebarMenu from "./sidebarMenu";
 import { useDataMarketsCategories } from "@/src/services/datamarket/service";
 import { useRouter, usePathname } from "next/navigation";
 import { useAtom } from "jotai";
-import { tokenAtom } from "@/src/state/states";
+import { datamarketTitleAtom, tokenAtom } from "@/src/state/states";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import axios from "axios";
 import { hasAnyPermission } from "./navbar";
 import React from "react";
 
 export function Sidebar({ visible }: any) {
+  const [, setDatamarketTitle] = useAtom(datamarketTitleAtom);
   const [open, setOpen] = useState(0);
   const { data, isLoading }: any = useDataMarketsCategories();
   const hoverRef = useRef(null);
@@ -98,6 +99,9 @@ export function Sidebar({ visible }: any) {
 
   useEffect(() => {
     const url = path.split("/").pop();
+    if (path.includes("settings") && url === "datamarket") {
+      setDatamarketTitle("DataMarket");
+    }
     if (
       path.includes("settings") &&
       !isConfig &&
