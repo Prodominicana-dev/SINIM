@@ -32,12 +32,12 @@ export default function Modal({ id }: any) {
           desc: data.outputRequirement,
         },
         {
-          label: "Requisitos importacion",
+          label: "Requisitos importación",
           value: "importacion",
           desc: data.importRequirement,
         },
         {
-          label: "Regulaciones tecnicas",
+          label: "Regulaciones técnicas",
           value: "regulaciones",
           desc: data.technicalRequirements,
         },
@@ -91,7 +91,7 @@ export default function Modal({ id }: any) {
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0.9, y: -100 },
       }}
-      className="h-screen overflow-scroll"
+      className="h-screen overflow-scroll no-scrollbar"
     >
       <DialogHeader className="justify-end">
         <IconButton
@@ -103,29 +103,29 @@ export default function Modal({ id }: any) {
           <XMarkIcon className="m-2 w-7" />
         </IconButton>
       </DialogHeader>
-      <DialogBody className="flex justify-center h-[100vm] overflow-y-auto">
+      <DialogBody className="flex justify-center h-[100vm] overflow-y-auto no-scrollbar">
         <div className="w-11/12">
           <div className="flex flex-col items-center justify-between w-full p-5 text-white rounded-lg sm:flex-row sm:h-64 lg:h-96 bg-gradient-to-tr from-purple-700 to-sky-500 sm:rounded-xl lg:rounded-3xl sm:p-8">
-            <div className="flex flex-col justify-center h-full w-full leading-normal sm:w-6/12">
-              <div className="basis-7/12 flex flex-col justify-end">
+            <div className="flex flex-col justify-center w-full h-full leading-normal sm:w-6/12">
+              <div className="flex flex-col justify-end basis-7/12">
                 <div className="text-xs sm:text-sm lg:text-lg">Exporta</div>
                 <div className="text-2xl lg:text-6xl">{data.product.name}</div>
                 <div className="mb-2 text-sm lg:text-lg lg:pt-3 sm:my-0">
                   {data.product.code}
                 </div>
               </div>
-              <div className="flex flex-col space-y-1 sm:space-y-0 p-2 sm:p-0 sm:flex-row sm:space-x-3 self-end absolute sm:relative sm:self-start sm:pt-5">
+              {/* <div className="absolute flex flex-col self-end p-2 space-y-1 sm:space-y-0 sm:p-0 sm:flex-row sm:space-x-3 sm:relative sm:self-start sm:pt-5">
                 <Tooltip content={"Descargar PDF"}>
                   <DownloadPDF ramiData={ramiData} data={data} />
                 </Tooltip>
                 <Tooltip content={"Compartir"}>
-                  <button className="bg-white/25 hover:bg-white/50 duration-300 shadow-lg p-4 lg:p-5 flex w-5 h-5 lg:w-10 lg:h-10 justify-center items-center rounded-full">
+                  <button className="flex items-center justify-center w-5 h-5 p-4 duration-300 rounded-full shadow-lg bg-white/25 hover:bg-white/50 lg:p-5 lg:w-10 lg:h-10">
                     <div>
-                      <ArrowTopRightOnSquareIcon className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
+                      <ArrowTopRightOnSquareIcon className="w-4 h-4 text-white lg:w-5 lg:h-5" />
                     </div>
                   </button>
                 </Tooltip>
-              </div>
+              </div> */}
             </div>
             <div className="flex flex-col justify-between w-full p-3 mt-3 rounded-lg bg-white/25 sm:w-5/12 h-52 sm:h-full sm:p-5">
               <div>

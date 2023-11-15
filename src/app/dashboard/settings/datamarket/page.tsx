@@ -78,7 +78,7 @@ export default function Page() {
       setTotal(res.data?.length);
     });
     //pagination.refetch();
-  }, [refresh, refetch]);
+  }, [refresh]);
 
   const updateDatamarkets = () => {
     setRefresh(!refresh);

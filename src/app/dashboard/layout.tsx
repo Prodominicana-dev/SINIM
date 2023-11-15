@@ -53,12 +53,12 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
   };
 
   useEffect(() => {
-    if (!user) {
+    if (!user && !isLoading) {
       localStorage.setItem("sied", "false");
       localStorage.setItem("saim", "false");
       localStorage.setItem("isConfig", "false");
     }
-  }, [user]);
+  }, [user, isLoading]);
 
   useEffect(() => {
     if (!isLoading) {
