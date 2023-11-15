@@ -48,36 +48,36 @@ export default function SCard({
 
   const hideCreateNotification = {
     title: "Alerta Comercial ocultada",
-    message: "La Alerta Comercial ha sido ocultada exitosamente.",
+    message: "La Alerta de IED ha sido ocultada exitosamente.",
     color: "green",
   };
 
   const hideErrorNotification = {
-    title: "Error ocultando la Alerta Comercial",
+    title: "Error ocultando La Alerta de IED",
     message: "Ha ocurrido un error, intenta nuevamente.",
     color: "red",
   };
 
   const activeCreateNotification = {
     title: "Alerta Comercial activada",
-    message: "La Alerta Comercial ha sido activada exitosamente.",
+    message: "La Alerta de IED ha sido activada exitosamente.",
     color: "green",
   };
 
   const activeErrorNotification = {
-    title: "Error activando la Alerta Comercial",
+    title: "Error activando La Alerta de IED",
     message: "Ha ocurrido un error, intenta nuevamente.",
     color: "red",
   };
 
   const deleteCreateNotification = {
     title: "Alerta Comercial eliminada",
-    message: "La Alerta Comercial ha sido eliminada exitosamente.",
+    message: "La Alerta de IED ha sido eliminada exitosamente.",
     color: "green",
   };
 
   const deleteErrorNotification = {
-    title: "Error eliminando la Alerta Comercial",
+    title: "Error eliminando La Alerta de IED",
     message: "Ha ocurrido un error, intenta nuevamente.",
     color: "red",
   };
@@ -157,8 +157,8 @@ export default function SCard({
           open={hideOpen}
           handleOpen={handleHideOpen}
           update={update}
-          title={"¿Estás seguro de ocultar la Alerta Comercial?"}
-          message="La Alerta Comercial será ocultada, no eliminada."
+          title={"¿Estás seguro de ocultar La Alerta de IED?"}
+          message="La Alerta de IED será ocultada, no eliminada."
           endpoint={`/sied/${data.id}`}
           createNotification={hideCreateNotification}
           errorNotification={hideErrorNotification}
@@ -167,8 +167,8 @@ export default function SCard({
           open={activeOpen}
           handleOpen={handleActiveOpen}
           update={update}
-          title={"¿Estás seguro de activar la Alerta Comercial?"}
-          message="La Alerta Comercial se activará y podrá verla cualquier persona."
+          title={"¿Estás seguro de activar La Alerta de IED?"}
+          message="La Alerta de IED se activará y podrá verla cualquier persona."
           endpoint={`/sied/${data.id}`}
           createNotification={activeCreateNotification}
           errorNotification={activeErrorNotification}
@@ -177,8 +177,8 @@ export default function SCard({
           open={deleteOpen}
           handleOpen={handleDeleteOpen}
           update={update}
-          title={"¿Estás seguro de eliminar la Alerta Comercial?"}
-          message="La Alerta Comercial será eliminada y podrá ser recuperada."
+          title={"¿Estás seguro de eliminar La Alerta de IED?"}
+          message="La Alerta de IED será eliminada y no podrá ser recuperada."
           endpoint={`/sied/d/${data.id}`}
           createNotification={deleteCreateNotification}
           errorNotification={deleteErrorNotification}
