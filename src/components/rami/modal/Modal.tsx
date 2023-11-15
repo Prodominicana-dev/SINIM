@@ -9,15 +9,14 @@ import {
   TabPanel,
   TabsBody,
   TabsHeader,
-  Tooltip,
 } from "@material-tailwind/react";
 import { useCallback, useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRami } from "@/src/services/ramis/service";
-import DownloadPDF from "../downloadPDF";
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+// import DownloadPDF from "../downloadPDF";
+// import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import React from "react";
 
 export default function Modal({ id }: any) {
