@@ -137,7 +137,7 @@ export default function PartnerDialog({
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0.9, y: -100 },
       }}
-      className="flex flex-col sm:h-screen 2xl:h-[90vh] overflow-scroll"
+      className="flex flex-col sm:h-screen 2xl:h-[90vh] "
     >
       <DialogHeader className="justify-end">
         <IconButton
@@ -154,7 +154,7 @@ export default function PartnerDialog({
         </IconButton>
       </DialogHeader>
 
-      <DialogBody className=" justify-center h-[100vh] overflow-y-auto">
+      <DialogBody className=" justify-center h-[100vh] overflow-y-auto no-scrollbar">
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="w-full text-2xl font-bold text-left text-black sm:w-8/12">
             Agregar fuente externa

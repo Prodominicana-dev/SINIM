@@ -13,7 +13,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 export default function Page() {
   const iedFilters = [
     {
-      name: "Todas",
+      name: "Todos",
       title: "¡Explora todas nuestras alertas de IED!",
       description:
         "Bienvenido a la sección de Alertas de Inversión Extranjera Directa (IED), donde los inversores encontrarán información valiosa sobre oportunidades, tendencias, normativas y amenazas en el ámbito de la inversión extranjera.",

@@ -100,12 +100,12 @@ export default function RamiEditDialog({
         editor: outputReq,
       },
       {
-        label: "Requisitos importacion",
+        label: "Requisitos importación",
         value: "importacion",
         editor: importReq,
       },
       {
-        label: "Regulaciones tecnicas",
+        label: "Regulaciones técnicas",
         value: "regulaciones",
         editor: regTecnicas,
       },
@@ -305,7 +305,7 @@ export default function RamiEditDialog({
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0.9, y: -100 },
       }}
-      className="flex flex-col h-screen overflow-scroll "
+      className="flex flex-col h-screen"
     >
       <DialogHeader className="justify-end">
         <IconButton
@@ -320,7 +320,7 @@ export default function RamiEditDialog({
         </IconButton>
       </DialogHeader>
 
-      <DialogBody className=" justify-center h-[100vh] overflow-y-auto font-normal ">
+      <DialogBody className=" justify-center h-[100vh] overflow-y-auto font-normal no-scrollbar">
         <div className="flex justify-center ">
           <div className="flex-col w-full space-y-4 sm:w-11/12">
             <p className="w-full text-3xl font-bold text-black">{title}</p>
