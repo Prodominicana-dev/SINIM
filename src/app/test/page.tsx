@@ -7,7 +7,7 @@ export default function page() {
   return (
     <div className="w-full">
       <section
-        id="sinim"
+        id="sinim-front"
         className="w-full justify-center items-center h-screen  bg-gradient-to-b from-light-blue from-[40%] to-dark-blue flex flex-col sm:pl-5 sm:pt-5 sm:pr-5 pl-3 pt-3 pr-3 space-y-6 sm:space-y-12"
       >
         <div className="flex items-center justify-center w-full md:h-1/6">
@@ -32,6 +32,12 @@ export default function page() {
         </div>
         <div className="w-full h-full bg-white border-t-2 border-l-2 border-r-2 rounded-t-lg sm:w-10/12 ">
           {/* Reemplaza la ruta de la imagen en el src */}
+        </div>
+      </section>
+
+      <section id="sinim" className="flex flex-row w-full h-screen bg-white">
+        <div className="w-6/12 h-full">
+          <Image src={""} alt="imagen" />
         </div>
       </section>
     </div>
