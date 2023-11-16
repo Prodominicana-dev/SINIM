@@ -11,7 +11,7 @@ export default function Home() {
   const sinim = {
     title: "SINIM",
     description:
-      "Bienvenido al Sistema Nacional de Inteligencia de Mercados (SINIM) de ProDominicana, una plataforma integral de subsistemas especializados en comercio internacional e inversión extranjera directa (IED), con el objetivo de impulsar las exportaciones y la atracción de IED en República Dominicana. ",
+      "Bienvenido al Sistema de Inteligencia de Mercados (SINIM) de ProDominicana, una plataforma integral de subsistemas especializados en comercio internacional e inversión extranjera directa (IED), con el objetivo de impulsar las exportaciones y la atracción de IED en República Dominicana.",
     color:
       "bg-gradient-to-br from-45% from-[#062381] via-[#2997F2]/50 to-[#1AD25D]",
     background: "/videos/charts.mp4",
@@ -23,7 +23,7 @@ export default function Home() {
     {
       title: "DATA MARKET",
       description:
-        "¡Desbloquea el potencial con Datamarket! Tu socio en la toma de decisiones empresariales. Descubre oportunidades, explora proyecciones estratégicas, mantente actualizado con las tendencias de consumo y analiza estadísticas valiosas de comercio internacional e inversión extranjera directa.",
+        "Analice datos y estadísticas de comercio internacional e inversión extranjera directa con Data Market. Conozca las tendencias en compras internacionales y las oportunidades para su negocio mediante la inteligencia de mercado.",
       color: "bg-gradient-to-tr from-green-500 from-[30%] to-sky-600/80",
       boxColor: "bg-gradient-to-b from-green-500 to-sky-600",
       fromColor: "green-500",
@@ -31,14 +31,14 @@ export default function Home() {
       background: "/videos/datamarket.mp4",
       icon: "/svg/datamarket/datamarketicon.svg",
       logo: "/svg/datamarket/datamarket.svg",
-      root: "/",
+      root: "/dashboard/datamarket/1",
       gradientPos: "br",
       visible: true,
     },
     {
       title: "RAMI",
       description:
-        "¡Haz que tus exportaciones despeguen! Nuestra plataforma te lleva de la mano a través de los laberintos de regulaciones y requisitos internacionales. Accede a los mercados globales con confianza y desata el potencial oculto de tus productos desde República Dominicana.",
+        "Inicia tus exportaciones explorando la herramienta Requisitos de Acceso a Mercados Internacionales (RAMI). Consulta las medidas, requisitos y regulaciones establecidas por cada país para admitir la entrada y la comercialización de mercancías importadas desde República Dominicana.",
       color: "bg-gradient-to-tr from-[30%] from-orange-500 to-yellow-400/60",
       boxColor: "bg-gradient-to-b from-yellow-400 to-orange-500",
       fromColor: "yellow-400",
@@ -53,7 +53,7 @@ export default function Home() {
     {
       title: "Alertas Comerciales",
       description:
-        "¡Domina el comercio global! Nuestras Alertas comerciales que te mantienen adelante en la competencia, brindándote datos cruciales sobre oportunidades emergentes y obstáculos a evitar. Impulsa tus exportaciones de manera más inteligente.",
+        "Las Alertas Comerciales del SINIM brindan a los exportadores información actualizada sobre oportunidades emergentes y desafíos en el comercio internacional. Impulsa tus exportaciones de manera más inteligente al mantenerte al tanto de las tendencias recientes en el mercado global.",
       color: "bg-gradient-to-tr from-[40%] from-sky-500 to-purple-700/60",
       boxColor: "bg-gradient-to-b from-sky-500 to-purple-700",
       fromColor: "sky-500",
@@ -68,7 +68,7 @@ export default function Home() {
     {
       title: "Alertas de IED",
       description:
-        "¡Conquista el mundo de las inversiones! Nuestro Sistema de Inteligencia de Inversión Extranjera Directa (SIED) te brinda la ventaja competitiva que necesitas. Descubre oportunidades globales, anticipa tendencias y navega por las regulaciones con facilidad para lograr inversiones exitosas.",
+        "Las Alertas de Inversión Extranjera Directa (IED) del SINIM proporcionan información estratégica sobre las últimas novedades en IED, incluyendo oportunidades y tendencias tanto a nivel nacional como internacional. Facilitamos la gestión, promoción y atracción de la IED en República Dominicana.",
       color: "bg-gradient-to-tr from-[40%] from-pink-600 to-violet-800/60",
       boxColor: "bg-gradient-to-b from-pink-600 to-violet-800",
       fromColor: "pink-600",
@@ -76,7 +76,7 @@ export default function Home() {
       background: "/videos/graph.mp4",
       icon: "/svg/sied/siedicon.svg",
       logo: "/svg/sied/sied.svg",
-      root: "/",
+      root: "/dashboard/sied",
       gradientPos: "br",
       visible: true,
     },
@@ -113,7 +113,7 @@ export default function Home() {
           </div>
           <div className="items-center hidden space-x-5 sm:flex">
             <Link href="/dashboard/rami" className="hidden md:block">
-              <div className="px-5 py-2 text-lg text-center duration-500 border-2 border-white rounded-full w-28 hover:shadow-button text-white">
+              <div className="px-5 py-2 text-lg text-center text-white duration-500 border-2 border-white rounded-full w-28 hover:shadow-button">
                 Acceder
               </div>
             </Link>

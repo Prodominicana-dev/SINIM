@@ -7,7 +7,7 @@ export default function NotFound() {
       <Image
         width={300}
         height={300}
-        src="/images/logo/not found.svg"
+        src="/svg/illustrations/not found.svg"
         className="w-full h-52"
         alt="svg"
       />

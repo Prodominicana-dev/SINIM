@@ -11,7 +11,7 @@ export default function Login() {
         <Image
           width={300}
           height={300}
-          src="/images/logo/accessDenied.svg"
+          src="/svg/illustrations/accessDenied.svg"
           className="w-full h-52"
           alt="svg"
         />

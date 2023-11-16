@@ -16,31 +16,31 @@ export default function Page() {
       name: "Todos",
       title: "¡Explora todas nuestras alertas de IED!",
       description:
-        "Bienvenido a la sección de Alertas de Inversión Extranjera Directa (IED), donde los inversores encontrarán información valiosa sobre oportunidades, tendencias, normativas y amenazas en el ámbito de la inversión extranjera.",
+        "Bienvenido a las Alertas de Inversión Extranjera Directa (IED) del SINIM, donde encontrarás información estratégica del panorama nacional e internacional de la IED.",
     },
     {
       name: "Oportunidades",
-      title: "Descubre nuevas oportunidades de inversión",
+      title: "Oportunidades en la atracción de inversión extranjera directa",
       description:
-        "Explora oportunidades emergentes, tendencias y nichos de mercado que pueden impulsar tu inversión extranjera directa.",
-    },
-    {
-      name: "Normativas",
-      title: "Mantente al día con las normativas en IED",
-      description:
-        "Potencia tu conocimiento al mantenerse actualizado sobre regulaciones, políticas y tendencias en el ámbito de la inversión extranjera directa.",
-    },
-    {
-      name: "Amenazas",
-      title: "Identifica amenazas potenciales en la IED",
-      description:
-        "Mantente informado sobre las amenazas potenciales y toma medidas preventivas para asegurar el éxito de tu inversión extranjera directa.",
+        "Señales de inversión, relocalización de empresas extranjeras y proyectos anunciados para República Dominicana o la región, como también planes de expansión de empresas ya instaladas.",
     },
     {
       name: "Tendencias",
-      title: "Explora las tendencias en IED por región",
+      title: "Tendencias internacionales de la IED",
       description:
-        "Accede a información detallada sobre las tendencias de inversión extranjera directa en diferentes regiones del mundo, identificando oportunidades y desafíos emergentes.",
+        "Comportamiento de los proyectos y flujos de inversión extranjera directa a nivel local e internacional.",
+    },
+    {
+      name: "Normativas",
+      title: "Normativas que impactan la IED",
+      description:
+        "Actualizaciones o cambios en el marco legal y administrativo de la inversión extranjera directa.",
+    },
+    {
+      name: "Amenazas",
+      title: "Amenazas potenciales en el contexto global de la IED",
+      description:
+        "Contexto global que pueda perjudicar la entrada o salida de capitales en los diferentes mercados.",
     },
   ];
 

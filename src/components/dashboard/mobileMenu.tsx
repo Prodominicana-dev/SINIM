@@ -163,7 +163,7 @@ export default function MobileMenu({ isOpen, onClose }: any) {
         placement="right"
         className="z-[9999] flex flex-col overflow-y-auto"
       >
-        <div className="flex flex-col items-center justify-between bg-[url('/images/logo/accountLog.jpg')]">
+        <div className="flex flex-col items-center justify-between bg-[url('/images/mobile-menu/accountLog.jpg')]">
           <div className="flex flex-row items-center justify-between w-full px-4 pt-2">
             <Link href={"/"}>
               <Typography variant="h5" color="white">
