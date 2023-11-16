@@ -151,12 +151,7 @@ export function Sidebar({ visible }: any) {
       <div className="h-full overflow-x-hidden overflow-y-auto no-scrollbar">
         <div className="p-4 mb-2 text-white">
           <Link href={"/"}>
-            <Image
-              src={"/svg/sinim.svg"}
-              alt=""
-              width={1920}
-              height={1080}
-            ></Image>
+            <Image src={"/sinim.svg"} alt="" width={1920} height={1080}></Image>
           </Link>
         </div>
         <List
@@ -172,7 +167,7 @@ export function Sidebar({ visible }: any) {
                   ? "/dashboard/settings/datamarket"
                   : "/dashboard/datamarket"
               }
-              iconUrl={"/images/logo/datamarket-white.svg"}
+              iconUrl={"/svg/datamarket/icon2.svg"}
             />
           ) : (
             <Accordion
@@ -193,7 +188,7 @@ export function Sidebar({ visible }: any) {
                 >
                   <ListItemPrefix>
                     <Image
-                      src={"/images/logo/datamarket-white.svg"}
+                      src={"/svg/datamarket/icon2.svg"}
                       width={600}
                       height={600}
                       draggable={false}
@@ -245,17 +240,17 @@ export function Sidebar({ visible }: any) {
           <SidebarItem
             title={"RAMI"}
             url={isConfig ? "/dashboard/settings/rami" : "/dashboard/rami"}
-            iconUrl={"/images/logo/rami-white.svg"}
+            iconUrl={"/svg/rami/icon2.svg"}
           />
           <SidebarItem
             title={"Alertas Comerciales"}
             url={isConfig ? "/dashboard/settings/saim" : "/dashboard/saim"}
-            iconUrl={"/images/logo/saim-white.svg"}
+            iconUrl={"/svg/saim/saim-white.svg"}
           />
           <SidebarItem
             title={"Alertas de IED"}
             url={isConfig ? "/dashboard/settings/sied" : "/dashboard/sied"}
-            iconUrl={"/images/logo/sied-white.svg"}
+            iconUrl={"/svg/sied/sied-white.svg"}
           />
 
           <SidebarItem
@@ -263,20 +258,20 @@ export function Sidebar({ visible }: any) {
             url={
               isConfig ? "/dashboard/settings/partners" : "/dashboard/partners"
             }
-            iconUrl={"/images/logo/sied-white.svg"}
+            iconUrl={"/svg/partner/icon.svg"}
           />
 
           <SidebarItem
             title={"Publicaciones"}
             url={isConfig ? "/dashboard/settings/posts" : "/dashboard/posts"}
-            iconUrl={"/images/logo/sied-white.svg"}
+            iconUrl={"/svg/post/icon.svg"}
           />
           {isConfig ? (
             <>
               <SidebarItem
                 title={"Productos"}
                 url={"/dashboard/settings/products"}
-                iconUrl={"/images/logo/sied-white.svg"}
+                iconUrl={"/svg/product/icon.svg"}
               />
               {/* <SidebarItem
               title={"Usuarios"}
