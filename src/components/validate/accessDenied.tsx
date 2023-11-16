@@ -8,7 +8,7 @@ export default function AccessDenied() {
       <Image
         width={300}
         height={300}
-        src="/images/logo/nopermissions.svg"
+        src="/svg/illustrations/nopermissions.svg"
         className="w-full h-52"
         alt="svg"
       />
