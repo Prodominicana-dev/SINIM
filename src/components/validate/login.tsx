@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
@@ -22,12 +21,12 @@ export default function Login() {
           encontrarás contenido exclusivo y beneficios adicionales solo
           disponibles para nuestros usuarios registrados.
         </div>
-        <Link
+        <a
           href={`/api/auth/login?returnTo=${baseUrl}${pathname}`}
           className="flex items-center justify-center w-56 h-10 text-white rounded-lg shadow-sm bg-navy"
         >
           Iniciar sesión
-        </Link>
+        </a>
       </div>
     </>
   );

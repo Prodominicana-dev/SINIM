@@ -9,7 +9,6 @@ import {
   MenuItem,
   MenuList,
 } from "@material-tailwind/react";
-import Link from "next/link";
 import { ChevronDownIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { usePathname } from "next/navigation";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
@@ -66,12 +65,12 @@ export default function UserProfile() {
   }, [user, token, isLoading]);
   if (!user) {
     return (
-      <Link
+      <a
         href={`/api/auth/login?returnTo=${baseUrl}${pathname}`}
         className="flex items-center justify-center h-12 text-white rounded-lg shadow-sm w-36 bg-navy"
       >
         Iniciar sesión
-      </Link>
+      </a>
     );
   }
 
@@ -105,7 +104,7 @@ export default function UserProfile() {
             {profileMenuItems.map(({ label, icon, link }, key) => {
               const isLastItem = key === profileMenuItems.length - 1;
               return (
-                <Link href={link} key={key}>
+                <a href={link} key={key}>
                   <MenuItem
                     key={label}
                     onClick={closeMenu}
@@ -129,7 +128,7 @@ export default function UserProfile() {
                       {label}
                     </Typography>
                   </MenuItem>
-                </Link>
+                </a>
               );
             })}
           </MenuList>
