@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function page() {
   const movement = (id: string) => {
     const element = document.getElementById(id);
-    element.scrollIntoView({ behavior: "smooth" });
+    element!.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
