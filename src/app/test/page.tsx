@@ -111,13 +111,27 @@ export default function page() {
 
       <section
         id="datamarket"
-        className="flex flex-row w-full h-screen bg-white"
+        className="flex flex-col lg:flex-row w-full h-screen bg-white lg:space-x-40"
       >
-        <div className="w-6/12 h-full"></div>
-        <div className="flex flex-col justify-center w-6/12 h-full ">
+        <div className="w-11/12 sm:w-10/12 lg:w-6/12 h-full flex items-center justify-center">
+          <div className="w-full h-full lg:h-5/6 flex flex-col space-y-5 lg:space-y-10">
+            <div className="flex flex-row space-x-5 lg:space-x-10 h-3/6">
+              <div className="bg-blue-700 rounded-r-2xl w-2/6"></div>
+              <div className="bg-blue-700 rounded-2xl w-4/6 h-4/6 self-end"></div>
+            </div>
+            <div className="flex flex-row h-3/6 space-x-5 lg:space-x-10">
+              <div className="flex flex-col w-full h-full space-y-5 lg:space-y-10">
+                <div className="bg-blue-700 rounded-r-2xl w-full h-2/6"></div>
+                <div className="bg-blue-700 rounded-r-2xl w-full h-4/6"></div>
+              </div>
+              <div className="bg-blue-700 rounded-2xl w-full h-4/6"></div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-center items-center lg:items-start w-full lg:w-6/12 h-full ">
           <div className="w-9/12">
             <div>
-              <p className="font-semibold text-purple">Análisis de datos</p>
+              <p className="font-semibold text-blue-700">Análisis de datos</p>
               <h1 className="text-5xl font-bold text-black">DataMarket</h1>
             </div>
             <p className="w-full py-4 font-normal text-gray-400">
@@ -128,7 +142,7 @@ export default function page() {
             </p>
             <Link
               href={"/dashboard/datamarket/1"}
-              className="flex items-center justify-center h-12 text-sm font-semibold duration-300 border-2 rounded-full w-44 border-purple text-purple hover:shadow-lg"
+              className="flex items-center justify-center h-12 text-sm font-semibold duration-300 border-2 rounded-full w-44 border-blue-700 text-blue-700 hover:shadow-lg"
             >
               <p>Descubre más</p>
             </Link>

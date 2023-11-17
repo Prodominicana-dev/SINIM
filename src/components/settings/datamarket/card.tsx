@@ -2,6 +2,7 @@ import {
   EyeIcon,
   EyeSlashIcon,
   PencilSquareIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Datamarket from "@/src/models/datamarket";
@@ -9,6 +10,7 @@ import DatamarketDialog from "./dialog";
 import HideButton from "../hide";
 import ActiveButton from "../active";
 import React from "react";
+import DeleteButton from "../delete";
 
 export default function Card({
   datamarket,
@@ -19,11 +21,31 @@ export default function Card({
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
+
   const [deleteOpen, setDeleteOpen] = useState(false);
   const handleDeleteOpen = () => setDeleteOpen(!deleteOpen);
-  const deleteCreateNotification = {
+
+  const [activeOpen, setActiveOpen] = useState(false);
+  const handleActiveOpen = () => setActiveOpen(!activeOpen);
+
+  const [hideOpen, setHideOpen] = useState(false);
+  const handleHideOpen = () => setHideOpen(!hideOpen);
+
+  const HideCreateNotification = {
     title: "Datamarket ocultado",
     message: "El Datamarket ha sido ocultado exitosamente.",
+    color: "green",
+  };
+
+  const HideErrorNotification = {
+    title: "Error ocultando el Datamarket",
+    message: "Ha ocurrido un error, intenta nuevamente.",
+    color: "red",
+  };
+
+  const deleteNotification = {
+    title: "Datamarket eliminado",
+    message: "El Datamarket ha sido eliminado exitosamente.",
     color: "green",
   };
 
@@ -33,9 +55,6 @@ export default function Card({
     color: "red",
   };
 
-  const [activeOpen, setActiveOpen] = useState(false);
-  const handleActiveOpen = () => setActiveOpen(!deleteOpen);
-  const handleActiveClose = () => setActiveOpen(false);
   const activeCreateNotification = {
     title: "Datamarket activado",
     message: "El Datamarket ha sido activado exitosamente.",
@@ -75,7 +94,7 @@ export default function Card({
           {datamarket.status === "active" ? (
             <button
               className="flex items-center justify-center text-black bg-white rounded-lg w-14 h-14 ring-1 ring-gray-100"
-              onClick={handleDeleteOpen}
+              onClick={handleHideOpen}
             >
               <EyeSlashIcon className="w-7" />
             </button>
@@ -87,27 +106,43 @@ export default function Card({
               <EyeIcon className="w-7" />
             </button>
           )}
+          <button
+            className="flex items-center justify-center text-black bg-white rounded-lg w-14 h-14 ring-1 ring-gray-100"
+            onClick={handleDeleteOpen}
+          >
+            <TrashIcon className="w-7" />
+          </button>
         </div>
       </div>
       <HideButton
-        open={deleteOpen}
-        handleOpen={handleDeleteOpen}
+        open={hideOpen}
+        handleOpen={handleHideOpen}
         update={updateDatamarkets}
         title={"¿Estás seguro de ocultar este Datamarket?"}
         message="El Datamarket será ocultado y podrá ser activado."
         endpoint={`/datamarket/deactive/${datamarket.id}`}
-        createNotification={deleteCreateNotification}
-        errorNotification={deleteErrorNotification}
+        createNotification={HideCreateNotification}
+        errorNotification={HideErrorNotification}
       />
       <ActiveButton
         open={activeOpen}
-        handleOpen={handleActiveClose}
+        handleOpen={handleActiveOpen}
         update={updateDatamarkets}
         title={"¿Estás seguro de activar este Datamarket?"}
         message="El Datamarket será activado y cualquier persona podría verlo."
         endpoint={`/datamarket/active/${datamarket.id}`}
         createNotification={activeCreateNotification}
         errorNotification={activeErrorNotification}
+      />
+      <DeleteButton
+        open={deleteOpen}
+        handleOpen={handleDeleteOpen}
+        update={updateDatamarkets}
+        title={"¿Estás seguro de eliminar este Datamarket?"}
+        message="El Datamarket será eliminado y no podrá ser recuperado."
+        endpoint={`/datamarket/${datamarket.id}`}
+        createNotification={deleteNotification}
+        errorNotification={deleteErrorNotification}
       />
       {open ? (
         <DatamarketDialog

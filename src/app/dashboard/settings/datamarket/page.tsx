@@ -2,17 +2,24 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import Header from "@/src/components/settings/header";
-import { useAllDataMarkets } from "@/src/services/datamarket/service";
+import {
+  useAllDataMarkets,
+  useDataMarketsCategories,
+} from "@/src/services/datamarket/service";
 import { nfd } from "unorm";
 import Card from "@/src/components/settings/datamarket/card";
 import DatamarketDialog from "@/src/components/settings/datamarket/dialog";
-import Datamarket from "@/src/models/datamarket";
 import Settings from "@/src/components/validate/settings";
 import NotFound from "@/src/components/validate/notFound";
+import { useAtom } from "jotai";
+import { datamarketAtom } from "@/src/state/states";
+import DataMarket from "@/src/models/datamarket";
 
 export default function Page() {
   const { data, refetch } = useAllDataMarkets();
-  const [datamarket, setDatamarket] = useState<Datamarket[]>([]);
+  const { refetch: categoriesRefetch } = useDataMarketsCategories();
+  const [datamarket, setDatamarket] = useState<DataMarket[]>([]);
+  const [, setDatamarketCategories] = useAtom(datamarketAtom);
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
@@ -77,6 +84,10 @@ export default function Page() {
       setDatamarket(res.data);
       setTotal(res.data?.length);
     });
+
+    categoriesRefetch().then((res) => {
+      setDatamarketCategories(res.data);
+    });
     //pagination.refetch();
   }, [refresh]);
 
@@ -125,7 +136,7 @@ export default function Page() {
               <div className="grid items-center justify-between w-full h-24 grid-cols-3 p-5 font-bold text-center bg-white rounded-lg sm:grid-cols-5 ring-2 ring-gray-100">
                 <div className="text-center">Título</div>
                 <div className="hidden sm:block">Url</div>
-                <div className="hidden sm:block">Category</div>
+                <div className="hidden sm:block">Categoría</div>
                 <div>Estado</div>
                 <div>Acción</div>
               </div>

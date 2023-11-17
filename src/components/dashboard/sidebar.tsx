@@ -19,7 +19,11 @@ import SidebarMenu from "./sidebarMenu";
 import { useDataMarketsCategories } from "@/src/services/datamarket/service";
 import { useRouter, usePathname } from "next/navigation";
 import { useAtom } from "jotai";
-import { datamarketTitleAtom, tokenAtom } from "@/src/state/states";
+import {
+  datamarketCategoriesAtom,
+  datamarketTitleAtom,
+  tokenAtom,
+} from "@/src/state/states";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import axios from "axios";
 import { hasAnyPermission } from "./navbar";
@@ -29,6 +33,7 @@ export function Sidebar({ visible }: any) {
   const [, setDatamarketTitle] = useAtom(datamarketTitleAtom);
   const [open, setOpen] = useState(0);
   const { data, isLoading }: any = useDataMarketsCategories();
+  const [categories, setCategories] = useAtom(datamarketCategoriesAtom);
   const hoverRef = useRef(null);
   const isHover = useHover(hoverRef);
   const [isConfig, setIsConfig] = useState(false);
@@ -55,6 +60,10 @@ export function Sidebar({ visible }: any) {
     "delete:datamarket",
     "delete:users",
   ];
+
+  useEffect(() => {
+    setCategories(data);
+  }, [data]);
 
   useEffect(() => {
     let permis: any = [];
@@ -223,7 +232,7 @@ export function Sidebar({ visible }: any) {
               <AccordionBody className="py-1">
                 <List className="p-0 text-white">
                   {!isLoading ? (
-                    data?.map((datamarket: any, key: number) =>
+                    categories?.map((datamarket: any, key: number) =>
                       datamarket.data.length > 1 ? (
                         <SidebarMenu
                           isHover={isHover}
