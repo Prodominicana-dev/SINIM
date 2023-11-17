@@ -63,6 +63,8 @@ export default function SiedDialog({
       editor1?.commands.insertContent(sied.description);
       setTitle(sied.title);
       setCategory(sied.category);
+      setIsPublic(sied.isPublic);
+      setCategory(sied.category);
     }
   }, [sied]);
 
@@ -94,6 +96,11 @@ export default function SiedDialog({
       data.append("file", files[0]);
     }
     if (published) data.append("published", published.toString());
+    const formDataObject: any = {};
+    data.forEach((value, key) => {
+      formDataObject[key] = value;
+    });
+
     if (!sied) {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/sied`,
@@ -141,10 +148,6 @@ export default function SiedDialog({
         loading: false,
       });
       handleOpen();
-      setFiles([]);
-      editor1?.commands.clearContent();
-      setTitle("");
-      // Editar el SAIM editado en el estado
       update();
       setIsLoadin(false);
       return;

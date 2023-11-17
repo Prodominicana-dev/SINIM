@@ -152,12 +152,6 @@ export default function SaimDialog({
       formData.append("published", published.toString());
     }
 
-    const formDataObject: any = {};
-    formData.forEach((value, key) => {
-      formDataObject[key] = value;
-    });
-
-    console.log(formDataObject);
     if (!saim) {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/saim`,
@@ -205,12 +199,6 @@ export default function SaimDialog({
         loading: false,
       });
       handleOpen();
-      setFiles([]);
-      editor1?.commands.clearContent();
-      setTitle("");
-      setSelectedCountries([]);
-      setSelectedProducts([]);
-      // Editar el SAIM editado en el estado
       update();
       setIsLoadin(false);
       return;

@@ -10,8 +10,10 @@ import {
 } from "@/src/services/sied/service";
 import NotFound from "../validate/notFound";
 import React from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function Feed() {
+  const { user, isLoading } = useUser();
   const { fetchNextPage, hasNextPage, data: dataAll } = useActiveSiedsPage();
   const {
     fetchNextPage: fetchNextPagePublic,
@@ -36,7 +38,7 @@ export default function Feed() {
     } else {
       setCanSeeSieds(false);
     }
-  }, []);
+  }, [user, isLoading]);
 
   useEffect(() => {
     if (dataAll && data) {
