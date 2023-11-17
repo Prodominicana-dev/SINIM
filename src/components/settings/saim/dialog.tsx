@@ -48,7 +48,7 @@ export default function SaimDialog({
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [description] = useState<any>("");
   const [title, setTitle] = useState("");
-  const [isPublic, setIsPublic] = useState(false);
+  const [isPublic, setIsPublic] = useState(true);
   const { data: categories, isLoading } = useSaimsCategory();
   const [category, setCategory] = useState<Category | null>(null);
   const { data: productsSelect }: any = useSelectProducts();
@@ -102,6 +102,7 @@ export default function SaimDialog({
       editor1?.commands.insertContent(saim.description);
       setTitle(saim.title);
       setCategory(saim.category);
+      setIsPublic(saim.isPublic);
       const saimCountries = saim.countries?.map((country: any) => {
         return { value: country, label: country.name };
       });
@@ -127,30 +128,40 @@ export default function SaimDialog({
 
   const handleSubmit = async (published?: boolean) => {
     setIsLoadin(true);
-    const products = selectedProducts.map((product: any) => {
-      return product.value;
-    });
-    const countries = selectedCountries.map((country: any) => {
-      return country.value;
-    });
-    const data = new FormData();
-    data.append("title", title);
-    data.append(
+
+    const formData = new FormData();
+
+    const products = selectedProducts.map((product: any) => product.value);
+    const countries = selectedCountries.map((country: any) => country.value);
+
+    formData.append("title", title);
+    formData.append(
       "description",
       editor1?.getHTML() !== undefined ? editor1?.getHTML() : ""
     );
-    data.append("categoryId", category ? category.id.toString() : "");
-    data.append("countries", JSON.stringify(countries));
-    data.append("products", JSON.stringify(products));
-    data.append("isPublic", isPublic ? "true" : "false");
+    formData.append("categoryId", category ? category.id.toString() : "");
+    formData.append("countries", JSON.stringify(countries));
+    formData.append("products", JSON.stringify(products));
+    formData.append("isPublic", isPublic ? "true" : "false");
+
     if (files.length > 0) {
-      data.append("file", files[0]);
+      formData.append("file", files[0]);
     }
-    if (published) data.append("published", published.toString());
+
+    if (published) {
+      formData.append("published", published.toString());
+    }
+
+    const formDataObject: any = {};
+    formData.forEach((value, key) => {
+      formDataObject[key] = value;
+    });
+
+    console.log(formDataObject);
     if (!saim) {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/saim`,
-        data
+        formData
       );
       if (res.status === 200) {
         notifications.show({
@@ -163,11 +174,6 @@ export default function SaimDialog({
           loading: false,
         });
         handleOpen();
-        setFiles([]);
-        editor1?.commands.clearContent();
-        setTitle("");
-        setSelectedCountries([]);
-        setSelectedProducts([]);
         update();
         setIsLoadin(false);
         return;
@@ -186,7 +192,7 @@ export default function SaimDialog({
     }
     const res = await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}/saim/${saim.id}`,
-      data
+      formData
     );
     if (res.status === 200) {
       notifications.show({
@@ -306,7 +312,7 @@ export default function SaimDialog({
                   </Button>
                 </MenuHandler>
                 <MenuList className="w-40 z-[9999]">
-                  <MenuItem onClick={() => setIsPublic(true)}>Publico</MenuItem>
+                  <MenuItem onClick={() => setIsPublic(true)}>Público</MenuItem>
                   <MenuItem onClick={() => setIsPublic(false)}>
                     Privado
                   </MenuItem>

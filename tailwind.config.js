@@ -19,11 +19,13 @@ module.exports = withMT({
       },
       colors: {
         navy: "#062381",
-        purple: "#4C12C4",
+        purpurita: "#4C12C4",
         mint: "#1AD25D",
         "light-blue": "#0B256F",
         "dark-blue": "#040E2C",
         "sky-blue": "rgba(41,151,242, 0.7)",
+        celeste: "#08A5EC",
+        morado: "#783CC8",
       },
       boxShadow: {
         button: "0px 0px 15px 15px rgba(255, 255, 255, 0.3)",

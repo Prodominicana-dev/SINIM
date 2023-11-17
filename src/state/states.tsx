@@ -7,4 +7,6 @@ export const tokenAtom = atom<string | null>(null);
 
 export const userAtom = atom<any>(null);
 
+export const datamarketCategoriesAtom = atom<any>([]);
+
 export const datamarketTitleAtom = atom<any>("");

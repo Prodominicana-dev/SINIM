@@ -40,6 +40,7 @@ export default function SiedDialog({
 }) {
   const [files, setFiles] = useState<FileWithPath[]>([]);
   const [description] = useState<any>("");
+  const [isPublic, setIsPublic] = useState(true);
   const [title, setTitle] = useState("");
   const { data: categories } = useSiedsCategory();
   const [category, setCategory] = useState<Category | null>(null);
@@ -83,6 +84,7 @@ export default function SiedDialog({
     setIsLoadin(true);
     const data = new FormData();
     data.append("title", title);
+    data.append("isPublic", isPublic ? "true" : "false");
     data.append(
       "description",
       editor1?.getHTML() !== undefined ? editor1?.getHTML() : ""
@@ -108,9 +110,6 @@ export default function SiedDialog({
           loading: false,
         });
         handleOpen();
-        setFiles([]);
-        editor1?.commands.clearContent();
-        setTitle("");
         update();
         setIsLoadin(false);
         return;
@@ -231,6 +230,26 @@ export default function SiedDialog({
             />
             <div className="text-xs font-light text-neutral-500">
               {format(Date.now(), "dd MMMM yyyy", { locale: es })}
+            </div>
+
+            <div className="my-3">
+              <Menu placement="bottom-start">
+                <MenuHandler>
+                  <Button
+                    variant="text"
+                    className="flex items-center h-5 p-0 hover:bg-transparent "
+                    ripple={false}
+                  >
+                    {isPublic ? "Público" : "Privado"}
+                  </Button>
+                </MenuHandler>
+                <MenuList className="w-40 z-[9999]">
+                  <MenuItem onClick={() => setIsPublic(true)}>Público</MenuItem>
+                  <MenuItem onClick={() => setIsPublic(false)}>
+                    Privado
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </div>
 
             <div className=" relative w-full h-[32rem] group my-5">
