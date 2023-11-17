@@ -11,7 +11,7 @@ export default function Home() {
   const sinim = {
     title: "SINIM",
     description:
-      "Bienvenido al Sistema de Inteligencia de Mercados (SINIM) de ProDominicana, una plataforma integral de subsistemas especializados en comercio internacional e inversión extranjera directa (IED), con el objetivo de impulsar las exportaciones y la atracción de IED en República Dominicana.",
+      "Bienvenido al Sistema Nacional de Inteligencia de Mercados (SINIM) de ProDominicana, una plataforma integral de subsistemas especializados en comercio internacional e inversión extranjera directa (IED), con el objetivo de impulsar las exportaciones y la atracción de IED en República Dominicana.",
     color:
       "bg-gradient-to-br from-45% from-[#062381] via-[#2997F2]/50 to-[#1AD25D]",
     background: "/videos/charts.mp4",

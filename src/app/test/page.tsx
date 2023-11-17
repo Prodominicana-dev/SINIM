@@ -132,7 +132,7 @@ export default function page() {
 
       <section
         id="datamarket"
-        className="flex flex-col lg:flex-row w-full h-screen bg-white lg:space-x-40"
+        className="flex flex-col lg:flex-row w-full lg:h-screen h-[70rem] bg-white lg:space-x-40"
       >
         <div className="w-11/12 sm:w-10/12 lg:w-6/12 h-full flex items-center justify-center">
           <div className="w-full h-full lg:h-5/6 flex flex-col space-y-5 lg:space-y-10">
