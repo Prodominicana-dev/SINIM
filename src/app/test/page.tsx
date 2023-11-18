@@ -41,7 +41,8 @@ export default function page() {
             Empezar
           </button>
         </div>
-        <div className="w-full h-full bg-white border-t-2 border-l-2 border-r-2 rounded-t-lg sm:w-10/12 ">
+        <div className="w-full h-full bg-gradient-to-tr from-[#764BD6] via-[#378EF3] to-[#37D584] rounded-t-xl sm:w-10/12 pt-2 px-2">
+          <div className="bg-white w-full h-full rounded-t-lg"></div>
           {/* Reemplaza la ruta de la imagen en el src */}
         </div>
       </section>
@@ -183,7 +184,7 @@ export default function page() {
                 Requisitos de Acceso a Mercados Internacionales
               </h1>
             </div>
-            <p className="w-full font-normal text-gray-400">
+            <p className="w-full font-normal text-gray-400 ">
               Inicia tus exportaciones explorando la herramienta Requisitos de
               Acceso a Mercados Internacionales (RAMI). Consulta las medidas,
               requisitos y regulaciones establecidas por cada país para admitir
@@ -192,20 +193,20 @@ export default function page() {
             </p>
             <Link
               href={"/dashboard/rami"}
-              className="flex flex-row items-center h-12 space-x-3 text-sm font-semibold text-white lg:text-base justify-left w-44"
+              className="flex flex-row items-center h-12 space-x-3 text-sm font-semibold text-white lg:text-base hover:text-lg duration-300 justify-left w-2/12 group"
             >
               <p>Empieza</p>
-              <ArrowRightIcon className="w-5 h-5" />
+              <ArrowRightIcon className="w-5 h-5 group-hover:w-6 group-hover:h-6 duration-300" />
             </Link>
           </div>
         </div>
-        <div className="absolute hidden h-full xl:block right-36">
+        <div className="absolute hidden h-full xl:block right-20">
           <Image
             src={"/images/landing/mockupRami.png"}
             alt="rami"
             width={1450}
             height={2936}
-            className="object-cover object-center w-full h-full p-14 text-end"
+            className="object-cover object-center w-full h-full p-36 text-end"
           />
         </div>
       </section>
