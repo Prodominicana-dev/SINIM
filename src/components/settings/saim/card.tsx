@@ -159,7 +159,7 @@ export default function SCard({
           update={update}
           title={"¿Estás seguro de ocultar la Alerta Comercial?"}
           message="La Alerta Comercial será ocultada, no eliminada."
-          endpoint={`/saim/${data.id}`}
+          endpoint={`/saim/disable/${data.id}`}
           createNotification={hideCreateNotification}
           errorNotification={hideErrorNotification}
         />
@@ -169,7 +169,7 @@ export default function SCard({
           update={update}
           title={"¿Estás seguro de activar la Alerta Comercial?"}
           message="La Alerta Comercial se activará y podrá verla cualquier persona."
-          endpoint={`/saim/${data.id}`}
+          endpoint={`/saim/enable/${data.id}`}
           createNotification={activeCreateNotification}
           errorNotification={activeErrorNotification}
         />

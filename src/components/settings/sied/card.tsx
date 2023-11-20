@@ -159,7 +159,7 @@ export default function SCard({
           update={update}
           title={"¿Estás seguro de ocultar la Alertas de IED?"}
           message="La Alertas de IED será ocultada, no eliminada."
-          endpoint={`/sied/${data.id}`}
+          endpoint={`/sied/disable/${data.id}`}
           createNotification={hideCreateNotification}
           errorNotification={hideErrorNotification}
         />
@@ -169,7 +169,7 @@ export default function SCard({
           update={update}
           title={"¿Estás seguro de activar la Alertas de IED?"}
           message="La Alerta de IED se activará y podrá verla cualquier persona."
-          endpoint={`/sied/${data.id}`}
+          endpoint={`/sied/enable/${data.id}`}
           createNotification={activeCreateNotification}
           errorNotification={activeErrorNotification}
         />

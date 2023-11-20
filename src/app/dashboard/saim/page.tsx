@@ -71,14 +71,14 @@ export default function Page() {
 
   useEffect(() => {
     if (!data) return;
-    if (!canSeeSaims) {
+    if (!canSeeSaims && !isUserLoading) {
       const publicData: Saim[] = data
         ?.map((saim: Saim | null) => (saim && saim.isPublic ? saim : null))
         .filter(Boolean) as Saim[];
       return setFilteredData(publicData);
     }
     setFilteredData(data);
-  }, [data, canSeeSaims]);
+  }, [data, canSeeSaims, isUserLoading]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
