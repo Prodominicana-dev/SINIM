@@ -73,14 +73,14 @@ export default function Page() {
 
   useEffect(() => {
     if (!data) return;
-    if (!canSeeSieds) {
+    if (!canSeeSieds && !isUserLoading) {
       const publicData: Sied[] = data
         ?.map((sied: Sied | null) => (sied && sied.isPublic ? sied : null))
         .filter(Boolean) as Sied[];
       return setFilteredData(publicData);
     }
     setFilteredData(data);
-  }, [data, canSeeSieds]);
+  }, [data, canSeeSieds, isUserLoading]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);

@@ -30,30 +30,29 @@ export default function ActiveButton({
   errorNotification: Notificatione;
 }) {
   const handleActive = async () => {
-    const data = {
-      status: "active",
-    };
-    await axios
-      .put(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, data)
-      .then((e) => {
-        if (e.status === 200) {
-          notifications.show({
-            title: createNotification.title,
-            message: createNotification.message,
-            color: createNotification.color,
-            autoClose: 5000,
-          });
-        } else {
-          notifications.show({
-            title: errorNotification.title,
-            message: errorNotification.message,
-            color: errorNotification.color,
-            autoClose: 5000,
-          });
-        }
-        handleOpen();
-        update();
+    const res = await axios.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`
+    );
+    if (res.status === 200) {
+      notifications.show({
+        title: createNotification.title,
+        message: createNotification.message,
+        color: createNotification.color,
+        autoClose: 5000,
       });
+      handleOpen();
+      update();
+      return;
+    }
+    notifications.show({
+      title: errorNotification.title,
+      message: errorNotification.message,
+      color: errorNotification.color,
+      autoClose: 5000,
+    });
+    handleOpen();
+    update();
+    return;
   };
   return (
     <>

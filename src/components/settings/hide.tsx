@@ -29,28 +29,30 @@ export default function HideButton({
   createNotification: Notificatione;
   errorNotification: Notificatione;
 }) {
-  const handleDelete = async () => {
-    await axios
-      .delete(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`)
-      .then((e) => {
-        if (e.status === 200) {
-          notifications.show({
-            title: createNotification.title,
-            message: createNotification.message,
-            color: createNotification.color,
-            autoClose: 5000,
-          });
-        } else {
-          notifications.show({
-            title: errorNotification.title,
-            message: errorNotification.message,
-            color: errorNotification.color,
-            autoClose: 5000,
-          });
-        }
-        handleOpen();
-        update();
+  const handleHide = async () => {
+    const res = await axios.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`
+    );
+    if (res.status === 200) {
+      notifications.show({
+        title: createNotification.title,
+        message: createNotification.message,
+        color: createNotification.color,
+        autoClose: 5000,
       });
+      handleOpen();
+      update();
+      return;
+    }
+    notifications.show({
+      title: errorNotification.title,
+      message: errorNotification.message,
+      color: errorNotification.color,
+      autoClose: 5000,
+    });
+    handleOpen();
+    update();
+    return;
   };
   return (
     <>
@@ -67,7 +69,7 @@ export default function HideButton({
             <div className="flex flex-row w-full space-x-3">
               <button
                 className="w-full h-12 font-thin text-white duration-300 bg-black rounded-lg hover:shadow-lg hover:text-white/80"
-                onClick={handleDelete}
+                onClick={handleHide}
               >
                 Ocultar
               </button>

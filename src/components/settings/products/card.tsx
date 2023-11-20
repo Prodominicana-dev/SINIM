@@ -85,7 +85,7 @@ export default function Card({
         update={updateProducts}
         title={"¿Estás seguro de ocultar este producto?"}
         message="El producto será ocultado y podrá ser activado."
-        endpoint={`/product/${product.id}`}
+        endpoint={`/product/disable/${product.id}`}
         createNotification={deleteCreateNotification}
         errorNotification={deleteErrorNotification}
       />
@@ -95,7 +95,7 @@ export default function Card({
         update={updateProducts}
         title={"¿Estás seguro de activar este producto?"}
         message="El producto será activado y cualquier persona podría verlo."
-        endpoint={`/product/${product.id}`}
+        endpoint={`/product/enable/${product.id}`}
         createNotification={activeCreateNotification}
         errorNotification={activeErrorNotification}
       />
