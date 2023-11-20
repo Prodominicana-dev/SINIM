@@ -1,5 +1,10 @@
 "use client";
-import { datamarketAtom, tokenAtom } from "@/src/state/states";
+import {
+  datamarketAtom,
+  saimAtom,
+  siedAtom,
+  tokenAtom,
+} from "@/src/state/states";
 import { ReactNode, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MantineProvider } from "@mantine/core";
@@ -29,6 +34,8 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [, setDataMarket] = useAtom(datamarketAtom);
   const [, setAuth0Token] = useAtom(tokenAtom);
+  const [, setCanSeeSaims] = useAtom(saimAtom);
+  const [, setCanSeeSieds] = useAtom(siedAtom);
   const [openNav, setOpenNav] = useState(false);
   const { data: datamarket }: any = useDataMarkets();
 
@@ -54,8 +61,8 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
 
   useEffect(() => {
     if (!user && !isLoading) {
-      localStorage.setItem("sied", "false");
-      localStorage.setItem("saim", "false");
+      setCanSeeSieds(false);
+      setCanSeeSaims(false);
       localStorage.setItem("isConfig", "false");
     }
   }, [user, isLoading]);
@@ -87,15 +94,15 @@ function RootLayoutComponent({ children, modal }: RootLayoutProps) {
             email?.includes(domain)
           );
           if (sied) {
-            localStorage.setItem("sied", "true");
+            setCanSeeSieds(true);
           }
           if (saim) {
-            localStorage.setItem("saim", "true");
+            setCanSeeSaims(true);
           }
         }
         if (!user) {
-          localStorage.setItem("sied", "false");
-          localStorage.setItem("saim", "false");
+          setCanSeeSieds(false);
+          setCanSeeSaims(false);
         }
       };
       getToken();

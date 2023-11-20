@@ -9,6 +9,8 @@ import { useActiveSieds } from "@/src/services/sied/service";
 import NotFound from "@/src/components/validate/notFound";
 import { Spinner } from "@material-tailwind/react";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { useAtom } from "jotai";
+import { siedAtom } from "@/src/state/states";
 
 export default function Page() {
   const iedFilters = [
@@ -53,19 +55,9 @@ export default function Page() {
   const [categoryDescription, setCategoryDescription] = useState(
     iedFilters[0].description
   );
-  const { user, isLoading: isUserLoading } = useUser();
+  const { isLoading: isUserLoading } = useUser();
 
-  const [canSeeSieds, setCanSeeSieds] = useState(false);
-  useEffect(() => {
-    if (
-      localStorage.getItem("sied") &&
-      localStorage.getItem("sied") === "true"
-    ) {
-      setCanSeeSieds(true);
-    } else {
-      setCanSeeSieds(false);
-    }
-  }, [user, isUserLoading]);
+  const [canSeeSieds] = useAtom(siedAtom);
 
   useEffect(() => {
     setData(dataSied);
