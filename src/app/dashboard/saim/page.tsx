@@ -9,6 +9,8 @@ import NotFound from "@/src/components/validate/notFound";
 import { Spinner } from "@material-tailwind/react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import React from "react";
+import { useAtom } from "jotai";
+import { saimAtom } from "@/src/state/states";
 
 export default function Page() {
   const saimFilters = [
@@ -52,18 +54,8 @@ export default function Page() {
   const [categoryDescription, setCategoryDescription] = useState(
     saimFilters[0].description
   );
-  const { user, isLoading: isUserLoading } = useUser();
-  const [canSeeSaims, setCanSeeSaims] = useState(false);
-  useEffect(() => {
-    if (
-      localStorage.getItem("saim") &&
-      localStorage.getItem("saim") === "true"
-    ) {
-      setCanSeeSaims(true);
-    } else {
-      setCanSeeSaims(false);
-    }
-  }, [user, isUserLoading]);
+  const { isLoading: isUserLoading } = useUser();
+  const [canSeeSaims] = useAtom(saimAtom);
 
   useEffect(() => {
     setData(dataSaim);

@@ -59,21 +59,19 @@ export default function SiedDialog({
   });
 
   useEffect(() => {
-    if (sied) {
-      editor1?.commands.insertContent(sied.description);
-      setTitle(sied.title);
-      setCategory(sied.category);
-      setIsPublic(sied.isPublic);
-      setCategory(sied.category);
-    }
-  }, [sied]);
-
-  useEffect(() => {
     if (categories) {
       setCategory(categories[0]);
     }
   }, [categories]);
 
+  useEffect(() => {
+    if (sied) {
+      editor1?.commands.insertContent(sied.description);
+      setTitle(sied.title);
+      setCategory(sied.category);
+      setIsPublic(sied.isPublic);
+    }
+  }, [sied]);
   const handleDrop = (acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles);
   };

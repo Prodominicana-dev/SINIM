@@ -11,9 +11,11 @@ import {
 import NotFound from "../validate/notFound";
 import React from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { useAtom } from "jotai";
+import { siedAtom } from "@/src/state/states";
 
 export default function Feed() {
-  const { user, isLoading } = useUser();
+  const { isLoading } = useUser();
   const { fetchNextPage, hasNextPage, data: dataAll } = useActiveSiedsPage();
   const {
     fetchNextPage: fetchNextPagePublic,
@@ -26,27 +28,16 @@ export default function Feed() {
     threshold: 1,
   });
 
-  const [canSeeSieds, setCanSeeSieds] = useState(false);
+  const [canSeeSieds] = useAtom(siedAtom);
   const [filteredData, setFilteredData] = useState<any>([]);
 
   useEffect(() => {
-    if (
-      localStorage.getItem("sied") &&
-      localStorage.getItem("sied") === "true"
-    ) {
-      setCanSeeSieds(true);
-    } else {
-      setCanSeeSieds(false);
-    }
-  }, [user, isLoading]);
-
-  useEffect(() => {
-    if (dataAll && data) {
+    if (dataAll && data && !isLoading) {
       canSeeSieds
         ? setFilteredData(dataAll?.pages.map((page) => page.data).flat())
         : setFilteredData(data?.pages.map((page) => page.data).flat());
     }
-  }, [canSeeSieds, dataAll, data]);
+  }, [canSeeSieds, dataAll, data, isLoading]);
 
   useEffect(() => {
     if (hasNextPage && entry?.isIntersecting) fetchNextPage();

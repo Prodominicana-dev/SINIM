@@ -11,9 +11,12 @@ import {
 import NotFound from "../validate/notFound";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import React from "react";
+import { Spinner } from "@material-tailwind/react";
+import { useAtom } from "jotai";
+import { saimAtom } from "@/src/state/states";
 
 export default function Feed() {
-  const { user, isLoading } = useUser();
+  const { isLoading } = useUser();
   const { fetchNextPage, hasNextPage, data: dataAll } = useActiveSaimsPage();
   const {
     fetchNextPage: fetchNextPagePublic,
@@ -25,27 +28,16 @@ export default function Feed() {
     root: containerRef.current,
     threshold: 1,
   });
-  const [canSeeSaims, setCanSeeSaims] = useState(false);
+  const [canSeeSaims] = useAtom(saimAtom);
   const [filteredData, setFilteredData] = useState<any>([]);
 
   useEffect(() => {
-    if (
-      localStorage.getItem("saim") &&
-      localStorage.getItem("saim") === "true"
-    ) {
-      setCanSeeSaims(true);
-    } else {
-      setCanSeeSaims(false);
-    }
-  }, [user, isLoading]);
-
-  useEffect(() => {
-    if (dataAll && data) {
+    if (dataAll && data && !isLoading) {
       canSeeSaims
         ? setFilteredData(dataAll?.pages.map((page) => page.data).flat())
         : setFilteredData(data?.pages.map((page) => page.data).flat());
     }
-  }, [canSeeSaims, dataAll, data]);
+  }, [canSeeSaims, dataAll, data, isLoading]);
 
   useEffect(() => {
     if (hasNextPage && entry?.isIntersecting) fetchNextPage();
@@ -55,6 +47,7 @@ export default function Feed() {
     if (hasNextPagePublic && entry?.isIntersecting) fetchNextPagePublic();
   }, [entry, fetchNextPagePublic, hasNextPagePublic]);
 
+  if (isLoading) return <Spinner />;
   return (
     <>
       {filteredData?.length === 0 ? (
