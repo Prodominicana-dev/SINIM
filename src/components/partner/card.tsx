@@ -8,7 +8,7 @@ export default function Card({ partner }: { partner: any }) {
   return (
     <>
       <div className="flex flex-col items-center justify-between p-4 space-y-3 rounded-lg shadow-lg w-full h-[30rem]">
-        <div className="flex flex-col items-center justify-center space-y-4">
+        <div className="flex flex-col items-center justify-center w-full space-y-4">
           <Image
             width={1920}
             height={1080}
@@ -17,8 +17,8 @@ export default function Card({ partner }: { partner: any }) {
             className="object-cover w-64 h-56 rounded-lg shadow-md"
           />
           <div className="flex flex-col items-center justify-center w-11/12">
-            <div className="text-2xl font-semibold text-center text-black truncate line-clamp-1">
-              {partner.title}
+            <div className="w-10/12 text-xl font-semibold text-center text-black truncate">
+              <Tooltip content={partner.title}>{partner.title}</Tooltip>
             </div>
             <div className="text-base font-thin text-center text-black truncate line-clamp-1">
               {partner.type === "nacional" ? "Nacional" : "Internacional"}
