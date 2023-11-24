@@ -56,13 +56,13 @@ export default function ProductDialog({
               defaultValue={product?.name || ""}
             />
             <Input
-              label="Codigo"
+              label="Código"
               crossOrigin={""}
               onChange={(e) => setProductCode(e.target.value)}
               defaultValue={product?.code || ""}
             />
             <Button
-              disabled={isLoading}
+              disabled={isLoading || !productName || !productCode}
               className="bg-navy"
               onClick={!isLoading ? handleProductSubmit : () => {}}
             >

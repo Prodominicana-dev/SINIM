@@ -120,8 +120,8 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
 
   return (
     <>
-      <Dialog open={open} handler={handleOpen} size="md">
-        <DialogBody>
+      <Dialog open={open} handler={handleOpen} size="md" className="h-[60vh]">
+        <DialogBody className="h-full overflow-y-auto no-scrollbar">
           <div className="flex flex-col items-center justify-center w-full space-y-4 h-36">
             <Typography className="w-11/12 text-xl font-bold text-center text-black sm:w-10/12 sm:text-2xl md:text-4xl">
               ¡Suscríbete a Nuestras Alertas!
@@ -135,7 +135,7 @@ export default function Suscribe({ open, handleOpen, email }: SuscribeProps) {
             </Typography>
           </div>
           <div className="flex flex-col items-center justify-center w-full space-y-4 h-82">
-            <div className="w-10/12">
+            <div className="w-10/12 h-2/6">
               <Input
                 label="Correo electrónico"
                 disabled
