@@ -28,8 +28,9 @@ export default function page() {
           />
         </div>
         <div className="flex flex-col items-center justify-center w-full space-y-5 md:h-3/6">
-          <h1 className="w-10/12 text-3xl font-black text-center text-white sm:w-7/12 lg:text-5xl ">
-            Forjando Alianzas Globales, Creando Oportunidades Locales
+          <h1 className="w-10/12 text-3xl font-black text-center text-white sm:w-8/12 lg:text-5xl ">
+            Impulsando las exportaciones,
+            <div>promoviendo la inversion extranjera directa</div>
           </h1>
           <p className="w-10/12 font-normal text-center text-white sm:w-8/12">
             Explora todas nuestras herramientas justo aqui
@@ -42,8 +43,18 @@ export default function page() {
           </button>
         </div>
         <div className="w-full h-full bg-gradient-to-tr from-[#764BD6] via-[#378EF3] to-[#37D584] rounded-t-xl sm:w-10/12 pt-2 px-2">
-          <div className="bg-white w-full h-full rounded-t-lg"></div>
-          {/* Reemplaza la ruta de la imagen en el src */}
+          <div className="relative w-full h-full rounded-t-lg">
+            <div className="absolute inset-0 z-0">
+              <video
+                autoPlay
+                loop
+                muted
+                className="w-full h-full object-cover"
+                src="/videos/charts.mp4"
+              ></video>
+            </div>
+            <div className="absolute inset-0 bg-navy/50 border-0"></div>
+          </div>
         </div>
       </section>
 
