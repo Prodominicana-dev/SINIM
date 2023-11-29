@@ -5,13 +5,16 @@ import Image from "next/image";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Card from "@/src/components/landing/saim/card";
+import { Carousel } from "@material-tailwind/react";
 
 export default function page() {
   const movement = (id: string) => {
     const element = document.getElementById(id);
     element!.scrollIntoView({ behavior: "smooth" });
   };
-
+  // Año actual
+  const date = new Date();
+  const year = date.getFullYear();
   return (
     <div className="w-full">
       <section
@@ -49,30 +52,21 @@ export default function page() {
                 autoPlay
                 loop
                 muted
-                className="w-full h-full object-cover"
+                className="object-cover w-full h-full"
                 src="/videos/charts.mp4"
               ></video>
             </div>
-            <div className="absolute inset-0 bg-navy/50 border-0"></div>
+            <div className="absolute inset-0 border-0 bg-navy/50"></div>
           </div>
         </div>
       </section>
 
       <section
         id="sinim"
-        className="flex flex-col w-full h-full py-10 space-y-5 bg-white sm:space-y-0 sm:h-screen sm:flex-row"
+        className="flex flex-col-reverse w-full h-full py-10 bg-white sm:h-screen xl:pl-32 sm:flex-row"
       >
-        <div className="flex items-center justify-center w-full h-full sm:w-6/12">
-          <Image
-            src={"/images/landing/lights.jpg"}
-            alt="imagen"
-            width={2725}
-            height={4096}
-            className="object-cover object-center w-11/12 sm:w-8/12 rounded-[2rem] md:h-3/6 lg:h-4/6 xl:h-5/6"
-          />
-        </div>
         <div className="flex flex-col justify-center w-full h-full sm:w-6/12">
-          <div className="w-9/12">
+          <div className="w-10/12">
             <div>
               <p className="font-semibold text-purpurita">
                 Sistema de Inteligencia de Mercados
@@ -91,6 +85,56 @@ export default function page() {
             >
               Descubre más
             </button>
+          </div>
+        </div>
+        <div className="flex items-center justify-center w-full h-full sm:w-6/12">
+          <Image
+            src={"/images/landing/lights.jpg"}
+            alt="imagen"
+            width={2725}
+            height={4096}
+            className="object-cover object-center w-11/12 sm:w-8/12 rounded-[2rem] md:h-3/6 lg:h-4/6 xl:h-5/6"
+          />
+        </div>
+      </section>
+
+      <section
+        id="datamarket"
+        className="flex flex-col lg:flex-row w-full lg:h-screen h-[70rem] bg-white lg:space-x-40"
+      >
+        <div className="flex items-center justify-center w-11/12 h-full sm:w-10/12 lg:w-6/12">
+          <div className="flex flex-col w-full h-full space-y-5 lg:h-5/6 lg:space-y-10">
+            <div className="flex flex-row space-x-5 lg:space-x-10 h-3/6">
+              <div className="w-2/6 bg-blue-700 rounded-r-2xl"></div>
+              <div className="self-end w-4/6 bg-blue-700 rounded-2xl h-4/6"></div>
+            </div>
+            <div className="flex flex-row space-x-5 h-3/6 lg:space-x-10">
+              <div className="flex flex-col w-full h-full space-y-5 lg:space-y-10">
+                <div className="w-full bg-blue-700 rounded-r-2xl h-2/6"></div>
+                <div className="w-full bg-blue-700 rounded-r-2xl h-4/6"></div>
+              </div>
+              <div className="w-full bg-blue-700 rounded-2xl h-4/6"></div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center w-full h-full lg:items-start lg:w-6/12 ">
+          <div className="w-9/12">
+            <div>
+              <p className="font-semibold text-blue-700">Análisis de datos</p>
+              <h1 className="text-5xl font-bold text-black">DataMarket</h1>
+            </div>
+            <p className="w-full py-4 font-normal text-gray-400">
+              Analice datos y estadísticas de comercio internacional e inversión
+              extranjera directa con Data Market. Conozca las tendencias en
+              compras internacionales y las oportunidades para su negocio
+              mediante la inteligencia de mercado.
+            </p>
+            <Link
+              href={"/dashboard/datamarket/1"}
+              className="flex items-center justify-center h-12 text-sm font-semibold text-blue-700 duration-300 border-2 border-blue-700 rounded-full w-44 hover:shadow-lg"
+            >
+              <p>Descubre más</p>
+            </Link>
           </div>
         </div>
       </section>
@@ -143,42 +187,94 @@ export default function page() {
       </section>
 
       <section
-        id="datamarket"
-        className="flex flex-col lg:flex-row w-full lg:h-screen h-[70rem] bg-white lg:space-x-40"
+        id="sied"
+        className="flex flex-col w-full h-full py-10 space-y-5 bg-white sm:space-y-0 sm:h-screen sm:flex-row"
       >
-        <div className="w-11/12 sm:w-10/12 lg:w-6/12 h-full flex items-center justify-center">
-          <div className="w-full h-full lg:h-5/6 flex flex-col space-y-5 lg:space-y-10">
-            <div className="flex flex-row space-x-5 lg:space-x-10 h-3/6">
-              <div className="bg-blue-700 rounded-r-2xl w-2/6"></div>
-              <div className="bg-blue-700 rounded-2xl w-4/6 h-4/6 self-end"></div>
-            </div>
-            <div className="flex flex-row h-3/6 space-x-5 lg:space-x-10">
-              <div className="flex flex-col w-full h-full space-y-5 lg:space-y-10">
-                <div className="bg-blue-700 rounded-r-2xl w-full h-2/6"></div>
-                <div className="bg-blue-700 rounded-r-2xl w-full h-4/6"></div>
+        <div className="flex items-center justify-center w-full h-full p-8 sm:w-6/12">
+          <Carousel
+            autoplay={true}
+            loop={true}
+            autoplayDelay={5000}
+            className="w-10/12 bg-gradient-to-tr from-sied-purple to-sied-pink rounded-xl h-5/6"
+            navigation={({ setActiveIndex, activeIndex, length }) => (
+              <div className="absolute z-50 flex gap-2 bottom-4 left-2/4 -translate-x-2/4">
+                {new Array(length).fill("").map((_, i) => (
+                  <span
+                    key={i}
+                    className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
+                      activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
+                    }`}
+                    onClick={() => setActiveIndex(i)}
+                  />
+                ))}
               </div>
-              <div className="bg-blue-700 rounded-2xl w-full h-4/6"></div>
+            )}
+          >
+            <div className="flex flex-col items-center justify-center w-full h-full space-y-6">
+              <Image
+                src={`/svg/landing/saim/Increase.svg`}
+                alt={"Oportunidades"}
+                width={74}
+                height={74}
+                className="w-40 h-40"
+              />
+              <div className="text-3xl text-white ">Oportunidades</div>
             </div>
-          </div>
+            <div className="flex flex-col items-center justify-center w-full h-full space-y-6">
+              <Image
+                src={`/svg/landing/saim/Increase.svg`}
+                alt={"Oportunidades"}
+                width={74}
+                height={74}
+                className="w-40 h-40"
+              />
+              <div className="text-3xl text-white ">Tendencias</div>
+            </div>
+            <div className="flex flex-col items-center justify-center w-full h-full space-y-6">
+              <Image
+                src={`/svg/landing/saim/Increase.svg`}
+                alt={"Oportunidades"}
+                width={74}
+                height={74}
+                className="w-40 h-40"
+              />
+              <div className="text-3xl text-white ">Normativas</div>
+            </div>
+            <div className="flex flex-col items-center justify-center w-full h-full space-y-6">
+              <Image
+                src={`/svg/landing/saim/Error.svg`}
+                alt={"Oportunidades"}
+                width={74}
+                height={74}
+                className="w-40 h-40"
+              />
+              <div className="text-3xl text-white ">Amenazas</div>
+            </div>
+          </Carousel>
         </div>
-        <div className="flex flex-col justify-center items-center lg:items-start w-full lg:w-6/12 h-full ">
+        <div className="flex flex-col justify-center w-full h-full sm:w-6/12">
           <div className="w-9/12">
             <div>
-              <p className="font-semibold text-blue-700">Análisis de datos</p>
-              <h1 className="text-5xl font-bold text-black">DataMarket</h1>
+              <p className="font-semibold text-purpurita">Herramienta</p>
+              <h1 className="text-5xl font-bold text-black">Alertas de IED</h1>
             </div>
             <p className="w-full py-4 font-normal text-gray-400">
-              Analice datos y estadísticas de comercio internacional e inversión
-              extranjera directa con Data Market. Conozca las tendencias en
-              compras internacionales y las oportunidades para su negocio
-              mediante la inteligencia de mercado.
+              Las Alertas de Inversión Extranjera Directa (IED) del SINIM
+              proporcionan información estratégica sobre las últimas novedades
+              en IED, incluyendo oportunidades y tendencias tanto a nivel
+              nacional como internacional. Facilitamos la gestión, promoción y
+              atracción de la IED en República Dominicana.
             </p>
-            <Link
-              href={"/dashboard/datamarket/1"}
-              className="flex items-center justify-center h-12 text-sm font-semibold duration-300 border-2 rounded-full w-44 border-blue-700 text-blue-700 hover:shadow-lg"
-            >
-              <p>Descubre más</p>
-            </Link>
+            <div className="flex items-center justify-center h-12 p-[2px] duration-300 rounded-full w-44 hover:shadow-lg bg-gradient-to-r from-celeste to-morado">
+              <Link
+                href={"/dashboard/sied"}
+                className="flex items-center justify-center w-full h-full text-sm font-semibold duration-300 bg-white rounded-full"
+              >
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-celeste to-morado">
+                  Descubre más
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -204,10 +300,10 @@ export default function page() {
             </p>
             <Link
               href={"/dashboard/rami"}
-              className="flex flex-row items-center h-12 space-x-3 text-sm font-semibold text-white lg:text-base hover:text-lg duration-300 justify-left w-2/12 group"
+              className="flex flex-row items-center w-2/12 h-12 space-x-3 text-sm font-semibold text-white duration-300 lg:text-base hover:text-lg justify-left group"
             >
               <p>Empieza</p>
-              <ArrowRightIcon className="w-5 h-5 group-hover:w-6 group-hover:h-6 duration-300" />
+              <ArrowRightIcon className="w-5 h-5 duration-300 group-hover:w-6 group-hover:h-6" />
             </Link>
           </div>
         </div>
@@ -219,6 +315,86 @@ export default function page() {
             height={2936}
             className="object-cover object-center w-full h-full p-36 text-end"
           />
+        </div>
+      </section>
+
+      <section
+        id="footer"
+        className="w-full lg:h-[50vh] bg-gradient-to-r from-dark-blue from-[20%] to-light-blue flex flex-col space-y-8 justify-center items-center p-8"
+      >
+        <div className="flex flex-col w-11/12 space-y-8 sm:space-y-0 sm:flex-row lg:h-5/6">
+          <div className="flex items-center w-full sm:w-6/12 lg:h-full">
+            <Image
+              src={"/sinim.svg"}
+              alt="sinim"
+              width={218}
+              height={87}
+              className="h-24 w-80"
+            />
+          </div>
+          <div className="flex flex-col w-full space-y-8 sm:space-y-0 sm:space-x-8 lg:space-x-16 sm:items-center sm:w-6/12 lg:h-full sm:flex-row">
+            <div className="flex flex-col space-y-3 text-base text-white sm:h-52">
+              <h1 className="font-bold">Herramientas</h1>
+              <Link href={"/dashboard/datamarket/1"}>Datamarket</Link>
+              <Link href={"/dashboard/saim"}>Alertas Comerciales</Link>
+              <Link href={"/dashboard/sied"}>Alertas de IED</Link>
+              <Link href={"/dashboard/rami"}>RAMI</Link>
+            </div>
+            <div className="flex flex-col space-y-3 text-base text-white sm:h-52">
+              <h1 className="font-bold">Recursos</h1>
+              <Link href={"/dashboard/post"}>Publicaciones</Link>
+              <Link href={"/dashboard/partner"}>Fuentes externas</Link>
+              <Link href={"/"}>Manual de usuario</Link>
+            </div>
+            <div className="flex flex-col space-y-3 text-base text-white sm:h-52">
+              <h1 className="font-bold">Legal</h1>
+              <Link href={"/"}>Términos y condiciones</Link>
+              <Link href={"/"}>Políticas de privacidad</Link>
+            </div>
+          </div>
+        </div>
+        <div className="w-11/12 lg:h-1/6 border-t-[1px] border-gray-300 py-4 flex flex-col-reverse sm:flex-row">
+          <div className="flex items-center w-full h-full pt-4 text-xs text-center text-white sm:text-base sm:text-left sm:w-8/12 sm:pt-0">
+            SINIM © {year} ProDominicana. Todos los derechos reservados.
+          </div>
+          <div className="flex justify-center w-full h-full space-x-4 text-white sm:justify-end sm:w-4/12">
+            <Link href={"https://www.instagram.com/prodominicana/"}>
+              <Image
+                src={"/svg/landing/social/instagram.svg"}
+                width={30}
+                height={30}
+                alt="instagram"
+                className="w-8 h-8 "
+              />
+            </Link>
+            <Link href={"https://twitter.com/prodominicana"}>
+              <Image
+                src={"/svg/landing/social/twitter.svg"}
+                width={30}
+                height={30}
+                alt="instagram"
+                className="w-8 h-8 "
+              />
+            </Link>
+            <Link href={"https://www.linkedin.com/company/ceird/"}>
+              <Image
+                src={"/svg/landing/social/linkedin.svg"}
+                width={30}
+                height={30}
+                alt="instagram"
+                className="w-8 h-8 "
+              />
+            </Link>
+            <Link href={"https://www.youtube.com/c/ProDominicana"}>
+              <Image
+                src={"/svg/landing/social/youtube.svg"}
+                width={30}
+                height={30}
+                alt="instagram"
+                className="w-8 h-8 "
+              />
+            </Link>
+          </div>
         </div>
       </section>
     </div>
