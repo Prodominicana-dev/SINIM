@@ -11,6 +11,7 @@ import Country from "@/src/models/country";
 import country from "@/src/models/country";
 import Product from "@/src/models/product";
 import React from "react";
+import Link from "next/link";
 
 export default function Page() {
   const { data: products } = useProducts();
@@ -117,21 +118,21 @@ export default function Page() {
             autoPlay
             loop
             muted
-            className="w-full h-full object-cover"
+            className="object-cover w-full h-full"
             src="/videos/connection.mp4"
           ></video>
         </div>
-        <div className="absolute inset-0 bg-navy/50 border-0"></div>
-        <div className="relative h-full flex flex-col items-center justify-center px-5 sm:px-0 w-full">
-          <div className="sm:w-8/12 lg:w-6/12 xl:w-4/12 text-center text-white text-5xl sm:text-5xl font-bold">
+        <div className="absolute inset-0 border-0 bg-navy/50"></div>
+        <div className="relative flex flex-col items-center justify-center w-full h-full px-5 sm:px-0">
+          <div className="text-5xl font-bold text-center text-white sm:w-8/12 lg:w-6/12 xl:w-4/12 sm:text-5xl">
             ¿Ya sabes qué necesitas para exportar?
           </div>
-          <div className="sm:w-8/12 lg:w-6/12 xl:w-4/12 mt-4 text-center text-white text-sm">
+          <div className="mt-4 text-sm text-center text-white sm:w-8/12 lg:w-6/12 xl:w-4/12">
             Selecciona tu producto y país de destino, y obtén al instante las
             principales prescripciones técnicas y requisitos de acceso para
             exportar.
           </div>
-          <div className="sm:flex my-5 sm:w-8/12 lg:w-6/12 xl:w-5/12 space-y-5 sm:space-y-0 sm:space-x-5">
+          <div className="my-5 space-y-5 sm:flex sm:w-8/12 lg:w-6/12 xl:w-5/12 sm:space-y-0 sm:space-x-5">
             <Select
               className="w-full"
               size="xl"
@@ -169,6 +170,16 @@ export default function Page() {
             >
               <IconSearch />
             </button>
+          </div>
+          <div className="w-full text-xs font-normal text-center text-white sm:w-6/12 sm:p-8">
+            Si desea solicitar la incorporación de un reporte producto - mercado
+            a esta herramienta, puede ponerse en contacto con ProDominicana a
+            través de{" "}
+            <Link href={"mailto:accesoamercado@prodominicana.gob.do"}>
+              <span className="text-blue-400">
+                accesoamercado@prodominicana.gob.do
+              </span>
+            </Link>
           </div>
         </div>
       </div>
