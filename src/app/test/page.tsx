@@ -255,7 +255,11 @@ export default function page() {
         <div className="flex flex-col justify-center w-full h-full sm:w-6/12">
           <div className="w-9/12">
             <div>
-              <p className="font-semibold text-purpurita">Herramienta</p>
+              <p className="font-semibold">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sied-purple to-sied-pink">
+                  Herramienta
+                </span>
+              </p>
               <h1 className="text-5xl font-bold text-black">Alertas de IED</h1>
             </div>
             <p className="w-full py-4 font-normal text-gray-400">
@@ -265,12 +269,12 @@ export default function page() {
               nacional como internacional. Facilitamos la gestión, promoción y
               atracción de la IED en República Dominicana.
             </p>
-            <div className="flex items-center justify-center h-12 p-[2px] duration-300 rounded-full w-44 hover:shadow-lg bg-gradient-to-r from-celeste to-morado">
+            <div className="flex items-center justify-center h-12 p-[2px] duration-300 rounded-full w-44 hover:shadow-lg bg-gradient-to-r from-sied-purple to-sied-pink">
               <Link
                 href={"/dashboard/sied"}
                 className="flex items-center justify-center w-full h-full text-sm font-semibold duration-300 bg-white rounded-full"
               >
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-celeste to-morado">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sied-purple to-sied-pink">
                   Descubre más
                 </span>
               </Link>
