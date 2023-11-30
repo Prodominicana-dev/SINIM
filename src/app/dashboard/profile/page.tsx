@@ -3,13 +3,14 @@ import IsLogged from "@/src/components/validate/logged";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import {
   Avatar,
+  Checkbox,
   Input,
   Option,
   Select,
   Spinner,
   Typography,
 } from "@material-tailwind/react";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { es } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import React from "react";
@@ -24,10 +25,11 @@ import { useAtom } from "jotai";
 import { tokenAtom, userAtom } from "@/src/state/states";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
+import { useCountries } from "@/src/services/countries/service";
 const countryCodes = require("country-codes-list");
 
 export default function Page() {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const [typeDocumentation, setTypeDocumentation] = useState("");
 
   const [createdAt, setCreatedAt] = useState<Date | null>(new Date());
@@ -53,15 +55,25 @@ export default function Page() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [documentation, setDocumentation] = useState("");
+  const [gender, setGender] = useState("");
+  const [coun3, setCoun3] = useState("");
   const [address, setAddress] = useState("");
   const [fullName, setFullName] = useState("");
   const [token] = useAtom(tokenAtom);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [, setGlobalName] = useAtom(userAtom);
+  const [contries, setCountries] = useState([]);
+  const [userType, setUserType] = useState("");
+  const [userInfoType, setUserInfoType] = useState("");
+  const [employeeType, setEmployeeType] = useState("");
+  const [knowUs, setKnowUs] = useState("");
+  const [otherKnowUs, setOtherKnowUs] = useState(false);
+  const [otherKnowUsInfo, setOtherKnowUsInfo] = useState("");
+  const { data } = useCountries();
 
   useEffect(() => {
-    if (user && token) {
+    if (user && token && !isLoading) {
       const url = `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}`;
       const getUserData = async () => {
         const res = await axios.get(url, {
@@ -69,6 +81,7 @@ export default function Page() {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(res.data);
         if (res.data.user_metadata) {
           setAddress(
             res.data.user_metadata.address ? res.data.user_metadata.address : ""
@@ -111,6 +124,14 @@ export default function Page() {
               ? res.data.user_metadata.phone_number.number
               : ""
           );
+          setGender(res.data.user_metadata.gender);
+          setCoun3(res.data.user_metadata.country);
+          setUserType(res.data.user_metadata.userType);
+          setUserInfoType(res.data.user_metadata.userInfoType);
+          setKnowUs(res.data.user_metadata.knowUs);
+          setOtherKnowUsInfo(res.data.user_metadata.otherKnowUsInfo);
+          setOtherKnowUs(res.data.user_metadata.userInfoType ? true : false);
+          setEmployeeType(res.data.user_metadata.employeeType);
         } else {
           setName(res.data.given_name ? res.data.given_name : "");
           setFullName(
@@ -123,17 +144,16 @@ export default function Page() {
           setLastName(res.data.family_name ? res.data.family_name : "");
         }
         setEmail(res.data.email);
-        setCreatedAt(new Date(res.data.updated_at));
+        setCreatedAt(new Date(res.data.created_at));
         setDataLoaded(true);
       };
       getUserData();
     }
-  }, [user, token]);
-
-  useEffect(() => {
-    setFullName(user?.name ? user?.name : `${name} ${lastName}`);
-    setCreatedAt(user?.updated_at ? new Date(user?.updated_at) : new Date());
-  }, [user]);
+    const countries = data?.map((country: any) => {
+      return country.name;
+    });
+    setCountries(countries);
+  }, [user, token, isLoading]);
 
   const handleSubmit = async () => {
     setIsSubmitted(true);
@@ -151,6 +171,13 @@ export default function Page() {
         given_name: name,
         family_name: lastName,
         name: `${name} ${lastName}`,
+        gender,
+        country: coun3,
+        userType,
+        userInfoType,
+        knowUs,
+        otherKnowUsInfo,
+        employeeType,
       },
     };
     let config = {
@@ -166,7 +193,6 @@ export default function Page() {
       data: data,
     };
     const response = await axios.request(config);
-    console.log(response.status);
     if (response.status === 200) {
       console.log(response.data);
       notifications.show({
@@ -326,7 +352,6 @@ export default function Page() {
                   label="Documento"
                   onChange={(e) => {
                     setTypeDocumentation(e ? e : "");
-                    console.log(e);
                   }}
                   value={typeDocumentation}
                 >
@@ -353,13 +378,191 @@ export default function Page() {
               </div>
             </div>
             <div className="flex flex-col w-full space-x-4 sm:flex-row">
-              <div className="w-full">
+              <div className="w-full sm:w-6/12">
+                <Select
+                  label="Género"
+                  onChange={(e) => {
+                    setGender(e ? e : "");
+                  }}
+                  value={gender}
+                >
+                  <Option value="hombre">Hombre</Option>
+                  <Option value="mujer">Mujer</Option>
+                  <Option value="otro">Prefiero no especificarlo</Option>
+                </Select>
+              </div>
+              <div className="w-full sm:w-6/12">
+                <Select
+                  label="País"
+                  onChange={(e) => {
+                    setCoun3(e ? e : "");
+                  }}
+                  value={coun3}
+                >
+                  {contries.map((country) => (
+                    <Option value={country}>{country}</Option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+            <div className="flex flex-col w-full space-x-4 sm:flex-row">
+              <div className="w-full sm:w-6/12">
+                <Select
+                  label="Tipo de usuario"
+                  onChange={(e) => {
+                    setUserType(e ? e : "");
+                  }}
+                  value={userType}
+                >
+                  <Option value="Empleado">Empleado</Option>
+                  <Option value="Emprendedor/Propietario de empresa">
+                    Emprendedor/Propietario de empresa
+                  </Option>
+                  <Option value="Estudiante">Estudiante</Option>
+                  <Option value="profesionalindependiente">
+                    Profesional independiente
+                  </Option>
+                  <Option value="Otro">Otro</Option>
+                </Select>
+              </div>
+              <div
+                className={`${
+                  userType === "Otro" ? "block" : "hidden"
+                } w-full sm:w-6/12`}
+              >
                 <Input
-                  label="Dirección"
-                  type="text"
+                  label="Especifique su trabajo..."
                   crossOrigin={""}
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  value={otherKnowUsInfo}
+                  onChange={(e) => setOtherKnowUsInfo(e.target.value)}
+                />
+              </div>
+              <div
+                className={`${
+                  userType === "Empleado" ? "block" : "hidden"
+                } w-full sm:w-6/12`}
+              >
+                <Select
+                  label="Tipo de empleado"
+                  onChange={(e) => {
+                    setEmployeeType(e ? e : "");
+                  }}
+                  value={employeeType}
+                >
+                  <Option value="publico">Empleado Público</Option>
+                  <Option value="privado">Empleado Privado</Option>
+                </Select>
+              </div>
+            </div>
+            <div className="flex flex-col w-full space-y-5">
+              <div className="w-full font-bold">
+                ¿Cómo conociste la plataforma?
+              </div>
+              <div className="flex flex-row w-full">
+                <div className="flex flex-col w-full sm:w-6/12">
+                  <Checkbox
+                    label={
+                      <div className="font-normal text-black">
+                        Prensa o redes sociales
+                      </div>
+                    }
+                    checked={knowUs.includes("prensa o redes sociales")}
+                    onChange={(e) => {
+                      if (e.target.checked)
+                        return setKnowUs(knowUs + "prensa o redes sociales");
+
+                      setKnowUs(knowUs.replace("prensa o redes sociales", ""));
+                    }}
+                    crossOrigin={""}
+                  />
+                  <Checkbox
+                    label={
+                      <div className="font-normal text-black">Buscador web</div>
+                    }
+                    checked={knowUs.includes("buscador web")}
+                    onChange={(e) => {
+                      if (e.target.checked)
+                        return setKnowUs(knowUs + "buscador web");
+
+                      setKnowUs(knowUs.replace("buscador web", ""));
+                    }}
+                    crossOrigin={""}
+                  />
+                  <Checkbox
+                    label={
+                      <div className="font-normal text-black">
+                        Universidad o institución educativa
+                      </div>
+                    }
+                    checked={knowUs.includes(
+                      "universidad o institución educativa"
+                    )}
+                    onChange={(e) => {
+                      if (e.target.checked)
+                        return setKnowUs(
+                          knowUs + "universidad o institución educativa"
+                        );
+
+                      setKnowUs(
+                        knowUs.replace(
+                          "universidad o institución educativa",
+                          ""
+                        )
+                      );
+                    }}
+                    crossOrigin={""}
+                  />
+                </div>
+                <div className="flex flex-col w-full sm:w-6/12">
+                  <Checkbox
+                    label={
+                      <div className="font-normal text-black">
+                        Entorno laboral
+                      </div>
+                    }
+                    checked={knowUs.includes("entorno laboral")}
+                    onChange={(e) => {
+                      if (e.target.checked)
+                        return setKnowUs(knowUs + "entorno laboral");
+
+                      setKnowUs(knowUs.replace("entorno laboral", ""));
+                    }}
+                    crossOrigin={""}
+                  />
+                  <Checkbox
+                    label={
+                      <div className="font-normal text-black">
+                        Amigos o familiares
+                      </div>
+                    }
+                    checked={knowUs.includes("amigos o familiares")}
+                    onChange={(e) => {
+                      if (e.target.checked)
+                        return setKnowUs(knowUs + "amigos o familiares");
+
+                      setKnowUs(knowUs.replace("amigos o familiares", ""));
+                    }}
+                    crossOrigin={""}
+                  />
+                  <Checkbox
+                    label={<div className="font-normal text-black">Otro</div>}
+                    onChange={(e) => {
+                      if (e.target.checked) return setOtherKnowUs(true);
+
+                      setOtherKnowUs(false);
+                      setUserInfoType("");
+                    }}
+                    checked={otherKnowUs}
+                    crossOrigin={""}
+                  />
+                </div>
+              </div>
+              <div className={`${otherKnowUs ? "block" : "hidden"} w-full `}>
+                <Input
+                  label="Cuéntanos cómo..."
+                  crossOrigin={""}
+                  value={userInfoType}
+                  onChange={(e) => setUserInfoType(e.target.value)}
                 />
               </div>
             </div>
