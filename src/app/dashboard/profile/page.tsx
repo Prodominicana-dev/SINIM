@@ -29,7 +29,7 @@ import { useCountries } from "@/src/services/countries/service";
 const countryCodes = require("country-codes-list");
 
 export default function Page() {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const [typeDocumentation, setTypeDocumentation] = useState("");
 
   const [createdAt, setCreatedAt] = useState<Date | null>(new Date());
@@ -73,7 +73,7 @@ export default function Page() {
   const { data } = useCountries();
 
   useEffect(() => {
-    if (user && token) {
+    if (user && token && !isLoading) {
       const url = `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${user.sub}`;
       const getUserData = async () => {
         const res = await axios.get(url, {
@@ -81,6 +81,7 @@ export default function Page() {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(res.data);
         if (res.data.user_metadata) {
           setAddress(
             res.data.user_metadata.address ? res.data.user_metadata.address : ""
@@ -129,7 +130,7 @@ export default function Page() {
           setUserInfoType(res.data.user_metadata.userInfoType);
           setKnowUs(res.data.user_metadata.knowUs);
           setOtherKnowUsInfo(res.data.user_metadata.otherKnowUsInfo);
-          setOtherKnowUs(res.data.user_metadata.otherKnowUsInfo ? true : false);
+          setOtherKnowUs(res.data.user_metadata.userInfoType ? true : false);
           setEmployeeType(res.data.user_metadata.employeeType);
         } else {
           setName(res.data.given_name ? res.data.given_name : "");
@@ -143,21 +144,16 @@ export default function Page() {
           setLastName(res.data.family_name ? res.data.family_name : "");
         }
         setEmail(res.data.email);
-        setCreatedAt(new Date(res.data.updated_at));
+        setCreatedAt(new Date(res.data.created_at));
         setDataLoaded(true);
       };
       getUserData();
     }
-  }, [user, token]);
-
-  useEffect(() => {
-    setFullName(user?.name ? user?.name : `${name} ${lastName}`);
-    setCreatedAt(user?.updated_at ? new Date(user?.updated_at) : new Date());
     const countries = data?.map((country: any) => {
       return country.name;
     });
     setCountries(countries);
-  }, [user]);
+  }, [user, token, isLoading]);
 
   const handleSubmit = async () => {
     setIsSubmitted(true);
@@ -550,8 +546,11 @@ export default function Page() {
                   />
                   <Checkbox
                     label={<div className="font-normal text-black">Otro</div>}
-                    onChange={() => {
-                      setOtherKnowUs(!otherKnowUs);
+                    onChange={(e) => {
+                      if (e.target.checked) return setOtherKnowUs(true);
+
+                      setOtherKnowUs(false);
+                      setUserInfoType("");
                     }}
                     checked={otherKnowUs}
                     crossOrigin={""}
