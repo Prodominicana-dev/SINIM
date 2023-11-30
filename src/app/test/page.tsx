@@ -6,6 +6,7 @@ import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Card from "@/src/components/landing/saim/card";
 import { Carousel } from "@material-tailwind/react";
+import Slide from "@/src/components/landing/sied/slide";
 
 export default function page() {
   const movement = (id: string) => {
@@ -21,21 +22,21 @@ export default function page() {
         id="sinim-front"
         className="w-full justify-center items-center lg:h-screen  bg-gradient-to-b from-light-blue from-[40%] to-dark-blue flex flex-col sm:pl-5 sm:pt-5 sm:pr-5 pl-3 pt-3 pr-3 space-y-6 sm:space-y-12"
       >
-        <div className="flex items-center justify-center w-full md:h-1/6">
+        <div className="flex items-center justify-center w-full lg:h-1/6">
           <Image
-            src={"/images/logo/sinim.png"}
+            src={"/sinim.svg"}
             alt="logo"
             className="h-16 w-44"
             width={600}
             height={600}
           />
         </div>
-        <div className="flex flex-col items-center justify-center w-full space-y-5 md:h-3/6">
-          <h1 className="w-10/12 text-3xl font-black text-center text-white sm:w-8/12 lg:text-5xl ">
+        <div className="flex flex-col items-center justify-center w-full space-y-5 lg:h-3/6">
+          <h1 className="w-full text-3xl font-black text-center text-white lg:w-10/12 sm:w-8/12 lg:text-5xl ">
             Impulsando las exportaciones,
             <div>promoviendo la inversion extranjera directa</div>
           </h1>
-          <p className="w-10/12 font-normal text-center text-white sm:w-8/12">
+          <p className="w-full font-normal text-center text-white lg:w-10/12 sm:w-8/12">
             Explora todas nuestras herramientas justo aqui
           </p>
           <button
@@ -45,7 +46,7 @@ export default function page() {
             Empezar
           </button>
         </div>
-        <div className="w-full h-full bg-gradient-to-tr from-[#764BD6] via-[#378EF3] to-[#37D584] rounded-t-xl sm:w-10/12 pt-2 px-2">
+        <div className="w-full lg:h-full bg-gradient-to-tr from-[#764BD6] via-[#378EF3] to-[#37D584] rounded-t-xl sm:w-10/12 pt-2 px-2">
           <div className="relative w-full h-full rounded-t-lg">
             <div className="absolute inset-0 z-0">
               <video
@@ -65,13 +66,15 @@ export default function page() {
         id="sinim"
         className="flex flex-col-reverse w-full h-full py-10 bg-white sm:h-screen xl:pl-32 sm:flex-row"
       >
-        <div className="flex flex-col justify-center w-full h-full sm:w-6/12">
+        <div className="flex flex-col items-center justify-center w-full h-full pt-5 sm:pt-0 sm:items-start sm:w-6/12">
           <div className="w-10/12">
             <div>
               <p className="font-semibold text-purpurita">
                 Sistema de Inteligencia de Mercados
               </p>
-              <h1 className="text-5xl font-bold text-black">SINIM</h1>
+              <h1 className="text-4xl font-bold text-black lg:text-5xl">
+                SINIM
+              </h1>
             </div>
             <p className="w-full py-4 font-normal text-gray-400">
               Una plataforma integral que reúne subsistemas especializados en
@@ -80,7 +83,7 @@ export default function page() {
               República Dominicana.
             </p>
             <button
-              onClick={() => movement("saim")}
+              onClick={() => movement("datamarket")}
               className="h-12 text-sm font-semibold border-2 rounded-full w-44 border-purpurita text-purpurita"
             >
               Descubre más
@@ -141,17 +144,17 @@ export default function page() {
 
       <section
         id="saim"
-        className="flex flex-col-reverse w-full h-full py-10 bg-white sm:h-screen xl:pl-32 sm:flex-row"
+        className="flex flex-col-reverse items-center justify-center w-full py-10 bg-white lg:h-screen xl:pl-32 sm:flex-row"
       >
-        <div className="flex flex-col items-center justify-center w-full h-full lg:w-6/12 ">
-          <div className="w-10/12">
+        <div className="flex flex-col items-center justify-center w-full h-full pt-8 sm:pt-0 sm:pl-8 lg:pl-0 sm:items-start lg:w-6/12 ">
+          <div className="w-10/12 sm:w-full lg:w-10/12">
             <div>
               <p className="font-semibold ">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-celeste to-morado">
                   Herramienta
                 </span>
               </p>
-              <h1 className="text-5xl font-bold text-black">
+              <h1 className="text-4xl font-bold text-black lg:text-5xl">
                 Alertas Comerciales
               </h1>
             </div>
@@ -188,14 +191,14 @@ export default function page() {
 
       <section
         id="sied"
-        className="flex flex-col w-full h-full py-10 space-y-5 bg-white sm:space-y-0 sm:h-screen sm:flex-row"
+        className="flex flex-col w-full py-10 space-y-5 bg-white sm:space-y-0 lg:h-screen sm:flex-row"
       >
         <div className="flex items-center justify-center w-full h-full p-8 sm:w-6/12">
           <Carousel
             autoplay={true}
             loop={true}
             autoplayDelay={5000}
-            className="w-10/12 bg-gradient-to-tr from-sied-purple to-sied-pink rounded-xl h-5/6"
+            className="w-full h-72 lg:w-10/12 bg-gradient-to-tr from-sied-purple to-sied-pink rounded-xl lg:h-5/6"
             navigation={({ setActiveIndex, activeIndex, length }) => (
               <div className="absolute z-50 flex gap-2 bottom-4 left-2/4 -translate-x-2/4">
                 {new Array(length).fill("").map((_, i) => (
@@ -210,57 +213,23 @@ export default function page() {
               </div>
             )}
           >
-            <div className="flex flex-col items-center justify-center w-full h-full space-y-6">
-              <Image
-                src={`/svg/landing/saim/Increase.svg`}
-                alt={"Oportunidades"}
-                width={74}
-                height={74}
-                className="w-40 h-40"
-              />
-              <div className="text-3xl text-white ">Oportunidades</div>
-            </div>
-            <div className="flex flex-col items-center justify-center w-full h-full space-y-6">
-              <Image
-                src={`/svg/landing/saim/Increase.svg`}
-                alt={"Oportunidades"}
-                width={74}
-                height={74}
-                className="w-40 h-40"
-              />
-              <div className="text-3xl text-white ">Tendencias</div>
-            </div>
-            <div className="flex flex-col items-center justify-center w-full h-full space-y-6">
-              <Image
-                src={`/svg/landing/saim/Increase.svg`}
-                alt={"Oportunidades"}
-                width={74}
-                height={74}
-                className="w-40 h-40"
-              />
-              <div className="text-3xl text-white ">Normativas</div>
-            </div>
-            <div className="flex flex-col items-center justify-center w-full h-full space-y-6">
-              <Image
-                src={`/svg/landing/saim/Error.svg`}
-                alt={"Oportunidades"}
-                width={74}
-                height={74}
-                className="w-40 h-40"
-              />
-              <div className="text-3xl text-white ">Amenazas</div>
-            </div>
+            <Slide icon={"Increase"} title="Oportunidades" />
+            <Slide icon={"Increase"} title="Tendencias" />
+            <Slide icon={"Increase"} title="Normativas" />
+            <Slide icon={"Error"} title="Amenazas" />
           </Carousel>
         </div>
-        <div className="flex flex-col justify-center w-full h-full sm:w-6/12">
-          <div className="w-9/12">
+        <div className="flex flex-col items-center justify-center w-full h-full sm:w-6/12">
+          <div className="w-10/12 sm:w-9/12">
             <div>
               <p className="font-semibold">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-sied-purple to-sied-pink">
                   Herramienta
                 </span>
               </p>
-              <h1 className="text-5xl font-bold text-black">Alertas de IED</h1>
+              <h1 className="text-4xl font-bold text-black lg:text-5xl">
+                Alertas de IED
+              </h1>
             </div>
             <p className="w-full py-4 font-normal text-gray-400">
               Las Alertas de Inversión Extranjera Directa (IED) del SINIM
@@ -285,9 +254,9 @@ export default function page() {
 
       <section
         id="rami"
-        className="flex items-center justify-center w-full h-full py-10 bg-white sm:h-screen"
+        className="flex items-center justify-center w-full py-10 bg-white lg:h-screen"
       >
-        <div className="flex flex-row w-11/12 h-5/6  lg:w-10/12 p-8 lg:p-16 lg:h-4/6 rounded-2xl bg-gradient-to-r from-dark-blue from-[20%] to-light-blue">
+        <div className="flex flex-row w-11/12 h-[80vh] md:h-3/6 lg:w-10/12 p-8 lg:p-16 lg:h-4/6 rounded-2xl bg-gradient-to-r from-dark-blue from-[20%] to-light-blue">
           <div className="flex flex-col justify-center w-full space-y-3 xl:w-8/12">
             <div>
               <p className="font-semibold text-white">Plataforma</p>
@@ -317,7 +286,52 @@ export default function page() {
             alt="rami"
             width={1450}
             height={2936}
-            className="object-cover object-center w-full h-full p-36 text-end"
+            className="object-cover object-center w-full h-full p-32 text-end"
+          />
+        </div>
+      </section>
+
+      <section
+        id="post"
+        className="flex flex-col-reverse items-center justify-center w-full py-10 bg-white lg:h-screen sm:flex-row xl:pl-32 "
+      >
+        <div className="flex flex-col items-center justify-center w-full h-full pt-8 lg:w-6/12 sm:pt-0">
+          <div className="w-10/12">
+            <div>
+              <p className="font-semibold ">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-celeste to-morado">
+                  Recursos
+                </span>
+              </p>
+              <h1 className="text-4xl font-bold text-black lg:text-5xl">
+                Publicaciones
+              </h1>
+            </div>
+            <p className="w-full py-4 font-normal text-gray-400">
+              Descarga documentos relacionados con inversión y exportación y
+              utiliza nuestros filtros para encontrar exactamente lo que
+              necesitas.
+            </p>
+
+            <div className="flex items-center justify-center h-12 p-[2px] duration-300 rounded-full w-44 hover:shadow-lg bg-gradient-to-r from-celeste to-morado">
+              <Link
+                href={"/dashboard/post"}
+                className="flex items-center justify-center w-full h-full text-sm font-semibold duration-300 bg-white rounded-full"
+              >
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-celeste to-morado">
+                  Descubre más
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-center w-full h-full xl:justify-end lg:w-6/12">
+          <Image
+            src={"/svg/landing/post/publicaciones.svg"}
+            width={600}
+            height={600}
+            alt="publicaciones"
+            className=" object-cover object-center w-10/12 sm:w-10/12 h-[40vh] lg:h-[55vh] xl:h-full rounded-full  xl:rounded-r-none xl:rounded-l-[1300px]"
           />
         </div>
       </section>
