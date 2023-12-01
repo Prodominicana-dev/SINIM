@@ -10,7 +10,7 @@ import {
   Spinner,
   Typography,
 } from "@material-tailwind/react";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import React from "react";
@@ -400,7 +400,9 @@ export default function Page() {
                   value={coun3}
                 >
                   {contries.map((country) => (
-                    <Option value={country}>{country}</Option>
+                    <Option value={country} key={country}>
+                      {country}
+                    </Option>
                   ))}
                 </Select>
               </div>
