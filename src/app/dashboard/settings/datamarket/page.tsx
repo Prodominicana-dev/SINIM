@@ -14,16 +14,19 @@ import NotFound from "@/src/components/validate/notFound";
 import { useAtom } from "jotai";
 import { datamarketAtom } from "@/src/state/states";
 import DataMarket from "@/src/models/datamarket";
+import SortCategory from "@/src/components/settings/datamarket/categoryPriority";
 
 export default function Page() {
   const { data, refetch } = useAllDataMarkets();
   const { refetch: categoriesRefetch } = useDataMarketsCategories();
   const [datamarket, setDatamarket] = useState<DataMarket[]>([]);
-  const [, setDatamarketCategories] = useAtom(datamarketAtom);
+  const [dmcategories, setDatamarketCategories] = useAtom(datamarketAtom);
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const handleCategoryOpen = () => setCategoryOpen(!categoryOpen);
   const [currentPageData, setCurrentPageData] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
   const itemsPerPage = 10;
@@ -33,7 +36,7 @@ export default function Page() {
   const [totalPages, setTotalPages] = useState(
     Math.ceil(data?.length / itemsPerPage)
   );
-
+  console.log(dmcategories);
   const nextPage = () => {
     if (currentPage < datamarket.length / itemsPerPage) {
       setCurrentPage(currentPage + 1);
@@ -114,8 +117,14 @@ export default function Page() {
           </div>
           <div className="flex flex-col justify-end w-full h-full space-y-2 sm:space-y-0 sm:space-x-8 sm:flex-wrap sm:flex-row">
             <button
+              onClick={handleCategoryOpen}
+              className={`text-white w-full sm:w-52 text-center bg-navy h-10 rounded-lg hover:shadow-lg font-semibold duration-300 hover:text-white/80`}
+            >
+              Ordenar Datamarkets
+            </button>
+            <button
               onClick={handleOpen}
-              className={`text-white w-full sm:w-44 text-center bg-navy h-10 rounded-lg hover:shadow-lg font-semibold duration-300 hover:text-white/80`}
+              className={`text-white w-full sm:w-52 text-center bg-navy h-10 rounded-lg hover:shadow-lg font-semibold duration-300 hover:text-white/80`}
             >
               Crear Datamarket
             </button>
@@ -177,6 +186,14 @@ export default function Page() {
           <DatamarketDialog
             open={open}
             handleOpen={handleOpen}
+            updateDatamarkets={updateDatamarkets}
+          />
+        ) : null}
+        {categoryOpen ? (
+          <SortCategory
+            categories={dmcategories}
+            open={categoryOpen}
+            handleOpen={handleCategoryOpen}
             updateDatamarkets={updateDatamarkets}
           />
         ) : null}

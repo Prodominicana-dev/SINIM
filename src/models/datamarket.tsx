@@ -3,5 +3,7 @@ export default interface DataMarket {
   title: string;
   url: string;
   category: string;
+  categoryPriority: number;
+  priority: number;
   status?: string;
 }

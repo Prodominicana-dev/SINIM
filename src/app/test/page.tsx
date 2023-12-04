@@ -337,6 +337,11 @@ export default function page() {
       </section>
 
       <section
+        id="partner"
+        className="flex flex-col w-full h-[60vh] bg-white"
+      ></section>
+
+      <section
         id="footer"
         className="w-full lg:h-[50vh] bg-gradient-to-r from-dark-blue from-[20%] to-light-blue flex flex-col space-y-8 justify-center items-center p-8"
       >
