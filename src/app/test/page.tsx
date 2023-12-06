@@ -11,6 +11,7 @@ import { Carousel } from "@mantine/carousel";
 import "@mantine/carousel/styles.css";
 import { MantineProvider } from "@mantine/core";
 import Autoplay from "embla-carousel-autoplay";
+import Slider from "@/src/components/landing/partner/slider";
 
 export default function page() {
   const movement = (id: string) => {
@@ -21,6 +22,19 @@ export default function page() {
   const date = new Date();
   const year = date.getFullYear();
   const autoplay = useRef(Autoplay({ delay: 3000 }));
+
+  const partners = [
+    "trademap.png",
+    "aduanas.png",
+    "banco central.png",
+    "exportacion.png",
+    "fiatpanis.png",
+    "imf.png",
+    "jad.png",
+    "one.png",
+    "unctad.png",
+    "wto omc.png",
+  ];
   return (
     <MantineProvider>
       <div className="w-full">
@@ -345,7 +359,7 @@ export default function page() {
 
         <section
           id="partner"
-          className="flex flex-col w-full h-[60vh] bg-white  items-center pt-10"
+          className="flex flex-col w-full space-y-8 h-[70vh] bg-white  items-center pt-10"
         >
           <div className="flex flex-col w-10/12">
             <p className="font-semibold ">
@@ -355,7 +369,7 @@ export default function page() {
               Fuentes externas
             </h1>
           </div>
-          <div className="w-full bg-blue-gray-600 ">
+          <div className="flex items-center justify-center w-full ">
             <Carousel
               slideSize={{
                 base: "100%",
@@ -370,61 +384,11 @@ export default function page() {
               plugins={[autoplay.current]}
               onMouseEnter={autoplay.current.stop}
               onMouseLeave={autoplay.current.reset}
+              className="w-10/12 border-2 rounded-xl h-[40vh] border-blue-gray-600/40 flex items-center justify-center"
             >
-              <Carousel.Slide className="flex items-center justify-center w-10/12 h-56 text-black bg-white">
-                <Image
-                  src={"/images/landing/partners/trademap.png"}
-                  width={600}
-                  height={600}
-                  alt="logo"
-                  className="object-cover text-black bg-white w-28 h-28"
-                />
-              </Carousel.Slide>
-              <Carousel.Slide className="flex items-center justify-center w-10/12 h-56 text-black bg-white">
-                <Image
-                  src={"/images/landing/partners/trademap.png"}
-                  width={600}
-                  height={600}
-                  alt="logo"
-                  className="object-cover text-black bg-white w-28 h-28"
-                />
-              </Carousel.Slide>
-              <Carousel.Slide className="flex items-center justify-center w-10/12 h-56 text-black bg-white">
-                <Image
-                  src={"/images/landing/partners/trademap.png"}
-                  width={600}
-                  height={600}
-                  alt="logo"
-                  className="object-cover text-black bg-white w-28 h-28"
-                />
-              </Carousel.Slide>
-              <Carousel.Slide className="flex items-center justify-center w-10/12 h-56 text-black bg-white">
-                <Image
-                  src={"/images/landing/partners/trademap.png"}
-                  width={600}
-                  height={600}
-                  alt="logo"
-                  className="object-cover text-black bg-white w-28 h-28"
-                />
-              </Carousel.Slide>
-              <Carousel.Slide className="flex items-center justify-center w-10/12 h-56 text-black bg-white">
-                <Image
-                  src={"/images/landing/partners/trademap.png"}
-                  width={600}
-                  height={600}
-                  alt="logo"
-                  className="object-cover text-black bg-white w-28 h-28"
-                />
-              </Carousel.Slide>
-              <Carousel.Slide className="flex items-center justify-center w-10/12 h-56 text-black bg-white">
-                <Image
-                  src={"/images/landing/partners/trademap.png"}
-                  width={600}
-                  height={600}
-                  alt="logo"
-                  className="object-cover text-black bg-white w-28 h-28"
-                />
-              </Carousel.Slide>
+              {partners.map((partner, key) => {
+                return <Slider key={key} logo={partner} />;
+              })}
             </Carousel>
           </div>
         </section>
