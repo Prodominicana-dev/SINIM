@@ -6,7 +6,7 @@ import {
   Input,
   Spinner,
 } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Datamarket from "@/src/models/datamarket";
 import {
   createDatamarket,
@@ -14,6 +14,7 @@ import {
   useDataMarketsCategories,
 } from "@/src/services/datamarket/service";
 import React from "react";
+import axios from "axios";
 
 export default function SortCategory({
   categories,
@@ -26,25 +27,29 @@ export default function SortCategory({
   handleOpen: () => void;
   updateDatamarkets: () => void;
 }) {
-  const [datamarketTitle, setDatamarketTitle] = useState<any>();
-  const [datamarketUrl, setDatamarketUrl] = useState<any>();
-  const [datamarketCategory, setDatamarketCategory] = useState();
   const { data } = useDataMarketsCategories();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleDatamarketSubmit = async () => {
-    setIsLoading(true);
-    const data: { [key: string]: any } = {
-      title: datamarketTitle,
-      category: datamarketCategory,
-      url: datamarketUrl,
+  const handleDatamarketSubmit = async (category: string, priority: number) => {
+    const data = {
+      category,
+      categoryPriority: priority,
     };
+    const res = await axios.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/datamarket/update/categories`,
+      data
+    );
+    if (res.status === 200) {
+      updateDatamarkets();
+    }
   };
 
   return (
     <div>
       <Dialog size="md" open={open} handler={handleOpen}>
-        <DialogHeader>{"Ordenar categorías y datamarkets"}</DialogHeader>
+        <DialogHeader className="text-black">
+          {"Ordenar categorías de los DataMarkets"}
+        </DialogHeader>
         <DialogBody>
           <table className="w-full text-left text-black table-auto">
             <thead>
@@ -53,9 +58,6 @@ export default function SortCategory({
               </th>
               <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
                 Prioridad
-              </th>
-              <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                Acción
               </th>
             </thead>
             <tbody>
@@ -66,9 +68,21 @@ export default function SortCategory({
                       {category.category}
                     </td>
                     <td className="p-4 border-b border-blue-gray-100">
-                      <input type="number" id="" min={1} value={1} />
+                      <input
+                        type="number"
+                        className="w-16"
+                        id=""
+                        min={1}
+                        max={categories.length}
+                        defaultValue={category.categoryPriority}
+                        onChange={(e) => {
+                          handleDatamarketSubmit(
+                            category.category,
+                            Number(e.target.value)
+                          );
+                        }}
+                      />
                     </td>
-                    <td className="p-4 border-b border-blue-gray-100"></td>
                   </tr>
                 );
               })}

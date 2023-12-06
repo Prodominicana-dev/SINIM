@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Card from "@/src/components/landing/saim/card";
-// import { Carousel } from "@material-tailwind/react";
+import { Carousel as Carrusel } from "@material-tailwind/react";
 import Slide from "@/src/components/landing/sied/slide";
 import { Carousel } from "@mantine/carousel";
 import "@mantine/carousel/styles.css";
@@ -24,16 +24,17 @@ export default function page() {
   const autoplay = useRef(Autoplay({ delay: 3000 }));
 
   const partners = [
-    "trademap.png",
-    "aduanas.png",
-    "banco central.png",
-    "exportacion.png",
-    "fiatpanis.png",
-    "imf.png",
-    "jad.png",
-    "one.png",
-    "unctad.png",
-    "wto omc.png",
+    "/svg/landing/partners/atlas.svg",
+    "/svg/landing/partners/bancocentral.svg",
+    "/svg/landing/partners/dga.svg",
+    "/svg/landing/partners/fiatpanis.svg",
+    "/svg/landing/partners/jad.svg",
+    "/svg/landing/partners/one.svg",
+    "/images/landing/partners/trademap.png",
+    "/images/landing/partners/exportacion.png",
+    "/images/landing/partners/imf.png",
+    "/images/landing/partners/unctad.png",
+    "/images/landing/partners/wto omc.png",
   ];
   return (
     <MantineProvider>
@@ -112,7 +113,7 @@ export default function page() {
           </div>
           <div className="flex items-center justify-center w-full h-full sm:w-6/12">
             <Image
-              src={"/images/landing/lights.jpg"}
+              src={"/images/landing/graphics.png"}
               alt="imagen"
               width={2725}
               height={4096}
@@ -215,30 +216,30 @@ export default function page() {
           className="flex flex-col w-full py-10 space-y-5 bg-white sm:space-y-0 lg:h-screen sm:flex-row"
         >
           <div className="flex items-center justify-center w-full h-full p-8 sm:w-6/12">
-            {/* <Carousel
-            autoplay={true}
-            loop={true}
-            autoplayDelay={5000}
-            className="w-full h-72 lg:w-10/12 bg-gradient-to-tr from-sied-purple to-sied-pink rounded-xl lg:h-5/6"
-            navigation={({ setActiveIndex, activeIndex, length }) => (
-              <div className="absolute z-50 flex gap-2 bottom-4 left-2/4 -translate-x-2/4">
-                {new Array(length).fill("").map((_, i) => (
-                  <span
-                    key={i}
-                    className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
-                      activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
-                    }`}
-                    onClick={() => setActiveIndex(i)}
-                  />
-                ))}
-              </div>
-            )}
-          >
-            <Slide icon={"Increase"} title="Oportunidades" />
-            <Slide icon={"Increase"} title="Tendencias" />
-            <Slide icon={"Increase"} title="Normativas" />
-            <Slide icon={"Error"} title="Amenazas" />
-          </Carousel> */}
+            <Carrusel
+              autoplay={true}
+              loop={true}
+              autoplayDelay={5000}
+              className="w-full h-72 lg:w-10/12 bg-gradient-to-tr from-sied-purple to-sied-pink rounded-xl lg:h-5/6"
+              navigation={({ setActiveIndex, activeIndex, length }) => (
+                <div className="absolute z-50 flex gap-2 bottom-4 left-2/4 -translate-x-2/4">
+                  {new Array(length).fill("").map((_, i) => (
+                    <span
+                      key={i}
+                      className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
+                        activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
+                      }`}
+                      onClick={() => setActiveIndex(i)}
+                    />
+                  ))}
+                </div>
+              )}
+            >
+              <Slide icon={"Increase"} title="Oportunidades" />
+              <Slide icon={"Increase"} title="Tendencias" />
+              <Slide icon={"Increase"} title="Normativas" />
+              <Slide icon={"Error"} title="Amenazas" />
+            </Carrusel>
           </div>
           <div className="flex flex-col items-center justify-center w-full h-full sm:w-6/12">
             <div className="w-10/12 sm:w-9/12">
@@ -375,7 +376,7 @@ export default function page() {
                 base: "100%",
                 sm: "50%",
                 md: "33.333333%",
-                lg: "25%",
+                lg: "20%",
               }}
               slideGap={{ base: 0, sm: "md" }}
               loop
@@ -384,7 +385,7 @@ export default function page() {
               plugins={[autoplay.current]}
               onMouseEnter={autoplay.current.stop}
               onMouseLeave={autoplay.current.reset}
-              className="w-10/12 border-2 rounded-xl h-[40vh] border-blue-gray-600/40 flex items-center justify-center"
+              className="w-10/12 border-2 rounded-xl h-[30vh] border-blue-gray-600/40 flex items-center justify-center "
             >
               {partners.map((partner, key) => {
                 return <Slider key={key} logo={partner} />;
@@ -457,7 +458,7 @@ export default function page() {
                   width={30}
                   height={30}
                   alt="instagram"
-                  className="w-8 h-8 "
+                  className="w-8 h-8"
                 />
               </Link>
               <Link href={"https://www.youtube.com/c/ProDominicana"}>

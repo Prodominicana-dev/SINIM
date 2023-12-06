@@ -5,6 +5,7 @@ import Header from "@/src/components/settings/header";
 import {
   useAllDataMarkets,
   useDataMarketsCategories,
+  useOnlyCategories,
 } from "@/src/services/datamarket/service";
 import { nfd } from "unorm";
 import Card from "@/src/components/settings/datamarket/card";
@@ -18,9 +19,9 @@ import SortCategory from "@/src/components/settings/datamarket/categoryPriority"
 
 export default function Page() {
   const { data, refetch } = useAllDataMarkets();
-  const { refetch: categoriesRefetch } = useDataMarketsCategories();
   const [datamarket, setDatamarket] = useState<DataMarket[]>([]);
-  const [dmcategories, setDatamarketCategories] = useAtom(datamarketAtom);
+  const { data: categories, refetch: categoriesRefetch } = useOnlyCategories();
+  const { refetch: sidebarCategoriesRefetch }: any = useDataMarketsCategories();
   const [refresh, setRefresh] = useState(false);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
@@ -36,7 +37,7 @@ export default function Page() {
   const [totalPages, setTotalPages] = useState(
     Math.ceil(data?.length / itemsPerPage)
   );
-  console.log(dmcategories);
+
   const nextPage = () => {
     if (currentPage < datamarket.length / itemsPerPage) {
       setCurrentPage(currentPage + 1);
@@ -88,9 +89,8 @@ export default function Page() {
       setTotal(res.data?.length);
     });
 
-    categoriesRefetch().then((res) => {
-      setDatamarketCategories(res.data);
-    });
+    categoriesRefetch();
+    sidebarCategoriesRefetch();
     //pagination.refetch();
   }, [refresh]);
 
@@ -191,7 +191,7 @@ export default function Page() {
         ) : null}
         {categoryOpen ? (
           <SortCategory
-            categories={dmcategories}
+            categories={categories}
             open={categoryOpen}
             handleOpen={handleCategoryOpen}
             updateDatamarkets={updateDatamarkets}

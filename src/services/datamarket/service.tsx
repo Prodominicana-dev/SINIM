@@ -80,6 +80,17 @@ export function updateDatamarket({
     });
 }
 
+export function useOnlyCategories() {
+  return useQuery({
+    queryKey: ["onlyCategories"],
+    queryFn: async () => {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/datamarket/only/category`;
+      const { data } = await axios.get(url);
+      return data;
+    },
+  });
+}
+
 export function useDataMarkets() {
   return useQuery({
     queryKey: ["datamarkets"],
