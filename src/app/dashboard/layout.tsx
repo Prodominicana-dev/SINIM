@@ -7,7 +7,6 @@ import {
 } from "@/src/state/states";
 import { ReactNode, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { Sidebar } from "@/src/components/dashboard/sidebar";
 import { NavbarDashboard } from "@/src/components/dashboard/navbar";
@@ -22,6 +21,7 @@ import { setCookie } from "typescript-cookie";
 import { generateToken, getDomains } from "@/src/services/auth/service";
 import React from "react";
 import { Provider } from "jotai";
+import { MantineProvider } from "@mantine/core";
 
 interface RootLayoutProps {
   children: ReactNode;
