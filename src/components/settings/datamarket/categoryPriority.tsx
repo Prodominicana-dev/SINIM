@@ -1,18 +1,4 @@
-import {
-  Button,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  Input,
-  Spinner,
-} from "@material-tailwind/react";
-import { useEffect, useState } from "react";
-import Datamarket from "@/src/models/datamarket";
-import {
-  createDatamarket,
-  updateDatamarket,
-  useDataMarketsCategories,
-} from "@/src/services/datamarket/service";
+import { Dialog, DialogHeader, DialogBody } from "@material-tailwind/react";
 import React from "react";
 import axios from "axios";
 
@@ -27,9 +13,6 @@ export default function SortCategory({
   handleOpen: () => void;
   updateDatamarkets: () => void;
 }) {
-  const { data } = useDataMarketsCategories();
-  const [isLoading, setIsLoading] = useState(false);
-
   const handleDatamarketSubmit = async (category: string, priority: number) => {
     const data = {
       category,
@@ -70,7 +53,7 @@ export default function SortCategory({
                     <td className="p-4 border-b border-blue-gray-100">
                       <input
                         type="number"
-                        className="w-16"
+                        className="w-16 text-center"
                         id=""
                         min={1}
                         max={categories.length}

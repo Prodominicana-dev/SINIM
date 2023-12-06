@@ -12,8 +12,6 @@ import Card from "@/src/components/settings/datamarket/card";
 import DatamarketDialog from "@/src/components/settings/datamarket/dialog";
 import Settings from "@/src/components/validate/settings";
 import NotFound from "@/src/components/validate/notFound";
-import { useAtom } from "jotai";
-import { datamarketAtom } from "@/src/state/states";
 import DataMarket from "@/src/models/datamarket";
 import SortCategory from "@/src/components/settings/datamarket/categoryPriority";
 
