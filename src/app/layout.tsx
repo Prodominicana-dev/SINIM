@@ -1,5 +1,6 @@
 import "./globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { MantineProvider } from "@mantine/core";
 import { ReactNode } from "react";
 import React from "react";
 
