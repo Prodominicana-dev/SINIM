@@ -166,6 +166,11 @@ export default function SaimDialog({
         handleOpen();
         update();
         setIsLoadin(false);
+        setFiles([]);
+        editor1?.commands.clearContent();
+        setTitle("");
+        setSelectedCountries([]);
+        setSelectedProducts([]);
         return;
       }
       notifications.show({
@@ -197,6 +202,11 @@ export default function SaimDialog({
       handleOpen();
       update();
       setIsLoadin(false);
+      setFiles([]);
+      editor1?.commands.clearContent();
+      setTitle("");
+      setSelectedCountries([]);
+      setSelectedProducts([]);
       return;
     }
     notifications.show({
