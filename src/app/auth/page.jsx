@@ -14,7 +14,7 @@ export default function Page() {
         <div className="w-6/12 h-full ml-auto flex flex-col justify-center items-center">
           <div className="w-full flex justify-center ">
             <Image
-              src={"/images/logo/sinim.png"}
+              src={"/images/logo/sinim-white.png"}
               width={500}
               height={500}
               draggable={false}
