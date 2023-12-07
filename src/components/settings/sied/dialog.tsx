@@ -117,6 +117,9 @@ export default function SiedDialog({
         handleOpen();
         update();
         setIsLoadin(false);
+        setTitle("");
+        setFiles([]);
+        editor1?.commands.clearContent();
         return;
       }
       notifications.show({
@@ -148,6 +151,9 @@ export default function SiedDialog({
       handleOpen();
       update();
       setIsLoadin(false);
+      setTitle("");
+      setFiles([]);
+      editor1?.commands.clearContent();
       return;
     }
     notifications.show({
