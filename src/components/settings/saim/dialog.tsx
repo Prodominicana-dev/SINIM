@@ -108,11 +108,7 @@ export default function SaimDialog({
       });
       setSelectedCountries(saimCountries);
       const saimProducts = saim.products?.map((product: any) => {
-        const val = {
-          name: product.name,
-          code: product.code,
-        };
-        return { value: val, label: `${product.name} - ${product.code}` };
+        return { value: product, label: `${product.name} - ${product.code}` };
       });
       setSelectedProducts(saimProducts);
     }
