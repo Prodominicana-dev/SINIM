@@ -367,8 +367,8 @@ export default function page() {
               </div>
               <div className="flex flex-col space-y-3 text-base text-white sm:h-52">
                 <h1 className="font-bold">Recursos</h1>
-                <Link href={"/dashboard/post"}>Publicaciones</Link>
-                <Link href={"/dashboard/partner"}>Fuentes externas</Link>
+                <Link href={"/dashboard/posts"}>Publicaciones</Link>
+                <Link href={"/dashboard/partners"}>Fuentes externas</Link>
                 <Link href={"/"}>Manual de usuario</Link>
               </div>
               <div className="flex flex-col space-y-3 text-base text-white sm:h-52">
