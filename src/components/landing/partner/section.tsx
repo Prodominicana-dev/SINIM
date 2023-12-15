@@ -10,15 +10,19 @@ export default function Partners() {
   const partners = [
     "/svg/landing/partners/atlas.svg",
     "/svg/landing/partners/bancocentral.svg",
+    "/svg/landing/partners/cepal.svg",
     "/svg/landing/partners/dga.svg",
+    "/svg/landing/partners/eurostat.svg",
     "/svg/landing/partners/fiatpanis.svg",
+    "/svg/landing/partners/internationalmonetaryfund.svg",
     "/svg/landing/partners/jad.svg",
+    "/svg/landing/partners/omc.svg",
     "/svg/landing/partners/one.svg",
-    "/images/landing/partners/trademap.png",
-    "/images/landing/partners/exportacion.png",
-    "/images/landing/partners/imf.png",
-    "/images/landing/partners/unctad.png",
-    "/images/landing/partners/wto omc.png",
+    "/svg/landing/partners/trademap.svg",
+    "/svg/landing/partners/uncomtrade.svg",
+    "/svg/landing/partners/unctad.svg",
+    "/svg/landing/partners/usacensus.svg",
+    "/svg/landing/partners/zonasfrancas.svg",
   ];
   return (
     <section
