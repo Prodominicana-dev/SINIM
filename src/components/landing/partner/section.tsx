@@ -23,7 +23,7 @@ export default function Partners() {
   return (
     <section
       id="partner"
-      className="flex flex-col w-full space-y-8 h-[70vh] bg-white  items-center pt-10"
+      className="flex flex-col w-full space-y-8 h-[55vh] md:h-[60vh] lg:h-[70vh] bg-white  items-center pt-10"
     >
       <div className="flex flex-col w-10/12">
         <p className="font-semibold ">
@@ -48,7 +48,7 @@ export default function Partners() {
           plugins={[autoplay.current]}
           onMouseEnter={autoplay.current.stop}
           onMouseLeave={autoplay.current.reset}
-          className="w-10/12 border-2 rounded-xl h-[30vh] border-blue-gray-600/40 flex items-center justify-center "
+          className="w-10/12 border-2 rounded-xl h-[30vh]  sm:h-[40vh] border-blue-gray-600/40 flex items-center justify-center "
         >
           {partners.map((partner, key) => {
             return <Slider key={key} logo={partner} />;

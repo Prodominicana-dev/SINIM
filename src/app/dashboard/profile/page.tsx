@@ -81,7 +81,6 @@ export default function Page() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(res.data);
         if (res.data.user_metadata) {
           setAddress(
             res.data.user_metadata.address ? res.data.user_metadata.address : ""
@@ -571,15 +570,6 @@ export default function Page() {
             <button
               className="flex items-center justify-center w-full text-lg font-semibold text-center text-white duration-200 rounded-lg h-14 bg-navy hover:text-white/80 hover:bg-navy/80"
               onClick={handleSubmit}
-              disabled={
-                name === "" ||
-                lastName === "" ||
-                email === "" ||
-                phone === "" ||
-                address === "" ||
-                documentation === "" ||
-                typeDocumentation === ""
-              }
             >
               {!isSubmitted ? "Guardar" : <Spinner />}
             </button>
