@@ -9,6 +9,9 @@ import { Carousel as Carrusel } from "@material-tailwind/react";
 import Slide from "@/src/components/landing/sied/slide";
 import { MantineProvider } from "@mantine/core";
 import Partners from "@/src/components/landing/partner/section";
+import { Montserrat } from "@next/font/google";
+
+export const monserratStyle = Montserrat({ subsets: ["latin"] });
 
 export default function page() {
   const movement = (id: string) => {
@@ -21,7 +24,7 @@ export default function page() {
 
   return (
     <MantineProvider>
-      <div className="w-full">
+      <div className={`w-full`} style={monserratStyle.style}>
         <section
           id="sinim-front"
           className="w-full justify-center items-center lg:h-screen  bg-gradient-to-b from-light-blue from-[40%] to-dark-blue flex flex-col sm:pl-5 sm:pt-5 sm:pr-5 pl-3 pt-3 pr-3 space-y-6 sm:space-y-12"
@@ -128,7 +131,7 @@ export default function page() {
             <div className="w-9/12">
               <div>
                 <p className="font-semibold text-blue-700">Análisis de datos</p>
-                <h1 className="text-5xl font-bold text-black">DataMarket</h1>
+                <h1 className="text-5xl font-bold text-black">Data Market</h1>
               </div>
               <p className="w-full py-4 font-normal text-gray-400">
                 Analice datos y estadísticas de comercio internacional e
@@ -360,15 +363,15 @@ export default function page() {
             <div className="flex flex-col w-full space-y-8 sm:space-y-0 sm:space-x-8 lg:space-x-16 sm:items-center sm:w-6/12 lg:h-full sm:flex-row">
               <div className="flex flex-col space-y-3 text-base text-white sm:h-52">
                 <h1 className="font-bold">Herramientas</h1>
-                <Link href={"/dashboard/datamarket/1"}>Datamarket</Link>
+                <Link href={"/dashboard/datamarket/1"}>Data Market</Link>
                 <Link href={"/dashboard/saim"}>Alertas Comerciales</Link>
                 <Link href={"/dashboard/sied"}>Alertas de IED</Link>
                 <Link href={"/dashboard/rami"}>RAMI</Link>
               </div>
               <div className="flex flex-col space-y-3 text-base text-white sm:h-52">
                 <h1 className="font-bold">Recursos</h1>
-                <Link href={"/dashboard/post"}>Publicaciones</Link>
-                <Link href={"/dashboard/partner"}>Fuentes externas</Link>
+                <Link href={"/dashboard/posts"}>Publicaciones</Link>
+                <Link href={"/dashboard/partners"}>Fuentes externas</Link>
                 <Link href={"/"}>Manual de usuario</Link>
               </div>
               <div className="flex flex-col space-y-3 text-base text-white sm:h-52">

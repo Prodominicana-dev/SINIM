@@ -50,8 +50,8 @@ export default function Partners() {
           align="start"
           height={400}
           plugins={[autoplay.current]}
-          onMouseEnter={autoplay.current.stop}
-          onMouseLeave={autoplay.current.reset}
+          // onMouseEnter={autoplay.current.stop}
+          // onMouseLeave={autoplay.current.reset}
           className="w-10/12 border-2 rounded-xl h-[30vh]  sm:h-[40vh] border-blue-gray-600/40 flex items-center justify-center "
         >
           {partners.map((partner, key) => {
