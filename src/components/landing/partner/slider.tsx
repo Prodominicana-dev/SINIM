@@ -8,13 +8,13 @@ export default function Slider({ logo }: { logo: string }) {
   const logoName = logo.split("/").pop();
   const logoNameWithoutExtension = logoName?.split(".")[0];
   return (
-    <Carousel.Slide className="flex items-center justify-center w-10/12 h-56 text-black bg-white">
+    <Carousel.Slide className="flex items-center justify-center w-10/12 h-32 text-black lg:h-44 ">
       <Image
         src={`${logo}`}
         width={600}
         height={600}
         alt={logoNameWithoutExtension || ""}
-        className="object-contain w-full p-5 m-5 text-black bg-white h-44"
+        className="object-contain w-full h-full p-5 m-5 text-black bg-white "
       />
     </Carousel.Slide>
   );
