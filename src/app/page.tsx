@@ -11,7 +11,7 @@ import { MantineProvider } from "@mantine/core";
 import Partners from "@/src/components/landing/partner/section";
 import { Montserrat } from "@next/font/google";
 
-export const monserratStyle = Montserrat({ subsets: ["latin"] });
+const monserratStyle = Montserrat({ subsets: ["latin"] });
 
 export default function page() {
   const movement = (id: string) => {
