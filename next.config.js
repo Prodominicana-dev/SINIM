@@ -36,6 +36,7 @@ const nextConfig = {
     AUTH0_API_TOKEN: process.env.AUTH0_API_TOKEN,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+    NEXT_PUBLIC_GOOGLE_ANALYTICS: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS,
   },
   experimental: {
     swcPlugins: [["@swc-jotai/react-refresh", {}]],
