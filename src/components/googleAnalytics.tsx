@@ -1,6 +1,6 @@
 "use client";
 import Script from "next/script";
-
+import React from "react";
 export default function GoogleAnalytics({ ga_id }: { ga_id: string }) {
   return (
     <>
